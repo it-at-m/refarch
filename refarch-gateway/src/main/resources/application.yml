@@ -1,5 +1,5 @@
 spring:
-  application.name: @project.artifactId@
+  application.name: '@project.artifactId@'
   banner.location: banner.txt
   main:
     web-application-type: reactive
@@ -51,8 +51,10 @@ management:
   info:
     env:
       enabled: true
-info.application.name: ${spring.application.name}
-info.application.version: @project.version@
-info.appswitcher.url: https://appswitcher.muenchen.de
+info:
+  application:
+    name: ${spring.application.name}
+    version: '@project.version@'
+  appswitcher.url: https://appswitcher.muenchen.de
 
 config.map5xxto400: false
