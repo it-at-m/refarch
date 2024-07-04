@@ -2,9 +2,9 @@
  * Copyright (c): it@M - Dienstleister für Informations- und Telekommunikationstechnik
  * der Landeshauptstadt München, 2024
  */
-package @muenchen.exception;
+package de.muenchen.oss.refarch.gateway.exception;
 
-import @muenchen.filter.GlobalRequestParameterPollutionFilter;
+import de.muenchen.oss.refarch.gateway.filter.GlobalRequestParameterPollutionFilter;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;

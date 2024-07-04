@@ -2,9 +2,9 @@
  * Copyright (c): it@M - Dienstleister für Informations- und Telekommunikationstechnik
  * der Landeshauptstadt München, 2024
  */
-package @muenchen.filter;
+package de.muenchen.oss.refarch.gateway.filter;
 
-import @muenchen.exception.ParameterPollutionException;
+import de.muenchen.oss.refarch.gateway.exception.ParameterPollutionException;
 import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;

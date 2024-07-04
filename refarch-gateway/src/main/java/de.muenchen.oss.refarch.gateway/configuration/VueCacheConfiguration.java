@@ -2,7 +2,7 @@
  * Copyright (c): it@M - Dienstleister für Informations- und Telekommunikationstechnik
  * der Landeshauptstadt München, 2024
  */
-package @muenchen.configuration;
+package de.muenchen.oss.refarch.gateway.configuration;
 
 import java.time.Duration;
 import org.springframework.context.annotation.Configuration;

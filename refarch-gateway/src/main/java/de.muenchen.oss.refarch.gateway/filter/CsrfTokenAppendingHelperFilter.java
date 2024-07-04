@@ -2,9 +2,9 @@
  * Copyright (c): it@M - Dienstleister für Informations- und Telekommunikationstechnik
  * der Landeshauptstadt München, 2024
  */
-package @muenchen.filter;
+package de.muenchen.oss.refarch.gateway.filter;
 
-import @muenchen.configuration.SecurityConfiguration;
+import de.muenchen.oss.refarch.gateway.configuration.SecurityConfiguration;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository;

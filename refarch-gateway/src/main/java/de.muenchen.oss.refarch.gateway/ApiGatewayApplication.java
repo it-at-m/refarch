@@ -2,7 +2,7 @@
  * Copyright (c): it@M - Dienstleister für Informations- und Telekommunikationstechnik
  * der Landeshauptstadt München, 2024
  */
-package @muenchen;
+package de.muenchen.oss.refarch.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -31,7 +31,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @see <a href=
  *      "https://cloud.spring.io/spring-cloud-gateway/reference/html/">https://cloud.spring.io/spring-cloud-gateway/reference/html/</a>
  */
-@SpringBootApplication(scanBasePackages = { "@muenchen" })
+@SpringBootApplication(scanBasePackages = { "de.muenchen.oss.refarch.gateway" })
 public class ApiGatewayApplication {
 
     public static void main(String[] args) {

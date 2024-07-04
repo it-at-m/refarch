@@ -20,7 +20,7 @@
         </appender>
 
         <!-- Logger -->
-        <logger name="@muenchen"
+        <logger name="de.muenchen.oss.refarch.gateway"
                 level="debug"
                 additivity="false">
             <appender-ref ref="STDOUT" />
@@ -89,7 +89,7 @@
         </appender>
 
         <!-- Logger -->
-        <logger name="@muenchen"
+        <logger name="de.muenchen.oss.refarch.gateway"
                 level="info"
                 additivity="false">
             <appender-ref ref="JSON_STDOUT" />

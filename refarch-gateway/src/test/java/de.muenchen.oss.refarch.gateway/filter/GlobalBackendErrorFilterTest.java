@@ -2,9 +2,9 @@
  * Copyright (c): it@M - Dienstleister für Informations- und Telekommunikationstechnik
  * der Landeshauptstadt München, 2024
  */
-package @muenchen.filter;
+package de.muenchen.oss.refarch.gateway.filter;
 
-import @muenchen.ApiGatewayApplication;
+import de.muenchen.oss.refarch.gateway.ApiGatewayApplication;
 import com.github.tomakehurst.wiremock.http.HttpHeader;
 import com.github.tomakehurst.wiremock.http.HttpHeaders;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,10 +16,11 @@ import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import static @muenchen.TestConstants.SPRING_TEST_PROFILE;
+import static de.muenchen.oss.refarch.gateway.TestConstants.SPRING_TEST_PROFILE;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
@@ -32,7 +33,12 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 )
 @ActiveProfiles(SPRING_TEST_PROFILE)
 @AutoConfigureWireMock
-class GlobalAuthenticationErrorFilterTest {
+@TestPropertySource(
+        properties = {
+                "config.map5xxto400:false",
+        }
+)
+class GlobalBackendErrorFilterTest {
 
     @Autowired
     private WebTestClient webTestClient;
@@ -41,7 +47,7 @@ class GlobalAuthenticationErrorFilterTest {
     void setup() {
         stubFor(get(urlEqualTo("/remote"))
                 .willReturn(aResponse()
-                        .withStatus(HttpStatus.UNAUTHORIZED.value())
+                        .withStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())
                         .withHeaders(new HttpHeaders(
                                 new HttpHeader("Content-Type", "application/json"),
                                 new HttpHeader("WWW-Authenticate", "Bearer realm=\"Access to the staging site\", charset=\"UTF-8\""),
@@ -51,16 +57,16 @@ class GlobalAuthenticationErrorFilterTest {
 
     @Test
     @WithMockUser
-    void backendAuthenticationError() {
+    void backendError() {
         //@formatter:off
         webTestClient.get().uri("/api/refarch-gateway-backend-service/remote").exchange()
-                .expectStatus().isEqualTo(HttpStatus.UNAUTHORIZED)
+                .expectStatus().isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR)
                 .expectHeader().valueMatches("Content-Type", "application/json")
                 .expectHeader().doesNotExist("WWW-Authenticate")
                 .expectHeader().valueMatches("Expires", "0")
                 .expectBody()
-                    .jsonPath("$.status").isEqualTo("401")
-                    .jsonPath("$.error").isEqualTo("Authentication Error");
+                    .jsonPath("$.status").isEqualTo("500")
+                    .jsonPath("$.error").isEqualTo("Internal Server Error");
         //@formatter:on
     }
 

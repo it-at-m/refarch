@@ -2,9 +2,9 @@
  * Copyright (c): it@M - Dienstleister für Informations- und Telekommunikationstechnik
  * der Landeshauptstadt München, 2024
  */
-package @muenchen.configuration;
+package de.muenchen.oss.refarch.gateway.configuration;
 
-import @muenchen.filter.CsrfTokenAppendingHelperFilter;
+import de.muenchen.oss.refarch.gateway.filter.CsrfTokenAppendingHelperFilter;
 import java.net.URI;
 import java.time.Duration;
 import org.springframework.beans.factory.annotation.Value;
