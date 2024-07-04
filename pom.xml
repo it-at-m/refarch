@@ -4,28 +4,27 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-
-    <parent>
-        <groupId>de.muenchen</groupId>
-        <artifactId>muenchen-pom</artifactId>
-        <version>2.1.0</version>
-    </parent>
-
-
     <groupId>de.muenchen.oss</groupId>
     <artifactId>refarch</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>refarch</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <jvm.options>-Dorg.conscrypt.native.workdir=$(pwd)</jvm.options>
+        <jacoco.version>0.8.7</jacoco.version>
+
+        <spring.boot.version>3.0.7</spring.boot.version>
+        <spring.cloud.version>2022.0.3</spring.cloud.version>
+    </properties>
 
     <modules>
         <module>refarch-gateway</module>
     </modules>
-
-    <properties>
-       		<!-- SonarQube -->
-		<sonar.scanner.version>3.9.0.2155</sonar.scanner.version>
-    </properties>
 
     <scm>
         <url>https://github.com/it-at-m/refarch.git</url>
@@ -38,22 +37,131 @@
         </license>
     </licenses>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <!-- Import dependency management from Spring Boot -->
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <!-- Import dependency management from Spring Cloud -->
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring.cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
-                <artifactId>maven-scm-plugin</artifactId>
-                <version>1.10.0</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M5</version>
                 <configuration>
-                    <tag>RT-REL-${project.version}</tag>
+                    <argLine>${jvm.options}</argLine>
                 </configuration>
             </plugin>
             <plugin>
-				<groupId>org.sonarsource.scanner.maven</groupId>
-				<artifactId>sonar-maven-plugin</artifactId>
-				<version>${sonar.scanner.version}</version>
-			</plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring.boot.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Codeformatter Spotless -->
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>2.28.0</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>de.muenchen.oss</groupId>
+                        <artifactId>itm-java-codeformat</artifactId>
+                        <version>1.0.7</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <java>
+                        <includes>
+                            <include>src/main/java/**/*.java</include> <!-- Check application code -->
+                            <include>src/test/java/**/*.java</include> <!-- Check application tests code -->
+                        </includes>
+                        <eclipse>
+                            <file>itm-java-codeformat/java_codestyle_formatter.xml</file>
+                        </eclipse>
+                        <trimTrailingWhitespace/>
+                        <endWithNewline/>
+                    </java>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Linter Checkstyle -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.2.1</version>
+                <configuration>
+                    <configLocation>checkstyle.xml</configLocation>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.puppycrawl.tools</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>9.3</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
         </plugins>
     </build>
-
-
 </project>
