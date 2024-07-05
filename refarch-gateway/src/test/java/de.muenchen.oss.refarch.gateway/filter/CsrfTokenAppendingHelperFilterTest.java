@@ -18,7 +18,7 @@ import static de.muenchen.oss.refarch.gateway.TestConstants.SPRING_TEST_PROFILE;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(
-        classes = { ApiGatewayApplication.class },
+        classes = {ApiGatewayApplication.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 @ActiveProfiles(SPRING_TEST_PROFILE)

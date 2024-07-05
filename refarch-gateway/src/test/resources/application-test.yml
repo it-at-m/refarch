@@ -4,8 +4,8 @@ wiremock:
     https-port: -1
 
 spring:
-  
-  # muenchen.de realm is used by default so that the SpringContext can be initalized upon running the tests. Change to your own dev realm if available
+
+  # muenchen.de realm is used by default so that the SpringContext can be initialized upon running the tests. Change to your own dev realm if available
   realm: muenchen.de
 
   # spring cloud gateway config
@@ -55,7 +55,7 @@ spring:
         registration:
           keycloak:
             client-id: refarch-gateway
-            client-secret: 0b67133e-f4e0-42f6-b05f-7b51175969e8
+            client-secret:
 
   mvc:
     log-request-details: on

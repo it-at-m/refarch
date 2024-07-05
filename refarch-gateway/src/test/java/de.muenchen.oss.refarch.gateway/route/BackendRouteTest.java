@@ -20,17 +20,12 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static de.muenchen.oss.refarch.gateway.TestConstants.SPRING_TEST_PROFILE;
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(
-        classes = { ApiGatewayApplication.class },
+        classes = {ApiGatewayApplication.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 @ActiveProfiles(SPRING_TEST_PROFILE)
