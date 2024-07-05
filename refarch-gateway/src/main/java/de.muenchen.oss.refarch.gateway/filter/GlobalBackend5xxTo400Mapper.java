@@ -4,7 +4,7 @@
  */
 package de.muenchen.oss.refarch.gateway.filter;
 
-import java.nio.charset.StandardCharsets;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.lang3.ObjectUtils;
@@ -28,6 +28,8 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.nio.charset.StandardCharsets;
+
 /**
  * This {@link GlobalFilter} replaces the body by a generic error body, when a server responses
  * with a {@link HttpStatus#INTERNAL_SERVER_ERROR}.
@@ -37,15 +39,13 @@ import reactor.core.publisher.Mono;
 public class GlobalBackend5xxTo400Mapper implements GlobalFilter, Ordered {
 
     public static final int ORDER_GLOBAL_FILTER = -3;
-
+    static final String GENERIC_ERROR_400 = "{ \"status\":400, \"error\":\"Bad Request\" }";
+    static final String GENERIC_ERROR_500 = "{ \"status\":500, \"error\":\"Internal Server Error\" }";
     /**
      * Variable entscheidet, ob alle 5xx Fehler auf 400 gemappt werden sollen.
      **/
     @Value("${config.map5xxto400: true}")
     private boolean MAP_5xx_TO_400;
-
-    static final String GENERIC_ERROR_400 = "{ \"status\":400, \"error\":\"Bad Request\" }";
-    static final String GENERIC_ERROR_500 = "{ \"status\":500, \"error\":\"Internal Server Error\" }";
 
     @Override
     public int getOrder() {
@@ -62,7 +62,8 @@ public class GlobalBackend5xxTo400Mapper implements GlobalFilter, Ordered {
         final ServerHttpResponseDecorator decoratedResponse = new ServerHttpResponseDecorator(response) {
 
             @Override
-            public Mono<Void> writeWith(Publisher<? extends DataBuffer> body) {
+            @NonNull
+            public Mono<Void> writeWith(@NonNull Publisher<? extends DataBuffer> body) {
                 final HttpStatusCode responseHttpStatus = getDelegate().getStatusCode();
 
                 final Flux<? extends DataBuffer> flux = (Flux<? extends DataBuffer>) body;

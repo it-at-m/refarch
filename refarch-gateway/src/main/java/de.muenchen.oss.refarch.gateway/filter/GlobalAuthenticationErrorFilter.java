@@ -4,8 +4,9 @@
  */
 package de.muenchen.oss.refarch.gateway.filter;
 
-import org.apache.commons.codec.binary.StringUtils;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.reactivestreams.Publisher;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -35,9 +36,8 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class GlobalAuthenticationErrorFilter implements GlobalFilter, Ordered {
 
-    private static final String GENERIC_AUTHENTICATION_ERROR = "{ \"status\":401, \"error\":\"Authentication Error\" }";
-
     public static final int ORDER_GLOBAL_FILTER = -3;
+    private static final String GENERIC_AUTHENTICATION_ERROR = "{ \"status\":401, \"error\":\"Authentication Error\" }";
 
     @Override
     public int getOrder() {
@@ -65,9 +65,10 @@ public class GlobalAuthenticationErrorFilter implements GlobalFilter, Ordered {
              *         the body given by the parameter.
              */
             @Override
-            public Mono<Void> writeWith(Publisher<? extends DataBuffer> body) {
+            @NonNull
+            public Mono<Void> writeWith(@NonNull Publisher<? extends DataBuffer> body) {
                 final HttpStatusCode responseHttpStatus = getDelegate().getStatusCode();
-                if (body instanceof Flux && responseHttpStatus.equals(httpStatus)) {
+                if (body instanceof Flux<? extends DataBuffer> flux && responseHttpStatus.equals(httpStatus)) {
                     final DataBufferFactory dataBufferFactory = response.bufferFactory();
                     final DataBuffer newDataBuffer = dataBufferFactory.wrap(
                             StringUtils.getBytesUtf8(ObjectUtils.defaultIfNull(newResponseBody, EMPTY_JSON_OBJECT)));
@@ -75,7 +76,6 @@ public class GlobalAuthenticationErrorFilter implements GlobalFilter, Ordered {
                     log.debug("Response from upstream {} get new response body: {}", httpStatus, newResponseBody);
                     getDelegate().getHeaders().setContentLength(newDataBuffer.readableByteCount());
                     getDelegate().getHeaders().setContentType(MediaType.APPLICATION_JSON);
-                    Flux<? extends DataBuffer> flux = (Flux<? extends DataBuffer>) body;
 
                     return super.writeWith(flux.buffer().map(
                             // replace old body represented by dataBuffer by the new one
@@ -88,6 +88,6 @@ public class GlobalAuthenticationErrorFilter implements GlobalFilter, Ordered {
 
         final ServerWebExchange swe = exchange.mutate().response(decoratedResponse).build();
         return chain.filter(swe);
-    };
+    }
 
 }

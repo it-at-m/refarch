@@ -18,7 +18,8 @@ public class NoSecurityConfiguration {
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         return http
                 .authorizeExchange(authorizeExchangeSpec -> authorizeExchangeSpec.anyExchange().permitAll())
-                .cors(corsSpec -> {})
+                .cors(corsSpec -> {
+                })
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .build();
     }

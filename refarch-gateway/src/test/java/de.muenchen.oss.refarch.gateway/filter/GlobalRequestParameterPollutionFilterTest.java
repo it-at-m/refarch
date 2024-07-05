@@ -16,6 +16,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 import static de.muenchen.oss.refarch.gateway.TestConstants.SPRING_TEST_PROFILE;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -40,7 +41,9 @@ class GlobalRequestParameterPollutionFilterTest {
                 .expectStatus()
                 .isEqualTo(HttpStatus.BAD_REQUEST)
                 .expectBody()
-                .consumeWith(responseBody -> jsonResponseBody.append(new String(responseBody.getResponseBody(), StandardCharsets.UTF_8)));
+                .consumeWith(responseBody -> jsonResponseBody.append(
+                        new String(Objects.requireNonNull(responseBody.getResponseBody()), StandardCharsets.UTF_8)
+                ));
         assertTrue(jsonResponseBody.toString().contains("\"message\" : \"parameter pollution\""));
     }
 

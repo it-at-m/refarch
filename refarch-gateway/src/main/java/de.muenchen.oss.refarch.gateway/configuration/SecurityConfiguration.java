@@ -17,7 +17,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.WebFilterExchange;
 import org.springframework.security.web.server.authentication.RedirectServerAuthenticationSuccessHandler;
-import org.springframework.security.web.server.authentication.logout.HttpStatusReturningServerLogoutSuccessHandler;
 import org.springframework.security.web.server.authentication.logout.RedirectServerLogoutSuccessHandler;
 import org.springframework.security.web.server.authentication.logout.ServerLogoutSuccessHandler;
 import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository;
@@ -45,15 +44,28 @@ public class SecurityConfiguration {
     @Value("${spring.session.timeout:36000}")
     private long springSessionTimeoutSeconds;
 
+    /**
+     * This method creates the {@link ServerLogoutSuccessHandler} for handling a successful logout.
+     * The usage is necessary in {@link SecurityWebFilterChain}.
+     *
+     * @param uri to forward after an successful logout.
+     * @return The handler for forwarding after an succesful logout.
+     */
+    public static ServerLogoutSuccessHandler createLogoutSuccessHandler(final String uri) {
+        final RedirectServerLogoutSuccessHandler successHandler = new RedirectServerLogoutSuccessHandler();
+        successHandler.setLogoutSuccessUrl(URI.create(uri));
+        return successHandler;
+    }
+
     @Bean
     @Order(0)
     public SecurityWebFilterChain clientAccessFilterChain(ServerHttpSecurity http) {
         http
                 .securityMatcher(ServerWebExchangeMatchers.pathMatchers("/clients/**"))
-                .authorizeExchange(authorizeExchangeSpec -> {
-                    authorizeExchangeSpec.pathMatchers(HttpMethod.OPTIONS, "/clients/**").permitAll()
-                            .anyExchange().authenticated();
-                })
+                .authorizeExchange(authorizeExchangeSpec ->
+                        authorizeExchangeSpec
+                                .pathMatchers(HttpMethod.OPTIONS, "/clients/**").permitAll()
+                                .anyExchange().authenticated())
                 .cors(corsSpec -> {
                 })
                 .oauth2ResourceServer(oauth2 ->
@@ -66,12 +78,11 @@ public class SecurityConfiguration {
     @Order(1)
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         http
-                .logout(logoutSpec -> {
-                    logoutSpec.logoutSuccessHandler(createLogoutSuccessHandler(LOGOUT_SUCCESS_URL))
-                            .logoutUrl(LOGOUT_URL)
-                            .requiresLogout(ServerWebExchangeMatchers.pathMatchers(HttpMethod.POST, LOGOUT_URL));
-                })
-
+                .logout(logoutSpec ->
+                        logoutSpec.logoutSuccessHandler(createLogoutSuccessHandler(LOGOUT_SUCCESS_URL))
+                                .logoutUrl(LOGOUT_URL)
+                                .requiresLogout(ServerWebExchangeMatchers.pathMatchers(HttpMethod.POST, LOGOUT_URL))
+                )
                 .authorizeExchange(authorizeExchangeSpec -> {
                     // permitAll
                     authorizeExchangeSpec.pathMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
@@ -100,32 +111,19 @@ public class SecurityConfiguration {
                     csrfSpec.csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse());
                     csrfSpec.requireCsrfProtectionMatcher(csrfProtectionMatcher);
                 })
-                .oauth2Login(oAuth2LoginSpec -> {
-                    oAuth2LoginSpec.authenticationSuccessHandler(new RedirectServerAuthenticationSuccessHandler() {
-                        @Override
-                        public Mono<Void> onAuthenticationSuccess(WebFilterExchange webFilterExchange, Authentication authentication) {
-                            webFilterExchange.getExchange().getSession().subscribe(
-                                    webSession -> webSession.setMaxIdleTime(Duration.ofSeconds(springSessionTimeoutSeconds))
-                            );
-                            return super.onAuthenticationSuccess(webFilterExchange, authentication);
-                        }
-                    });
-                });
+                .oauth2Login(oAuth2LoginSpec ->
+                        oAuth2LoginSpec.authenticationSuccessHandler(new RedirectServerAuthenticationSuccessHandler() {
+                            @Override
+                            public Mono<Void> onAuthenticationSuccess(WebFilterExchange webFilterExchange, Authentication authentication) {
+                                webFilterExchange.getExchange().getSession().subscribe(
+                                        webSession -> webSession.setMaxIdleTime(Duration.ofSeconds(springSessionTimeoutSeconds))
+                                );
+                                return super.onAuthenticationSuccess(webFilterExchange, authentication);
+                            }
+                        })
+                );
 
         return http.build();
-    }
-
-    /**
-     * This method creates the {@link ServerLogoutSuccessHandler} for handling a successful logout.
-     * The usage is necessary in {@link SecurityWebFilterChain}.
-     *
-     * @param uri to forward after an successful logout.
-     * @return The handler for forwarding after an succesful logout.
-     */
-    public static ServerLogoutSuccessHandler createLogoutSuccessHandler(final String uri) {
-        final RedirectServerLogoutSuccessHandler successHandler = new RedirectServerLogoutSuccessHandler();
-        successHandler.setLogoutSuccessUrl(URI.create(uri));
-        return successHandler;
     }
 
 }
