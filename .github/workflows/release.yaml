@@ -1,0 +1,24 @@
+on:
+  workflow_dispatch:
+    inputs:
+      snapshot-release:
+        description: 'Snapshot release?'
+        type: boolean
+        default: true
+      build-images:
+        description: 'Build and push images?'
+        type: boolean
+        default: false
+      release-version:
+        description: 'Release version'
+        type: string
+        required: false
+
+jobs:
+  build:
+    uses: ./.github/workflows/maven.yaml
+    with:
+      snapshot-release: ${{ inputs.snapshot-release != false }}
+      build-images: true
+      release-version: ${{ inputs.release-version }}
+    secrets: inherit

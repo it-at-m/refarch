@@ -1,0 +1,13 @@
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    uses: ./.github/workflows/maven.yaml
+    with:
+      build-images: ${{ github.ref_name == 'main' }}
+      release-version: dev
+    secrets: inherit
