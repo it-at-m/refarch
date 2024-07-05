@@ -4,8 +4,11 @@
  */
 package de.muenchen.oss.refarch.gateway;
 
+import de.muenchen.oss.refarch.gateway.configuration.SecurityProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+
 
 /**
  * To do some base configuration for the non blocking client-server framework
@@ -31,7 +34,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @see <a href=
  *      "https://cloud.spring.io/spring-cloud-gateway/reference/html/">https://cloud.spring.io/spring-cloud-gateway/reference/html/</a>
  */
-@SpringBootApplication(scanBasePackages = { "de.muenchen.oss.refarch.gateway" })
+@SpringBootApplication
+@EnableConfigurationProperties(SecurityProperties.class)
 public class ApiGatewayApplication {
 
     public static void main(String[] args) {
