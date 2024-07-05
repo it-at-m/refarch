@@ -23,6 +23,7 @@
         <logstash.encoder.version>7.0.1</logstash.encoder.version>
         <hazelcast.version>5.4.0</hazelcast.version>
         <apache.commons.lang.version>3.12.0</apache.commons.lang.version>
+        <apache.commons.codec.version>1.17.0</apache.commons.codec.version>
     </properties>
 
     <dependencies>
@@ -71,6 +72,11 @@
             <artifactId>hazelcast-spring</artifactId>
             <version>${hazelcast.version}</version>
         </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>${apache.commons.codec.version}</version>
+        </dependency>
 
         <!-- Testing -->
         <dependency>
@@ -103,7 +109,7 @@
             <version>${apache.commons.lang.version}</version>
         </dependency>
 
-        <!-- Logging -->        
+        <!-- Logging -->
         <dependency>
             <groupId>net.logstash.logback</groupId>
             <artifactId>logstash-logback-encoder</artifactId>
