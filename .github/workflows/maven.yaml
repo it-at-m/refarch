@@ -23,7 +23,6 @@ jobs:
   build-maven:
     runs-on: ubuntu-latest
     steps:
-      # Checkout source code, set up Java, etc. Then...
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Set up JDK
