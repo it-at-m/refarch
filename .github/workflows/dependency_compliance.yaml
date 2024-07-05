@@ -1,6 +1,6 @@
-name: build and test
+name: dependency-compliance
 
-on: [push]
+on: [ push ]
 
 jobs:
   compliance:
