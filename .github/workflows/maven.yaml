@@ -20,7 +20,7 @@ on:
         required: false
 
 jobs:
-  release:
+  build-maven:
     runs-on: ubuntu-latest
     steps:
       # Checkout source code, set up Java, etc. Then...
