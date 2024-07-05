@@ -7,12 +7,42 @@ spring:
     serialization:
       indent-output: on
   session:
-    timeout: 36000  # in seconds; Goal: same lifetime as SSO Session (e.g. 10 hours)
+    timeout: 1800  # in seconds; Goal: same lifetime as SSO Session, actual: 30 minutes
   zipkin:
     enabled: false
     sleuth:
       reactor:
         instrumentation-type: decorate_on_each  # https://github.com/spring-cloud/spring-cloud-gateway/pull/2106
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${SSO_ISSUER_URL}
+      client:
+        provider:
+          keycloak:
+            issuer-uri: ${SSO_ISSUER_URL}
+        registration:
+          keycloak:
+            client-id: ${SSO_CLIENT_ID}
+            client-secret: ${SSO_CLIENT_SECRET}
+            scope: email, profile, openid  # needed for userInfo endpoint
+            provider: keycloak
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/public/**]':
+            allowedOriginPatterns: ${ALLOWED_ORIGINS_PUBLIC}
+          '[/clients/**]':
+            allowedOriginPatterns: ${ALLOWED_ORIGINS_CLIENTS}
+            allowedHeaders: "*"
+            allowCredentials: true
+      default-filters:
+        - RemoveResponseHeader=Expires
+        - RemoveRequestHeader=cookie
+        - RemoveRequestHeader=x-xsrf-token
+        - TokenRelay=
 
 server:
   port: 8080
@@ -22,21 +52,14 @@ server:
     include-message: always
     whitelabel:
       enabled: false
+  shutdown: graceful
 
 management:
   endpoints:
     enabled-by-default: false
     web:
-      cors:
-        allowedOrigins:
-          - "http://localhost:8081"
-          - "http://127.0.0.1:8081"
-        allowedMethods: "*"
-        allowedHeaders: "*"
-        allowCredentials: on
-        maxAge: 3600
       exposure:
-        include: health, info, prometheus
+        include: health, info, prometheus, livenessstate, readinessstate
       path-mapping:
         prometheus: metrics
   endpoint:
@@ -51,10 +74,11 @@ management:
   info:
     env:
       enabled: true
+
 info:
   application:
     name: ${spring.application.name}
     version: '@project.version@'
-  appswitcher.url: https://appswitcher.muenchen.de
 
-config.map5xxto400: false
+config:
+  map5xxto400: true
