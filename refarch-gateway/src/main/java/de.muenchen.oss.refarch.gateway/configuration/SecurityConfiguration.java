@@ -4,34 +4,40 @@
  */
 package de.muenchen.oss.refarch.gateway.configuration;
 
-import de.muenchen.oss.refarch.gateway.filter.CsrfTokenAppendingHelperFilter;
-import java.net.URI;
-import java.time.Duration;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.server.reactive.ServerHttpResponse;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.WebFilterExchange;
 import org.springframework.security.web.server.authentication.RedirectServerAuthenticationSuccessHandler;
+import org.springframework.security.web.server.authentication.logout.HttpStatusReturningServerLogoutSuccessHandler;
 import org.springframework.security.web.server.authentication.logout.RedirectServerLogoutSuccessHandler;
 import org.springframework.security.web.server.authentication.logout.ServerLogoutSuccessHandler;
 import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository;
-import org.springframework.security.web.server.csrf.ServerCsrfTokenRequestAttributeHandler;
 import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
+import java.time.Duration;
+
+
 @Configuration
 @Profile("!no-security")
+@RequiredArgsConstructor
 public class SecurityConfiguration {
 
     private static final String LOGOUT_URL = "/logout";
 
     private static final String LOGOUT_SUCCESS_URL = "/loggedout.html";
+
+    private final CsrfProtectionMatcher csrfProtectionMatcher;
 
     /**
      * Same lifetime as SSO Session (e.g. 10 hours).
@@ -40,52 +46,73 @@ public class SecurityConfiguration {
     private long springSessionTimeoutSeconds;
 
     @Bean
-    public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
-        final CookieServerCsrfTokenRepository tokenRepository = CookieServerCsrfTokenRepository.withHttpOnlyFalse();
-        // requestHandler needed for handling the raw CSRF tokens
-        final ServerCsrfTokenRequestAttributeHandler requestHandler = new ServerCsrfTokenRequestAttributeHandler();
-
-        // @formatter:off
+    @Order(0)
+    public SecurityWebFilterChain clientAccessFilterChain(ServerHttpSecurity http) {
         http
-                .logout()
-                    .logoutSuccessHandler(createLogoutSuccessHandler(LOGOUT_SUCCESS_URL))
-                    .logoutUrl(LOGOUT_URL)
-                    .requiresLogout(ServerWebExchangeMatchers.pathMatchers(HttpMethod.POST, LOGOUT_URL))
-                .and()
-                    .authorizeExchange()
-                        // permitAll
-                        .pathMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
-                        .pathMatchers(LOGOUT_SUCCESS_URL).permitAll()
-                        .pathMatchers("/api/*/info",
-                                "/actuator/health",
-                                "/actuator/info",
-                                "/actuator/metrics").permitAll()
-                        // only authenticated
-                        .anyExchange().authenticated()
-                .and()
+                .securityMatcher(ServerWebExchangeMatchers.pathMatchers("/clients/**"))
+                .authorizeExchange(authorizeExchangeSpec -> {
+                    authorizeExchangeSpec.pathMatchers(HttpMethod.OPTIONS, "/clients/**").permitAll()
+                            .anyExchange().authenticated();
+                })
+                .cors(corsSpec -> {
+                })
+                .oauth2ResourceServer(oauth2 ->
+                        oauth2.jwt(Customizer.withDefaults())
+                );
+        return http.build();
+    }
+
+    @Bean
+    @Order(1)
+    public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
+        http
+                .logout(logoutSpec -> {
+                    logoutSpec.logoutSuccessHandler(createLogoutSuccessHandler(LOGOUT_SUCCESS_URL))
+                            .logoutUrl(LOGOUT_URL)
+                            .requiresLogout(ServerWebExchangeMatchers.pathMatchers(HttpMethod.POST, LOGOUT_URL));
+                })
+
+                .authorizeExchange(authorizeExchangeSpec -> {
+                    // permitAll
+                    authorizeExchangeSpec.pathMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
+                            .pathMatchers(LOGOUT_SUCCESS_URL).permitAll()
+                            .pathMatchers("/api/*/info",
+                                    "/actuator/health",
+                                    "/actuator/info",
+                                    "/actuator/metrics").permitAll()
+                            .pathMatchers(HttpMethod.OPTIONS, "/public/**").permitAll()
+                            .pathMatchers(HttpMethod.GET, "/public/**").permitAll()
+                            // only authenticated
+                            .anyExchange().authenticated();
+                })
+                .cors(corsSpec -> {
+                })
+                .csrf(csrfSpec -> {
                     /*
-                    * The necessary subscription for csrf token attachment to {@link ServerHttpResponse}
-                    * is done in class {@link CsrfTokenAppendingHelperFilter}.
-                    */
-                    .csrf((csrf) -> csrf
-                            .csrfTokenRepository(tokenRepository)
-                            .csrfTokenRequestHandler(requestHandler))
-                    .cors()
-                .and()
-                    .oauth2Login()
+                     * Custom csrf request handler for spa and BREACH attack protection.
+                     * https://docs.spring.io/spring-security/reference/6.1-SNAPSHOT/servlet/exploits/csrf.html#csrf-integration-javascript-spa
+                     */
+                    csrfSpec.csrfTokenRequestHandler(new SpaServerCsrfTokenRequestHandler());
                     /*
-                    * Set security session timeout.
-                    */
-                    .authenticationSuccessHandler(new RedirectServerAuthenticationSuccessHandler() {
+                     * The necessary subscription for csrf token attachment to {@link ServerHttpResponse}
+                     * is done in class {@link CsrfTokenAppendingHelperFilter}.
+                     */
+                    csrfSpec.csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse());
+                    csrfSpec.requireCsrfProtectionMatcher(csrfProtectionMatcher);
+                })
+                .oauth2Login(oAuth2LoginSpec -> {
+                    oAuth2LoginSpec.authenticationSuccessHandler(new RedirectServerAuthenticationSuccessHandler() {
                         @Override
                         public Mono<Void> onAuthenticationSuccess(WebFilterExchange webFilterExchange, Authentication authentication) {
                             webFilterExchange.getExchange().getSession().subscribe(
-                                    webSession -> webSession.setMaxIdleTime(Duration.ofSeconds(springSessionTimeoutSeconds)));
+                                    webSession -> webSession.setMaxIdleTime(Duration.ofSeconds(springSessionTimeoutSeconds))
+                            );
                             return super.onAuthenticationSuccess(webFilterExchange, authentication);
                         }
                     });
+                });
+
         return http.build();
-        // @formatter:on
     }
 
     /**
