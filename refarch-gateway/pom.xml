@@ -21,7 +21,7 @@
 
     <properties>
         <logstash.encoder.version>7.0.1</logstash.encoder.version>
-        <hazelcast.version>4.2.8</hazelcast.version>
+        <hazelcast.version>5.4.0</hazelcast.version>
         <apache.commons.lang.version>3.12.0</apache.commons.lang.version>
     </properties>
 
@@ -68,7 +68,7 @@
         </dependency>
         <dependency>
             <groupId>com.hazelcast</groupId>
-            <artifactId>hazelcast-all</artifactId>
+            <artifactId>hazelcast-spring</artifactId>
             <version>${hazelcast.version}</version>
         </dependency>
 

@@ -4,9 +4,9 @@
  */
 package de.muenchen.oss.refarch.gateway.filter;
 
-import com.hazelcast.org.apache.commons.codec.binary.StringUtils;
 import java.nio.charset.StandardCharsets;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Value;
