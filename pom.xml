@@ -20,8 +20,8 @@
         <lombok.mapstruct.binding.version>0.2.0</lombok.mapstruct.binding.version>
         <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
 
-        <spring.boot.version>3.0.7</spring.boot.version>
-        <spring.cloud.version>2022.0.3</spring.cloud.version>
+        <spring.boot.version>3.2.4</spring.boot.version>
+        <spring.cloud.version>2023.0.1</spring.cloud.version>
     </properties>
 
     <modules>
@@ -38,6 +38,20 @@
             <name>MIT</name>
         </license>
     </licenses>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${org.mapstruct.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 
     <dependencyManagement>
         <dependencies>
@@ -217,7 +231,7 @@
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
-                    <version>${spring-boot.version}</version>
+                    <version>${spring.boot.version}</version>
                     <executions>
                         <execution>
                             <goals>

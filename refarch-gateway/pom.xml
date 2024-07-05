@@ -95,13 +95,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Spring developer tools -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
         <!-- External Libs -->
         <dependency>
             <groupId>org.apache.commons</groupId>
