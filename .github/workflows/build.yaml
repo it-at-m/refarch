@@ -1,5 +1,3 @@
-name: build
-
 on:
   pull_request:
   push:
@@ -7,7 +5,7 @@ on:
       - main
 
 jobs:
-  maven:
+  build:
     uses: ./.github/workflows/maven.yaml
     with:
       build-images: ${{ github.ref_name == 'main' }}
