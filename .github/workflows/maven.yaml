@@ -20,7 +20,7 @@ on:
         required: false
 
 jobs:
-  build-maven:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
