@@ -7,7 +7,7 @@ on:
       - main
 
 jobs:
-  build:
+  maven:
     uses: ./.github/workflows/maven.yaml
     with:
       build-images: ${{ github.ref_name == 'main' }}
