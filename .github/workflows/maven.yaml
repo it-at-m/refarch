@@ -40,9 +40,9 @@ jobs:
           path: "**/target"
           retention-days: 5
 
-  build-image:
+  build-images:
     if: inputs.build-images == true
-    needs: release
+    needs: build-maven
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
