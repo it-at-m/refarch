@@ -63,7 +63,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Extract metadata (tags, labels) for image
-        id: gateway_meta
+        id: meta
         uses: docker/metadata-action@v5
         with:
           images: "${{ env.REGISTRY }}/${{ github.repository }}/${{ matrix.name }}"
@@ -75,5 +75,5 @@ jobs:
         with:
           context: ${{ matrix.path }}
           push: true
-          tags: ${{ steps.gateway_meta.outputs.tags }}
-          labels: ${{ steps.gateway_meta.outputs.labels }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
