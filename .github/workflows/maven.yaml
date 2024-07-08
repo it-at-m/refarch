@@ -18,6 +18,12 @@ on:
         description: 'Release version'
         type: string
         required: false
+        default: "X.Y.Z"
+      next-version:
+        description: "Next version to use after release."
+        type: string
+        required: false
+        default: "X.Y.Z-SNAPSHOT"
 
 jobs:
   build-maven:
@@ -32,7 +38,15 @@ jobs:
           distribution: "temurin"
           cache: "maven"
       - name: Maven build
+        if: ${{ inputs.snapshot-release != false }}
         run: mvn --batch-mode clean install
+      - name: Maven release
+        if: ${{ inputs.snapshot-release == false }}
+        run: |
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "GitHub Actions"
+          mvn release:prepare -f ./pom.xml -B -DreleaseVersion=${{ inputs.release-version }} -DdevelopmentVersion=${{ inputs.next-version }}
+          mvn release:perform -f ./pom.xml -Darguments="-Dmaven.deploy.skip=true"
       - name: "Upload target artifacts"
         uses: actions/upload-artifact@v4
         with:
