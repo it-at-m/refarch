@@ -1,7 +1,3 @@
-/*
- * Copyright (c): it@M - Dienstleister für Informations- und Telekommunikationstechnik
- * der Landeshauptstadt München, 2024
- */
 package de.muenchen.oss.refarch.gateway.filter;
 
 import com.github.tomakehurst.wiremock.http.HttpHeader;
@@ -32,7 +28,7 @@ import static de.muenchen.oss.refarch.gateway.TestConstants.SPRING_TEST_PROFILE;
 @AutoConfigureWireMock
 @TestPropertySource(
         properties = {
-                "config.map5xxto400:false",
+                "config.map5xxto400=false",
         }
 )
 class GlobalBackendErrorFilterTest {
