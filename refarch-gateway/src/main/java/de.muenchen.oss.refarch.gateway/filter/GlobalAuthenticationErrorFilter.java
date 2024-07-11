@@ -2,7 +2,6 @@ package de.muenchen.oss.refarch.gateway.filter;
 
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.reactivestreams.Publisher;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -20,6 +19,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.charset.StandardCharsets;
 
 /**
  * This {@link GlobalFilter} replaces the body by a generic authentication error body,
@@ -67,7 +68,7 @@ public class GlobalAuthenticationErrorFilter implements GlobalFilter, Ordered {
                 if (body instanceof Flux<? extends DataBuffer> flux && responseHttpStatus.equals(httpStatus)) {
                     final DataBufferFactory dataBufferFactory = response.bufferFactory();
                     final DataBuffer newDataBuffer = dataBufferFactory.wrap(
-                            StringUtils.getBytesUtf8(ObjectUtils.defaultIfNull(newResponseBody, EMPTY_JSON_OBJECT)));
+                            ObjectUtils.defaultIfNull(newResponseBody, EMPTY_JSON_OBJECT).getBytes(StandardCharsets.UTF_8));
 
                     log.debug("Response from upstream {} get new response body: {}", httpStatus, newResponseBody);
                     getDelegate().getHeaders().setContentLength(newDataBuffer.readableByteCount());

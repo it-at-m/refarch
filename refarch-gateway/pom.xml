@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -20,10 +20,9 @@
     <name>refarch-gateway</name>
 
     <properties>
-        <logstash.encoder.version>7.0.1</logstash.encoder.version>
+        <logstash.encoder.version>7.4</logstash.encoder.version>
         <hazelcast.version>5.4.0</hazelcast.version>
-        <apache.commons.lang.version>3.12.0</apache.commons.lang.version>
-        <apache.commons.codec.version>1.17.0</apache.commons.codec.version>
+        <apache.commons.lang.version>3.14.0</apache.commons.lang.version>
     </properties>
 
     <dependencies>
@@ -75,11 +74,6 @@
             <groupId>com.hazelcast</groupId>
             <artifactId>hazelcast-spring</artifactId>
             <version>${hazelcast.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-            <version>${apache.commons.codec.version}</version>
         </dependency>
 
         <!-- Testing -->

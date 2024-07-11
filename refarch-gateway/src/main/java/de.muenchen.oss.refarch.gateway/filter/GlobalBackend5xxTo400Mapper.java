@@ -2,7 +2,6 @@ package de.muenchen.oss.refarch.gateway.filter;
 
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Value;
@@ -83,11 +82,11 @@ public class GlobalBackend5xxTo400Mapper implements GlobalFilter, Ordered {
                                 if (MAP_5xx_TO_400) {
                                     getDelegate().setStatusCode(HttpStatus.BAD_REQUEST);
                                     newDataBuffer = dataBufferFactory.wrap(
-                                            StringUtils.getBytesUtf8(ObjectUtils.defaultIfNull(GENERIC_ERROR_400, EMPTY_JSON_OBJECT)));
+                                            ObjectUtils.defaultIfNull(GENERIC_ERROR_400, EMPTY_JSON_OBJECT).getBytes(StandardCharsets.UTF_8));
                                 } else {
                                     getDelegate().setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
                                     newDataBuffer = dataBufferFactory.wrap(
-                                            StringUtils.getBytesUtf8(ObjectUtils.defaultIfNull(GENERIC_ERROR_500, EMPTY_JSON_OBJECT)));
+                                            ObjectUtils.defaultIfNull(GENERIC_ERROR_500, EMPTY_JSON_OBJECT).getBytes(StandardCharsets.UTF_8));
                                 }
 
                                 getDelegate().getHeaders().setContentLength(newDataBuffer.readableByteCount());
