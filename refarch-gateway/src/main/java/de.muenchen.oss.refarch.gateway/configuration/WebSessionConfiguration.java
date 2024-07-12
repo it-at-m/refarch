@@ -83,9 +83,9 @@ public class WebSessionConfiguration {
 
         hazelcastConfig.getNetworkConfig().getJoin().getMulticastConfig().setEnabled(false);
         hazelcastConfig.getNetworkConfig().getJoin().getKubernetesConfig().setEnabled(true)
-                // explicitely configure namespace because default env lookup is not alway correct
+                // explicitly configure namespace because default env lookup is not always correct
                 .setProperty("namespace", openshiftNamespace)
-                //If we dont set a specific name, it would call -all- services within a namespace
+                //If we don't set a specific name, it would call -all- services within a namespace
                 .setProperty("service-name", openshiftServiceName);
 
         return hazelcastConfig;
