@@ -30,7 +30,7 @@
 
         <spring-cloud.version>2023.0.2</spring-cloud.version>
         <logstash.encoder.version>7.4</logstash.encoder.version>
-        <hazelcast.version>5.4.0</hazelcast.version>
+        <hazelcast.version>5.3.6</hazelcast.version>
         <apache.commons.lang.version>3.14.0</apache.commons.lang.version>
     </properties>
 
