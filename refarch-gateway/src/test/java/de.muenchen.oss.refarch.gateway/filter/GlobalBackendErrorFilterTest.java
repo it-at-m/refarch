@@ -1,5 +1,8 @@
 package de.muenchen.oss.refarch.gateway.filter;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static de.muenchen.oss.refarch.gateway.TestConstants.SPRING_TEST_PROFILE;
+
 import com.github.tomakehurst.wiremock.http.HttpHeader;
 import com.github.tomakehurst.wiremock.http.HttpHeaders;
 import de.muenchen.oss.refarch.gateway.ApiGatewayApplication;
@@ -16,12 +19,9 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static de.muenchen.oss.refarch.gateway.TestConstants.SPRING_TEST_PROFILE;
-
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(
-        classes = {ApiGatewayApplication.class},
+        classes = { ApiGatewayApplication.class },
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 @ActiveProfiles(SPRING_TEST_PROFILE)
@@ -44,8 +44,7 @@ class GlobalBackendErrorFilterTest {
                         .withHeaders(new HttpHeaders(
                                 new HttpHeader("Content-Type", "application/json"),
                                 new HttpHeader("WWW-Authenticate", "Bearer realm=\"Access to the staging site\", charset=\"UTF-8\""),
-                                new HttpHeader("Expires", "Wed, 21 Oct 2099 07:28:06 GMT")
-                        ))
+                                new HttpHeader("Expires", "Wed, 21 Oct 2099 07:28:06 GMT")))
                         .withBody("{ \"testkey\" : \"testvalue\" }")));
     }
 

@@ -1,6 +1,11 @@
 package de.muenchen.oss.refarch.gateway.filter;
 
+import static de.muenchen.oss.refarch.gateway.TestConstants.SPRING_TEST_PROFILE;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import de.muenchen.oss.refarch.gateway.ApiGatewayApplication;
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,15 +16,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Objects;
-
-import static de.muenchen.oss.refarch.gateway.TestConstants.SPRING_TEST_PROFILE;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(
-        classes = {ApiGatewayApplication.class},
+        classes = { ApiGatewayApplication.class },
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 @ActiveProfiles(SPRING_TEST_PROFILE)
@@ -38,8 +37,7 @@ class GlobalRequestParameterPollutionFilterTest {
                 .isEqualTo(HttpStatus.BAD_REQUEST)
                 .expectBody()
                 .consumeWith(responseBody -> jsonResponseBody.append(
-                        new String(Objects.requireNonNull(responseBody.getResponseBody()), StandardCharsets.UTF_8)
-                ));
+                        new String(Objects.requireNonNull(responseBody.getResponseBody()), StandardCharsets.UTF_8)));
         assertTrue(jsonResponseBody.toString().contains("\"message\" : \"parameter pollution\""));
     }
 

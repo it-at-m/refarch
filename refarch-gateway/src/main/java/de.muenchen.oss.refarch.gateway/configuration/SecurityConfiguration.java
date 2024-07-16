@@ -1,5 +1,7 @@
 package de.muenchen.oss.refarch.gateway.configuration;
 
+import java.net.URI;
+import java.time.Duration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -19,10 +21,6 @@ import org.springframework.security.web.server.csrf.CookieServerCsrfTokenReposit
 import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers;
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
-import java.time.Duration;
-
-
 @Configuration
 @Profile("!no-security")
 @RequiredArgsConstructor
@@ -41,8 +39,8 @@ public class SecurityConfiguration {
     private long springSessionTimeoutSeconds;
 
     /**
-     * This method creates the {@link ServerLogoutSuccessHandler} for handling a successful logout.
-     * The usage is necessary in {@link SecurityWebFilterChain}.
+     * This method creates the {@link ServerLogoutSuccessHandler} for handling a successful logout. The
+     * usage is necessary in {@link SecurityWebFilterChain}.
      *
      * @param uri to forward after an successful logout.
      * @return The handler for forwarding after an succesful logout.
@@ -58,15 +56,12 @@ public class SecurityConfiguration {
     public SecurityWebFilterChain clientAccessFilterChain(ServerHttpSecurity http) {
         http
                 .securityMatcher(ServerWebExchangeMatchers.pathMatchers("/clients/**"))
-                .authorizeExchange(authorizeExchangeSpec ->
-                        authorizeExchangeSpec
-                                .pathMatchers(HttpMethod.OPTIONS, "/clients/**").permitAll()
-                                .anyExchange().authenticated())
+                .authorizeExchange(authorizeExchangeSpec -> authorizeExchangeSpec
+                        .pathMatchers(HttpMethod.OPTIONS, "/clients/**").permitAll()
+                        .anyExchange().authenticated())
                 .cors(corsSpec -> {
                 })
-                .oauth2ResourceServer(oauth2 ->
-                        oauth2.jwt(Customizer.withDefaults())
-                );
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
         return http.build();
     }
 
@@ -74,11 +69,9 @@ public class SecurityConfiguration {
     @Order(1)
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         http
-                .logout(logoutSpec ->
-                        logoutSpec.logoutSuccessHandler(createLogoutSuccessHandler(LOGOUT_SUCCESS_URL))
-                                .logoutUrl(LOGOUT_URL)
-                                .requiresLogout(ServerWebExchangeMatchers.pathMatchers(HttpMethod.POST, LOGOUT_URL))
-                )
+                .logout(logoutSpec -> logoutSpec.logoutSuccessHandler(createLogoutSuccessHandler(LOGOUT_SUCCESS_URL))
+                        .logoutUrl(LOGOUT_URL)
+                        .requiresLogout(ServerWebExchangeMatchers.pathMatchers(HttpMethod.POST, LOGOUT_URL)))
                 .authorizeExchange(authorizeExchangeSpec -> {
                     // permitAll
                     authorizeExchangeSpec.pathMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
@@ -86,7 +79,8 @@ public class SecurityConfiguration {
                             .pathMatchers("/api/*/info",
                                     "/actuator/health",
                                     "/actuator/info",
-                                    "/actuator/metrics").permitAll()
+                                    "/actuator/metrics")
+                            .permitAll()
                             .pathMatchers(HttpMethod.OPTIONS, "/public/**").permitAll()
                             .pathMatchers(HttpMethod.GET, "/public/**").permitAll()
                             // only authenticated
@@ -97,7 +91,8 @@ public class SecurityConfiguration {
                 .csrf(csrfSpec -> {
                     /*
                      * Custom csrf request handler for spa and BREACH attack protection.
-                     * https://docs.spring.io/spring-security/reference/6.1-SNAPSHOT/servlet/exploits/csrf.html#csrf-integration-javascript-spa
+                     * https://docs.spring.io/spring-security/reference/6.1-SNAPSHOT/servlet/exploits/csrf.html#csrf-
+                     * integration-javascript-spa
                      */
                     csrfSpec.csrfTokenRequestHandler(new SpaServerCsrfTokenRequestHandler());
                     /*
@@ -107,17 +102,14 @@ public class SecurityConfiguration {
                     csrfSpec.csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse());
                     csrfSpec.requireCsrfProtectionMatcher(csrfProtectionMatcher);
                 })
-                .oauth2Login(oAuth2LoginSpec ->
-                        oAuth2LoginSpec.authenticationSuccessHandler(new RedirectServerAuthenticationSuccessHandler() {
-                            @Override
-                            public Mono<Void> onAuthenticationSuccess(WebFilterExchange webFilterExchange, Authentication authentication) {
-                                webFilterExchange.getExchange().getSession().subscribe(
-                                        webSession -> webSession.setMaxIdleTime(Duration.ofSeconds(springSessionTimeoutSeconds))
-                                );
-                                return super.onAuthenticationSuccess(webFilterExchange, authentication);
-                            }
-                        })
-                );
+                .oauth2Login(oAuth2LoginSpec -> oAuth2LoginSpec.authenticationSuccessHandler(new RedirectServerAuthenticationSuccessHandler() {
+                    @Override
+                    public Mono<Void> onAuthenticationSuccess(WebFilterExchange webFilterExchange, Authentication authentication) {
+                        webFilterExchange.getExchange().getSession().subscribe(
+                                webSession -> webSession.setMaxIdleTime(Duration.ofSeconds(springSessionTimeoutSeconds)));
+                        return super.onAuthenticationSuccess(webFilterExchange, authentication);
+                    }
+                }));
 
         return http.build();
     }

@@ -1,5 +1,8 @@
 package de.muenchen.oss.refarch.gateway.route;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static de.muenchen.oss.refarch.gateway.TestConstants.SPRING_TEST_PROFILE;
+
 import com.github.tomakehurst.wiremock.http.HttpHeader;
 import com.github.tomakehurst.wiremock.http.HttpHeaders;
 import com.github.tomakehurst.wiremock.matching.EqualToPattern;
@@ -16,12 +19,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static de.muenchen.oss.refarch.gateway.TestConstants.SPRING_TEST_PROFILE;
-
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(
-        classes = {ApiGatewayApplication.class},
+        classes = { ApiGatewayApplication.class },
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 @ActiveProfiles(SPRING_TEST_PROFILE)

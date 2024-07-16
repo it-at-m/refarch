@@ -1,5 +1,6 @@
 package de.muenchen.oss.refarch.gateway.filter;
 
+import java.nio.charset.StandardCharsets;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
@@ -20,14 +21,13 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.nio.charset.StandardCharsets;
-
 /**
- * This {@link GlobalFilter} replaces the body by a generic authentication error body,
- * when a server responses with a {@link HttpStatus#UNAUTHORIZED}.
+ * This {@link GlobalFilter} replaces the body by a generic authentication error body, when a server
+ * responses with a {@link HttpStatus#UNAUTHORIZED}.
  * <p>
- * The header {@link HttpHeaders#WWW_AUTHENTICATE} containing the access token is removed
- * by the property 'RemoveResponseHeader' in the corresponding route within 'application.yml'.
+ * The header {@link HttpHeaders#WWW_AUTHENTICATE} containing the access token is removed by the
+ * property 'RemoveResponseHeader' in the corresponding route
+ * within 'application.yml'.
  */
 @Component
 @Slf4j

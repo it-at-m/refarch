@@ -1,5 +1,7 @@
 package de.muenchen.oss.refarch.gateway.filter;
 
+import static de.muenchen.oss.refarch.gateway.TestConstants.SPRING_TEST_PROFILE;
+
 import de.muenchen.oss.refarch.gateway.ApiGatewayApplication;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,11 +12,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import static de.muenchen.oss.refarch.gateway.TestConstants.SPRING_TEST_PROFILE;
-
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(
-        classes = {ApiGatewayApplication.class},
+        classes = { ApiGatewayApplication.class },
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 @ActiveProfiles(SPRING_TEST_PROFILE)

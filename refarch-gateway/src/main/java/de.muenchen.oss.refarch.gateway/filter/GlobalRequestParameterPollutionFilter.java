@@ -1,6 +1,8 @@
 package de.muenchen.oss.refarch.gateway.filter;
 
 import de.muenchen.oss.refarch.gateway.exception.ParameterPollutionException;
+import java.util.List;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -14,15 +16,12 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-import java.util.Map;
-
 /**
  * This {@link GlobalFilter} is used to detect and to fend off a parameter pollution attack.
  * <p>
- * Within a {@link HttpRequest} each request parameter should only exist once.
- * This check is necessary to avoid e.g. SQL injection split over multiple request parameters with
- * the same name.
+ * Within a {@link HttpRequest} each request parameter should only exist once. This check is
+ * necessary to avoid e.g. SQL injection split over multiple request
+ * parameters with the same name.
  */
 @Component
 @Slf4j
@@ -38,8 +37,9 @@ public class GlobalRequestParameterPollutionFilter implements GlobalFilter, Orde
     /**
      * See {@link GlobalFilter#filter(ServerWebExchange, GatewayFilterChain)}
      *
-     * @throws ParameterPollutionException is throw when a request parameter exists multiple times.
-     *                                     The exception represents a http response with status {@link HttpStatus#BAD_REQUEST}.
+     * @throws ParameterPollutionException is throw when a request parameter exists multiple times. The
+     *             exception represents a http response with status
+     *             {@link HttpStatus#BAD_REQUEST}.
      */
     @Override
     public Mono<Void> filter(final ServerWebExchange exchange, final GatewayFilterChain chain) throws ParameterPollutionException {

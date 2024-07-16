@@ -1,5 +1,6 @@
 package de.muenchen.oss.refarch.gateway.filter;
 
+import java.nio.charset.StandardCharsets;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
@@ -23,11 +24,9 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.nio.charset.StandardCharsets;
-
 /**
- * This {@link GlobalFilter} replaces the body by a generic error body, when a server responses
- * with a {@link HttpStatus#INTERNAL_SERVER_ERROR}.
+ * This {@link GlobalFilter} replaces the body by a generic error body, when a server responses with
+ * a {@link HttpStatus#INTERNAL_SERVER_ERROR}.
  */
 @Component
 @Slf4j

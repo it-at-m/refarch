@@ -1,5 +1,8 @@
 package de.muenchen.oss.refarch.gateway.configuration;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -9,10 +12,6 @@ import org.springframework.security.web.server.util.matcher.ServerWebExchangeMat
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 @Configuration
 @Profile("!no-security")
@@ -44,7 +43,6 @@ public class CsrfProtectionMatcher implements ServerWebExchangeMatcher {
         }
         return false;
     }
-
 
     private record MethodAndPath(HttpMethod method, String path) {
     }

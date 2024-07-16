@@ -5,16 +5,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
-
 /**
- * To do some base configuration for the non blocking client-server framework
- * named Netty via properties use the properties listed in the link down below:
- *
- * @see <a href=
+ * To do some base configuration for the non blocking client-server framework named Netty via
+ * properties use the properties listed in the link down below:
+ * <p>
+ * <a href=
  * "https://projectreactor.io/docs/netty/release/api/constant-values.html">https://projectreactor.io/docs/netty/release/api/constant-values.html</a>
  * <p>
- * As listed below, this above mentioned properties should be set before the application
- * startup:
+ * As listed below, this above-mentioned properties should be set before the application startup:
  *
  * <ul>
  * <li>As command line argument: e.g. -Dreactor.netty.pool.maxConnections=1000.
@@ -26,7 +24,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
  * </ul>
  * <p>
  * To get more information about Spring Cloud Gateway visit the following link:
- * @see <a href=
+ * <a href=
  * "https://cloud.spring.io/spring-cloud-gateway/reference/html/">https://cloud.spring.io/spring-cloud-gateway/reference/html/</a>
  */
 @SpringBootApplication
