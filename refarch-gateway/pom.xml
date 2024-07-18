@@ -26,7 +26,7 @@
         <spotless.maven.plugin.version>2.34.0</spotless.maven.plugin.version>
         <itm.java.codeformat.version>1.0.10</itm.java.codeformat.version>
         <maven.checkstyle.plugin.version>3.4.0</maven.checkstyle.plugin.version>
-        <checkstyle.version>9.3</checkstyle.version>
+        <checkstyle.version>10.17.0</checkstyle.version>
 
         <spring-cloud.version>2023.0.2</spring-cloud.version>
         <logstash.encoder.version>7.4</logstash.encoder.version>
