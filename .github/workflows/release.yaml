@@ -1,0 +1,46 @@
+name: release
+
+on:
+  workflow_dispatch:
+    inputs:
+      snapshot-release:
+        description: 'Snapshot release?'
+        type: boolean
+        default: true
+      build-images:
+        description: 'Build and push images?'
+        type: boolean
+        default: false
+      release-version:
+        description: 'Release version'
+        type: string
+        required: true
+        default: "X.Y.Z"
+      next-version:
+        description: "Next version to use after release."
+        type: string
+        required: true
+        default: "X.Y.Z-SNAPSHOT"
+
+jobs:
+  build:
+    uses: ./.github/workflows/maven.yaml
+    with:
+      snapshot-release: ${{ inputs.snapshot-release != false }}
+      build-images: true
+      release-version: ${{ inputs.release-version }}
+    secrets: inherit
+
+  create-github-release:
+    if: ${{ inputs.snapshot-release == false }}
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create GitHub Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.inputs.release-version }}
+          draft: false
+          prerelease: false
+          generate_release_notes: false
