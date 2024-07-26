@@ -59,7 +59,7 @@ public class WebSessionConfiguration {
     @Bean
     @Profile({ "hazelcast-local" })
     public Config localConfig(@Value(
-            "${spring.session.timeout}"
+        "${spring.session.timeout}"
     ) int timeout) {
         final var hazelcastConfig = new Config();
         hazelcastConfig.setInstanceName(hazelcastInstanceName);
@@ -100,10 +100,11 @@ public class WebSessionConfiguration {
     /**
      * Adds the session timeout in seconds to the hazelcast configuration.
      * <p>
-     * Since we are creating the map it's important to evict sessions by setting a reasonable value for time to live.
+     * Since we are creating the map it's important to evict sessions by setting a reasonable value for
+     * time to live.
      *
      * @param hazelcastConfig to add the timeout.
-     * @param sessionTimeout  for security session.
+     * @param sessionTimeout for security session.
      */
     private void addSessionTimeoutToHazelcastConfig(final Config hazelcastConfig, final int sessionTimeout) {
         final var sessionConfig = new MapConfig();
