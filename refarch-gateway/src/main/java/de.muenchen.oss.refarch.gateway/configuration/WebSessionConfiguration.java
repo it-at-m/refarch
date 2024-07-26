@@ -3,10 +3,10 @@ package de.muenchen.oss.refarch.gateway.configuration;
 import com.hazelcast.config.Config;
 import com.hazelcast.config.EvictionPolicy;
 import com.hazelcast.config.MapConfig;
+import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.map.IMap;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +25,7 @@ import org.springframework.session.hazelcast.HazelcastIndexedSessionRepository;
  */
 @Configuration
 @EnableSpringWebSession
+@Profile({ "hazelcast-local", "hazelcast-k8s" })
 public class WebSessionConfiguration {
 
     @Value("${hazelcast.instance:hazl_instance}")
@@ -45,15 +46,20 @@ public class WebSessionConfiguration {
     }
 
     @Bean
-    public ReactiveSessionRepository<MapSession> reactiveSessionRepository(@Qualifier("hazelcastInstance") @Autowired HazelcastInstance hazelcastInstance) {
+    public ReactiveSessionRepository<MapSession> reactiveSessionRepository(@Autowired HazelcastInstance hazelcastInstance) {
         final IMap<String, Session> map = hazelcastInstance.getMap(HazelcastIndexedSessionRepository.DEFAULT_SESSION_MAP_NAME);
         return new ReactiveMapSessionRepository(map);
     }
 
     @Bean
-    @Profile({ "local", "test" })
+    public HazelcastInstance hazelcastInstance(@Autowired final Config config) {
+        return Hazelcast.getOrCreateHazelcastInstance(config);
+    }
+
+    @Bean
+    @Profile({ "hazelcast-local" })
     public Config localConfig(@Value(
-        "${spring.session.timeout}"
+            "${spring.session.timeout}"
     ) int timeout) {
         final var hazelcastConfig = new Config();
         hazelcastConfig.setInstanceName(hazelcastInstanceName);
@@ -73,7 +79,7 @@ public class WebSessionConfiguration {
     }
 
     @Bean
-    @Profile({ "dev", "kon", "prod" })
+    @Profile({ "hazelcast-k8s" })
     public Config config(@Value("${spring.session.timeout}") int timeout) {
         final var hazelcastConfig = new Config();
         hazelcastConfig.setInstanceName(hazelcastInstanceName);
@@ -94,11 +100,10 @@ public class WebSessionConfiguration {
     /**
      * Adds the session timeout in seconds to the hazelcast configuration.
      * <p>
-     * Since we are creating the map it's important to evict sessions by setting a reasonable value for
-     * time to live.
+     * Since we are creating the map it's important to evict sessions by setting a reasonable value for time to live.
      *
      * @param hazelcastConfig to add the timeout.
-     * @param sessionTimeout for security session.
+     * @param sessionTimeout  for security session.
      */
     private void addSessionTimeoutToHazelcastConfig(final Config hazelcastConfig, final int sessionTimeout) {
         final var sessionConfig = new MapConfig();
