@@ -20,9 +20,10 @@ Beside the default behaviour there are some special route prefixes which are han
 
 ## Profiles
 
-| Profile       | Description                                                                                       |
-|---------------|---------------------------------------------------------------------------------------------------|
-| `no-security` | Disables complete security like authentication, authorization, csrf etc. Routing works as normal. |
+| Profile        | Description                                                                                       |
+|----------------|---------------------------------------------------------------------------------------------------|
+| `json-logging` | Switches logging from textual to JSON output.                                                     |
+| `no-security`  | Disables complete security like authentication, authorization, csrf etc. Routing works as normal. |
 
 ## Configuration
 
