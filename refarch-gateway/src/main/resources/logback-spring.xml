@@ -8,13 +8,14 @@
     <springProperty scope="context" name="springAppName" source="spring.application.name"/>
 
 
-    <springProfile name="local,test">
+    <springProfile name="!json-logger">
 
         <!-- Log appender -->
         <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
             <encoder>
                 <pattern>
-                    %date{yyyy.MM.dd HH:mm:ss.SSS} | ${springAppName} | TraceId: %X{traceId:-} | SpanId: %X{spanId:-}] | %level | [%thread] | %logger{0} | [%file : %line] - %msg%n
+                    %date{yyyy.MM.dd HH:mm:ss.SSS} | ${springAppName} | TraceId: %X{traceId:-} | SpanId: %X{spanId:-}] |
+                    %level | [%thread] | %logger{0} | [%file : %line] - %msg%n
                 </pattern>
             </encoder>
         </appender>
@@ -23,42 +24,36 @@
         <logger name="de.muenchen.oss.refarch.gateway"
                 level="debug"
                 additivity="false">
-            <appender-ref ref="STDOUT" />
-        </logger>
-
-        <logger name="de.muenchen.allgemein"
-                level="debug"
-                additivity="false">
-            <appender-ref ref="STDOUT" />
+            <appender-ref ref="STDOUT"/>
         </logger>
 
         <logger name="org.springframework.web"
                 level="debug"
                 additivity="false">
-            <appender-ref ref="STDOUT" />
+            <appender-ref ref="STDOUT"/>
         </logger>
 
         <logger name="org.springframework.cloud.gateway"
                 level="debug"
                 additivity="false">
-            <appender-ref ref="STDOUT" />
+            <appender-ref ref="STDOUT"/>
         </logger>
 
         <logger name="org.springframework.security"
                 level="debug"
                 additivity="false">
-            <appender-ref ref="STDOUT" />
+            <appender-ref ref="STDOUT"/>
         </logger>
 
         <!-- Logger usage -->
         <root level="info">
-            <appender-ref ref="STDOUT" />
+            <appender-ref ref="STDOUT"/>
         </root>
 
     </springProfile>
 
 
-    <springProfile name="dev,kon,prod">
+    <springProfile name="json-logger">
 
         <!-- Log appender -->
         <appender name="JSON_STDOUT" class="ch.qos.logback.core.ConsoleAppender">
@@ -88,34 +83,9 @@
             </encoder>
         </appender>
 
-        <!-- Logger -->
-        <logger name="de.muenchen.oss.refarch.gateway"
-                level="info"
-                additivity="false">
-            <appender-ref ref="JSON_STDOUT" />
-        </logger>
-
-        <logger name="de.muenchen.allgemein"
-                level="info"
-                additivity="false">
-            <appender-ref ref="JSON_STDOUT" />
-        </logger>
-
-        <logger name="org.springframework.web"
-                level="info"
-                additivity="false">
-            <appender-ref ref="JSON_STDOUT" />
-        </logger>
-
-        <logger name="org.springframework.cloud.gateway"
-                level="info"
-                additivity="false">
-            <appender-ref ref="JSON_STDOUT" />
-        </logger>
-
         <!-- Logger usage -->
         <root level="info">
-            <appender-ref ref="JSON_STDOUT" />
+            <appender-ref ref="JSON_STDOUT"/>
         </root>
 
     </springProfile>
