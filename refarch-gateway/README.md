@@ -1,4 +1,4 @@
-# Refarch Gateway
+# RefArch Gateway
 
 ## Usage
 
