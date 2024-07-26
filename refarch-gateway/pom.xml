@@ -278,7 +278,7 @@
                             <execution>
                                 <id>process-aot</id>
                                 <configuration>
-                                    <profiles>hazelcast-local</profiles>
+                                    <profiles>${env.NATIVE_SPRING_PROFILES}</profiles>
                                 </configuration>
                             </execution>
                         </executions>
