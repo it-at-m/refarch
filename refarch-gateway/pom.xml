@@ -244,4 +244,47 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>native</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.graalvm.buildtools</groupId>
+                        <artifactId>native-maven-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <!-- Needed for image build behind proxy -->
+                        <!--<configuration>
+                            <image>
+                                <env>
+                                    <HTTP_PROXY></HTTP_PROXY>
+                                    <HTTPS_PROXY></HTTPS_PROXY>
+                                    <NO_PROXY></NO_PROXY>
+                                </env>
+                            </image>
+                            <docker>
+                                <builderRegistry>
+                                    <username></username>
+                                    <password></password>
+                                    <url>https://index.docker.io/v1/</url>
+                                </builderRegistry>
+                            </docker>
+                        </configuration>-->
+                        <executions>
+                            <execution>
+                                <id>process-aot</id>
+                                <configuration>
+                                    <profiles>hazelcast-local</profiles>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

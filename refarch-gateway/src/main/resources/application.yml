@@ -12,7 +12,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${SSO_ISSUER_URL}
+          issuer-uri: ${SSO_ISSUER_URL:sso.muenchen.de}
       client:
         provider:
           keycloak:
