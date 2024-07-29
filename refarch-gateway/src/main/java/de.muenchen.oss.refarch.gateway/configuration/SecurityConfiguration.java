@@ -78,6 +78,8 @@ public class SecurityConfiguration {
                             .pathMatchers(LOGOUT_SUCCESS_URL).permitAll()
                             .pathMatchers("/api/*/info",
                                     "/actuator/health",
+                                    "/actuator/health/liveness",
+                                    "/actuator/health/readiness",
                                     "/actuator/info",
                                     "/actuator/metrics")
                             .permitAll()
