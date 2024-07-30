@@ -1,6 +1,5 @@
 package de.muenchen.oss.refarch.gateway.configuration;
 
-import java.net.URI;
 import java.time.Duration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,8 +14,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.WebFilterExchange;
 import org.springframework.security.web.server.authentication.RedirectServerAuthenticationSuccessHandler;
-import org.springframework.security.web.server.authentication.logout.RedirectServerLogoutSuccessHandler;
-import org.springframework.security.web.server.authentication.logout.ServerLogoutSuccessHandler;
 import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository;
 import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers;
 import reactor.core.publisher.Mono;
@@ -26,10 +23,6 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
-    private static final String LOGOUT_URL = "/logout";
-
-    private static final String LOGOUT_SUCCESS_URL = "/loggedout.html";
-
     private final CsrfProtectionMatcher csrfProtectionMatcher;
 
     /**
@@ -37,19 +30,6 @@ public class SecurityConfiguration {
      */
     @Value("${spring.session.timeout:36000}")
     private long springSessionTimeoutSeconds;
-
-    /**
-     * This method creates the {@link ServerLogoutSuccessHandler} for handling a successful logout. The
-     * usage is necessary in {@link SecurityWebFilterChain}.
-     *
-     * @param uri to forward after an successful logout.
-     * @return The handler for forwarding after an succesful logout.
-     */
-    public static ServerLogoutSuccessHandler createLogoutSuccessHandler(final String uri) {
-        final RedirectServerLogoutSuccessHandler successHandler = new RedirectServerLogoutSuccessHandler();
-        successHandler.setLogoutSuccessUrl(URI.create(uri));
-        return successHandler;
-    }
 
     @Bean
     @Order(0)
@@ -69,13 +49,10 @@ public class SecurityConfiguration {
     @Order(1)
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         http
-                .logout(logoutSpec -> logoutSpec.logoutSuccessHandler(createLogoutSuccessHandler(LOGOUT_SUCCESS_URL))
-                        .logoutUrl(LOGOUT_URL)
-                        .requiresLogout(ServerWebExchangeMatchers.pathMatchers(HttpMethod.POST, LOGOUT_URL)))
+                .logout(ServerHttpSecurity.LogoutSpec::disable)
                 .authorizeExchange(authorizeExchangeSpec -> {
                     // permitAll
                     authorizeExchangeSpec.pathMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
-                            .pathMatchers(LOGOUT_SUCCESS_URL).permitAll()
                             .pathMatchers("/api/*/info",
                                     "/actuator/health",
                                     "/actuator/health/liveness",
