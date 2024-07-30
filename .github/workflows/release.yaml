@@ -7,10 +7,6 @@ on:
         description: 'Snapshot release?'
         type: boolean
         default: true
-      build-images:
-        description: 'Build and push images?'
-        type: boolean
-        default: false
       release-version:
         description: 'Release version'
         type: string
