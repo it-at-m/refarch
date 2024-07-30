@@ -6,9 +6,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 /**
- * To do some base configuration for the non blocking client-server framework named Netty via properties use the properties listed in the link down below:
+ * To do some base configuration for the non blocking client-server framework named Netty via
+ * properties use the properties listed in the link down below:
  * <p>
- * <a href= "https://projectreactor.io/docs/netty/release/api/constant-values.html">https://projectreactor.io/docs/netty/release/api/constant-values.html</a>
+ * <a href=
+ * "https://projectreactor.io/docs/netty/release/api/constant-values.html">https://projectreactor.io/docs/netty/release/api/constant-values.html</a>
  * <p>
  * As listed below, this above-mentioned properties should be set before the application startup:
  *

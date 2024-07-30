@@ -25,11 +25,13 @@ public class DistributedTracingFilter implements WebFilter {
     private Tracer tracer;
 
     /**
-     * This method adds the zipkin headers "X-B3-SpanId" and "X-B3-TraceId" to each response in {@link ServerWebExchange}.
+     * This method adds the zipkin headers "X-B3-SpanId" and "X-B3-TraceId" to each response in
+     * {@link ServerWebExchange}.
      *
      * @param serverWebExchange the current server exchange without zipkin headers
-     * @param webFilterChain    provides a way to delegate to the next filter
-     * @return {@code Mono<Void>} to indicate when request processing for adding zipkin headers is complete
+     * @param webFilterChain provides a way to delegate to the next filter
+     * @return {@code Mono<Void>} to indicate when request processing for adding zipkin headers is
+     *         complete
      */
     @Override
     public Mono<Void> filter(ServerWebExchange serverWebExchange,

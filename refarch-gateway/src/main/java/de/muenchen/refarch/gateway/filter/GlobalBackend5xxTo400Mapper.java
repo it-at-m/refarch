@@ -25,7 +25,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * This {@link GlobalFilter} replaces the body by a generic error body, when a server responses with a {@link HttpStatus#INTERNAL_SERVER_ERROR}.
+ * This {@link GlobalFilter} replaces the body by a generic error body, when a server responses with
+ * a {@link HttpStatus#INTERNAL_SERVER_ERROR}.
  */
 @Component
 @Slf4j

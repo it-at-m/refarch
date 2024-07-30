@@ -22,9 +22,11 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * This {@link GlobalFilter} replaces the body by a generic authentication error body, when a server responses with a {@link HttpStatus#UNAUTHORIZED}.
+ * This {@link GlobalFilter} replaces the body by a generic authentication error body, when a server
+ * responses with a {@link HttpStatus#UNAUTHORIZED}.
  * <p>
- * The header {@link HttpHeaders#WWW_AUTHENTICATE} containing the access token is removed by the property 'RemoveResponseHeader' in the corresponding route
+ * The header {@link HttpHeaders#WWW_AUTHENTICATE} containing the access token is removed by the
+ * property 'RemoveResponseHeader' in the corresponding route
  * within 'application.yml'.
  */
 @Component
