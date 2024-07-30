@@ -11,7 +11,7 @@
 
     <groupId>de.muenchen.oss.refarch</groupId>
     <artifactId>refarch-gateway</artifactId>
-    <version>1.0.0</version>
+    <version>X.Y.Z-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>refarch-gateway</name>
 
@@ -242,8 +242,4 @@
             </plugin>
         </plugins>
     </build>
-
-  <scm>
-    <tag>refarch-1.0.0</tag>
-  </scm>
 </project>
