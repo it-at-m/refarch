@@ -49,6 +49,7 @@ public class SecurityConfiguration {
     @Order(1)
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         http
+                .logout(ServerHttpSecurity.LogoutSpec::disable)
                 .authorizeExchange(authorizeExchangeSpec -> {
                     // permitAll
                     authorizeExchangeSpec.pathMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
