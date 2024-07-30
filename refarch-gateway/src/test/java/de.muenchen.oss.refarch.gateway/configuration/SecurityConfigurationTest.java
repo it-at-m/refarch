@@ -20,7 +20,6 @@ public class SecurityConfigurationTest {
 
     @Test
     void accessSecuredResourceRootThenUnauthorized() {
-        // api.get().uri("/").exchange().expectStatus().isUnauthorized();
         // 302 is returned instead of 401 because auf cookie session
         api.get().uri("/").exchange().expectStatus().isFound();
     }
