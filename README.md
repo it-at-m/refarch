@@ -1,9 +1,9 @@
-# Refarch
+# RefArch
 
 [![Made with love by it@M][made-with-love-shield]][itm-opensource]
 <!-- feel free to add more shields, style 'for-the-badge' -> see https://shields.io/badges -->
 
-Collection of different reference architecture (Refarch) components developed by it@M.
+Collection of different reference architecture (RefArch) components developed by it@M.
 
 ## Usage
 
