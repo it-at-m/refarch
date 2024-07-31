@@ -2,8 +2,8 @@
 
 ## Usage
 
-- Image: TODO
-- Helm-Chart: TODO
+The gateway is released as container image `ghcr.io/it-at-m/refarch/refarch-gateway` and can be used either directly or
+via the corresponding [Helm-Chart](https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-gateway).
 
 ### Routing
 
