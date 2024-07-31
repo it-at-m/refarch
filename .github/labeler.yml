@@ -1,0 +1,6 @@
+feature:
+  - head-branch: [ '^feat' ]
+bug:
+  - head-branch: [ '^bug', '^fix' ]
+refactoring:
+  - head-branch: [ '^refactor' ]
