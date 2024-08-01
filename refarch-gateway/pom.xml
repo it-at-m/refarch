@@ -24,16 +24,16 @@
 
         <jvm.options>-Dorg.conscrypt.native.workdir=$(pwd)</jvm.options>
         <jacoco.version>0.8.12</jacoco.version>
-        <maven.surefire.plugin.version>3.3.1</maven.surefire.plugin.version>
-        <spotless.maven.plugin.version>2.34.0</spotless.maven.plugin.version>
-        <itm.java.codeformat.version>1.0.10</itm.java.codeformat.version>
-        <maven.checkstyle.plugin.version>3.4.0</maven.checkstyle.plugin.version>
+        <maven-surefire-plugin.version>3.3.1</maven-surefire-plugin.version>
+        <spotless-maven-plugin.version>2.34.0</spotless-maven-plugin.version>
+        <itm-java-codeformat.version>1.0.10</itm-java-codeformat.version>
+        <maven-checkstyle-plugin.version>3.4.0</maven-checkstyle-plugin.version>
         <checkstyle.version>10.17.0</checkstyle.version>
 
         <spring-cloud.version>2023.0.3</spring-cloud.version>
-        <logstash.encoder.version>8.0</logstash.encoder.version>
+        <logstash-logback-encoder.version>8.0</logstash-logback-encoder.version>
         <hazelcast.version>5.5.0</hazelcast.version>
-        <apache.commons.lang.version>3.15.0</apache.commons.lang.version>
+        <apache-commons-lang.version>3.15.0</apache-commons-lang.version>
     </properties>
 
     <dependencyManagement>
@@ -90,14 +90,14 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>${apache.commons.lang.version}</version>
+            <version>${apache-commons-lang.version}</version>
         </dependency>
 
         <!-- Logging -->
         <dependency>
             <groupId>net.logstash.logback</groupId>
             <artifactId>logstash-logback-encoder</artifactId>
-            <version>${logstash.encoder.version}</version>
+            <version>${logstash-logback-encoder.version}</version>
         </dependency>
         <dependency>
             <groupId>io.micrometer</groupId>
@@ -141,7 +141,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven.surefire.plugin.version}</version>
+                <version>${maven-surefire-plugin.version}</version>
                 <configuration>
                     <argLine>${jvm.options}</argLine>
                 </configuration>
@@ -189,12 +189,12 @@
             <plugin>
                 <groupId>com.diffplug.spotless</groupId>
                 <artifactId>spotless-maven-plugin</artifactId>
-                <version>${spotless.maven.plugin.version}</version>
+                <version>${spotless-maven-plugin.version}</version>
                 <dependencies>
                     <dependency>
                         <groupId>de.muenchen.oss</groupId>
                         <artifactId>itm-java-codeformat</artifactId>
-                        <version>${itm.java.codeformat.version}</version>
+                        <version>${itm-java-codeformat.version}</version>
                     </dependency>
                 </dependencies>
                 <configuration>
@@ -222,7 +222,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>${maven.checkstyle.plugin.version}</version>
+                <version>${maven-checkstyle-plugin.version}</version>
                 <configuration>
                     <configLocation>checkstyle.xml</configLocation>
                 </configuration>
