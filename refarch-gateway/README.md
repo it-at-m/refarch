@@ -22,7 +22,7 @@ Beside the default behaviour there are some special route prefixes which are han
 
 | Profile           | Description                                                                                       |
 |-------------------|---------------------------------------------------------------------------------------------------|
-| `json-logging`    | Switches logging from textual to JSON output.                                                     |
+| `json-logger`     | Switches logging from textual to JSON output.                                                     |
 | `no-security`     | Disables complete security like authentication, authorization, csrf etc. Routing works as normal. |
 | `hazelcast-local` | Configures Spring Session Hazelcast for connection via localhost (i.e. local development).        |
 | `hazelcast-k8s`   | Configures Spring Session Hazelcast for usage in Kubernetes/OpenShift cluster.                    |
