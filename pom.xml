@@ -11,6 +11,7 @@
 
     <modules>
         <module>refarch-gateway</module>
+        <module>refarch-integrations</module>
     </modules>
 
     <scm>
