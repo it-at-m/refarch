@@ -11,15 +11,21 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 
 /**
- * <p>Wrapper für Reader der eine NFC-Konvertierung durchführt.</p>
+ * <p>
+ * Wrapper für Reader der eine NFC-Konvertierung durchführt.
+ * </p>
  *
- * <p><strong>Achtung:</strong><ul>
+ * <p>
+ * <strong>Achtung:</strong>
+ * <ul>
  * <li>Bei Java-Readern und -Writern kann gefahrlos eine NFC-Konvertierung
  * durchgeführt werden, da dort Zeichen verarbeitet werden.</li>
  * <li>Dieser Reader liest bei vor dem Lesen des ersten Zeichens denn vollständig Text des
- * gewrappten Readers in einern internen Buffer und führt darauf die NFC-Normalisierung durch. Grund ist, dass NFC-Konvertierung kann nicht auf Basis von
+ * gewrappten Readers in einern internen Buffer und führt darauf die NFC-Normalisierung durch. Grund
+ * ist, dass NFC-Konvertierung kann nicht auf Basis von
  * einzelnen Zeichen durchgeführt werden kann. Dies kann zu erhöhter Latenz führen.</li>
- * </ul></p>
+ * </ul>
+ * </p>
  */
 @Slf4j
 public class NfcReader extends Reader {

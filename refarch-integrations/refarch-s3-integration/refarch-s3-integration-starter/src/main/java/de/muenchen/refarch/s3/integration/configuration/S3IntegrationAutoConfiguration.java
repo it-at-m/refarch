@@ -33,8 +33,7 @@ public class S3IntegrationAutoConfiguration {
         return new S3Adapter(
                 this.s3IntegrationProperties.getBucketName(),
                 minioClient,
-                BooleanUtils.isNotFalse(this.s3IntegrationProperties.getInitialConnectionTest())
-        );
+                BooleanUtils.isNotFalse(this.s3IntegrationProperties.getInitialConnectionTest()));
     }
 
     @ConditionalOnMissingBean
@@ -42,8 +41,7 @@ public class S3IntegrationAutoConfiguration {
     public CreatePresignedUrlsInPort createPresignedUrlsInPort(FileOperationsPresignedUrlUseCase fileHandlingService) {
         return new CreatePresignedUrlsUseCase(
                 fileHandlingService,
-                this.s3IntegrationProperties.getPresignedUrlExpiresInMinutes()
-        );
+                this.s3IntegrationProperties.getPresignedUrlExpiresInMinutes());
     }
 
     @ConditionalOnMissingBean

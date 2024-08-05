@@ -20,18 +20,24 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 /**
- * <p>Spring-Filter, der eine NFC-Normalisierung aller <em>sicher textuellen</em> Inhalte durchführt.</p>
+ * <p>
+ * Spring-Filter, der eine NFC-Normalisierung aller <em>sicher textuellen</em> Inhalte durchführt.
+ * </p>
  *
  * <strong>Achtung:</strong>
  * <ul>
- *    <li>Alle Datenströme die in Zusammenhang mit Multipart-Requests stehen werden nicht nach NFC normalisiert.
- *        Grund ist, dass hier binäre Datenströme übergeben werden und diese i.d.R. nicht einfacher Text sind.
- *        Falls notwendig bzw. sinnvoll kann bzw. muss die Anwendungslogik oder eine geeignete Bibliothek
- *        ggf. eine NFC-Normalisierung durchgeführt werden.
- *    <li>NFC-Normalisierung kann nur auf der Zeichenebene durchgeführt werden und für die Konvertierung von
- *        binären Datenströmen ist die Kenntnis des Datenformats notwendig, was die Kenntnis des verwendeten Charsets
- *        impliziert. Dies lässt die NFC-Normalisierung in einem generischen Filter sinnvoll erscheinen.
- *    </li>
+ * <li>Alle Datenströme die in Zusammenhang mit Multipart-Requests stehen werden nicht nach NFC
+ * normalisiert.
+ * Grund ist, dass hier binäre Datenströme übergeben werden und diese i.d.R. nicht einfacher Text
+ * sind.
+ * Falls notwendig bzw. sinnvoll kann bzw. muss die Anwendungslogik oder eine geeignete Bibliothek
+ * ggf. eine NFC-Normalisierung durchgeführt werden.
+ * <li>NFC-Normalisierung kann nur auf der Zeichenebene durchgeführt werden und für die
+ * Konvertierung von
+ * binären Datenströmen ist die Kenntnis des Datenformats notwendig, was die Kenntnis des
+ * verwendeten Charsets
+ * impliziert. Dies lässt die NFC-Normalisierung in einem generischen Filter sinnvoll erscheinen.
+ * </li>
  * </ul>
  *
  * @see java.text.Normalizer

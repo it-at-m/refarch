@@ -12,11 +12,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 
 /**
- * <p><em>Beispiel</em> für Konfiguration des NFC Request-Filters</p>
+ * <p>
+ * <em>Beispiel</em> für Konfiguration des NFC Request-Filters
+ * </p>
  * <ul>
- *     <li>Es werden alle Requests gefiltert, die an URIs unter <em>/*</em> geschickt werden.</li>
- *     <li>Filter ist in Bean <em>nfcRequestFilter</em> enthalten.</li>
- *     <li>Es werden nur Requests mit den Content-Types <em>text/plain</em>; <em>application/json</em> und <em>text/html</em> gefiltert.</li>
+ * <li>Es werden alle Requests gefiltert, die an URIs unter <em>/*</em> geschickt werden.</li>
+ * <li>Filter ist in Bean <em>nfcRequestFilter</em> enthalten.</li>
+ * <li>Es werden nur Requests mit den Content-Types <em>text/plain</em>; <em>application/json</em>
+ * und <em>text/html</em> gefiltert.</li>
  * </ul>
  */
 @Configuration
