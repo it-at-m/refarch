@@ -1,4 +1,4 @@
-package de.muenchen.refarch.spring.security.security;
+package de.muenchen.refarch.spring.security;
 
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;

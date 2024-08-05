@@ -1,7 +1,7 @@
-package de.muenchen.refarch.spring.security.security.client;
+package de.muenchen.refarch.spring.security.client;
 
-import de.muenchen.refarch.spring.security.security.SecurityConfiguration;
-import de.muenchen.refarch.spring.security.security.SpringSecurityProperties;
+import de.muenchen.refarch.spring.security.SecurityConfiguration;
+import de.muenchen.refarch.spring.security.SpringSecurityProperties;
 import jakarta.annotation.PostConstruct;
 import java.util.function.Supplier;
 import lombok.RequiredArgsConstructor;
@@ -32,16 +32,14 @@ public class OAuth2AccessTokenSupplier implements Supplier<OAuth2AccessToken> {
         anonymousUserToken = new AnonymousAuthenticationToken(
                 springSecurityProperties.getClientRegistrationServiceAccount(),
                 springSecurityProperties.getClientRegistrationServiceAccount(),
-                AuthorityUtils.createAuthorityList(SecurityConfiguration.SPRING_ROLE_PREFIX + ACCESS_ROLE)
-        );
+                AuthorityUtils.createAuthorityList(SecurityConfiguration.SPRING_ROLE_PREFIX + ACCESS_ROLE));
     }
 
     @Override
     public OAuth2AccessToken get() {
         final OAuth2AuthorizeRequest authorizeRequest = OAuth2AuthorizeRequest
                 .withClientRegistrationId(
-                        springSecurityProperties.getClientRegistrationServiceAccount()
-                )
+                        springSecurityProperties.getClientRegistrationServiceAccount())
                 .principal(anonymousUserToken)
                 .build();
         final OAuth2AuthorizedClient authorizedClient = authorizedClientManager.authorize(authorizeRequest);

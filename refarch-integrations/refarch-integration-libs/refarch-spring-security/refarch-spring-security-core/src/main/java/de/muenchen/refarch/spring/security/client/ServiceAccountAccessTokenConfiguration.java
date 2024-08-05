@@ -1,4 +1,4 @@
-package de.muenchen.refarch.spring.security.security.client;
+package de.muenchen.refarch.spring.security.client;
 
 import static java.util.Arrays.asList;
 

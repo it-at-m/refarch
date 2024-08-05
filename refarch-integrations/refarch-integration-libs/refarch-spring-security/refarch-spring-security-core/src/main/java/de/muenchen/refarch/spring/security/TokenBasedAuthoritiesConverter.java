@@ -1,6 +1,6 @@
-package de.muenchen.refarch.spring.security.security;
+package de.muenchen.refarch.spring.security;
 
-import static de.muenchen.refarch.spring.security.security.SecurityConfiguration.SPRING_ROLE_PREFIX;
+import static de.muenchen.refarch.spring.security.SecurityConfiguration.SPRING_ROLE_PREFIX;
 import static java.util.stream.Collectors.toList;
 
 import java.util.*;
@@ -21,34 +21,35 @@ import org.springframework.security.oauth2.jwt.Jwt;
  *         Realm roles are used for checking authorization.<br>
  *         <br>
  *         Example:<br>
+ *
  *         <pre>
- *         {
- *           ...
- *           "realm_access" : {
- *             "roles" : [
- *               "realm_role1",
- *               "realm_role2",
- *               "realm_roleN"
- *             ]
- *           },
- *           "resource_access" : {
- *               "client1" : {
- *                   roles: [
- *                    "client_role1",
- *                    "client_role2"
- *                    "client_role3"
- *                   ]
- *               },
- *               "client2" : {
- *                   roles: [
- *                    "client_role4",
- *                    "client_role5"
- *                    "client_role6"
- *                   ]
- *               }
- *            }
- *         }
- *         </pre>
+ *                 {
+ *                   ...
+ *                   "realm_access" : {
+ *                     "roles" : [
+ *                       "realm_role1",
+ *                       "realm_role2",
+ *                       "realm_roleN"
+ *                     ]
+ *                   },
+ *                   "resource_access" : {
+ *                       "client1" : {
+ *                           roles: [
+ *                            "client_role1",
+ *                            "client_role2"
+ *                            "client_role3"
+ *                           ]
+ *                       },
+ *                       "client2" : {
+ *                           roles: [
+ *                            "client_role4",
+ *                            "client_role5"
+ *                            "client_role6"
+ *                           ]
+ *                       }
+ *                    }
+ *                 }
+ *                     </pre>
  */
 @Deprecated
 public class TokenBasedAuthoritiesConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
@@ -112,7 +113,6 @@ public class TokenBasedAuthoritiesConverter implements Converter<Jwt, Collection
 
         return Stream.concat(
                 Stream.concat(realmAuthorities.stream(), clientAuthorities.stream()).map(s -> SPRING_ROLE_PREFIX + s),
-                userRoles.stream()
-        ).map(SimpleGrantedAuthority::new).collect(toList());
+                userRoles.stream()).map(SimpleGrantedAuthority::new).collect(toList());
     }
 }

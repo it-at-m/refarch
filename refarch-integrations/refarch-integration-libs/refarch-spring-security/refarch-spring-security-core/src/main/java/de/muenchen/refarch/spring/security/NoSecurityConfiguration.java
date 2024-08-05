@@ -2,7 +2,7 @@
  * Copyright (c): it@M - Dienstleister für Informations- und Telekommunikationstechnik
  * der Landeshauptstadt München, 2022
  */
-package de.muenchen.refarch.spring.security.security;
+package de.muenchen.refarch.spring.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,9 +28,7 @@ public class NoSecurityConfiguration {
         http
                 .headers(h -> h.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(a ->
-                        a.anyRequest().permitAll()
-                );
+                .authorizeHttpRequests(a -> a.anyRequest().permitAll());
         return http.build();
     }
 

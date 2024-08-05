@@ -1,4 +1,4 @@
-package de.muenchen.refarch.spring.security.security;
+package de.muenchen.refarch.spring.security;
 
 /**
  * Collection of useful claims.
@@ -14,4 +14,3 @@ public enum JwtClaims {
     public static final String ROLES = "user_roles";
 
 }
-

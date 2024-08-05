@@ -2,13 +2,13 @@
  * Copyright (c): it@M - Dienstleister für Informations- und Telekommunikationstechnik der Landeshauptstadt München, 2020
  */
 
-package de.muenchen.refarch.spring.security.security.authentication;
+package de.muenchen.refarch.spring.security.authentication;
 
-import static de.muenchen.refarch.spring.security.security.client.ClientParameters.fromEnvironment;
+import static de.muenchen.refarch.spring.security.client.ClientParameters.fromEnvironment;
 
-import de.muenchen.refarch.spring.security.security.PrincipalUtil;
-import de.muenchen.refarch.spring.security.security.SecurityConfiguration;
-import de.muenchen.refarch.spring.security.security.SpringSecurityProperties;
+import de.muenchen.refarch.spring.security.PrincipalUtil;
+import de.muenchen.refarch.spring.security.SecurityConfiguration;
+import de.muenchen.refarch.spring.security.SpringSecurityProperties;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;

@@ -1,4 +1,4 @@
-package de.muenchen.refarch.spring.security.security.factory;
+package de.muenchen.refarch.spring.security.factory;
 
 import java.util.Objects;
 import java.util.Properties;
@@ -10,7 +10,8 @@ import org.springframework.core.io.support.PropertySourceFactory;
 import org.springframework.lang.NonNull;
 
 /**
- * Inspired by <a href="https://www.baeldung.com/spring-yaml-propertysource">spring-yaml-propertysource</a>.
+ * Inspired by
+ * <a href="https://www.baeldung.com/spring-yaml-propertysource">spring-yaml-propertysource</a>.
  */
 public class YamlPropertySourceFactory implements PropertySourceFactory {
 
@@ -22,7 +23,6 @@ public class YamlPropertySourceFactory implements PropertySourceFactory {
         Properties properties = factory.getObject();
         return new PropertiesPropertySource(
                 Objects.requireNonNull(encodedResource.getResource().getFilename()),
-                Objects.requireNonNull(properties)
-        );
+                Objects.requireNonNull(properties));
     }
 }

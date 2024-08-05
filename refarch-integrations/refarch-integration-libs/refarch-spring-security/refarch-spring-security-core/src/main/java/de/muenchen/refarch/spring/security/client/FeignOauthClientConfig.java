@@ -1,4 +1,4 @@
-package de.muenchen.refarch.spring.security.security.client;
+package de.muenchen.refarch.spring.security.client;
 
 import feign.RequestInterceptor;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,6 @@ public class FeignOauthClientConfig {
 
     @Bean
     public RequestInterceptor oAuth2RequestInterceptor() {
-        return (requestTemplate ->
-                requestTemplate.header(HttpHeaders.AUTHORIZATION, "Bearer " + oAuth2AccessTokenSupplier.get().getTokenValue()));
+        return (requestTemplate -> requestTemplate.header(HttpHeaders.AUTHORIZATION, "Bearer " + oAuth2AccessTokenSupplier.get().getTokenValue()));
     }
 }

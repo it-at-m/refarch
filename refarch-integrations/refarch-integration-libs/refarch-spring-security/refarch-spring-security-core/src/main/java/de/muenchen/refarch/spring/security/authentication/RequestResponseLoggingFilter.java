@@ -1,7 +1,7 @@
 /*
  * Copyright (c): it@M - Dienstleister für Informations- und Telekommunikationstechnik der Landeshauptstadt München, 2020
  */
-package de.muenchen.refarch.spring.security.security.authentication;
+package de.muenchen.refarch.spring.security.authentication;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,8 +37,7 @@ public class RequestResponseLoggingFilter implements Filter {
     private final UserAuthenticationProvider userAuthenticationProvider;
 
     public RequestResponseLoggingFilter(UserAuthenticationProvider userAuthenticationProvider,
-            @Value("${security.logging.requests:}")
-            String requestLoggingMode) {
+            @Value("${security.logging.requests:}") String requestLoggingMode) {
         this.userAuthenticationProvider = userAuthenticationProvider;
         this.requestLoggingMode = requestLoggingMode;
     }
@@ -63,8 +62,7 @@ public class RequestResponseLoggingFilter implements Filter {
                     userAuthenticationProvider.getLoggedInUser(),
                     httpRequest.getMethod(),
                     httpRequest.getRequestURI(),
-                    httpResponse.getStatus()
-            );
+                    httpResponse.getStatus());
         }
         chain.doFilter(request, response);
     }

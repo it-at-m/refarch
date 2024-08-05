@@ -1,8 +1,8 @@
-package de.muenchen.refarch.spring.security.security.userinfo;
+package de.muenchen.refarch.spring.security.userinfo;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.Ticker;
-import de.muenchen.refarch.spring.security.security.JwtClaims;
+import de.muenchen.refarch.spring.security.JwtClaims;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -65,8 +65,7 @@ public class UserInfoAuthoritiesConverter implements Converter<Jwt, Collection<G
                     Stream.of(((Object[]) object))
                             .map(Object::toString)
                             .map(SimpleGrantedAuthority::new)
-                            .collect(Collectors.toList())
-            );
+                            .collect(Collectors.toList()));
         }
         return authorities;
     }
@@ -116,4 +115,3 @@ public class UserInfoAuthoritiesConverter implements Converter<Jwt, Collection<G
     }
 
 }
-
