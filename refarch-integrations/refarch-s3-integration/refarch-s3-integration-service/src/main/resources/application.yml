@@ -1,0 +1,60 @@
+info:
+  application:
+    name: '@project.artifactId@'
+    version: '@project.version@'
+
+spring:
+  application:
+    name: ${info.application.name}
+  cloud:
+    stream:
+      bindings:
+        functionRouter-in-0:
+          group: "dwf-s3-service"
+          destination: dwf-s3-${DIGIWF_ENV}
+        sendMessage-out-0:
+          destination: dwf-connector-${DIGIWF_ENV}
+
+io:
+  muenchendigital:
+    digiwf:
+      message:
+        incidentDestination: "dwf-connector-incident-${DIGIWF_ENV}"
+        bpmnErrorDestination: "dwf-connector-bpmnerror-${DIGIWF_ENV}"
+        correlateMessageDestination: "dwf-connector-${DIGIWF_ENV}"
+        deadLetterQueueDestination: "dwf-connector-incident-${DIGIWF_ENV}"
+
+server:
+  port: "${S3_INTEGRATION_SERVER_PORT:8086}"
+  error:
+    include-exception: false
+    include-stacktrace: never
+    whitelabel:
+      enabled: false
+  shutdown: graceful
+
+# Config for spring actuator endpoints
+management:
+  server.port: "${S3_INTEGRATION_SERVER_PORT:8086}"
+  endpoints:
+    enabled-by-default: false
+    web:
+      exposure:
+        include: health, info, prometheus, livenessstate, readinessstate
+      path-mapping:
+        prometheus: metrics
+  endpoint:
+    health.enabled: true
+    info.enabled: true
+    prometheus.enabled: true
+digiwf:
+  security:
+    client-id: ${SSO_S3_CLIENT_ID}
+    client-secret: ${SSO_S3_CLIENT_SECRET}
+  s3:
+    bucket-name: ${S3_BUCKETNAME}
+    access-key: ${S3_ACCESSKEY}
+    url: ${S3_URL:http://localhost:9000}
+    secret-key: ${S3_SECRETKEY}
+    proxy-url: "${S3_PROXY_HOST}:${S3_PROXY_PORT}"
+    proxy-enabled: 'false'

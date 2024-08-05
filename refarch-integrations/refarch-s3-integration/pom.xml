@@ -18,5 +18,7 @@
 
     <modules>
         <module>refarch-s3-integration-core</module>
+        <module>refarch-s3-integration-starter</module>
+        <module>refarch-s3-integration-service</module>
     </modules>
 </project>

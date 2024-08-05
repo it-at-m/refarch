@@ -1,0 +1,20 @@
+DIGIWF_ENV: itest
+
+spring:
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: ${spring.embedded.kafka.brokers}
+      bindings:
+        functionRouter-in-0:
+          destination: dwf-s3-itest
+        sendMessage-out-0:
+          destination: dwf-connector-itest
+
+digiwf.s3:
+  url: s3k.muenchen.de
+  bucketName: int-dwfk-documentstoragelocal
+  accessKey: itest-dummy-access
+  secretKey: itest-dummy-secret
+  initialConnectionTest: false
