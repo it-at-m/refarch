@@ -9,7 +9,6 @@ import de.muenchen.refarch.s3.integration.application.usecase.FileOperationsUseC
 import de.muenchen.refarch.s3.integration.domain.exception.FileSystemAccessException;
 import de.muenchen.refarch.s3.integration.properties.S3IntegrationProperties;
 import io.minio.MinioClient;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -33,10 +32,8 @@ public class S3IntegrationAutoConfiguration {
                 .build();
         return new S3Adapter(
                 this.s3IntegrationProperties.getBucketName(),
-                this.s3IntegrationProperties.getUrl(),
                 minioClient,
-                BooleanUtils.isNotFalse(this.s3IntegrationProperties.getInitialConnectionTest()),
-                this.s3IntegrationProperties.getProxyEnabled() ? Optional.of(this.s3IntegrationProperties.getProxyUrl()) : Optional.empty()
+                BooleanUtils.isNotFalse(this.s3IntegrationProperties.getInitialConnectionTest())
         );
     }
 

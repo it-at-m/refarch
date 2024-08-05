@@ -23,27 +23,21 @@ public class S3Adapter implements S3OutPort {
     private static final String RESPONSE_CODE_NO_SUCH_KEY = "NoSuchKey";
 
     private final String bucketName;
-    private final String s3Url;
-    private final Optional<String> s3ProxyUrl;
     private final MinioClient client;
 
     /**
      * Ctor.
      *
-     * @param bucketName to which this Repository should connect.
-     * @param client to communicate with the s3 storage.
+     * @param bucketName              to which this Repository should connect.
+     * @param client                  to communicate with the s3 storage.
      * @param s3InitialConnectionTest to enable initial connection test to the s3 storage when true.
      * @throws FileSystemAccessException if the initial connection test fails.
      */
     public S3Adapter(
             final String bucketName,
-            final String s3Url,
             final MinioClient client,
-            final boolean s3InitialConnectionTest,
-            final Optional<String> s3ProxyUrl) throws FileSystemAccessException {
+            final boolean s3InitialConnectionTest) throws FileSystemAccessException {
         this.bucketName = bucketName;
-        this.s3ProxyUrl = s3ProxyUrl;
-        this.s3Url = s3Url;
         this.client = client;
         if (s3InitialConnectionTest) {
             this.initialConnectionTest(bucketName, client);
@@ -78,12 +72,9 @@ public class S3Adapter implements S3OutPort {
     /**
      * Returns the paths to the files in a given folder.
      *
-     * @param folder The folder. The path must be absolute and without specifying the bucket. Example 1:
-     *            Folder in bucket: "BUCKET/folder" Specification in
-     *            parameter: "folder" Example 2: Folder in bucket: "BUCKET/folder/subfolder"
-     *            Specification in parameter: "folder/subfolder"
-     * @return the paths to the files in a given folder. Also returns the paths to the files in
-     *         subfolders.
+     * @param folder The folder. The path must be absolute and without specifying the bucket. Example 1: Folder in bucket: "BUCKET/folder" Specification in
+     *               parameter: "folder" Example 2: Folder in bucket: "BUCKET/folder/subfolder" Specification in parameter: "folder/subfolder"
+     * @return the paths to the files in a given folder. Also returns the paths to the files in subfolders.
      * @throws FileSystemAccessException if the paths cannot be downloaded.
      */
     @Override
@@ -111,8 +102,7 @@ public class S3Adapter implements S3OutPort {
      * Retrieves the sizes of all files within a specified folder.
      *
      * @param folder the folder path for which to retrieve file sizes.
-     * @return a map where the keys are file paths and the values are the corresponding file sizes in
-     *         bytes.
+     * @return a map where the keys are file paths and the values are the corresponding file sizes in bytes.
      * @throws FileSystemAccessException if the file sizes cannot be retrieved.
      */
     @Override
@@ -147,9 +137,9 @@ public class S3Adapter implements S3OutPort {
     public long getFileSize(final String pathToFile) throws FileSystemAccessException {
         try {
             return client.statObject(StatObjectArgs.builder()
-                    .bucket(bucketName)
-                    .object(pathToFile)
-                    .build())
+                            .bucket(bucketName)
+                            .object(pathToFile)
+                            .build())
                     .size();
         } catch (ErrorResponseException | InsufficientDataException | InternalException | InvalidKeyException | InvalidResponseException | IOException
                 | NoSuchAlgorithmException | ServerException | XmlParserException exception) {
@@ -162,10 +152,8 @@ public class S3Adapter implements S3OutPort {
     /**
      * Deletes the file given in the parameter.
      *
-     * @param pathToFile The path to the file. The path must be absolute and without specifying the
-     *            bucket. Example: File in bucket:
-     *            "BUCKET/outerFolder/innerFolder/thefile.csv" Specification in parameter:
-     *            "outerFolder/innerFolder/thefile.csv"
+     * @param pathToFile The path to the file. The path must be absolute and without specifying the bucket. Example: File in bucket:
+     *                   "BUCKET/outerFolder/innerFolder/thefile.csv" Specification in parameter: "outerFolder/innerFolder/thefile.csv"
      * @throws FileSystemAccessException if the file cannot be deleted.
      */
     @Override
@@ -188,13 +176,9 @@ public class S3Adapter implements S3OutPort {
     /**
      * Creates the presigned URL fora file to the given file path.
      *
-     * @param pathToFile The path to the file. The path must be absolute and without specifying the
-     *            bucket.<br>
-     *            Example:<br>
-     *            File in bucket:<br>
-     *            "BUCKET/outerFolder/innerFolder/thefile.csv"<br>
-     *            Specification in parameter: "outerFolder/innerFolder/thefile.csv"<br>
-     * @param action to determine the file permissions.
+     * @param pathToFile       The path to the file. The path must be absolute and without specifying the bucket.<br> Example:<br> File in bucket:<br>
+     *                         "BUCKET/outerFolder/innerFolder/thefile.csv"<br> Specification in parameter: "outerFolder/innerFolder/thefile.csv"<br>
+     * @param action           to determine the file permissions.
      * @param expiresInMinutes to define the validity period of the presigned URL.
      * @return the presigned URL for a file.
      * @throws FileSystemAccessException if the presigned URL cannot be created.
@@ -208,9 +192,7 @@ public class S3Adapter implements S3OutPort {
                     .object(pathToFile)
                     .expiry(expiresInMinutes, TimeUnit.MINUTES)
                     .build();
-            final String presignedUrl = this.client.getPresignedObjectUrl(presignedUrlArgs);
-            // use proxy if enabled
-            return this.s3ProxyUrl.map(proxy -> presignedUrl.replaceFirst(this.s3Url, proxy)).orElse(presignedUrl);
+            return this.client.getPresignedObjectUrl(presignedUrlArgs);
         } catch (final InvalidKeyException | ErrorResponseException | InsufficientDataException | InternalException
                 | InvalidResponseException | NoSuchAlgorithmException | ServerException | XmlParserException
                 | IllegalArgumentException | IOException exception) {
@@ -224,7 +206,7 @@ public class S3Adapter implements S3OutPort {
      * Performs an initial connection test against the S3 storage.
      *
      * @param bucketName to which this Repository should connect.
-     * @param client to communicate with the s3 storage.
+     * @param client     to communicate with the s3 storage.
      * @throws FileSystemAccessException if the initial connection test fails.
      */
     private void initialConnectionTest(final String bucketName, final MinioClient client) throws FileSystemAccessException {

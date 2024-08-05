@@ -9,7 +9,7 @@ import org.springframework.validation.annotation.Validated;
 @Getter
 @Setter
 @Validated
-@ConfigurationProperties(prefix = "digiwf.s3")
+@ConfigurationProperties(prefix = "refarch.s3")
 public class S3IntegrationProperties {
 
     @NotBlank
@@ -27,9 +27,4 @@ public class S3IntegrationProperties {
     private Boolean initialConnectionTest;
 
     private int presignedUrlExpiresInMinutes = 10080; // 7 days
-
-    private Boolean proxyEnabled = false;
-
-    private String proxyUrl;
-
 }
