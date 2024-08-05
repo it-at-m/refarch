@@ -20,7 +20,7 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
 /**
- * Tests for {@link S3Adapter} creating presigned urls correctly and using a proxy if enabled
+ * Tests for {@link S3Adapter} creating presigned urls correctly
  *
  * @author ext.dl.moesle
  */
@@ -42,7 +42,7 @@ public class S3AdapterTest {
     }
 
     @Test
-    public void testGetPresignedUrlWithoutProxy()
+    public void testGetPresignedUrl()
             throws ServerException, InsufficientDataException, ErrorResponseException, IOException, NoSuchAlgorithmException, InvalidKeyException,
             InvalidResponseException, XmlParserException, InternalException, FileSystemAccessException {
         Mockito.when(this.client.getPresignedObjectUrl(Mockito.any(GetPresignedObjectUrlArgs.class))).thenReturn(this.s3Url + "/some-url/...");
