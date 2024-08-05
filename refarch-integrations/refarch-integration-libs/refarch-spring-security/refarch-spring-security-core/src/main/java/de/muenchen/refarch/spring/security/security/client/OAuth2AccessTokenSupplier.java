@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
  * Supplier for service account access token using given registration.
  */
 @Component
-@ConditionalOnProperty(value = "digiwf.security.service-account", matchIfMissing = true)
+@ConditionalOnProperty(value = "refarch.security.service-account", matchIfMissing = true)
 @RequiredArgsConstructor
 public class OAuth2AccessTokenSupplier implements Supplier<OAuth2AccessToken> {
 

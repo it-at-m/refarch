@@ -1,4 +1,4 @@
-digiwf:
+refarch:
   security:
     client-registration: keycloak
     permitted-urls:
@@ -31,12 +31,12 @@ spring:
         registration:
           keycloak:
             provider: keycloak
-            client-id: ${digiwf.security.client-id}
-            client-secret: ${digiwf.security.client-secret}
+            client-id: ${refarch.security.client-id}
+            client-secret: ${refarch.security.client-secret}
             scope: email, profile, openid  # needed for userInfo endpoint
           keycloak-service-account:
             provider: keycloak
             authorization-grant-type: client_credentials
-            client-id: ${digiwf.security.client-id}
-            client-secret: ${digiwf.security.client-secret}
+            client-id: ${refarch.security.client-id}
+            client-secret: ${refarch.security.client-secret}
             scope: email, profile, openid  # needed for userInfo endpoint

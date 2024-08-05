@@ -9,7 +9,7 @@ import org.springframework.http.HttpHeaders;
  * Configures the OAuth2 request interceptor for Feign clients.
  */
 @RequiredArgsConstructor
-public class DigiwfFeignOauthClientConfig {
+public class FeignOauthClientConfig {
 
     private final OAuth2AccessTokenSupplier oAuth2AccessTokenSupplier;
 

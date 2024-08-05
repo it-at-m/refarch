@@ -6,14 +6,6 @@ info:
 spring:
   application:
     name: ${info.application.name}
-  cloud:
-    stream:
-      bindings:
-        functionRouter-in-0:
-          group: "dwf-s3-service"
-          destination: dwf-s3-${DIGIWF_ENV}
-        sendMessage-out-0:
-          destination: dwf-connector-${DIGIWF_ENV}
 
 server:
   error:

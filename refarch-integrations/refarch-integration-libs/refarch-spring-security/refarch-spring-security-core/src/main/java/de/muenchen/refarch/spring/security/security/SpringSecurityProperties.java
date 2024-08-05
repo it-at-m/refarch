@@ -3,7 +3,7 @@ package de.muenchen.refarch.spring.security.security;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix = "digiwf.security")
+@ConfigurationProperties(prefix = "refarch.security")
 @Data
 public class SpringSecurityProperties {
     /**

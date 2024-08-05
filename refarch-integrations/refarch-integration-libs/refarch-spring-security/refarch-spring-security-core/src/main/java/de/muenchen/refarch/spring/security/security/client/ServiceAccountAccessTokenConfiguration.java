@@ -19,7 +19,7 @@ import org.springframework.security.oauth2.core.http.converter.OAuth2AccessToken
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
-@ConditionalOnProperty(value = "digiwf.security.service-account", matchIfMissing = true)
+@ConditionalOnProperty(value = "refarch.security.service-account", matchIfMissing = true)
 public class ServiceAccountAccessTokenConfiguration {
 
     private final static int TIMEOUT = 20_000;
