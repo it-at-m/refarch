@@ -12,8 +12,6 @@
     </parent>
 
     <properties>
-        <spring-boot.repackage.skip>true</spring-boot.repackage.skip>
-
         <openapi-generator-maven-plugin.version>7.7.0</openapi-generator-maven-plugin.version>
 
         <tika.version>2.9.2</tika.version>

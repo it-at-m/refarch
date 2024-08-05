@@ -13,8 +13,6 @@
     <name>refarch-s3-integration-core</name>
 
     <properties>
-        <spring-boot.repackage.skip>true</spring-boot.repackage.skip>
-        
         <minio.version>8.5.11</minio.version>
         <apache-commons-collections4.version>4.4</apache-commons-collections4.version>
     </properties>
