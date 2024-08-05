@@ -1,4 +1,4 @@
-package de.muenchen.oss.digiwf.s3.integration;
+package de.muenchen.refarch.s3.integration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

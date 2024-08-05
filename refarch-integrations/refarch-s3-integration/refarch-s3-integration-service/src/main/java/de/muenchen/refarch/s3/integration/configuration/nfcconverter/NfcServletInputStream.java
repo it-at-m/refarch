@@ -2,14 +2,13 @@
  * Copyright (c): it@M - Dienstleister für Informations- und Telekommunikationstechnik
  * der Landeshauptstadt München, 2022
  */
-package de.muenchen.oss.digiwf.s3.integration.configuration.nfcconverter;
-
-import org.apache.commons.lang3.NotImplementedException;
+package de.muenchen.refarch.s3.integration.configuration.nfcconverter;
 
 import jakarta.servlet.ReadListener;
 import jakarta.servlet.ServletInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import org.apache.commons.lang3.NotImplementedException;
 
 /**
  * ServletInputStream, der von einem Puffer ließt.

@@ -2,11 +2,7 @@
  * Copyright (c): it@M - Dienstleister für Informations- und Telekommunikationstechnik
  * der Landeshauptstadt München, 2022
  */
-package de.muenchen.oss.digiwf.s3.integration.configuration.nfcconverter;
-
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.IteratorUtils;
-import org.apache.commons.io.IOUtils;
+package de.muenchen.refarch.s3.integration.configuration.nfcconverter;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletInputStream;
@@ -18,13 +14,10 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import java.util.*;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.IteratorUtils;
+import org.apache.commons.io.IOUtils;
 
 /**
  * Wrapper für HttpServletRequest, der NFC-Konvertierung durchführt.
@@ -41,7 +34,7 @@ public class NfcRequest extends HttpServletRequestWrapper implements HttpServlet
     private Map<String, List<String>> headers;
 
     @SuppressWarnings("unused")
-    private Set<String> contentTypes;
+    private final Set<String> contentTypes;
 
     public NfcRequest(final HttpServletRequest request, final Set<String> contentTypes) {
         super(request);
@@ -50,6 +43,7 @@ public class NfcRequest extends HttpServletRequestWrapper implements HttpServlet
         this.headers = null;
         this.contentTypes = contentTypes;
     }
+
     private void convert() {
         if (params != null) {
             return;

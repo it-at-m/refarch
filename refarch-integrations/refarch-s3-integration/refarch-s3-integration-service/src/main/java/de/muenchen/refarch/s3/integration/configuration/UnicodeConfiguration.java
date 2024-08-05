@@ -2,15 +2,14 @@
  * Copyright (c): it@M - Dienstleister für Informations- und Telekommunikationstechnik
  * der Landeshauptstadt München, 2022
  */
-package de.muenchen.oss.digiwf.s3.integration.configuration;
+package de.muenchen.refarch.s3.integration.configuration;
 
-import de.muenchen.oss.digiwf.s3.integration.configuration.nfcconverter.NfcRequestFilter;
+import de.muenchen.refarch.s3.integration.configuration.nfcconverter.NfcRequestFilter;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
-
 
 /**
  * <p><em>Beispiel</em> für Konfiguration des NFC Request-Filters</p>

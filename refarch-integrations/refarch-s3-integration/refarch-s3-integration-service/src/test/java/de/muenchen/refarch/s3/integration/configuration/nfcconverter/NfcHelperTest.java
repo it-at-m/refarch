@@ -2,18 +2,18 @@
  * Copyright (c): it@M - Dienstleister für Informations- und Telekommunikationstechnik
  * der Landeshauptstadt München, 2022
  */
-package de.muenchen.oss.digiwf.s3.integration.configuration.nfcconverter;
+package de.muenchen.refarch.s3.integration.configuration.nfcconverter;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import jakarta.servlet.http.Cookie;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class NfcHelperTest {
 
@@ -33,9 +33,16 @@ public class NfcHelperTest {
 
     public static final String[] NFC_OUTPUT_EXPECTED = new String[] { FIRST_NFC, SECOND_NFC, THIRD_NFC };
 
+    private static Cookie createNfdCookie() {
+        final Cookie nfdCookie = new Cookie(NfcConverterTest.TOKEN, Arrays.toString(NFD_INPUT));
+        nfdCookie.setDomain(THIRD_NFD);
+        nfdCookie.setPath(THIRD_NFD);
+        return nfdCookie;
+    }
+
     @Test
     public void nfcConverterString() {
-        assertEquals(FIRST_NFC, NfcHelper.nfcConverter(FIRST_NFD));
+        Assertions.assertEquals(FIRST_NFC, NfcHelper.nfcConverter(FIRST_NFD));
         assertEquals(FIRST_NFC.length(), NfcHelper.nfcConverter(FIRST_NFD).length());
 
         assertEquals(SECOND_NFC, NfcHelper.nfcConverter(SECOND_NFD));
@@ -97,13 +104,6 @@ public class NfcHelperTest {
             assertEquals(THIRD_NFC, nfcCookie.getDomain());
             assertEquals(THIRD_NFC, nfcCookie.getPath());
         });
-    }
-
-    private static Cookie createNfdCookie() {
-        final Cookie nfdCookie = new Cookie(NfcConverterTest.TOKEN, Arrays.toString(NFD_INPUT));
-        nfdCookie.setDomain(THIRD_NFD);
-        nfdCookie.setPath(THIRD_NFD);
-        return nfdCookie;
     }
 
 }

@@ -2,13 +2,7 @@
  * Copyright (c): it@M - Dienstleister für Informations- und Telekommunikationstechnik
  * der Landeshauptstadt München, 2022
  */
-package de.muenchen.oss.digiwf.s3.integration.configuration.nfcconverter;
-
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.web.filter.OncePerRequestFilter;
+package de.muenchen.refarch.s3.integration.configuration.nfcconverter;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -19,6 +13,11 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 /**
  * <p>Spring-Filter, der eine NFC-Normalisierung aller <em>sicher textuellen</em> Inhalte durchführt.</p>
@@ -51,7 +50,7 @@ public class NfcRequestFilter extends OncePerRequestFilter {
      */
     public static final String CONTENTTYPES_PROPERTY = "contentTypes";
 
-    private Set<String> contentTypes = new HashSet<>();
+    private final Set<String> contentTypes = new HashSet<>();
 
     /**
      * @return Das Property <em>contentTypes</em>

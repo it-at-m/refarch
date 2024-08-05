@@ -2,15 +2,13 @@
  * Copyright (c): it@M - Dienstleister für Informations- und Telekommunikationstechnik
  * der Landeshauptstadt München, 2022
  */
-package de.muenchen.oss.digiwf.s3.integration.configuration.nfcconverter;
-
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.IOUtils;
+package de.muenchen.refarch.s3.integration.configuration.nfcconverter;
 
 import java.io.CharArrayReader;
 import java.io.IOException;
 import java.io.Reader;
-
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 
 /**
  * <p>Wrapper für Reader der eine NFC-Konvertierung durchführt.</p>
@@ -19,9 +17,8 @@ import java.io.Reader;
  * <li>Bei Java-Readern und -Writern kann gefahrlos eine NFC-Konvertierung
  * durchgeführt werden, da dort Zeichen verarbeitet werden.</li>
  * <li>Dieser Reader liest bei vor dem Lesen des ersten Zeichens denn vollständig Text des
- * gewrappten Readers in einern internen Buffer und führt darauf die NFC-Normalisierung
- * durch. Grund ist, dass NFC-Konvertierung kann nicht auf Basis von einzelnen Zeichen
- * durchgeführt werden kann. Dies kann zu erhöhter Latenz führen.</li>
+ * gewrappten Readers in einern internen Buffer und führt darauf die NFC-Normalisierung durch. Grund ist, dass NFC-Konvertierung kann nicht auf Basis von
+ * einzelnen Zeichen durchgeführt werden kann. Dies kann zu erhöhter Latenz führen.</li>
  * </ul></p>
  */
 @Slf4j
