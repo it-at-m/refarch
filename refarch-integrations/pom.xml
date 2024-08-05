@@ -17,6 +17,7 @@
     <name>refarch-integrations</name>
 
     <modules>
+        <module>refarch-integration-libs</module>
         <module>refarch-s3-integration</module>
     </modules>
 
@@ -60,6 +61,13 @@
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
                 <version>${springdoc-openapi.version}</version>
+            </dependency>
+
+            <!-- Logging -->
+            <dependency>
+                <groupId>net.logstash.logback</groupId>
+                <artifactId>logstash-logback-encoder</artifactId>
+                <version>${logstash-logback-encoder.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
