@@ -29,11 +29,10 @@ management:
     info.enabled: true
     prometheus.enabled: true
 
-digiwf:
+refarch:
   security:
     client-id: ${SSO_S3_CLIENT_ID}
     client-secret: ${SSO_S3_CLIENT_SECRET}
-refarch:
   s3:
     bucket-name: ${S3_BUCKETNAME}
     access-key: ${S3_ACCESSKEY}
