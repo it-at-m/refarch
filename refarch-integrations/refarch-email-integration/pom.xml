@@ -16,12 +16,12 @@
     <packaging>pom</packaging>
 
     <properties>
-        <!-- tika parsers -->
         <jbig2-imageio.version>3.0.4</jbig2-imageio.version>
         <jai-imageio-jpeg2000.version>1.4.0</jai-imageio-jpeg2000.version>
     </properties>
 
     <modules>
         <module>refarch-email</module>
+        <module>refarch-email-integration-core</module>
     </modules>
 </project>
