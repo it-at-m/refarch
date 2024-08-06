@@ -6,6 +6,11 @@ info:
 spring:
   application:
     name: ${info.application.name}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${SSO_ISSUER_URL}
 
 server:
   error:
@@ -29,10 +34,11 @@ management:
     info.enabled: true
     prometheus.enabled: true
 
+security:
+  oauth2:
+    resource.user-info-uri: ${SSO_ISSUER_URL}/protocol/openid-connect/userinfo
+
 refarch:
-  security:
-    client-id: ${SSO_S3_CLIENT_ID}
-    client-secret: ${SSO_S3_CLIENT_SECRET}
   s3:
     bucket-name: ${S3_BUCKETNAME}
     access-key: ${S3_ACCESSKEY}

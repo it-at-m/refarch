@@ -5,8 +5,5 @@ refarch:
     access-key: minio
     secret-key: Test1234
     url: http://localhost:9000
-  security:
-    client-id: local
-    client-secret: client_secret
 server:
   port: 8086

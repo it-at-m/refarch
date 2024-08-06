@@ -17,7 +17,6 @@
     <name>refarch-integrations</name>
 
     <modules>
-        <module>refarch-integration-libs</module>
         <module>refarch-s3-integration</module>
     </modules>
 
