@@ -1,7 +1,3 @@
-/*
- * Copyright (c): it@M - Dienstleister für Informations- und Telekommunikationstechnik
- * der Landeshauptstadt München, 2022
- */
 package de.muenchen.refarch.s3.integration.configuration.nfcconverter;
 
 import jakarta.servlet.FilterChain;
@@ -75,8 +71,7 @@ public class NfcRequestFilter extends OncePerRequestFilter {
             log.info("Disabling context-type filter.");
 
         } else {
-            final Set<String> newContentTypes = Arrays.asList(contentTypes.split(";"))
-                    .stream().map(String::trim)
+            final Set<String> newContentTypes = Arrays.stream(contentTypes.split(";")).map(String::trim)
                     .collect(Collectors.toSet());
             this.contentTypes.addAll(newContentTypes);
             log.info("Enabled content-type filtering to NFC for: {}", getContentTypes());

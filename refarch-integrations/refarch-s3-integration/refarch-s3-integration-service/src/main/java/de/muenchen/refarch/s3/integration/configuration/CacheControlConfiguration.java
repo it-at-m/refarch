@@ -1,7 +1,3 @@
-/*
- * Copyright (c): it@M - Dienstleister für Informations- und Telekommunikationstechnik
- * der Landeshauptstadt München, 2022
- */
 package de.muenchen.refarch.s3.integration.configuration;
 
 import jakarta.servlet.FilterChain;
@@ -49,8 +45,8 @@ public class CacheControlConfiguration {
          * within a single request thread. See
          * {@link OncePerRequestFilter#shouldNotFilterAsyncDispatch()} for details.
          * <p>
-         * Provides HttpServletRequest and HttpServletResponse arguments instead of the
-         * default ServletRequest and ServletResponse ones.
+         * Provides HttpServletRequest and HttpServletResponse arguments instead of the default
+         * ServletRequest and ServletResponse ones.
          */
         @Override
         protected void doFilterInternal(HttpServletRequest request,

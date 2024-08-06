@@ -1,7 +1,3 @@
-/*
- * Copyright (c): it@M - Dienstleister für Informations- und Telekommunikationstechnik
- * der Landeshauptstadt München, 2022
- */
 package de.muenchen.refarch.s3.integration.configuration;
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
