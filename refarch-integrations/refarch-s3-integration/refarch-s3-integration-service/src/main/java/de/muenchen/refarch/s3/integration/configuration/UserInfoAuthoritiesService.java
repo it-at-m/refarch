@@ -23,7 +23,8 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * Service that calls an OIDC /userinfo endpoint (with JWT Bearer Auth) and extracts the contained "Authorities".
+ * Service that calls an OIDC /userinfo endpoint (with JWT Bearer Auth) and extracts the contained
+ * "Authorities".
  */
 @Slf4j
 public class UserInfoAuthoritiesService {
@@ -66,7 +67,8 @@ public class UserInfoAuthoritiesService {
      * Calls the /userinfo endpoint and extracts {@link GrantedAuthority}s from the "authorities" claim.
      *
      * @param jwt the JWT
-     * @return the {@link GrantedAuthority}s according to the "authorities" claim of the /userinfo endpoint
+     * @return the {@link GrantedAuthority}s according to the "authorities" claim of the /userinfo
+     *         endpoint
      */
     public Collection<SimpleGrantedAuthority> loadAuthorities(Jwt jwt) {
         ValueWrapper valueWrapper = this.cache.get(jwt.getSubject());
@@ -90,6 +92,7 @@ public class UserInfoAuthoritiesService {
                     Map.class).getBody();
 
             log.debug("Response from user-info Endpoint: {}", map);
+            assert map != null;
             if (map.containsKey(CLAIM_AUTHORITIES)) {
                 authorities = asAuthorities(map.get(CLAIM_AUTHORITIES));
             }

@@ -23,14 +23,11 @@ import org.apache.commons.io.IOUtils;
 @Slf4j
 public class NfcRequest extends HttpServletRequestWrapper implements HttpServletRequest {
 
-    private Map<String, String[]> params;
-
-    private Cookie[] cookies;
-
-    private Map<String, List<String>> headers;
-
     @SuppressWarnings("unused")
     private final Set<String> contentTypes;
+    private Map<String, String[]> params;
+    private Cookie[] cookies;
+    private Map<String, List<String>> headers;
 
     public NfcRequest(final HttpServletRequest request, final Set<String> contentTypes) {
         super(request);
@@ -59,7 +56,7 @@ public class NfcRequest extends HttpServletRequestWrapper implements HttpServlet
     public String getHeader(final String name) {
         convert();
         final List<String> values = headers.get(NfcHelper.nfcConverter(name));
-        return (values == null) ? null : values.get(0);
+        return (values == null) ? null : values.getFirst();
     }
 
     @Override
@@ -186,13 +183,14 @@ public class NfcRequest extends HttpServletRequestWrapper implements HttpServlet
 
         final String encoding = getOriginalRequest().getCharacterEncoding();
 
-        String content = null;
+        String content;
         try (final InputStream is = getOriginalRequest().getInputStream()) {
             content = new String(IOUtils.toByteArray(is), encoding);
         }
 
         log.debug("Converting InputStream data to NFC.");
         final String nfcConvertedContent = NfcHelper.nfcConverter(content);
+        assert nfcConvertedContent != null;
         return new NfcServletInputStream(new ByteArrayInputStream(nfcConvertedContent.getBytes()));
     }
 

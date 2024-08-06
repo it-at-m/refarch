@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,7 +41,7 @@ public class CacheControlConfiguration {
          * The method which adds the {@link HttpHeaders#CACHE_CONTROL} header to the
          * {@link HttpServletResponse} given in the parameter, if the header is not
          * already set.
-         *
+         * <p>
          * Same contract as for {@code super.doFilter}, but guaranteed to be just invoked once per request
          * within a single request thread. See
          * {@link OncePerRequestFilter#shouldNotFilterAsyncDispatch()} for details.
@@ -49,9 +50,9 @@ public class CacheControlConfiguration {
          * ServletRequest and ServletResponse ones.
          */
         @Override
-        protected void doFilterInternal(HttpServletRequest request,
+        protected void doFilterInternal(@NotNull HttpServletRequest request,
                 HttpServletResponse response,
-                FilterChain filterChain) throws ServletException, IOException {
+                @NotNull FilterChain filterChain) throws ServletException, IOException {
 
             final String cacheControlHeaderValue = response.getHeader(HttpHeaders.CACHE_CONTROL);
             if (StringUtils.isBlank(cacheControlHeaderValue)) {

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.Reader;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * <p>
@@ -45,6 +46,7 @@ public class NfcReader extends Reader {
         try {
             final String nfdContent = IOUtils.toString(original);
             final String nfcConvertedContent = NfcHelper.nfcConverter(nfdContent);
+            assert nfcConvertedContent != null;
             converted = new CharArrayReader(nfcConvertedContent.toCharArray());
 
         } catch (final IOException e) {
@@ -59,7 +61,7 @@ public class NfcReader extends Reader {
     }
 
     @Override
-    public int read(char[] cbuf, int off, int len) throws IOException {
+    public int read(@NotNull char[] cbuf, int off, int len) throws IOException {
         convert();
         return converted.read(cbuf, off, len);
     }

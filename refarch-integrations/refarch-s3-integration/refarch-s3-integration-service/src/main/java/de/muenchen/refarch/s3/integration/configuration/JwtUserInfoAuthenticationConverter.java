@@ -8,7 +8,8 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 
 /**
- * Custom {@link JwtAuthenticationConverter}, which gathers the authorities via {@link UserInfoAuthoritiesService} from the /userinfo endpoint of the OIDC
+ * Custom {@link JwtAuthenticationConverter}, which gathers the authorities via
+ * {@link UserInfoAuthoritiesService} from the /userinfo endpoint of the OIDC
  * providers.
  */
 public class JwtUserInfoAuthenticationConverter implements Converter<Jwt, AbstractAuthenticationToken> {

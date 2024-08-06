@@ -3,7 +3,6 @@ package de.muenchen.refarch.s3.integration.configuration.nfcconverter;
 import jakarta.servlet.ReadListener;
 import jakarta.servlet.ServletInputStream;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import org.apache.commons.lang3.NotImplementedException;
 
 /**
@@ -18,7 +17,7 @@ public class NfcServletInputStream extends ServletInputStream {
     }
 
     @Override
-    public int read() throws IOException {
+    public int read() {
         return buffer.read();
     }
 
