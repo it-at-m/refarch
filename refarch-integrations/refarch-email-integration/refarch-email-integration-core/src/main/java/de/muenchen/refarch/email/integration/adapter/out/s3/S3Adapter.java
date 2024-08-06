@@ -53,8 +53,7 @@ public class S3Adapter implements LoadMailAttachmentOutPort {
                 throw new LoadAttachmentError("An folder could not be loaded from url: " + folderPath);
             filepath.forEach(file -> contents.add(getFile(file)));
             return contents;
-        } catch (final DocumentStorageException | DocumentStorageServerErrorException |
-                DocumentStorageClientErrorException e) {
+        } catch (final DocumentStorageException | DocumentStorageServerErrorException | DocumentStorageClientErrorException e) {
             throw new LoadAttachmentError("An folder could not be loaded from path: " + folderPath);
         }
     }
@@ -72,8 +71,7 @@ public class S3Adapter implements LoadMailAttachmentOutPort {
                 throw new LoadAttachmentError("The type of this file is not supported: " + filePath);
 
             return new FileAttachment(filename, file);
-        } catch (final DocumentStorageException | DocumentStorageServerErrorException |
-                DocumentStorageClientErrorException e) {
+        } catch (final DocumentStorageException | DocumentStorageServerErrorException | DocumentStorageClientErrorException e) {
             throw new LoadAttachmentError("An file could not be loaded from path: " + filePath);
         }
     }

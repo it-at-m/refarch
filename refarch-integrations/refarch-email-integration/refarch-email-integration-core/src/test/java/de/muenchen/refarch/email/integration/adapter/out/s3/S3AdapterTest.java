@@ -60,8 +60,7 @@ class S3AdapterTest {
         final Map<String, String> files = Map.of(
                 "digiwf_logo.png", "image/png",
                 "test-pdf.pdf", "application/pdf",
-                "test-word.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-        );
+                "test-word.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
 
         for (final Map.Entry<String, String> file : files.entrySet()) {
             try {

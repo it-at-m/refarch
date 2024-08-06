@@ -32,8 +32,7 @@ class SendMailPathsUseCaseTest {
             "This is a test mail",
             "digiwf@muenchen.de",
             "fileContext",
-            "folder/file.txt"
-    );
+            "folder/file.txt");
     private final TemplateMailPaths templateMail = new TemplateMailPaths(
             "mailReceiver1@muenchen.de,mailReceiver2@muenchen.de",
             "receiverCC@muenchen.de",
@@ -43,8 +42,7 @@ class SendMailPathsUseCaseTest {
             "fileContext",
             "folder/file.txt",
             "template",
-            Map.of("mail", Map.of())
-    );
+            Map.of("mail", Map.of()));
     private SendMailPathsInPort sendMailPathsInPort;
 
     @BeforeEach
