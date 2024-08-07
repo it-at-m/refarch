@@ -18,6 +18,7 @@
 
     <modules>
         <module>refarch-s3-integration</module>
+        <module>refarch-email-integration</module>
     </modules>
 
     <properties>
