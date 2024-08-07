@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.map.CaseInsensitiveMap;
 
 /**
- * Hilfsklasse für das NFC-Normalisieren
+ * Helper class for NFC normalisation.
  *
  * @see Normalizer
  */
