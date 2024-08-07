@@ -26,12 +26,10 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.release>${java.version}</maven.compiler.release>
 
-        <jvm.options>-Dorg.conscrypt.native.workdir=$(pwd)</jvm.options>
         <jacoco.version>0.8.12</jacoco.version>
         <maven-surefire-plugin.version>3.3.1</maven-surefire-plugin.version>
         <spotless-maven-plugin.version>2.34.0</spotless-maven-plugin.version>
         <itm-java-codeformat.version>1.0.10</itm-java-codeformat.version>
-        <maven-checkstyle-plugin.version>3.4.0</maven-checkstyle-plugin.version>
 
         <spring-cloud.version>2023.0.3</spring-cloud.version>
         <logstash-logback-encoder.version>8.0</logstash-logback-encoder.version>
@@ -114,9 +112,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
-                <configuration>
-                    <argLine>${jvm.options}</argLine>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
