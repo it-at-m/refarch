@@ -21,8 +21,6 @@ import org.mockito.quality.Strictness;
 
 /**
  * Tests for {@link S3Adapter} creating presigned urls correctly
- *
- * @author ext.dl.moesle
  */
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
