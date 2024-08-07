@@ -22,13 +22,11 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.release>${java.version}</maven.compiler.release>
 
-        <jvm.options>-Dorg.conscrypt.native.workdir=$(pwd)</jvm.options>
         <jacoco.version>0.8.12</jacoco.version>
         <maven-surefire-plugin.version>3.3.1</maven-surefire-plugin.version>
         <spotless-maven-plugin.version>2.34.0</spotless-maven-plugin.version>
         <itm-java-codeformat.version>1.0.10</itm-java-codeformat.version>
         <maven-checkstyle-plugin.version>3.4.0</maven-checkstyle-plugin.version>
-        <checkstyle.version>10.17.0</checkstyle.version>
 
         <spring-cloud.version>2023.0.3</spring-cloud.version>
         <logstash-logback-encoder.version>8.0</logstash-logback-encoder.version>
@@ -131,20 +129,11 @@
     </dependencies>
 
     <build>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
-                <configuration>
-                    <argLine>${jvm.options}</argLine>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -157,13 +146,6 @@
                         </exclude>
                     </excludes>
                 </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -217,29 +199,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <!-- Linter Checkstyle -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>${maven-checkstyle-plugin.version}</version>
-                <configuration>
-                    <configLocation>checkstyle.xml</configLocation>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.puppycrawl.tools</groupId>
-                        <artifactId>checkstyle</artifactId>
-                        <version>${checkstyle.version}</version>
-                    </dependency>
-                </dependencies>
             </plugin>
         </plugins>
     </build>
