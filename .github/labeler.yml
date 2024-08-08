@@ -4,3 +4,7 @@ bug:
   - head-branch: [ '^bug', '^fix' ]
 refactoring:
   - head-branch: [ '^refactor' ]
+documentation:
+  - head-branch: [ '^doc' ]
+BREAKING:
+  - head-branch: [ '^break' ]
