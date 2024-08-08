@@ -22,8 +22,8 @@ public class CreatePresignedUrlsUseCase implements CreatePresignedUrlsInPort {
     @NonNull
     public List<PresignedUrl> createPresignedUrls(@Valid CreatePresignedUrlEvent event) throws FileSystemAccessException {
         return this.fileHandlingService.getPresignedUrls(
-                List.of(event.getPath().split(";")),
-                Method.valueOf(event.getAction()),
+                List.of(event.path().split(";")),
+                Method.valueOf(event.action()),
                 this.presignedUrlExpiresInMinutes // 7 days is max expiration
         );
     }

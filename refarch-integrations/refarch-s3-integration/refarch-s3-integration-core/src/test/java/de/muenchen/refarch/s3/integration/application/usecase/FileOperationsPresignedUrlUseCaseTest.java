@@ -51,9 +51,9 @@ class FileOperationsPresignedUrlUseCaseTest {
 
                 final PresignedUrl presignedUrl = fileOperations.getPresignedUrl(pathToFile, action, expiresInMinutes);
 
-                Assertions.assertEquals(examplePresignedUrl, presignedUrl.getUrl());
-                Assertions.assertEquals(action.toString(), presignedUrl.getAction());
-                Assertions.assertEquals(pathToFile, presignedUrl.getPath());
+                Assertions.assertEquals(examplePresignedUrl, presignedUrl.url());
+                Assertions.assertEquals(action.toString(), presignedUrl.action());
+                Assertions.assertEquals(pathToFile, presignedUrl.path());
             } catch (final FileSystemAccessException e) {
                 Assertions.fail(e.getMessage());
             }
@@ -80,9 +80,9 @@ class FileOperationsPresignedUrlUseCaseTest {
 
                 Assertions.assertEquals(1, presignedUrls.size());
                 presignedUrls.forEach(presignedUrl -> {
-                    Assertions.assertEquals(presignedUrl.getUrl(), examplePresignedUrl);
-                    Assertions.assertEquals(presignedUrl.getAction(), action.toString());
-                    Assertions.assertEquals(presignedUrl.getPath(), pathToFile);
+                    Assertions.assertEquals(presignedUrl.url(), examplePresignedUrl);
+                    Assertions.assertEquals(presignedUrl.action(), action.toString());
+                    Assertions.assertEquals(presignedUrl.path(), pathToFile);
                 });
                 Mockito.reset();
             } catch (final FileExistenceException | FileSystemAccessException e) {
@@ -98,9 +98,9 @@ class FileOperationsPresignedUrlUseCaseTest {
 
         Assertions.assertEquals(1, presignedUrls.size());
         presignedUrls.forEach(presignedUrl -> {
-            Assertions.assertEquals(presignedUrl.getUrl(), examplePresignedUrl);
-            Assertions.assertEquals(presignedUrl.getAction(), Method.PUT.toString());
-            Assertions.assertEquals(presignedUrl.getPath(), pathToFile);
+            Assertions.assertEquals(presignedUrl.url(), examplePresignedUrl);
+            Assertions.assertEquals(presignedUrl.action(), Method.PUT.toString());
+            Assertions.assertEquals(presignedUrl.path(), pathToFile);
         });
     }
 
@@ -125,9 +125,9 @@ class FileOperationsPresignedUrlUseCaseTest {
 
                 Assertions.assertEquals(2, presignedUrls.size());
                 presignedUrls.forEach(presignedUrl -> {
-                    Assertions.assertEquals(presignedUrl.getUrl(), examplePresignedUrl);
-                    Assertions.assertEquals(presignedUrl.getAction(), action.toString());
-                    Assertions.assertTrue(files.stream().anyMatch(file -> file.equals(presignedUrl.getPath())));
+                    Assertions.assertEquals(presignedUrl.url(), examplePresignedUrl);
+                    Assertions.assertEquals(presignedUrl.action(), action.toString());
+                    Assertions.assertTrue(files.stream().anyMatch(file -> file.equals(presignedUrl.path())));
                 });
                 Mockito.reset();
             } catch (final FileExistenceException | FileSystemAccessException e) {
@@ -143,9 +143,9 @@ class FileOperationsPresignedUrlUseCaseTest {
 
         Assertions.assertEquals(1, presignedUrls.size());
         presignedUrls.forEach(presignedUrl -> {
-            Assertions.assertEquals(presignedUrl.getUrl(), examplePresignedUrl);
-            Assertions.assertEquals(presignedUrl.getAction(), Method.PUT.toString());
-            Assertions.assertEquals(presignedUrl.getPath(), pathToDirectory);
+            Assertions.assertEquals(presignedUrl.url(), examplePresignedUrl);
+            Assertions.assertEquals(presignedUrl.action(), Method.PUT.toString());
+            Assertions.assertEquals(presignedUrl.path(), pathToDirectory);
         });
     }
 
@@ -169,8 +169,8 @@ class FileOperationsPresignedUrlUseCaseTest {
 
                 Assertions.assertEquals(3, presignedUrls.size());
                 presignedUrls.forEach(presignedUrl -> {
-                    Assertions.assertEquals(presignedUrl.getUrl(), examplePresignedUrl);
-                    Assertions.assertEquals(presignedUrl.getAction(), action.toString());
+                    Assertions.assertEquals(presignedUrl.url(), examplePresignedUrl);
+                    Assertions.assertEquals(presignedUrl.action(), action.toString());
                 });
                 Mockito.reset();
             } catch (final FileExistenceException | FileSystemAccessException e) {
@@ -188,9 +188,9 @@ class FileOperationsPresignedUrlUseCaseTest {
 
         Assertions.assertEquals(3, presignedUrls.size());
         presignedUrls.forEach(presignedUrl -> {
-            Assertions.assertEquals(presignedUrl.getUrl(), examplePresignedUrl);
-            Assertions.assertEquals(presignedUrl.getAction(), Method.PUT.toString());
-            Assertions.assertTrue(pathToFiles.stream().anyMatch(file -> file.equals(presignedUrl.getPath())));
+            Assertions.assertEquals(presignedUrl.url(), examplePresignedUrl);
+            Assertions.assertEquals(presignedUrl.action(), Method.PUT.toString());
+            Assertions.assertTrue(pathToFiles.stream().anyMatch(file -> file.equals(presignedUrl.path())));
         });
     }
 
@@ -226,9 +226,7 @@ class FileOperationsPresignedUrlUseCaseTest {
         final String pathToFile = "folder/test.txt";
         final String pathToFolder = "folder";
 
-        final FileData fileData = new FileData();
-        fileData.setPathToFile(pathToFile);
-        fileData.setExpiresInMinutes(5);
+        final FileData fileData = new FileData(pathToFile, 5);
 
         Mockito.when(this.s3Adapter.fileExists(pathToFile)).thenReturn(true);
         Mockito.when(this.s3Adapter.getFilePathsFromFolder(pathToFolder)).thenReturn(new HashSet<>(List.of(pathToFile)));
@@ -240,23 +238,21 @@ class FileOperationsPresignedUrlUseCaseTest {
     void updateFile() throws FileSystemAccessException {
         final String pathToFile = "folder/test.txt";
 
-        final FileData fileData = new FileData();
-        fileData.setPathToFile(pathToFile);
-        fileData.setExpiresInMinutes(5);
+        final FileData fileData = new FileData(pathToFile, 5);
 
         // File not in Database
         this.fileOperations.updateFile(fileData);
-        Mockito.verify(this.s3Adapter, Mockito.times(1)).getPresignedUrl(pathToFile, Method.PUT, fileData.getExpiresInMinutes());
+        Mockito.verify(this.s3Adapter, Mockito.times(1)).getPresignedUrl(pathToFile, Method.PUT, fileData.expiresInMinutes());
 
         // File already in Database with older end of life
         Mockito.reset(this.s3Adapter);
         this.fileOperations.updateFile(fileData);
-        Mockito.verify(this.s3Adapter, Mockito.times(1)).getPresignedUrl(pathToFile, Method.PUT, fileData.getExpiresInMinutes());
+        Mockito.verify(this.s3Adapter, Mockito.times(1)).getPresignedUrl(pathToFile, Method.PUT, fileData.expiresInMinutes());
 
         // File already in Database with older and of life
         Mockito.reset(this.s3Adapter);
         this.fileOperations.updateFile(fileData);
-        Mockito.verify(this.s3Adapter, Mockito.times(1)).getPresignedUrl(pathToFile, Method.PUT, fileData.getExpiresInMinutes());
+        Mockito.verify(this.s3Adapter, Mockito.times(1)).getPresignedUrl(pathToFile, Method.PUT, fileData.expiresInMinutes());
     }
 
     @Test
@@ -284,7 +280,7 @@ class FileOperationsPresignedUrlUseCaseTest {
     }
 
     @Test
-    void getPathToFolder() {
+    void pathToFolder() {
         assertThat(FileOperationsPresignedUrlUseCase.getPathToFolder("folder/file.txt")).isEqualTo("folder");
         assertThat(FileOperationsPresignedUrlUseCase.getPathToFolder("folder/subfolder/file.txt")).isEqualTo("folder/subfolder");
         assertThat(FileOperationsPresignedUrlUseCase.getPathToFolder("file.txt")).isEqualTo("");

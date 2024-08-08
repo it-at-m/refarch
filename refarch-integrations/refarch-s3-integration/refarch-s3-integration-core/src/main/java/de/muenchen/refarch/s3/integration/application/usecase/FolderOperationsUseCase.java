@@ -70,10 +70,8 @@ public class FolderOperationsUseCase implements FolderOperationsInPort {
     @Override
     public FilesInFolder getAllFilesInFolderRecursively(@NotNull final String pathToFolder) throws FileSystemAccessException {
         final String pathToFolderWithSeparatorAtTheEnd = addPathSeparatorToTheEnd(pathToFolder);
-        final FilesInFolder filesInFolder = new FilesInFolder();
         final Set<String> filePathsInFolder = this.s3OutPort.getFilePathsFromFolder(pathToFolderWithSeparatorAtTheEnd);
-        filesInFolder.setPathToFiles(filePathsInFolder);
-        return filesInFolder;
+        return new FilesInFolder(filePathsInFolder);
     }
 
     /**

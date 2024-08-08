@@ -102,12 +102,12 @@ public class FileOperationsPresignedUrlUseCase implements FileOperationsPresigne
 
     @Override
     public PresignedUrl saveFile(final FileData fileData) throws FileSystemAccessException, FileExistenceException {
-        if (this.fileExists(fileData.getPathToFile())) {
-            final String message = String.format("The file %s does exists.", fileData.getPathToFile());
+        if (this.fileExists(fileData.pathToFile())) {
+            final String message = String.format("The file %s does exists.", fileData.pathToFile());
             log.error(message);
             throw new FileExistenceException(message);
         }
-        return this.getPresignedUrl(fileData.getPathToFile(), Method.PUT, fileData.getExpiresInMinutes());
+        return this.getPresignedUrl(fileData.pathToFile(), Method.PUT, fileData.expiresInMinutes());
     }
 
     /**
@@ -120,7 +120,7 @@ public class FileOperationsPresignedUrlUseCase implements FileOperationsPresigne
      */
     @Override
     public PresignedUrl updateFile(final FileData fileData) throws FileSystemAccessException {
-        return this.getPresignedUrl(fileData.getPathToFile(), Method.PUT, fileData.getExpiresInMinutes());
+        return this.getPresignedUrl(fileData.pathToFile(), Method.PUT, fileData.expiresInMinutes());
     }
 
     /**
