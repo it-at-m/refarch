@@ -11,7 +11,7 @@ changelog:
         - refactoring
     - title: 📔 Documentation
       labels:
-        - docs
+        - documentation
     - title: 🔨 Dependency Upgrades
       labels:
         - dependencies
