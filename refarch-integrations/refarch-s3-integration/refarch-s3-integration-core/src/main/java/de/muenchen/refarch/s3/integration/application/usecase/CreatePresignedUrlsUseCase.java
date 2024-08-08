@@ -15,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class CreatePresignedUrlsUseCase implements CreatePresignedUrlsInPort {
 
+    public static final String PATH_DELIMITER = ";";
     private final FileOperationsPresignedUrlUseCase fileHandlingService;
     private final int presignedUrlExpiresInMinutes;
 
@@ -22,7 +23,7 @@ public class CreatePresignedUrlsUseCase implements CreatePresignedUrlsInPort {
     @NonNull
     public List<PresignedUrl> createPresignedUrls(@Valid CreatePresignedUrlEvent event) throws FileSystemAccessException {
         return this.fileHandlingService.getPresignedUrls(
-                List.of(event.path().split(";")),
+                List.of(event.path().split(PATH_DELIMITER)),
                 Method.valueOf(event.action()),
                 this.presignedUrlExpiresInMinutes // 7 days is max expiration
         );
