@@ -109,13 +109,6 @@
             <artifactId>json-path</artifactId>
         </dependency>
 
-        <!-- Spring developer tools -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
         <!-- apache commons -->
         <dependency>
             <groupId>commons-io</groupId>
