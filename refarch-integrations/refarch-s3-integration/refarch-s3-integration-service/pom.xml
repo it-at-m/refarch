@@ -14,7 +14,7 @@
     <name>refarch-s3-integration-service</name>
 
     <properties>
-        <apache.commons.io>2.16.1</apache.commons.io>
+        <commons-io.version>2.16.1</commons-io.version>
     </properties>
 
     <dependencies>
@@ -120,7 +120,7 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>${apache.commons.io}</version>
+            <version>${commons-io.version}</version>
         </dependency>
 
         <!-- Configuration Processor -->
