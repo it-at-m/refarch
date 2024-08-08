@@ -17,11 +17,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 /**
- * <p>
  * Spring filter that performs an NFC normalisation of all <em>safe textual</em> content.
- * </p>
- *
- * <strong>Warning:</strong>
+ * <p>
+ * Warning:
  * <ul>
  * <li>All data streams associated with multipart requests are not normalised according to NFC.
  * The reason for this is that binary data streams are transferred here and these are generally not

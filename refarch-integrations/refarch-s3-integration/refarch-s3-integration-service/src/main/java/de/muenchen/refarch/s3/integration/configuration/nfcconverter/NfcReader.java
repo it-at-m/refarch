@@ -8,12 +8,9 @@ import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * <p>
  * Wrapper for readers that performs an NFC conversion.
- * </p>
- *
  * <p>
- * <strong>Warning:</strong>
+ * Warning:
  * <ul>
  * <li>With Java readers and writers, an NFC conversion can be carried out safely as characters are
  * processed there.</li>
@@ -23,7 +20,6 @@ import org.jetbrains.annotations.NotNull;
  * the basis of individual characters.
  * This can lead to increased latency.</li>
  * </ul>
- * </p>
  */
 @Slf4j
 public class NfcReader extends Reader {
