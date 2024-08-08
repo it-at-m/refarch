@@ -15,3 +15,6 @@ changelog:
     - title: 🔨 Dependency Upgrades
       labels:
         - dependencies
+    - title: 💥 Breaking Changes
+      labels:
+        - BREAKING
