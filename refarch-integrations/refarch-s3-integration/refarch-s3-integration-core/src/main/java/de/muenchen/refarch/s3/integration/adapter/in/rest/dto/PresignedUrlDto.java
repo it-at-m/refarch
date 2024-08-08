@@ -6,6 +6,5 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public record PresignedUrlDto(
         String url,
         String path,
-        String action
-) {
+        String action) {
 }

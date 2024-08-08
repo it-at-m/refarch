@@ -117,7 +117,8 @@ public class NfcHelper {
     }
 
     /**
-     * Convert the headers of a {@link HttpServletRequest} from strings to the canonical Unicode normal form (NFC).
+     * Convert the headers of a {@link HttpServletRequest} from strings to the canonical Unicode normal
+     * form (NFC).
      *
      * @param originalRequest The {@link HttpServletRequest} for extracting and converting the headers
      * @return Map with normalised content

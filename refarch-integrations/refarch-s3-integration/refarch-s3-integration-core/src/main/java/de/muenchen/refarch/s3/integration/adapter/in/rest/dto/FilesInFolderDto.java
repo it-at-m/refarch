@@ -5,6 +5,5 @@ import java.util.Set;
 
 @Schema(description = "File paths")
 public record FilesInFolderDto(
-        Set<String> pathToFiles
-) {
+        Set<String> pathToFiles) {
 }

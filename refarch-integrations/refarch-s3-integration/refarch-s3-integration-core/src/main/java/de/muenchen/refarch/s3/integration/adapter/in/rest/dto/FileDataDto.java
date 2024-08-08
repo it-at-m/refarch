@@ -10,12 +10,6 @@ import jakarta.validation.constraints.Size;
 
 @Schema(description = "File data for requesting a presigned url")
 public record FileDataDto(
-        @NotEmpty
-        @Size(max = FileData.LENGTH_PATH_TO_FILE)
-        @FolderInFilePath
-        String pathToFile,
-        @NotNull
-        @Min(FileData.MIN_EXPIRES_IN_MINUTES)
-        Integer expiresInMinutes
-) {
+        @NotEmpty @Size(max = FileData.LENGTH_PATH_TO_FILE) @FolderInFilePath String pathToFile,
+        @NotNull @Min(FileData.MIN_EXPIRES_IN_MINUTES) Integer expiresInMinutes) {
 }

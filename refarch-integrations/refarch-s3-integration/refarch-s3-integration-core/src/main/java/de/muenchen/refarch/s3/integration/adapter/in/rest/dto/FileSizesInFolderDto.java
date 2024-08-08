@@ -5,6 +5,5 @@ import java.util.Map;
 
 @Schema(description = "File paths to sizes")
 public record FileSizesInFolderDto(
-        Map<String, Long> fileSizes
-) {
+        Map<String, Long> fileSizes) {
 }

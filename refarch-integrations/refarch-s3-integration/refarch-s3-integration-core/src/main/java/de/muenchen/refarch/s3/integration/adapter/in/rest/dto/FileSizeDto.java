@@ -4,6 +4,5 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "File path to size")
 public record FileSizeDto(
-        long fileSize
-) {
+        long fileSize) {
 }
