@@ -87,9 +87,9 @@
                             <inputSpec>${project.basedir}/src/main/api/api-docs.json</inputSpec>
                             <generatorName>java</generatorName>
                             <library>webclient</library>
-                            <apiPackage>de.muenchen.refarch.s3.integration.client.api</apiPackage>
-                            <modelPackage>de.muenchen.refarch.s3.integration.client.model</modelPackage>
-                            <invokerPackage>de.muenchen.refarch.s3.integration.client</invokerPackage>
+                            <apiPackage>de.muenchen.refarch.integration.s3.client.api</apiPackage>
+                            <modelPackage>de.muenchen.refarch.integration.s3.client.model</modelPackage>
+                            <invokerPackage>de.muenchen.refarch.integration.s3.client</invokerPackage>
 
                             <generateApiTests>false</generateApiTests>
                             <generateModelTests>false</generateModelTests>

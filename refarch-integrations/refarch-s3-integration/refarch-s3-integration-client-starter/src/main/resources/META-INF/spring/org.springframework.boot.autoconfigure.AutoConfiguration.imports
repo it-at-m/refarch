@@ -1,1 +1,1 @@
-de.muenchen.refarch.s3.integration.client.configuration.S3IntegrationClientAutoConfiguration
+de.muenchen.refarch.integration.s3.client.configuration.S3IntegrationClientAutoConfiguration
