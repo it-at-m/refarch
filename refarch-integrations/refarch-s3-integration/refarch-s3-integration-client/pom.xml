@@ -85,8 +85,6 @@
                         </goals>
                         <configuration>
                             <inputSpec>${project.basedir}/src/main/api/api-docs.json</inputSpec>
-                            <ignoreFileOverride>${project.basedir}/src/main/api/.openapi-generator-ignore
-                            </ignoreFileOverride>
                             <generatorName>java</generatorName>
                             <library>webclient</library>
                             <apiPackage>de.muenchen.refarch.s3.integration.client.api</apiPackage>
