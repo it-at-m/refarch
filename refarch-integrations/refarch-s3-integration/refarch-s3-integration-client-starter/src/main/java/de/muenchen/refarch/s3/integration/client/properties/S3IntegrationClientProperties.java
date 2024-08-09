@@ -1,6 +1,6 @@
 package de.muenchen.refarch.s3.integration.client.properties;
 
-import java.util.Map;
+import de.muenchen.refarch.s3.integration.client.domain.model.SupportedFileExtensions;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -21,6 +21,6 @@ public class S3IntegrationClientProperties {
      */
     private DataSize maxBatchSize = DataSize.ofBytes(0L);
     /** Supported file extensions. */
-    private Map<String, String> supportedFileExtensions;
+    private SupportedFileExtensions supportedFileExtensions;
 
 }

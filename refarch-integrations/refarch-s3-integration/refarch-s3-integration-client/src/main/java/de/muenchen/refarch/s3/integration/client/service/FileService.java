@@ -1,7 +1,7 @@
 package de.muenchen.refarch.s3.integration.client.service;
 
+import de.muenchen.refarch.s3.integration.client.domain.model.SupportedFileExtensions;
 import de.muenchen.refarch.s3.integration.client.exception.NoFileTypeException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -23,7 +23,7 @@ public class FileService {
      * Map stores supported file extensions and their corresponding MIME types. If it is empty, all
      * types are supported.
      */
-    private final Map<String, String> supportedFileExtensions;
+    private final SupportedFileExtensions supportedFileExtensions;
 
     /** The maximum allowed file size. A value of 0 indicates no limits. */
     @Getter
@@ -33,8 +33,8 @@ public class FileService {
     @Getter
     private final DataSize maxBatchSize;
 
-    public FileService(final Map<String, String> supportedFileExtensions, final DataSize maxFileSize, final DataSize maxBatchSize) {
-        this.supportedFileExtensions = Objects.nonNull(supportedFileExtensions) ? supportedFileExtensions : new HashMap<>();
+    public FileService(final SupportedFileExtensions supportedFileExtensions, final DataSize maxFileSize, final DataSize maxBatchSize) {
+        this.supportedFileExtensions = Objects.nonNull(supportedFileExtensions) ? supportedFileExtensions : new SupportedFileExtensions();
         this.maxFileSize = maxFileSize;
         this.maxBatchSize = maxBatchSize;
     }

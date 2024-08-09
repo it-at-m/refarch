@@ -2,6 +2,7 @@ package de.muenchen.refarch.s3.integration.client.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import de.muenchen.refarch.s3.integration.client.domain.model.SupportedFileExtensions;
 import de.muenchen.refarch.s3.integration.client.exception.NoFileTypeException;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +16,7 @@ class FileServiceTest {
 
     @BeforeEach
     void setUp() {
-        final Map<String, String> fileExtensions = new HashMap<>();
+        final SupportedFileExtensions fileExtensions = new SupportedFileExtensions();
         fileExtensions.put("pdf", "application/pdf");
         fileExtensions.put("txt", "text/plain");
         fileService = new FileService(fileExtensions, DataSize.ofKilobytes(10), DataSize.ofMegabytes(5));
@@ -45,7 +46,7 @@ class FileServiceTest {
 
     @Test
     void testSupportCheckWithEmptyMap() {
-        final FileService emptyService = new FileService(new HashMap<>(), DataSize.ofMegabytes(100), DataSize.ofMegabytes(500));
+        final FileService emptyService = new FileService(new SupportedFileExtensions(), DataSize.ofMegabytes(100), DataSize.ofMegabytes(500));
         assertTrue(emptyService.isSupported("anyType"));
     }
 

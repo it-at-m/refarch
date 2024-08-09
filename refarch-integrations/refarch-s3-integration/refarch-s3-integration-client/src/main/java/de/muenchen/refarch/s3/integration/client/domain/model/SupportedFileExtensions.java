@@ -1,4 +1,4 @@
-package de.muenchen.refarch.s3.integration.client.properties;
+package de.muenchen.refarch.s3.integration.client.domain.model;
 
 import java.util.HashMap;
 
