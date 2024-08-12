@@ -43,7 +43,7 @@ public class S3IntegrationClientAutoConfiguration {
 
     @Bean
     @ConditionalOnProperty(prefix = "refarch.s3.client", name = "enable-security", havingValue = "true")
-    public ApiClient securedApiClientFactory(final ClientRegistrationRepository clientRegistrationRepository,
+    public ApiClient securedApiClient(final ClientRegistrationRepository clientRegistrationRepository,
             final OAuth2AuthorizedClientService authorizedClientService) {
         return new ApiClient(
                 this.authenticatedWebClient(clientRegistrationRepository, authorizedClientService));
@@ -51,7 +51,7 @@ public class S3IntegrationClientAutoConfiguration {
 
     @Bean
     @ConditionalOnProperty(prefix = "refarch.s3.client", name = "enable-security", havingValue = "false", matchIfMissing = true)
-    public ApiClient apiClientFactory() {
+    public ApiClient apiClient() {
         return new ApiClient(
                 WebClient.builder().build());
     }
@@ -82,8 +82,7 @@ public class S3IntegrationClientAutoConfiguration {
     }
 
     /**
-     * Instance of a {@link FileService} containing supported file extensions configured within in the
-     * 'de.muenchen.refarch.s3' scope.
+     * Instance of a {@link FileService} containing supported file extensions configured within in the 'de.muenchen.refarch.s3' scope.
      *
      * @return {@link FileService} for managing file extensions.
      */
