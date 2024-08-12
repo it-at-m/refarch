@@ -9,7 +9,7 @@ import de.muenchen.refarch.integration.s3.domain.model.FileData;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class PresignedUrlRepository implements IPresignedUrlRepository {
+public class PresignedUrlJavaRepository implements PresignedUrlRepository {
     private final FileOperationsPresignedUrlInPort fileOperationsPresignedUrlInPort;
 
     @Override

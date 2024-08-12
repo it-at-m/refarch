@@ -10,7 +10,7 @@ import java.util.Set;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class DocumentStorageFolderRepository implements IDocumentStorageFolderRepository {
+public class DocumentStorageFolderJavaRepository implements DocumentStorageFolderRepository {
     private final FolderOperationsInPort folderOperationsInPort;
 
     @Override

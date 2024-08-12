@@ -8,10 +8,10 @@ import de.muenchen.refarch.integration.s3.client.repository.presignedurl.Presign
 import de.muenchen.refarch.integration.s3.client.repository.transfer.S3FileTransferRepository;
 import de.muenchen.refarch.integration.s3.domain.exception.FileSystemAccessException;
 
-public class DocumentStorageFileRepository extends IDocumentStorageFileRepository {
+public class DocumentStorageFileJavaRepository extends DocumentStorageFileRepository {
     private final FileOperationsInPort fileOperationsInPort;
 
-    public DocumentStorageFileRepository(final PresignedUrlRepository presignedUrlRepository,
+    public DocumentStorageFileJavaRepository(final PresignedUrlRepository presignedUrlRepository,
             final S3FileTransferRepository s3FileTransferRepository, final FileOperationsInPort fileOperationsInPort) {
         super(presignedUrlRepository, s3FileTransferRepository);
         this.fileOperationsInPort = fileOperationsInPort;

@@ -5,8 +5,11 @@ import de.muenchen.refarch.integration.s3.application.port.in.FileOperationsPres
 import de.muenchen.refarch.integration.s3.application.port.in.FolderOperationsInPort;
 import de.muenchen.refarch.integration.s3.client.domain.model.SupportedFileExtensions;
 import de.muenchen.refarch.integration.s3.client.properties.S3IntegrationClientProperties;
+import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFileJavaRepository;
 import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFileRepository;
+import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFolderJavaRepository;
 import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFolderRepository;
+import de.muenchen.refarch.integration.s3.client.repository.presignedurl.PresignedUrlJavaRepository;
 import de.muenchen.refarch.integration.s3.client.repository.presignedurl.PresignedUrlRepository;
 import de.muenchen.refarch.integration.s3.client.repository.transfer.S3FileTransferRepository;
 import de.muenchen.refarch.integration.s3.client.service.FileService;
@@ -62,7 +65,7 @@ public class S3IntegrationClientAutoConfiguration {
     @ConditionalOnMissingBean
     public PresignedUrlRepository presignedUrlRepository(
             final FileOperationsPresignedUrlInPort fileOperationsPresignedUrlInPort) {
-        return new PresignedUrlRepository(fileOperationsPresignedUrlInPort);
+        return new PresignedUrlJavaRepository(fileOperationsPresignedUrlInPort);
     }
 
     @Bean
@@ -71,7 +74,7 @@ public class S3IntegrationClientAutoConfiguration {
             final PresignedUrlRepository presignedUrlRepository,
             final S3FileTransferRepository s3FileTransferRepository,
             final FileOperationsInPort fileOperationsInPort) {
-        return new DocumentStorageFileRepository(presignedUrlRepository,
+        return new DocumentStorageFileJavaRepository(presignedUrlRepository,
                 s3FileTransferRepository, fileOperationsInPort);
     }
 
@@ -79,6 +82,6 @@ public class S3IntegrationClientAutoConfiguration {
     @ConditionalOnBean
     public DocumentStorageFolderRepository documentStorageFolderRepository(
             final FolderOperationsInPort folderOperationsInPort) {
-        return new DocumentStorageFolderRepository(folderOperationsInPort);
+        return new DocumentStorageFolderJavaRepository(folderOperationsInPort);
     }
 }
