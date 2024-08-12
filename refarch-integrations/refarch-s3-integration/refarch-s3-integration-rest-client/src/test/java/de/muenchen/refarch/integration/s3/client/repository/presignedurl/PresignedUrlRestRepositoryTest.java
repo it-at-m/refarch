@@ -26,18 +26,16 @@ import reactor.core.publisher.Mono;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.STRICT_STUBS)
-class PresignedUrlRepositoryTest {
-
-    private static final String DEFAULT_S3_URL = "defaultURL";
+class PresignedUrlRestRepositoryTest {
 
     @Mock
     private FileApiApi fileApi;
 
-    private PresignedUrlRepository presignedUrlRepository;
+    private PresignedUrlRestRepository presignedUrlRestRepository;
 
     @BeforeEach
     public void beforeEach() {
-        this.presignedUrlRepository = new PresignedUrlRepository(this.fileApi);
+        this.presignedUrlRestRepository = new PresignedUrlRestRepository(this.fileApi);
         Mockito.reset(this.fileApi);
     }
 
@@ -52,7 +50,7 @@ class PresignedUrlRepositoryTest {
 
         Mockito.reset(this.fileApi);
         Mockito.when(this.fileApi.get(pathToFile, expireInMinutes)).thenReturn(Mono.just(expected));
-        final Mono<String> result = this.presignedUrlRepository.getPresignedUrlGetFile(pathToFile, expireInMinutes);
+        final Mono<String> result = this.presignedUrlRestRepository.getPresignedUrlGetFile(pathToFile, expireInMinutes);
         Mockito.verify(this.fileApi, Mockito.times(1)).get(pathToFile, expireInMinutes);
         assertThat(result.block(), is(expected.getUrl()));
         Mockito.reset(this.fileApi);
@@ -66,19 +64,19 @@ class PresignedUrlRepositoryTest {
         Mockito.reset(this.fileApi);
         Mockito.when(this.fileApi.get(pathToFile, expireInMinutes)).thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST));
         Assertions.assertThrows(DocumentStorageClientErrorException.class,
-                () -> this.presignedUrlRepository.getPresignedUrlGetFile(pathToFile, expireInMinutes));
+                () -> this.presignedUrlRestRepository.getPresignedUrlGetFile(pathToFile, expireInMinutes));
         Mockito.verify(this.fileApi, Mockito.times(1)).get(pathToFile, expireInMinutes);
 
         Mockito.reset(this.fileApi);
         Mockito.when(this.fileApi.get(pathToFile, expireInMinutes)).thenThrow(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR));
         Assertions.assertThrows(DocumentStorageServerErrorException.class,
-                () -> this.presignedUrlRepository.getPresignedUrlGetFile(pathToFile, expireInMinutes));
+                () -> this.presignedUrlRestRepository.getPresignedUrlGetFile(pathToFile, expireInMinutes));
         Mockito.verify(this.fileApi, Mockito.times(1)).get(pathToFile, expireInMinutes);
 
         Mockito.reset(this.fileApi);
         Mockito.when(this.fileApi.get(pathToFile, expireInMinutes)).thenThrow(new RestClientException("Something happened"));
         Assertions.assertThrows(DocumentStorageException.class,
-                () -> this.presignedUrlRepository.getPresignedUrlGetFile(pathToFile, expireInMinutes));
+                () -> this.presignedUrlRestRepository.getPresignedUrlGetFile(pathToFile, expireInMinutes));
         Mockito.verify(this.fileApi, Mockito.times(1)).get(pathToFile, expireInMinutes);
     }
 
@@ -98,7 +96,7 @@ class PresignedUrlRepositoryTest {
         Mockito.reset(this.fileApi);
         Mockito.when(this.fileApi.save(fileDataDto)).thenReturn(Mono.just(expected));
 
-        final String result = this.presignedUrlRepository.getPresignedUrlSaveFile(pathToFile, expireInMinutes);
+        final String result = this.presignedUrlRestRepository.getPresignedUrlSaveFile(pathToFile, expireInMinutes);
         Mockito.verify(this.fileApi, Mockito.times(1)).save(fileDataDto);
         assertThat(result, is(expected.getUrl()));
     }
@@ -115,19 +113,19 @@ class PresignedUrlRepositoryTest {
         Mockito.reset(this.fileApi);
         Mockito.when(this.fileApi.save(fileDataDto)).thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST));
         Assertions.assertThrows(DocumentStorageClientErrorException.class,
-                () -> this.presignedUrlRepository.getPresignedUrlSaveFile(pathToFile, expireInMinutes));
+                () -> this.presignedUrlRestRepository.getPresignedUrlSaveFile(pathToFile, expireInMinutes));
         Mockito.verify(this.fileApi, Mockito.times(1)).save(fileDataDto);
 
         Mockito.reset(this.fileApi);
         Mockito.when(this.fileApi.save(fileDataDto)).thenThrow(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR));
         Assertions.assertThrows(DocumentStorageServerErrorException.class,
-                () -> this.presignedUrlRepository.getPresignedUrlSaveFile(pathToFile, expireInMinutes));
+                () -> this.presignedUrlRestRepository.getPresignedUrlSaveFile(pathToFile, expireInMinutes));
         Mockito.verify(this.fileApi, Mockito.times(1)).save(fileDataDto);
 
         Mockito.reset(this.fileApi);
         Mockito.when(this.fileApi.save(fileDataDto)).thenThrow(new RestClientException("Something happened"));
         Assertions.assertThrows(DocumentStorageException.class,
-                () -> this.presignedUrlRepository.getPresignedUrlSaveFile(pathToFile, expireInMinutes));
+                () -> this.presignedUrlRestRepository.getPresignedUrlSaveFile(pathToFile, expireInMinutes));
         Mockito.verify(this.fileApi, Mockito.times(1)).save(fileDataDto);
     }
 
@@ -147,7 +145,7 @@ class PresignedUrlRepositoryTest {
         Mockito.reset(this.fileApi);
         Mockito.when(this.fileApi.update(fileDataDto)).thenReturn(Mono.just(expected));
 
-        final String result = this.presignedUrlRepository.getPresignedUrlUpdateFile(pathToFile, expireInMinutes);
+        final String result = this.presignedUrlRestRepository.getPresignedUrlUpdateFile(pathToFile, expireInMinutes);
         Mockito.verify(this.fileApi, Mockito.times(1)).update(fileDataDto);
         assertThat(result, is(expected.getUrl()));
     }
@@ -164,19 +162,19 @@ class PresignedUrlRepositoryTest {
         Mockito.reset(this.fileApi);
         Mockito.when(this.fileApi.update(fileDataDto)).thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST));
         Assertions.assertThrows(DocumentStorageClientErrorException.class,
-                () -> this.presignedUrlRepository.getPresignedUrlUpdateFile(pathToFile, expireInMinutes));
+                () -> this.presignedUrlRestRepository.getPresignedUrlUpdateFile(pathToFile, expireInMinutes));
         Mockito.verify(this.fileApi, Mockito.times(1)).update(fileDataDto);
 
         Mockito.reset(this.fileApi);
         Mockito.when(this.fileApi.update(fileDataDto)).thenThrow(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR));
         Assertions.assertThrows(DocumentStorageServerErrorException.class,
-                () -> this.presignedUrlRepository.getPresignedUrlUpdateFile(pathToFile, expireInMinutes));
+                () -> this.presignedUrlRestRepository.getPresignedUrlUpdateFile(pathToFile, expireInMinutes));
         Mockito.verify(this.fileApi, Mockito.times(1)).update(fileDataDto);
 
         Mockito.reset(this.fileApi);
         Mockito.when(this.fileApi.update(fileDataDto)).thenThrow(new RestClientException("Something happened"));
         Assertions.assertThrows(DocumentStorageException.class,
-                () -> this.presignedUrlRepository.getPresignedUrlUpdateFile(pathToFile, expireInMinutes));
+                () -> this.presignedUrlRestRepository.getPresignedUrlUpdateFile(pathToFile, expireInMinutes));
         Mockito.verify(this.fileApi, Mockito.times(1)).update(fileDataDto);
     }
 
@@ -192,7 +190,7 @@ class PresignedUrlRepositoryTest {
         Mockito.reset(this.fileApi);
         Mockito.when(this.fileApi.delete1(pathToFile, expireInMinutes)).thenReturn(Mono.just(expected));
 
-        final String result = this.presignedUrlRepository.getPresignedUrlDeleteFile(pathToFile, expireInMinutes);
+        final String result = this.presignedUrlRestRepository.getPresignedUrlDeleteFile(pathToFile, expireInMinutes);
         Mockito.verify(this.fileApi, Mockito.times(1)).delete1(pathToFile, expireInMinutes);
         assertThat(result, is(expected.getUrl()));
     }
@@ -205,19 +203,19 @@ class PresignedUrlRepositoryTest {
         Mockito.reset(this.fileApi);
         Mockito.when(this.fileApi.delete1(pathToFile, expireInMinutes)).thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST));
         Assertions.assertThrows(DocumentStorageClientErrorException.class,
-                () -> this.presignedUrlRepository.getPresignedUrlDeleteFile(pathToFile, expireInMinutes));
+                () -> this.presignedUrlRestRepository.getPresignedUrlDeleteFile(pathToFile, expireInMinutes));
         Mockito.verify(this.fileApi, Mockito.times(1)).delete1(pathToFile, expireInMinutes);
 
         Mockito.reset(this.fileApi);
         Mockito.when(this.fileApi.delete1(pathToFile, expireInMinutes)).thenThrow(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR));
         Assertions.assertThrows(DocumentStorageServerErrorException.class,
-                () -> this.presignedUrlRepository.getPresignedUrlDeleteFile(pathToFile, expireInMinutes));
+                () -> this.presignedUrlRestRepository.getPresignedUrlDeleteFile(pathToFile, expireInMinutes));
         Mockito.verify(this.fileApi, Mockito.times(1)).delete1(pathToFile, expireInMinutes);
 
         Mockito.reset(this.fileApi);
         Mockito.when(this.fileApi.delete1(pathToFile, expireInMinutes)).thenThrow(new RestClientException("Something happened"));
         Assertions.assertThrows(DocumentStorageException.class,
-                () -> this.presignedUrlRepository.getPresignedUrlDeleteFile(pathToFile, expireInMinutes));
+                () -> this.presignedUrlRestRepository.getPresignedUrlDeleteFile(pathToFile, expireInMinutes));
         Mockito.verify(this.fileApi, Mockito.times(1)).delete1(pathToFile, expireInMinutes);
     }
 

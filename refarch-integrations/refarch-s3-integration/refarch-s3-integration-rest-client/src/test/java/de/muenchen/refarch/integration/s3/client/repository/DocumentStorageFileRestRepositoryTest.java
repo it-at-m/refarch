@@ -10,7 +10,7 @@ import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageClient
 import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageException;
 import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageServerErrorException;
 import de.muenchen.refarch.integration.s3.client.model.FileSizeDto;
-import de.muenchen.refarch.integration.s3.client.repository.presignedurl.PresignedUrlRepository;
+import de.muenchen.refarch.integration.s3.client.repository.presignedurl.PresignedUrlRestRepository;
 import de.muenchen.refarch.integration.s3.client.repository.transfer.S3FileTransferRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,10 +27,10 @@ import reactor.core.publisher.Mono;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.STRICT_STUBS)
-class DocumentStorageFileRepositoryTest {
+class DocumentStorageFileRestRepositoryTest {
 
     @Mock
-    private PresignedUrlRepository presignedUrlRepository;
+    private PresignedUrlRestRepository presignedUrlRestRepository;
 
     @Mock
     private S3FileTransferRepository s3FileTransferRepository;
@@ -38,13 +38,13 @@ class DocumentStorageFileRepositoryTest {
     @Mock
     private FileApiApi fileApi;
 
-    private DocumentStorageFileRepository documentStorageFileRepository;
+    private DocumentStorageFileRestRepository documentStorageFileRestRepository;
 
     @BeforeEach
     public void beforeEach() {
-        this.documentStorageFileRepository = new DocumentStorageFileRepository(this.presignedUrlRepository, this.s3FileTransferRepository,
+        this.documentStorageFileRestRepository = new DocumentStorageFileRestRepository(this.presignedUrlRestRepository, this.s3FileTransferRepository,
                 this.fileApi);
-        Mockito.reset(this.presignedUrlRepository, this.s3FileTransferRepository, this.fileApi);
+        Mockito.reset(this.presignedUrlRestRepository, this.s3FileTransferRepository, this.fileApi);
     }
 
     @Test
@@ -53,11 +53,11 @@ class DocumentStorageFileRepositoryTest {
         final int expireInMinutes = 10;
         final String presignedUrl = "the_presignedUrl";
 
-        when(this.presignedUrlRepository.getPresignedUrlGetFile(pathToFile, expireInMinutes)).thenReturn(Mono.just(presignedUrl));
+        when(this.presignedUrlRestRepository.getPresignedUrlGetFile(pathToFile, expireInMinutes)).thenReturn(Mono.just(presignedUrl));
         when(this.s3FileTransferRepository.getFile(presignedUrl)).thenReturn(new byte[] {});
-        this.documentStorageFileRepository.getFile(pathToFile, expireInMinutes);
+        this.documentStorageFileRestRepository.getFile(pathToFile, expireInMinutes);
 
-        verify(this.presignedUrlRepository, Mockito.times(1)).getPresignedUrlGetFile(pathToFile, expireInMinutes);
+        verify(this.presignedUrlRestRepository, Mockito.times(1)).getPresignedUrlGetFile(pathToFile, expireInMinutes);
         verify(this.s3FileTransferRepository, Mockito.times(1)).getFile(presignedUrl);
     }
 
@@ -68,23 +68,23 @@ class DocumentStorageFileRepositoryTest {
         final String pathToFile = "path/to/file";
 
         when(fileApi.getFileSize(anyString())).thenReturn(Mono.just(fileSizeDto));
-        final Mono<Long> result = documentStorageFileRepository.getFileSize(pathToFile);
+        final Mono<Long> result = documentStorageFileRestRepository.getFileSize(pathToFile);
         assertEquals(123L, result.block());
         verify(fileApi, Mockito.times(1)).getFileSize(pathToFile);
 
         Mockito.reset(this.fileApi);
         when(fileApi.getFileSize(anyString())).thenThrow(HttpClientErrorException.class);
-        assertThrows(DocumentStorageClientErrorException.class, () -> documentStorageFileRepository.getFileSize(pathToFile));
+        assertThrows(DocumentStorageClientErrorException.class, () -> documentStorageFileRestRepository.getFileSize(pathToFile));
         verify(fileApi, Mockito.times(1)).getFileSize(pathToFile);
 
         Mockito.reset(this.fileApi);
         when(fileApi.getFileSize(anyString())).thenThrow(HttpServerErrorException.class);
-        assertThrows(DocumentStorageServerErrorException.class, () -> documentStorageFileRepository.getFileSize(pathToFile));
+        assertThrows(DocumentStorageServerErrorException.class, () -> documentStorageFileRestRepository.getFileSize(pathToFile));
         verify(fileApi, Mockito.times(1)).getFileSize(pathToFile);
 
         Mockito.reset(this.fileApi);
         when(fileApi.getFileSize(anyString())).thenThrow(RestClientException.class);
-        assertThrows(DocumentStorageException.class, () -> documentStorageFileRepository.getFileSize(pathToFile));
+        assertThrows(DocumentStorageException.class, () -> documentStorageFileRestRepository.getFileSize(pathToFile));
         verify(fileApi, Mockito.times(1)).getFileSize(pathToFile);
     }
 
@@ -95,11 +95,11 @@ class DocumentStorageFileRepositoryTest {
         final int expireInMinutes = 10;
         final String presignedUrl = "the_presignedUrl";
 
-        when(this.presignedUrlRepository.getPresignedUrlSaveFile(pathToFile, expireInMinutes)).thenReturn(presignedUrl);
+        when(this.presignedUrlRestRepository.getPresignedUrlSaveFile(pathToFile, expireInMinutes)).thenReturn(presignedUrl);
         doNothing().when(this.s3FileTransferRepository).saveFile(presignedUrl, file);
-        this.documentStorageFileRepository.saveFile(pathToFile, file, expireInMinutes);
+        this.documentStorageFileRestRepository.saveFile(pathToFile, file, expireInMinutes);
 
-        verify(this.presignedUrlRepository, Mockito.times(1)).getPresignedUrlSaveFile(pathToFile, expireInMinutes);
+        verify(this.presignedUrlRestRepository, Mockito.times(1)).getPresignedUrlSaveFile(pathToFile, expireInMinutes);
         verify(this.s3FileTransferRepository, Mockito.times(1)).saveFile(presignedUrl, file);
     }
 
@@ -110,11 +110,11 @@ class DocumentStorageFileRepositoryTest {
         final int expireInMinutes = 10;
         final String presignedUrl = "the_presignedUrl";
 
-        when(this.presignedUrlRepository.getPresignedUrlUpdateFile(pathToFile, expireInMinutes)).thenReturn(presignedUrl);
+        when(this.presignedUrlRestRepository.getPresignedUrlUpdateFile(pathToFile, expireInMinutes)).thenReturn(presignedUrl);
         doNothing().when(this.s3FileTransferRepository).updateFile(presignedUrl, file);
-        this.documentStorageFileRepository.updateFile(pathToFile, file, expireInMinutes);
+        this.documentStorageFileRestRepository.updateFile(pathToFile, file, expireInMinutes);
 
-        verify(this.presignedUrlRepository, Mockito.times(1)).getPresignedUrlUpdateFile(pathToFile, expireInMinutes);
+        verify(this.presignedUrlRestRepository, Mockito.times(1)).getPresignedUrlUpdateFile(pathToFile, expireInMinutes);
         verify(this.s3FileTransferRepository, Mockito.times(1)).updateFile(presignedUrl, file);
     }
 
@@ -124,11 +124,11 @@ class DocumentStorageFileRepositoryTest {
         final int expireInMinutes = 10;
         final String presignedUrl = "the_presignedUrl";
 
-        when(this.presignedUrlRepository.getPresignedUrlDeleteFile(pathToFile, expireInMinutes)).thenReturn(presignedUrl);
+        when(this.presignedUrlRestRepository.getPresignedUrlDeleteFile(pathToFile, expireInMinutes)).thenReturn(presignedUrl);
         doNothing().when(this.s3FileTransferRepository).deleteFile(presignedUrl);
-        this.documentStorageFileRepository.deleteFile(pathToFile, expireInMinutes);
+        this.documentStorageFileRestRepository.deleteFile(pathToFile, expireInMinutes);
 
-        verify(this.presignedUrlRepository, Mockito.times(1)).getPresignedUrlDeleteFile(pathToFile, expireInMinutes);
+        verify(this.presignedUrlRestRepository, Mockito.times(1)).getPresignedUrlDeleteFile(pathToFile, expireInMinutes);
         verify(this.s3FileTransferRepository, Mockito.times(1)).deleteFile(presignedUrl);
     }
 

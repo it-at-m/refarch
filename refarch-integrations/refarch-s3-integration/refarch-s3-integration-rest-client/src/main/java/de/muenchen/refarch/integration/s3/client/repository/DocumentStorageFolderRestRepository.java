@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-public class DocumentStorageFolderRepository implements IDocumentStorageFolderRepository {
+public class DocumentStorageFolderRestRepository implements DocumentStorageFolderRepository {
     private final FolderApiApi folderApi;
 
     @Override

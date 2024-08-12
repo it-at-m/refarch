@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-public class PresignedUrlRepository implements IPresignedUrlRepository {
+public class PresignedUrlRestRepository implements PresignedUrlRepository {
 
     private final FileApiApi fileApi;
 

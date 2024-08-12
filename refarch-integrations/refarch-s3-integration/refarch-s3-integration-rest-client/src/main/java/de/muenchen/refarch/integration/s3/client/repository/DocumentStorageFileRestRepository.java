@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-public class DocumentStorageFileRepository implements IDocumentStorageFileRepository {
+public class DocumentStorageFileRestRepository implements DocumentStorageFileRepository {
 
     private final PresignedUrlRepository presignedUrlRepository;
 
