@@ -82,7 +82,8 @@ public class S3IntegrationClientAutoConfiguration {
     }
 
     /**
-     * Instance of a {@link FileService} containing supported file extensions configured within in the 'de.muenchen.refarch.s3' scope.
+     * Instance of a {@link FileService} containing supported file extensions configured within in the
+     * 'de.muenchen.refarch.s3' scope.
      *
      * @return {@link FileService} for managing file extensions.
      */
