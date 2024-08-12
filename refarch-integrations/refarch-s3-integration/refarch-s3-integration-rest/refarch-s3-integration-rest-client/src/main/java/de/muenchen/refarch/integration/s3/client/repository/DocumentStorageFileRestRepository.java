@@ -4,34 +4,23 @@ import de.muenchen.refarch.integration.s3.client.api.FileApiApi;
 import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageClientErrorException;
 import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageException;
 import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageServerErrorException;
-import de.muenchen.refarch.integration.s3.client.model.FileSizeDto;
 import de.muenchen.refarch.integration.s3.client.repository.presignedurl.PresignedUrlRepository;
 import de.muenchen.refarch.integration.s3.client.repository.transfer.S3FileTransferRepository;
-import java.io.InputStream;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestClientException;
-import reactor.core.publisher.Mono;
 
 @Slf4j
 @Repository
-@RequiredArgsConstructor
-public class DocumentStorageFileRestRepository implements DocumentStorageFileRepository {
-
-    private final PresignedUrlRepository presignedUrlRepository;
-
-    private final S3FileTransferRepository s3FileTransferRepository;
-
+public class DocumentStorageFileRepository extends DocumentStorageFileRepository {
     private final FileApiApi fileApi;
 
-    @Override
-    public byte[] getFile(final String pathToFile, final int expireInMinutes)
-            throws DocumentStorageException, DocumentStorageClientErrorException, DocumentStorageServerErrorException {
-        final String presignedUrl = this.presignedUrlRepository.getPresignedUrlGetFile(pathToFile, expireInMinutes);
-        return this.s3FileTransferRepository.getFile(presignedUrl);
+    public DocumentStorageFileRepository(final PresignedUrlRepository presignedUrlRepository,
+            final S3FileTransferRepository s3FileTransferRepository, final FileApiApi fileApi) {
+        super(presignedUrlRepository, s3FileTransferRepository);
+        this.fileApi = fileApi;
     }
 
     @Override
@@ -53,47 +42,4 @@ public class DocumentStorageFileRestRepository implements DocumentStorageFileRep
             throw new DocumentStorageException(message, exception);
         }
     }
-
-    @Override
-    public InputStream getFileInputStream(final String pathToFile, final int expireInMinutes)
-            throws DocumentStorageException, DocumentStorageClientErrorException, DocumentStorageServerErrorException {
-        final String presignedUrl = this.presignedUrlRepository.getPresignedUrlGetFile(pathToFile, expireInMinutes);
-        return this.s3FileTransferRepository.getFileInputStream(presignedUrl);
-    }
-
-    @Override
-    public void saveFile(final String pathToFile, final byte[] file, final int expireInMinutes)
-            throws DocumentStorageException, DocumentStorageClientErrorException, DocumentStorageServerErrorException {
-        final String presignedUrl = this.presignedUrlRepository.getPresignedUrlSaveFile(pathToFile, expireInMinutes);
-        this.s3FileTransferRepository.saveFile(presignedUrl, file);
-    }
-
-    @Override
-    public void saveFileInputStream(final String pathToFile, final InputStream file, final int expireInMinutes)
-            throws DocumentStorageException, DocumentStorageClientErrorException, DocumentStorageServerErrorException {
-        final String presignedUrl = this.presignedUrlRepository.getPresignedUrlSaveFile(pathToFile, expireInMinutes);
-        this.s3FileTransferRepository.saveFileInputStream(presignedUrl, file);
-    }
-
-    @Override
-    public void updateFile(final String pathToFile, final byte[] file, final int expireInMinutes)
-            throws DocumentStorageException, DocumentStorageClientErrorException, DocumentStorageServerErrorException {
-        final String presignedUrl = this.presignedUrlRepository.getPresignedUrlUpdateFile(pathToFile, expireInMinutes);
-        this.s3FileTransferRepository.updateFile(presignedUrl, file);
-    }
-
-    @Override
-    public void updateFileInputStream(final String pathToFile, final InputStream file, final int expireInMinutes)
-            throws DocumentStorageException, DocumentStorageClientErrorException, DocumentStorageServerErrorException {
-        final String presignedUrl = this.presignedUrlRepository.getPresignedUrlUpdateFile(pathToFile, expireInMinutes);
-        this.s3FileTransferRepository.updateFileInputStream(presignedUrl, file);
-    }
-
-    @Override
-    public void deleteFile(final String pathToFile, final int expireInMinutes)
-            throws DocumentStorageException, DocumentStorageClientErrorException, DocumentStorageServerErrorException {
-        final String presignedUrl = this.presignedUrlRepository.getPresignedUrlDeleteFile(pathToFile, expireInMinutes);
-        this.s3FileTransferRepository.deleteFile(presignedUrl);
-    }
-
 }
