@@ -102,8 +102,8 @@ class DocumentStorageFolderRestRepositoryTest {
         fileSizesInFolderDto.setFileSizes(Map.of("file1", 100L, "file2", 200L));
         when(folderApi.getAllFileSizesInFolderRecursively(anyString())).thenReturn(Mono.just(fileSizesInFolderDto));
 
-        Mono<Map<String, Long>> result = documentStorageFolderRestRepository.getAllFileSizesInFolderRecursively(pathToFolder);
-        assertEquals(Map.of("file1", 100L, "file2", 200L), result.block());
+        Map<String, Long> result = documentStorageFolderRestRepository.getAllFileSizesInFolderRecursively(pathToFolder);
+        assertEquals(Map.of("file1", 100L, "file2", 200L), result);
         verify(this.folderApi, times(1)).getAllFileSizesInFolderRecursively(pathToFolder);
 
         Mockito.reset(this.folderApi);

@@ -43,11 +43,11 @@ public class DocumentStorageFolderRestRepository implements DocumentStorageFolde
     }
 
     @Override
-    public Mono<Set<String>> getAllFilesInFolderRecursively(final String pathToFolder)
+    public Set<String> getAllFilesInFolderRecursively(final String pathToFolder)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
         try {
             final Mono<FilesInFolderDto> filesInFolderDto = folderApi.getAllFilesInFolderRecursively(pathToFolder);
-            return filesInFolderDto.mapNotNull(FilesInFolderDto::getPathToFiles);
+            return filesInFolderDto.block().getPathToFiles();
         } catch (final HttpClientErrorException exception) {
             final String message = String.format("The request to get all files within a folder failed %s.", exception.getStatusCode());
             log.error(message);
@@ -64,11 +64,11 @@ public class DocumentStorageFolderRestRepository implements DocumentStorageFolde
     }
 
     @Override
-    public Mono<Map<String, Long>> getAllFileSizesInFolderRecursively(final String pathToFolder)
+    public Map<String, Long> getAllFileSizesInFolderRecursively(final String pathToFolder)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
         try {
             final Mono<FileSizesInFolderDto> fileSizesInFolderDtoMono = folderApi.getAllFileSizesInFolderRecursively(pathToFolder);
-            return fileSizesInFolderDtoMono.mapNotNull(FileSizesInFolderDto::getFileSizes);
+            return fileSizesInFolderDtoMono.block().getFileSizes();
         } catch (final HttpClientErrorException exception) {
             final String message = String.format("The request to get all file sizes within a folder failed %s.", exception.getStatusCode());
             log.error(message);

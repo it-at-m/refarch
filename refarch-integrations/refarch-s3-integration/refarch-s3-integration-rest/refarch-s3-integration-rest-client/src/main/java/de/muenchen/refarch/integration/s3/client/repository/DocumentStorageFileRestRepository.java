@@ -35,10 +35,10 @@ public class DocumentStorageFileRestRepository implements DocumentStorageFileRep
     }
 
     @Override
-    public Mono<Long> getFileSize(final String pathToFile)
+    public Long getFileSize(final String pathToFile)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
         try {
-            return fileApi.getFileSize(pathToFile).mapNotNull(FileSizeDto::getFileSize);
+            return fileApi.getFileSize(pathToFile).block().getFileSize();
         } catch (final HttpClientErrorException exception) {
             final String message = String.format("The request to get file size failed %s.", exception.getStatusCode());
             log.error(message);
