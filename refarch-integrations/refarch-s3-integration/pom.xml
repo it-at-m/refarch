@@ -20,6 +20,8 @@
         <module>refarch-s3-integration-core</module>
         <module>refarch-s3-integration-starter</module>
         <module>refarch-s3-integration-client-core</module>
+        <!-- Java -->
+        <module>refarch-s3-integration-java-client</module>
         <!-- REST -->
         <module>refarch-s3-integration-rest</module>
     </modules>
