@@ -1,9 +1,21 @@
 # RefArch Gateway
 
+RefArch gateway based on [Spring Cloud Gateway](https://spring.io/projects/spring-cloud-gateway).
+
 ## Usage
 
 The gateway is released as container image `ghcr.io/it-at-m/refarch/refarch-gateway` and can be used either directly or
 via the corresponding [Helm-Chart](https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-gateway).
+
+## Features
+
+Beside the default functionality of Spring Cloud Gateway (i.e. routing) following features are preconfigured/provided:
+
+- oAuth2 login
+- Route protection
+- CSRF protection with whitelist
+- Cookie to JWT mapping for session management
+- Health and metrics endpoints
 
 ### Routing
 
