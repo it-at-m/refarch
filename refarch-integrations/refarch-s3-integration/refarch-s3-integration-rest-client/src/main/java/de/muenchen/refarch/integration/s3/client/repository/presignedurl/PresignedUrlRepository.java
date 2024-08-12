@@ -21,18 +21,6 @@ public class PresignedUrlRepository implements IPresignedUrlRepository {
 
     private final FileApiApi fileApi;
 
-    /**
-     * Fetches a presignedURL for the file named in the parameter to get a file from the document
-     * storage.
-     *
-     * @param pathToFile defines the path to the file.
-     * @param expireInMinutes the expiration time of the presignedURL in minutes.
-     * @return the presignedURL.
-     * @throws DocumentStorageClientErrorException if the problem is with the client.
-     * @throws DocumentStorageServerErrorException if the problem is with the document storage.
-     * @throws DocumentStorageException if the problem cannot be assigned to either the client or the
-     *             document storage.
-     */
     @Override
     public Mono<String> getPresignedUrlGetFile(final String pathToFile, final int expireInMinutes)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
@@ -54,18 +42,6 @@ public class PresignedUrlRepository implements IPresignedUrlRepository {
         }
     }
 
-    /**
-     * Fetches a presignedURL for the file named in the parameter to store a file in the document
-     * storage.
-     *
-     * @param pathToFile defines the path to the file.
-     * @param expireInMinutes the expiration time of the presignedURL in minutes.
-     * @return the presignedURL.
-     * @throws DocumentStorageClientErrorException if the problem is with the client.
-     * @throws DocumentStorageServerErrorException if the problem is with the document storage.
-     * @throws DocumentStorageException if the problem cannot be assigned to either the client or the
-     *             document storage.
-     */
     @Override
     public String getPresignedUrlSaveFile(final String pathToFile, final int expireInMinutes)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
@@ -90,18 +66,6 @@ public class PresignedUrlRepository implements IPresignedUrlRepository {
         }
     }
 
-    /**
-     * Fetches a presignedURL for the file named in the parameter to update a file in the document
-     * storage.
-     *
-     * @param pathToFile defines the path to the file.
-     * @param expireInMinutes the expiration time of the presignedURL in minutes.
-     * @return the presignedURL.
-     * @throws DocumentStorageClientErrorException if the problem is with the client.
-     * @throws DocumentStorageServerErrorException if the problem is with the document storage.
-     * @throws DocumentStorageException if the problem cannot be assigned to either the client or the
-     *             document storage.
-     */
     @Override
     public String getPresignedUrlUpdateFile(final String pathToFile, final int expireInMinutes)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
@@ -126,18 +90,6 @@ public class PresignedUrlRepository implements IPresignedUrlRepository {
         }
     }
 
-    /**
-     * Fetches a presignedURL for the file named in the parameter to delete a file from the document
-     * storage.
-     *
-     * @param pathToFile defines the path to the file.
-     * @param expireInMinutes the expiration time of the presignedURL in minutes.
-     * @return the presignedURL.
-     * @throws DocumentStorageClientErrorException if the problem is with the client.
-     * @throws DocumentStorageServerErrorException if the problem is with the document storage.
-     * @throws DocumentStorageException if the problem cannot be assigned to either the client or the
-     *             document storage.
-     */
     @Override
     public String getPresignedUrlDeleteFile(final String pathToFile, final int expireInMinutes)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
