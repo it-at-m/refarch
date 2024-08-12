@@ -5,7 +5,7 @@ import de.muenchen.refarch.integration.s3.client.api.FileApiApi;
 import de.muenchen.refarch.integration.s3.client.api.FolderApiApi;
 import de.muenchen.refarch.integration.s3.client.domain.model.SupportedFileExtensions;
 import de.muenchen.refarch.integration.s3.client.properties.S3IntegrationClientProperties;
-import de.muenchen.refarch.integration.s3.client.service.FileService;
+import de.muenchen.refarch.integration.s3.client.service.FileValidationService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -69,28 +69,29 @@ public class S3IntegrationClientAutoConfiguration {
     }
 
     /**
-     * Instance of a {@link FileService} containing externally given supported file extensions.
+     * Instance of a {@link FileValidationService} containing externally given supported file
+     * extensions.
      *
      * @param supportedFileExtensions {@link java.util.Map} of supported file extensions.
-     * @return {@link FileService} for managing file extensions.
+     * @return {@link FileValidationService} for managing file extensions.
      */
     @Bean
     @ConditionalOnBean(SupportedFileExtensions.class)
-    public FileService fileService(final SupportedFileExtensions supportedFileExtensions) {
-        return new FileService(supportedFileExtensions, this.s3IntegrationClientProperties.getMaxFileSize(),
+    public FileValidationService fileService(final SupportedFileExtensions supportedFileExtensions) {
+        return new FileValidationService(supportedFileExtensions, this.s3IntegrationClientProperties.getMaxFileSize(),
                 this.s3IntegrationClientProperties.getMaxBatchSize());
     }
 
     /**
-     * Instance of a {@link FileService} containing supported file extensions configured within in the
-     * 'de.muenchen.refarch.s3' scope.
+     * Instance of a {@link FileValidationService} containing supported file extensions configured
+     * within in the 'de.muenchen.refarch.s3' scope.
      *
-     * @return {@link FileService} for managing file extensions.
+     * @return {@link FileValidationService} for managing file extensions.
      */
     @Bean
     @ConditionalOnMissingBean(SupportedFileExtensions.class)
-    public FileService fileServiceFromS3IntegrationClientProperties() {
-        return new FileService(this.s3IntegrationClientProperties.getSupportedFileExtensions(), this.s3IntegrationClientProperties.getMaxFileSize(),
+    public FileValidationService fileServiceFromS3IntegrationClientProperties() {
+        return new FileValidationService(this.s3IntegrationClientProperties.getSupportedFileExtensions(), this.s3IntegrationClientProperties.getMaxFileSize(),
                 this.s3IntegrationClientProperties.getMaxBatchSize());
     }
 
