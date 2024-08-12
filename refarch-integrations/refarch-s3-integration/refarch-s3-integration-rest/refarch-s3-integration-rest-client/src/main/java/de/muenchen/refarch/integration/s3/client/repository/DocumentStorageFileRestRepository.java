@@ -30,8 +30,8 @@ public class DocumentStorageFileRestRepository implements DocumentStorageFileRep
     @Override
     public byte[] getFile(final String pathToFile, final int expireInMinutes)
             throws DocumentStorageException, DocumentStorageClientErrorException, DocumentStorageServerErrorException {
-        final Mono<String> presignedUrl = this.presignedUrlRepository.getPresignedUrlGetFile(pathToFile, expireInMinutes);
-        return this.s3FileTransferRepository.getFile(presignedUrl.block());
+        final String presignedUrl = this.presignedUrlRepository.getPresignedUrlGetFile(pathToFile, expireInMinutes);
+        return this.s3FileTransferRepository.getFile(presignedUrl);
     }
 
     @Override
@@ -57,8 +57,8 @@ public class DocumentStorageFileRestRepository implements DocumentStorageFileRep
     @Override
     public InputStream getFileInputStream(final String pathToFile, final int expireInMinutes)
             throws DocumentStorageException, DocumentStorageClientErrorException, DocumentStorageServerErrorException {
-        final Mono<String> presignedUrl = this.presignedUrlRepository.getPresignedUrlGetFile(pathToFile, expireInMinutes);
-        return this.s3FileTransferRepository.getFileInputStream(presignedUrl.block());
+        final String presignedUrl = this.presignedUrlRepository.getPresignedUrlGetFile(pathToFile, expireInMinutes);
+        return this.s3FileTransferRepository.getFileInputStream(presignedUrl);
     }
 
     @Override
