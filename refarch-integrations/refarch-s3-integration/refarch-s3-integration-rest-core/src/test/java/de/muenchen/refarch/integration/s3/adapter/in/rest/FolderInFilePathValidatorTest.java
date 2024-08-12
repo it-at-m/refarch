@@ -2,7 +2,7 @@ package de.muenchen.refarch.integration.s3.adapter.in.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import de.muenchen.refarch.integration.s3.adapter.in.rest.validation.FolderInFilePathValidator;
+import de.muenchen.refarch.integration.s3.domain.validation.FolderInFilePathValidator;
 import org.junit.jupiter.api.Test;
 
 class FolderInFilePathValidatorTest {

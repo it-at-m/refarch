@@ -21,7 +21,7 @@
         <!-- S3 -->
         <dependency>
             <groupId>de.muenchen.refarch</groupId>
-            <artifactId>refarch-s3-integration-starter</artifactId>
+            <artifactId>refarch-s3-integration-rest-starter</artifactId>
             <version>${project.version}</version>
         </dependency>
 

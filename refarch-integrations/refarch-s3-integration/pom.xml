@@ -22,5 +22,8 @@
         <module>refarch-s3-integration-service</module>
         <module>refarch-s3-integration-client</module>
         <module>refarch-s3-integration-client-starter</module>
+        <!-- REST -->
+        <module>refarch-s3-integration-rest-core</module>
+        <module>refarch-s3-integration-rest-starter</module>
     </modules>
 </project>

@@ -6,7 +6,6 @@ import de.muenchen.refarch.integration.s3.adapter.in.rest.dto.PresignedUrlDto;
 import de.muenchen.refarch.integration.s3.adapter.in.rest.mapper.FileDataMapper;
 import de.muenchen.refarch.integration.s3.adapter.in.rest.mapper.FileSizeMapper;
 import de.muenchen.refarch.integration.s3.adapter.in.rest.mapper.PresignedUrlMapper;
-import de.muenchen.refarch.integration.s3.adapter.in.rest.validation.FolderInFilePath;
 import de.muenchen.refarch.integration.s3.application.port.in.FileOperationsInPort;
 import de.muenchen.refarch.integration.s3.application.port.in.FileOperationsPresignedUrlInPort;
 import de.muenchen.refarch.integration.s3.domain.exception.FileExistenceException;
@@ -14,6 +13,7 @@ import de.muenchen.refarch.integration.s3.domain.exception.FileSystemAccessExcep
 import de.muenchen.refarch.integration.s3.domain.model.FileData;
 import de.muenchen.refarch.integration.s3.domain.model.FileSize;
 import de.muenchen.refarch.integration.s3.domain.model.PresignedUrl;
+import de.muenchen.refarch.integration.s3.domain.validation.FolderInFilePath;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

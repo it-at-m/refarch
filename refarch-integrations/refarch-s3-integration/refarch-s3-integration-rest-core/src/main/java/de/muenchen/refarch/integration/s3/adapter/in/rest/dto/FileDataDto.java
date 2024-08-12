@@ -1,7 +1,7 @@
 package de.muenchen.refarch.integration.s3.adapter.in.rest.dto;
 
-import de.muenchen.refarch.integration.s3.adapter.in.rest.validation.FolderInFilePath;
 import de.muenchen.refarch.integration.s3.domain.model.FileData;
+import de.muenchen.refarch.integration.s3.domain.validation.FolderInFilePath;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;

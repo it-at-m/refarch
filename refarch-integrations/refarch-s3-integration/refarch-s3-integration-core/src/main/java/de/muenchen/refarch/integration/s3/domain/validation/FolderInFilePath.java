@@ -1,4 +1,4 @@
-package de.muenchen.refarch.integration.s3.adapter.in.rest.validation;
+package de.muenchen.refarch.integration.s3.domain.validation;
 
 import static java.lang.annotation.ElementType.*;
 
