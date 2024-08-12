@@ -21,7 +21,7 @@
     <dependencies>
         <dependency>
             <groupId>de.muenchen.refarch</groupId>
-            <artifactId>refarch-s3-integration-client</artifactId>
+            <artifactId>refarch-s3-integration-client-core</artifactId>
             <version>${project.version}</version>
         </dependency>
 

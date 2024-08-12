@@ -19,7 +19,7 @@
     <modules>
         <module>refarch-s3-integration-core</module>
         <module>refarch-s3-integration-starter</module>
-        <module>refarch-s3-integration-client</module>
+        <module>refarch-s3-integration-client-core</module>
         <!-- REST -->
         <module>refarch-s3-integration-rest-core</module>
         <module>refarch-s3-integration-rest-starter</module>
