@@ -1,0 +1,46 @@
+info:
+  application:
+    name: '@project.artifactId@'
+    version: '@project.version@'
+
+spring:
+  application:
+    name: ${info.application.name}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${SSO_ISSUER_URL}
+
+server:
+  error:
+    include-exception: false
+    include-stacktrace: never
+    whitelabel:
+      enabled: false
+  shutdown: graceful
+
+# Config for spring actuator endpoints
+management:
+  endpoints:
+    enabled-by-default: false
+    web:
+      exposure:
+        include: health, info, prometheus, livenessstate, readinessstate
+      path-mapping:
+        prometheus: metrics
+  endpoint:
+    health.enabled: true
+    info.enabled: true
+    prometheus.enabled: true
+
+security:
+  oauth2:
+    resource.user-info-uri: ${SSO_ISSUER_URL}/protocol/openid-connect/userinfo
+
+refarch:
+  s3:
+    bucket-name: ${S3_BUCKETNAME}
+    access-key: ${S3_ACCESSKEY}
+    url: ${S3_URL:http://localhost:9000}
+    secret-key: ${S3_SECRETKEY}
