@@ -16,7 +16,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.security.oauth2.client.AuthorizedClientServiceOAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -27,21 +26,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 @ComponentScan(
         basePackages = {
                 "de.muenchen.refarch.integration.s3.client"
-        },
-        excludeFilters = {
-                @ComponentScan.Filter(
-                        type = FilterType.ASSIGNABLE_TYPE,
-                        classes = {
-                                /*
-                                 * Exclude to avoid multiple instantiation of multiple beans with same name.
-                                 * This class is instantiated in {@link S3IntegrationClientAutoConfiguration}
-                                 * to give the bean another name.
-                                 */
-                                ApiClient.class,
-                                FileApiApi.class,
-                                FolderApiApi.class
-                        }
-                )
         }
 )
 @RequiredArgsConstructor
