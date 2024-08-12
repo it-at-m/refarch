@@ -14,7 +14,8 @@ public interface DocumentStorageFolderRepository {
      * @param pathToFolder which defines the folder in the document storage.
      * @throws DocumentStorageClientErrorException if the problem is with the client.
      * @throws DocumentStorageServerErrorException if the problem is with the document storage.
-     * @throws DocumentStorageException            if the problem cannot be assigned directly to the document storage.
+     * @throws DocumentStorageException if the problem cannot be assigned directly to the document
+     *             storage.
      */
     void deleteFolder(String pathToFolder)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException;
@@ -25,7 +26,8 @@ public interface DocumentStorageFolderRepository {
      * @param pathToFolder which defines the folder in the document storage.
      * @throws DocumentStorageClientErrorException if the problem is with the client.
      * @throws DocumentStorageServerErrorException if the problem is with the document storage.
-     * @throws DocumentStorageException            if the problem cannot be assigned directly to the document storage.
+     * @throws DocumentStorageException if the problem cannot be assigned directly to the document
+     *             storage.
      */
     Mono<Set<String>> getAllFilesInFolderRecursively(String pathToFolder)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException;
@@ -37,7 +39,8 @@ public interface DocumentStorageFolderRepository {
      * @return file paths with their file sizes.
      * @throws DocumentStorageClientErrorException if the problem is with the client.
      * @throws DocumentStorageServerErrorException if the problem is with the document storage.
-     * @throws DocumentStorageException            if the problem cannot be assigned directly to the document storage.
+     * @throws DocumentStorageException if the problem cannot be assigned directly to the document
+     *             storage.
      */
     Mono<Map<String, Long>> getAllFileSizesInFolderRecursively(String pathToFolder)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException;
