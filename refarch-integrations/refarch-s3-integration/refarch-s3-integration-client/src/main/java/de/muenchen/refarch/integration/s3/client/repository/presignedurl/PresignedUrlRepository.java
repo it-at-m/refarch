@@ -6,7 +6,6 @@ import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageExcept
 import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageServerErrorException;
 import de.muenchen.refarch.integration.s3.client.model.FileDataDto;
 import de.muenchen.refarch.integration.s3.client.model.PresignedUrlDto;
-import de.muenchen.refarch.integration.s3.client.service.ApiClientFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -20,7 +19,7 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class PresignedUrlRepository {
 
-    private final ApiClientFactory apiClientFactory;
+    private final FileApiApi fileApi;
 
     /**
      * Fetches a presignedURL for the file named in the parameter to get a file from the document
@@ -28,17 +27,15 @@ public class PresignedUrlRepository {
      *
      * @param pathToFile defines the path to the file.
      * @param expireInMinutes the expiration time of the presignedURL in minutes.
-     * @param documentStorageUrl to define to which document storage the request goes.
      * @return the presignedURL.
      * @throws DocumentStorageClientErrorException if the problem is with the client.
      * @throws DocumentStorageServerErrorException if the problem is with the document storage.
      * @throws DocumentStorageException if the problem cannot be assigned to either the client or the
      *             document storage.
      */
-    public Mono<String> getPresignedUrlGetFile(final String pathToFile, final int expireInMinutes, final String documentStorageUrl)
+    public Mono<String> getPresignedUrlGetFile(final String pathToFile, final int expireInMinutes)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
         try {
-            final FileApiApi fileApi = this.apiClientFactory.getFileApiForDocumentStorageUrl(documentStorageUrl);
             final Mono<PresignedUrlDto> presignedUrlDto = fileApi.get(pathToFile, expireInMinutes);
             return presignedUrlDto.mapNotNull(PresignedUrlDto::getUrl);
         } catch (final HttpClientErrorException exception) {
@@ -62,17 +59,15 @@ public class PresignedUrlRepository {
      *
      * @param pathToFile defines the path to the file.
      * @param expireInMinutes the expiration time of the presignedURL in minutes.
-     * @param documentStorageUrl to define to which document storage the request goes.
      * @return the presignedURL.
      * @throws DocumentStorageClientErrorException if the problem is with the client.
      * @throws DocumentStorageServerErrorException if the problem is with the document storage.
      * @throws DocumentStorageException if the problem cannot be assigned to either the client or the
      *             document storage.
      */
-    public String getPresignedUrlSaveFile(final String pathToFile, final int expireInMinutes, final String documentStorageUrl)
+    public String getPresignedUrlSaveFile(final String pathToFile, final int expireInMinutes)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
         try {
-            final FileApiApi fileApi = this.apiClientFactory.getFileApiForDocumentStorageUrl(documentStorageUrl);
             final var fileDataDto = new FileDataDto();
             fileDataDto.setPathToFile(pathToFile);
             fileDataDto.setExpiresInMinutes(expireInMinutes);
@@ -99,17 +94,15 @@ public class PresignedUrlRepository {
      *
      * @param pathToFile defines the path to the file.
      * @param expireInMinutes the expiration time of the presignedURL in minutes.
-     * @param documentStorageUrl to define to which document storage the request goes.
      * @return the presignedURL.
      * @throws DocumentStorageClientErrorException if the problem is with the client.
      * @throws DocumentStorageServerErrorException if the problem is with the document storage.
      * @throws DocumentStorageException if the problem cannot be assigned to either the client or the
      *             document storage.
      */
-    public String getPresignedUrlUpdateFile(final String pathToFile, final int expireInMinutes,
-            final String documentStorageUrl) throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
+    public String getPresignedUrlUpdateFile(final String pathToFile, final int expireInMinutes)
+            throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
         try {
-            final FileApiApi fileApi = this.apiClientFactory.getFileApiForDocumentStorageUrl(documentStorageUrl);
             final var fileDataDto = new FileDataDto();
             fileDataDto.setPathToFile(pathToFile);
             fileDataDto.setExpiresInMinutes(expireInMinutes);
@@ -136,17 +129,15 @@ public class PresignedUrlRepository {
      *
      * @param pathToFile defines the path to the file.
      * @param expireInMinutes the expiration time of the presignedURL in minutes.
-     * @param documentStorageUrl to define to which document storage the request goes.
      * @return the presignedURL.
      * @throws DocumentStorageClientErrorException if the problem is with the client.
      * @throws DocumentStorageServerErrorException if the problem is with the document storage.
      * @throws DocumentStorageException if the problem cannot be assigned to either the client or the
      *             document storage.
      */
-    public String getPresignedUrlDeleteFile(final String pathToFile, final int expireInMinutes, final String documentStorageUrl)
+    public String getPresignedUrlDeleteFile(final String pathToFile, final int expireInMinutes)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
         try {
-            final FileApiApi fileApi = this.apiClientFactory.getFileApiForDocumentStorageUrl(documentStorageUrl);
             final Mono<PresignedUrlDto> presignedUrlDto = fileApi.delete1(pathToFile, expireInMinutes);
             return presignedUrlDto.block().getUrl();
         } catch (final HttpClientErrorException exception) {
