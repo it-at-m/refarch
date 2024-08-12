@@ -20,10 +20,11 @@
         <module>refarch-s3-integration-core</module>
         <module>refarch-s3-integration-starter</module>
         <module>refarch-s3-integration-client</module>
-        <module>refarch-s3-integration-client-starter</module>
         <!-- REST -->
         <module>refarch-s3-integration-rest-core</module>
         <module>refarch-s3-integration-rest-starter</module>
         <module>refarch-s3-integration-rest-service</module>
+        <module>refarch-s3-integration-rest-client</module>
+        <module>refarch-s3-integration-rest-client-starter</module>
     </modules>
 </project>

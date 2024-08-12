@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-public class DocumentStorageFolderRepository {
+public class DocumentStorageFolderRepository implements IDocumentStorageFolderRepository {
     private final FolderApiApi folderApi;
 
     /**
@@ -31,6 +31,7 @@ public class DocumentStorageFolderRepository {
      * @throws DocumentStorageException if the problem cannot be assigned directly to the document
      *             storage.
      */
+    @Override
     public void deleteFolder(final String pathToFolder)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
         try {
@@ -59,6 +60,7 @@ public class DocumentStorageFolderRepository {
      * @throws DocumentStorageException if the problem cannot be assigned directly to the document
      *             storage.
      */
+    @Override
     public Mono<Set<String>> getAllFilesInFolderRecursively(final String pathToFolder)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
         try {
@@ -89,6 +91,7 @@ public class DocumentStorageFolderRepository {
      * @throws DocumentStorageException if the problem cannot be assigned directly to the document
      *             storage.
      */
+    @Override
     public Mono<Map<String, Long>> getAllFileSizesInFolderRecursively(final String pathToFolder)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
         try {

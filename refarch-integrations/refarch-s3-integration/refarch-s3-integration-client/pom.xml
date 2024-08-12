@@ -42,17 +42,6 @@
             <version>${tika.version}</version>
         </dependency>
 
-        <!-- openApi -->
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.openapitools</groupId>
-            <artifactId>jackson-databind-nullable</artifactId>
-            <version>${jackson-databind-nullable.version}</version>
-        </dependency>
-
         <!-- Testing libraries-->
         <dependency>
             <groupId>ch.qos.logback</groupId>
@@ -70,47 +59,5 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-
-            <plugin>
-                <groupId>org.openapitools</groupId>
-                <artifactId>openapi-generator-maven-plugin</artifactId>
-                <version>${openapi-generator-maven-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>document-storage-api</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <inputSpec>${project.basedir}/src/main/api/api-docs.json</inputSpec>
-                            <generatorName>java</generatorName>
-                            <library>webclient</library>
-                            <apiPackage>de.muenchen.refarch.integration.s3.client.api</apiPackage>
-                            <modelPackage>de.muenchen.refarch.integration.s3.client.model</modelPackage>
-                            <invokerPackage>de.muenchen.refarch.integration.s3.client</invokerPackage>
-
-                            <generateApiTests>false</generateApiTests>
-                            <generateModelTests>false</generateModelTests>
-                            <generateApiDocumentation>false</generateApiDocumentation>
-                            <generateModelDocumentation>false</generateModelDocumentation>
-                            <generateSupportingFiles>true</generateSupportingFiles>
-                            <configOptions>
-                                <hideGenerationTimestamp>true</hideGenerationTimestamp>
-                                <useJakartaEe>true</useJakartaEe>
-                            </configOptions>
-                            <globalProperties>
-                                <supportingFiles>
-                                    ApiClient.java,JavaTimeFormatter.java,Authentication.java,OAuth.java,ApiKeyAuth.java,HttpBasicAuth.java,HttpBearerAuth.java,RFC3339DateFormat.java
-                                </supportingFiles>
-                            </globalProperties>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>

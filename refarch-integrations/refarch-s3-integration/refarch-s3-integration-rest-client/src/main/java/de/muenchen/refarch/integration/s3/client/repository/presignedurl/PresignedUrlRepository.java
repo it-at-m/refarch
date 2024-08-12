@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-public class PresignedUrlRepository {
+public class PresignedUrlRepository implements IPresignedUrlRepository {
 
     private final FileApiApi fileApi;
 
@@ -33,6 +33,7 @@ public class PresignedUrlRepository {
      * @throws DocumentStorageException if the problem cannot be assigned to either the client or the
      *             document storage.
      */
+    @Override
     public Mono<String> getPresignedUrlGetFile(final String pathToFile, final int expireInMinutes)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
         try {
@@ -65,6 +66,7 @@ public class PresignedUrlRepository {
      * @throws DocumentStorageException if the problem cannot be assigned to either the client or the
      *             document storage.
      */
+    @Override
     public String getPresignedUrlSaveFile(final String pathToFile, final int expireInMinutes)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
         try {
@@ -100,6 +102,7 @@ public class PresignedUrlRepository {
      * @throws DocumentStorageException if the problem cannot be assigned to either the client or the
      *             document storage.
      */
+    @Override
     public String getPresignedUrlUpdateFile(final String pathToFile, final int expireInMinutes)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
         try {
@@ -135,6 +138,7 @@ public class PresignedUrlRepository {
      * @throws DocumentStorageException if the problem cannot be assigned to either the client or the
      *             document storage.
      */
+    @Override
     public String getPresignedUrlDeleteFile(final String pathToFile, final int expireInMinutes)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
         try {

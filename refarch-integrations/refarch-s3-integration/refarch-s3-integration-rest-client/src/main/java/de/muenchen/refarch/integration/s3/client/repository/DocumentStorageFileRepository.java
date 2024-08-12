@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-public class DocumentStorageFileRepository {
+public class DocumentStorageFileRepository implements IDocumentStorageFileRepository {
 
     private final PresignedUrlRepository presignedUrlRepository;
 
@@ -39,6 +39,7 @@ public class DocumentStorageFileRepository {
      * @throws DocumentStorageException if the problem cannot be assigned to either the client or the S3
      *             storage or the document storage.
      */
+    @Override
     public byte[] getFile(final String pathToFile, final int expireInMinutes)
             throws DocumentStorageException, DocumentStorageClientErrorException, DocumentStorageServerErrorException {
         final Mono<String> presignedUrl = this.presignedUrlRepository.getPresignedUrlGetFile(pathToFile, expireInMinutes);
@@ -56,6 +57,7 @@ public class DocumentStorageFileRepository {
      * @throws DocumentStorageException if the problem cannot be assigned to either the client or the S3
      *             storage or the document storage.
      */
+    @Override
     public Mono<Long> getFileSize(final String pathToFile)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
         try {
@@ -87,6 +89,7 @@ public class DocumentStorageFileRepository {
      * @throws DocumentStorageException if the problem cannot be assigned to either the client or the S3
      *             storage or the document storage.
      */
+    @Override
     public InputStream getFileInputStream(final String pathToFile, final int expireInMinutes)
             throws DocumentStorageException, DocumentStorageClientErrorException, DocumentStorageServerErrorException {
         final Mono<String> presignedUrl = this.presignedUrlRepository.getPresignedUrlGetFile(pathToFile, expireInMinutes);
@@ -105,6 +108,7 @@ public class DocumentStorageFileRepository {
      * @throws DocumentStorageException if the problem cannot be assigned to either the client or the S3
      *             storage or the document storage.
      */
+    @Override
     public void saveFile(final String pathToFile, final byte[] file, final int expireInMinutes)
             throws DocumentStorageException, DocumentStorageClientErrorException, DocumentStorageServerErrorException {
         final String presignedUrl = this.presignedUrlRepository.getPresignedUrlSaveFile(pathToFile, expireInMinutes);
@@ -123,6 +127,7 @@ public class DocumentStorageFileRepository {
      * @throws DocumentStorageException if the problem cannot be assigned to either the client or the S3
      *             storage or the document storage.
      */
+    @Override
     public void saveFileInputStream(final String pathToFile, final InputStream file, final int expireInMinutes)
             throws DocumentStorageException, DocumentStorageClientErrorException, DocumentStorageServerErrorException {
         final String presignedUrl = this.presignedUrlRepository.getPresignedUrlSaveFile(pathToFile, expireInMinutes);
@@ -141,6 +146,7 @@ public class DocumentStorageFileRepository {
      * @throws DocumentStorageException if the problem cannot be assigned to either the client or the S3
      *             storage or the document storage.
      */
+    @Override
     public void updateFile(final String pathToFile, final byte[] file, final int expireInMinutes)
             throws DocumentStorageException, DocumentStorageClientErrorException, DocumentStorageServerErrorException {
         final String presignedUrl = this.presignedUrlRepository.getPresignedUrlUpdateFile(pathToFile, expireInMinutes);
@@ -159,6 +165,7 @@ public class DocumentStorageFileRepository {
      * @throws DocumentStorageException if the problem cannot be assigned to either the client or the S3
      *             storage or the document storage.
      */
+    @Override
     public void updateFileInputStream(final String pathToFile, final InputStream file, final int expireInMinutes)
             throws DocumentStorageException, DocumentStorageClientErrorException, DocumentStorageServerErrorException {
         final String presignedUrl = this.presignedUrlRepository.getPresignedUrlUpdateFile(pathToFile, expireInMinutes);
@@ -176,6 +183,7 @@ public class DocumentStorageFileRepository {
      * @throws DocumentStorageException if the problem cannot be assigned to either the client or the S3
      *             storage or the document storage.
      */
+    @Override
     public void deleteFile(final String pathToFile, final int expireInMinutes)
             throws DocumentStorageException, DocumentStorageClientErrorException, DocumentStorageServerErrorException {
         final String presignedUrl = this.presignedUrlRepository.getPresignedUrlDeleteFile(pathToFile, expireInMinutes);
