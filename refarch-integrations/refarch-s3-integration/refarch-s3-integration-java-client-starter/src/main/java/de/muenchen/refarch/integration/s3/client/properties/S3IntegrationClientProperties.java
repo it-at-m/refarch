@@ -10,10 +10,6 @@ import org.springframework.util.unit.DataSize;
 @Setter
 @ConfigurationProperties(prefix = "refarch.s3.client")
 public class S3IntegrationClientProperties {
-
-    private String documentStorageUrl;
-    private boolean enableSecurity;
-
     /** Maximum allowed file size. Default is 0, which indicates that there is no limit. */
     private DataSize maxFileSize = DataSize.ofBytes(0L);
     /**
