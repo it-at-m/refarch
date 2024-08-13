@@ -12,6 +12,27 @@ libraries are especially provided for usage in other integrations.
 - REST: The rest client uses the rest endpoints of the s3-rest-service to manage data in s3.
 - Java: The Java client directly uses the in ports of the s3-core.
 
+## Usage
+
+```xml
+
+<dependencies>
+    <!-- REST -->
+    <!-- requires refarch-s3-integration-rest-service -->
+    <dependency>
+        <groupId>de.muenchen.refarch</groupId>
+        <artifactId>refarch-s3-integration-rest-starter</artifactId>
+        <version>...</version>
+    </dependency>
+    <!-- or Java -->
+    <dependency>
+        <groupId>de.muenchen.refarch</groupId>
+        <artifactId>refarch-s3-integration-java-starter</artifactId>
+        <version>...</version>
+    </dependency>
+</dependencies>
+```
+
 ## Configuration
 
 Following are the properties to configure the different modules. Some of them a custom defined and others are synonyms
