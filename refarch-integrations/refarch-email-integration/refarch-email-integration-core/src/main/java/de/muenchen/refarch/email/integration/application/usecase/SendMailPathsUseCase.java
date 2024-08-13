@@ -64,7 +64,7 @@ public class SendMailPathsUseCase implements SendMailPathsInPort {
 
     private de.muenchen.refarch.email.model.Mail createMail(BasicMailPaths mail) {
         // load Attachments
-        List<FileAttachment> attachments = loadAttachmentOutPort.loadAttachments(mail.getFileContext(), mail.parseFilePaths());
+        List<FileAttachment> attachments = loadAttachmentOutPort.loadAttachments(mail.parseFilePaths());
 
         // send mail
         return de.muenchen.refarch.email.model.Mail.builder()

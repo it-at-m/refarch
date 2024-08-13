@@ -40,13 +40,11 @@ class S3AdapterTest {
     void testLoadAttachment_DocumentStorageException()
             throws DocumentStorageException, DocumentStorageClientErrorException, DocumentStorageServerErrorException {
         final String path = "path/to/some-file.txt";
-        final String context = "fileContext";
-        final String fullPath = context + "/" + path;
 
         // DocumentStorageException
-        when(documentStorageFileRepository.getFile(eq(fullPath), anyInt()))
+        when(documentStorageFileRepository.getFile(eq(path), anyInt()))
                 .thenThrow(new DocumentStorageException("Some error", new RuntimeException("Some error")));
-        assertThatThrownBy(() -> s3Adapter.loadAttachments(context, List.of(path)))
+        assertThatThrownBy(() -> s3Adapter.loadAttachments(List.of(path)))
                 .isInstanceOf(LoadAttachmentError.class);
     }
 
@@ -63,7 +61,7 @@ class S3AdapterTest {
                 final byte[] testFile = new ClassPathResource(path).getInputStream().readAllBytes();
                 when(documentStorageFileRepository.getFile(anyString(), anyInt())).thenReturn(testFile);
 
-                final List<FileAttachment> fileAttachment = this.s3Adapter.loadAttachments("fileContext", List.of(path));
+                final List<FileAttachment> fileAttachment = this.s3Adapter.loadAttachments(List.of(path));
 
                 assertThat(Arrays.equals(testFile, fileAttachment.getFirst().getFile().getInputStream().readAllBytes())).isTrue();
                 assertThat(file.getKey()).isEqualTo(fileAttachment.getFirst().getFileName());

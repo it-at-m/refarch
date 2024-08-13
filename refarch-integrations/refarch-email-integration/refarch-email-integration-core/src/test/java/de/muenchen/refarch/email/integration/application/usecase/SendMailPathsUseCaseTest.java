@@ -68,7 +68,7 @@ class SendMailPathsUseCaseTest {
     @Test
     void sendMailWithAttachments() throws MessagingException {
         final FileAttachment fileAttachment = new FileAttachment("test.txt", new ByteArrayDataSource("Anhang Inhalt".getBytes(), "text/plain"));
-        when(loadMailAttachmentOutPort.loadAttachments("fileContext", List.of("folder/file.txt"))).thenReturn(List.of(fileAttachment));
+        when(loadMailAttachmentOutPort.loadAttachments(List.of("folder/file.txt"))).thenReturn(List.of(fileAttachment));
 
         sendMailPathsInPort.sendMailWithText(mail);
         final de.muenchen.refarch.email.model.Mail mailOutModel = de.muenchen.refarch.email.model.Mail.builder()

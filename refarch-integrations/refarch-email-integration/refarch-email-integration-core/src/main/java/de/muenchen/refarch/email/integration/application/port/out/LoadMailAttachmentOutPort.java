@@ -4,5 +4,5 @@ import de.muenchen.refarch.email.model.FileAttachment;
 import java.util.List;
 
 public interface LoadMailAttachmentOutPort {
-    List<FileAttachment> loadAttachments(final String fileContext, final List<String> filePaths);
+    List<FileAttachment> loadAttachments(final List<String> filePaths);
 }

@@ -27,14 +27,13 @@ public class S3Adapter implements LoadMailAttachmentOutPort {
     private final FileValidationService fileValidationService;
 
     @Override
-    public List<FileAttachment> loadAttachments(final String fileContext, final List<String> filePaths) {
+    public List<FileAttachment> loadAttachments(final List<String> filePaths) {
         final List<FileAttachment> attachments = new ArrayList<>();
         filePaths.forEach(path -> {
-            final String fullPath = fileContext + "/" + path;
-            if (fullPath.endsWith("/")) {
-                attachments.addAll(getFilesFromFolder(fullPath));
+            if (path.endsWith("/")) {
+                attachments.addAll(getFilesFromFolder(path));
             } else {
-                attachments.add(getFile(fullPath));
+                attachments.add(getFile(path));
             }
         });
         return attachments;
