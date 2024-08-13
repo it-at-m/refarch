@@ -14,10 +14,10 @@ import org.springframework.web.client.RestClientException;
 
 @Slf4j
 @Repository
-public class DocumentStorageFileRepository extends DocumentStorageFileRepository {
+public class DocumentStorageFileRestRepository extends DocumentStorageFileRepository {
     private final FileApiApi fileApi;
 
-    public DocumentStorageFileRepository(final PresignedUrlRepository presignedUrlRepository,
+    public DocumentStorageFileRestRepository(final PresignedUrlRepository presignedUrlRepository,
             final S3FileTransferRepository s3FileTransferRepository, final FileApiApi fileApi) {
         super(presignedUrlRepository, s3FileTransferRepository);
         this.fileApi = fileApi;
