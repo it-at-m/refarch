@@ -3,14 +3,12 @@ package de.muenchen.refarch.email.integration.adapter.out.s3;
 import de.muenchen.refarch.email.integration.application.port.out.LoadMailAttachmentOutPort;
 import de.muenchen.refarch.email.integration.domain.exception.LoadAttachmentError;
 import de.muenchen.refarch.email.model.FileAttachment;
-import de.muenchen.refarch.s3.integration.client.exception.DocumentStorageClientErrorException;
-import de.muenchen.refarch.s3.integration.client.exception.DocumentStorageException;
-import de.muenchen.refarch.s3.integration.client.exception.DocumentStorageServerErrorException;
-import de.muenchen.refarch.s3.integration.client.repository.DocumentStorageFileRepository;
-import de.muenchen.refarch.s3.integration.client.repository.DocumentStorageFolderRepository;
-import de.muenchen.refarch.s3.integration.client.repository.transfer.S3FileTransferRepository;
-import de.muenchen.refarch.s3.integration.client.service.FileService;
-import de.muenchen.refarch.s3.integration.client.service.S3StorageUrlProvider;
+import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageClientErrorException;
+import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageException;
+import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageServerErrorException;
+import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFileRepository;
+import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFolderRepository;
+import de.muenchen.refarch.integration.s3.client.service.FileValidationService;
 import jakarta.mail.util.ByteArrayDataSource;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,11 +22,9 @@ import org.apache.commons.io.FilenameUtils;
 @RequiredArgsConstructor
 public class S3Adapter implements LoadMailAttachmentOutPort {
 
-    private final S3FileTransferRepository s3FileTransferRepository;
     private final DocumentStorageFileRepository documentStorageFileRepository;
     private final DocumentStorageFolderRepository documentStorageFolderRepository;
-    private final FileService fileService;
-    private final S3StorageUrlProvider s3DomainService;
+    private final FileValidationService fileValidationService;
 
     @Override
     public List<FileAttachment> loadAttachments(final String fileContext, final List<String> filePaths) {
@@ -48,7 +44,7 @@ public class S3Adapter implements LoadMailAttachmentOutPort {
         try {
             final List<FileAttachment> contents = new ArrayList<>();
             final Set<String> filepath;
-            filepath = documentStorageFolderRepository.getAllFilesInFolderRecursively(folderPath, s3DomainService.getDefaultDocumentStorageUrl()).block();
+            filepath = documentStorageFolderRepository.getAllFilesInFolderRecursively(folderPath);
             if (Objects.isNull(filepath))
                 throw new LoadAttachmentError("An folder could not be loaded from url: " + folderPath);
             filepath.forEach(file -> contents.add(getFile(file)));
@@ -61,13 +57,13 @@ public class S3Adapter implements LoadMailAttachmentOutPort {
     private FileAttachment getFile(final String filePath) {
         try {
             final byte[] bytes;
-            bytes = this.documentStorageFileRepository.getFile(filePath, 3, s3DomainService.getDefaultDocumentStorageUrl());
-            final String mimeType = fileService.detectFileType(bytes);
+            bytes = this.documentStorageFileRepository.getFile(filePath, 3);
+            final String mimeType = fileValidationService.detectFileType(bytes);
             final String filename = FilenameUtils.getName(filePath);
             final ByteArrayDataSource file = new ByteArrayDataSource(bytes, mimeType);
 
             // check if mimeType exists
-            if (!fileService.isSupported(mimeType))
+            if (!fileValidationService.isSupported(mimeType))
                 throw new LoadAttachmentError("The type of this file is not supported: " + filePath);
 
             return new FileAttachment(filename, file);

@@ -7,11 +7,9 @@ import de.muenchen.refarch.email.integration.application.port.in.SendMailPathsIn
 import de.muenchen.refarch.email.integration.application.port.out.LoadMailAttachmentOutPort;
 import de.muenchen.refarch.email.integration.application.port.out.MailOutPort;
 import de.muenchen.refarch.email.integration.application.usecase.SendMailPathsUseCase;
-import de.muenchen.refarch.s3.integration.client.repository.DocumentStorageFileRepository;
-import de.muenchen.refarch.s3.integration.client.repository.DocumentStorageFolderRepository;
-import de.muenchen.refarch.s3.integration.client.repository.transfer.S3FileTransferRepository;
-import de.muenchen.refarch.s3.integration.client.service.FileService;
-import de.muenchen.refarch.s3.integration.client.service.S3StorageUrlProvider;
+import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFileRepository;
+import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFolderRepository;
+import de.muenchen.refarch.integration.s3.client.service.FileValidationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.mail.MailProperties;
@@ -32,12 +30,11 @@ public class MailAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public LoadMailAttachmentOutPort getLoadMailAttachmentPort(final S3FileTransferRepository s3FileTransferRepository,
+    public LoadMailAttachmentOutPort getLoadMailAttachmentPort(
             final DocumentStorageFileRepository documentStorageFileRepository,
             final DocumentStorageFolderRepository documentStorageFolderRepository,
-            final FileService fileService,
-            final S3StorageUrlProvider s3DomainService) {
-        return new S3Adapter(s3FileTransferRepository, documentStorageFileRepository, documentStorageFolderRepository, fileService, s3DomainService);
+            final FileValidationService fileValidationService) {
+        return new S3Adapter(documentStorageFileRepository, documentStorageFolderRepository, fileValidationService);
     }
 
     @Bean

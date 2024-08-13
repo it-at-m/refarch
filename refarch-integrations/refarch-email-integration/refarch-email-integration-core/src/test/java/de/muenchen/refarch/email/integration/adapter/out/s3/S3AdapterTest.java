@@ -7,14 +7,12 @@ import static org.mockito.Mockito.when;
 
 import de.muenchen.refarch.email.integration.domain.exception.LoadAttachmentError;
 import de.muenchen.refarch.email.model.FileAttachment;
-import de.muenchen.refarch.s3.integration.client.exception.DocumentStorageClientErrorException;
-import de.muenchen.refarch.s3.integration.client.exception.DocumentStorageException;
-import de.muenchen.refarch.s3.integration.client.exception.DocumentStorageServerErrorException;
-import de.muenchen.refarch.s3.integration.client.repository.DocumentStorageFileRepository;
-import de.muenchen.refarch.s3.integration.client.repository.DocumentStorageFolderRepository;
-import de.muenchen.refarch.s3.integration.client.repository.transfer.S3FileTransferRepository;
-import de.muenchen.refarch.s3.integration.client.service.FileService;
-import de.muenchen.refarch.s3.integration.client.service.S3StorageUrlProvider;
+import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageClientErrorException;
+import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageException;
+import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageServerErrorException;
+import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFileRepository;
+import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFolderRepository;
+import de.muenchen.refarch.integration.s3.client.service.FileValidationService;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -27,18 +25,15 @@ import org.springframework.util.unit.DataSize;
 
 @Slf4j
 class S3AdapterTest {
-
-    private final S3FileTransferRepository s3FileTransferRepository = mock(S3FileTransferRepository.class);
     private final DocumentStorageFileRepository documentStorageFileRepository = mock(DocumentStorageFileRepository.class);
     private final DocumentStorageFolderRepository documentStorageFolderRepository = mock(DocumentStorageFolderRepository.class);
-    private final S3StorageUrlProvider s3DomainService = mock(S3StorageUrlProvider.class);
-    private final FileService fileService = new FileService(null, DataSize.ofMegabytes(50), DataSize.ofMegabytes(110));
+    private final FileValidationService fileValidationService = new FileValidationService(null, DataSize.ofMegabytes(50), DataSize.ofMegabytes(110));
 
     private S3Adapter s3Adapter;
 
     @BeforeEach
     void setup() {
-        s3Adapter = new S3Adapter(s3FileTransferRepository, documentStorageFileRepository, documentStorageFolderRepository, fileService, s3DomainService);
+        s3Adapter = new S3Adapter(documentStorageFileRepository, documentStorageFolderRepository, fileValidationService);
     }
 
     @Test
@@ -49,7 +44,7 @@ class S3AdapterTest {
         final String fullPath = context + "/" + path;
 
         // DocumentStorageException
-        when(documentStorageFileRepository.getFile(eq(fullPath), anyInt(), isNull()))
+        when(documentStorageFileRepository.getFile(eq(fullPath), anyInt()))
                 .thenThrow(new DocumentStorageException("Some error", new RuntimeException("Some error")));
         assertThatThrownBy(() -> s3Adapter.loadAttachments(context, List.of(path)))
                 .isInstanceOf(LoadAttachmentError.class);
@@ -66,7 +61,7 @@ class S3AdapterTest {
             try {
                 final String path = "files/" + file.getKey();
                 final byte[] testFile = new ClassPathResource(path).getInputStream().readAllBytes();
-                when(documentStorageFileRepository.getFile(anyString(), anyInt(), isNull())).thenReturn(testFile);
+                when(documentStorageFileRepository.getFile(anyString(), anyInt())).thenReturn(testFile);
 
                 final List<FileAttachment> fileAttachment = this.s3Adapter.loadAttachments("fileContext", List.of(path));
 
