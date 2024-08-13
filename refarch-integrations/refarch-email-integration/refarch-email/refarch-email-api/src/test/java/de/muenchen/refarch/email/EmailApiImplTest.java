@@ -4,8 +4,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
-import de.muenchen.refarch.email.api.DigiwfEmailApi;
-import de.muenchen.refarch.email.impl.DigiwfEmailApiImpl;
+import de.muenchen.refarch.email.api.EmailApi;
+import de.muenchen.refarch.email.impl.EmailApiImpl;
 import de.muenchen.refarch.email.model.FileAttachment;
 import de.muenchen.refarch.email.model.Mail;
 import freemarker.template.Configuration;
@@ -32,7 +32,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
-class DigiwfEmailApiImplTest {
+class EmailApiImplTest {
 
     private final JavaMailSender javaMailSender = mock(JavaMailSender.class);
     private final ResourceLoader resourceLoader = mock(ResourceLoader.class);
@@ -43,15 +43,15 @@ class DigiwfEmailApiImplTest {
     private final String receiverBCC = "receiverBCC@muenchen.de";
     private final String subject = "Test Mail";
     private final String body = "This is a test mail";
-    private final String replyTo = "digiwf@muenchen.de";
+    private final String replyTo = "test@muenchen.de";
     private final String defaultReplyTo = "noreply@muenchen.de";
     private final String sender = "some-custom-sender@muenchen.de";
-    private DigiwfEmailApi digiwfEmailApi;
+    private EmailApi emailApi;
 
     @BeforeEach
     void setUp() {
         when(this.javaMailSender.createMimeMessage()).thenReturn(new MimeMessage((Session) null));
-        this.digiwfEmailApi = new DigiwfEmailApiImpl(this.javaMailSender, this.resourceLoader, freeMarkerConfigurer, "digiwf@muenchen.de", defaultReplyTo);
+        this.emailApi = new EmailApiImpl(this.javaMailSender, this.resourceLoader, freeMarkerConfigurer, "test@muenchen.de", defaultReplyTo);
     }
 
     @Test
@@ -61,7 +61,7 @@ class DigiwfEmailApiImplTest {
                 .subject(this.subject)
                 .body(this.body)
                 .build();
-        this.digiwfEmailApi.sendMail(mail);
+        this.emailApi.sendMail(mail);
 
         final ArgumentCaptor<MimeMessage> messageArgumentCaptor = ArgumentCaptor.forClass(MimeMessage.class);
         verify(this.javaMailSender).send(messageArgumentCaptor.capture());
@@ -76,14 +76,14 @@ class DigiwfEmailApiImplTest {
 
     @Test
     void testSendMailNoDefaultReplyTo() throws MessagingException, IOException {
-        var customAddress = new InternetAddress("custom.digiwf@muenchen.de");
+        var customAddress = new InternetAddress("custom.test@muenchen.de");
 
         final Mail mail = Mail.builder()
                 .receivers(this.receiver)
                 .subject(this.subject)
                 .body(this.body)
                 .build();
-        new DigiwfEmailApiImpl(this.javaMailSender, this.resourceLoader, freeMarkerConfigurer, customAddress.getAddress(), null).sendMail(mail);
+        new EmailApiImpl(this.javaMailSender, this.resourceLoader, freeMarkerConfigurer, customAddress.getAddress(), null).sendMail(mail);
 
         final ArgumentCaptor<MimeMessage> messageArgumentCaptor = ArgumentCaptor.forClass(MimeMessage.class);
         verify(this.javaMailSender).send(messageArgumentCaptor.capture());
@@ -107,7 +107,7 @@ class DigiwfEmailApiImplTest {
                 .receiversBcc(this.receiverBCC)
                 .sender(this.sender)
                 .build();
-        this.digiwfEmailApi.sendMail(mail);
+        this.emailApi.sendMail(mail);
 
         final ArgumentCaptor<MimeMessage> messageArgumentCaptor = ArgumentCaptor.forClass(MimeMessage.class);
         verify(this.javaMailSender).send(messageArgumentCaptor.capture());
@@ -133,7 +133,7 @@ class DigiwfEmailApiImplTest {
                 .attachments(List.of(
                         new FileAttachment("Testanhang", new ByteArrayDataSource("FooBar".getBytes(), "text/plain"))))
                 .build();
-        this.digiwfEmailApi.sendMail(mail);
+        this.emailApi.sendMail(mail);
 
         final ArgumentCaptor<MimeMessage> messageArgumentCaptor = ArgumentCaptor.forClass(MimeMessage.class);
         verify(this.javaMailSender).send(messageArgumentCaptor.capture());
@@ -155,7 +155,7 @@ class DigiwfEmailApiImplTest {
                 .body(this.body)
                 .replyTo(reply1.getAddress() + "," + reply2.getAddress())
                 .build();
-        this.digiwfEmailApi.sendMail(mail);
+        this.emailApi.sendMail(mail);
 
         final ArgumentCaptor<MimeMessage> messageArgumentCaptor = ArgumentCaptor.forClass(MimeMessage.class);
         verify(this.javaMailSender).send(messageArgumentCaptor.capture());
@@ -177,7 +177,7 @@ class DigiwfEmailApiImplTest {
                 .subject(this.subject)
                 .body(this.body)
                 .build();
-        this.digiwfEmailApi.sendMailWithDefaultLogo(mail);
+        this.emailApi.sendMailWithDefaultLogo(mail);
 
         final ArgumentCaptor<MimeMessage> messageArgumentCaptor = ArgumentCaptor.forClass(MimeMessage.class);
         verify(this.javaMailSender).send(messageArgumentCaptor.capture());
@@ -198,7 +198,7 @@ class DigiwfEmailApiImplTest {
                 .subject(this.subject)
                 .body(this.body)
                 .build();
-        this.digiwfEmailApi.sendMail(mail, "some/random/path/on/classpath");
+        this.emailApi.sendMail(mail, "some/random/path/on/classpath");
 
         final ArgumentCaptor<MimeMessage> messageArgumentCaptor = ArgumentCaptor.forClass(MimeMessage.class);
         verify(this.javaMailSender).send(messageArgumentCaptor.capture());
@@ -218,7 +218,7 @@ class DigiwfEmailApiImplTest {
         configuration.setClassForTemplateLoading(this.getClass(), "/templates/");
         when(this.freeMarkerConfigurer.getConfiguration()).thenReturn(configuration);
 
-        final String result = this.digiwfEmailApi.getBodyFromTemplate(templateName, content);
+        final String result = this.emailApi.getBodyFromTemplate(templateName, content);
 
         assertThat(result.contains("test")).isTrue();
     }
@@ -228,7 +228,7 @@ class DigiwfEmailApiImplTest {
         when(this.resourceLoader.getResource(anyString())).thenReturn(this.getResourceForText("This is a test mail", true));
 
         final String templatePath = "bausteine/mail/email-logo.png";
-        final String result = this.digiwfEmailApi.getEmailBodyFromTemplate(templatePath, Map.of());
+        final String result = this.emailApi.getEmailBodyFromTemplate(templatePath, Map.of());
 
         assertThat(result).isEqualTo("This is a test mail");
     }
@@ -238,7 +238,7 @@ class DigiwfEmailApiImplTest {
         when(this.resourceLoader.getResource(anyString())).thenReturn(this.getResourceForText("This is a test mail with content", true));
 
         final String templatePath = "bausteine/mail/email-logo.png";
-        final String result = this.digiwfEmailApi.getEmailBodyFromTemplate(templatePath, Map.of("content", "some content"));
+        final String result = this.emailApi.getEmailBodyFromTemplate(templatePath, Map.of("content", "some content"));
 
         assertThat(result).isEqualTo("This is a test mail with some content");
     }
@@ -248,7 +248,7 @@ class DigiwfEmailApiImplTest {
         when(this.resourceLoader.getResource(anyString())).thenReturn(this.getResourceForText("This is a test mail with content", true));
 
         final String templatePath = "bausteine/mail/email-logo.png";
-        final String result = this.digiwfEmailApi.getEmailBodyFromTemplate(templatePath, Map.of("content", "some content \n with new line"));
+        final String result = this.emailApi.getEmailBodyFromTemplate(templatePath, Map.of("content", "some content \n with new line"));
 
         assertThat(result).isEqualTo("This is a test mail with some content <br/> with new line");
     }
@@ -259,7 +259,7 @@ class DigiwfEmailApiImplTest {
 
         final String templatePath = "some/temlate/that/does/not/exist";
         assertThatThrownBy(() -> {
-            this.digiwfEmailApi.getEmailBodyFromTemplate(templatePath, Map.of("content", "some content"));
+            this.emailApi.getEmailBodyFromTemplate(templatePath, Map.of("content", "some content"));
         })
                 .isInstanceOf(RuntimeException.class)
                 .hasMessageContaining("Email Template not found: " + templatePath);

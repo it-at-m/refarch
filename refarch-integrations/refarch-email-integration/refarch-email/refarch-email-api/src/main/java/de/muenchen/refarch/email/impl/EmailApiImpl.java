@@ -1,6 +1,6 @@
 package de.muenchen.refarch.email.impl;
 
-import de.muenchen.refarch.email.api.DigiwfEmailApi;
+import de.muenchen.refarch.email.api.EmailApi;
 import de.muenchen.refarch.email.model.Mail;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -27,7 +27,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 @Slf4j
 @RequiredArgsConstructor
-public class DigiwfEmailApiImpl implements DigiwfEmailApi {
+public class EmailApiImpl implements EmailApi {
 
     private final JavaMailSender mailSender;
     private final ResourceLoader resourceLoader;

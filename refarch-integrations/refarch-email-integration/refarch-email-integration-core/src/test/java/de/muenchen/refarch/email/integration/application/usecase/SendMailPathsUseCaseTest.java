@@ -30,7 +30,7 @@ class SendMailPathsUseCaseTest {
             "receiverBCC@muenchen.de",
             "Test Mail",
             "This is a test mail",
-            "digiwf@muenchen.de",
+            "test@muenchen.de",
             "fileContext",
             "folder/file.txt");
     private final TemplateMailPaths templateMail = new TemplateMailPaths(
@@ -38,7 +38,7 @@ class SendMailPathsUseCaseTest {
             "receiverCC@muenchen.de",
             "receiverBCC@muenchen.de",
             "Test Mail",
-            "digiwf@muenchen.de",
+            "test@muenchen.de",
             "fileContext",
             "folder/file.txt",
             "template",

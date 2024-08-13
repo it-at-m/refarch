@@ -7,7 +7,7 @@ import jakarta.validation.Valid;
 import java.io.IOException;
 import java.util.Map;
 
-public interface DigiwfEmailApi {
+public interface EmailApi {
 
     void sendMail(@Valid Mail mail) throws MessagingException;
 

@@ -53,7 +53,7 @@ class S3AdapterTest {
     @Test
     void testLoadAttachment_Success() throws DocumentStorageException, DocumentStorageClientErrorException, DocumentStorageServerErrorException {
         final Map<String, String> files = Map.of(
-                "digiwf_logo.png", "image/png",
+                "test-logo.png", "image/png",
                 "test-pdf.pdf", "application/pdf",
                 "test-word.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
 

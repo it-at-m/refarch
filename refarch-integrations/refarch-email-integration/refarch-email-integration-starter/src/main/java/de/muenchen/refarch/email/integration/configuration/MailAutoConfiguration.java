@@ -1,6 +1,6 @@
 package de.muenchen.refarch.email.integration.configuration;
 
-import de.muenchen.refarch.email.api.DigiwfEmailApi;
+import de.muenchen.refarch.email.api.EmailApi;
 import de.muenchen.refarch.email.integration.adapter.out.mail.MailAdapter;
 import de.muenchen.refarch.email.integration.adapter.out.s3.S3Adapter;
 import de.muenchen.refarch.email.integration.application.port.in.SendMailPathsInPort;
@@ -39,7 +39,7 @@ public class MailAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public MailOutPort getMailPort(final DigiwfEmailApi digiwfEmailApi) {
-        return new MailAdapter(digiwfEmailApi);
+    public MailOutPort getMailPort(final EmailApi emailApi) {
+        return new MailAdapter(emailApi);
     }
 }

@@ -1,7 +1,7 @@
 package de.muenchen.refarch.email.configuration;
 
-import de.muenchen.refarch.email.api.DigiwfEmailApi;
-import de.muenchen.refarch.email.impl.DigiwfEmailApiImpl;
+import de.muenchen.refarch.email.api.EmailApi;
+import de.muenchen.refarch.email.impl.EmailApiImpl;
 import de.muenchen.refarch.email.properties.CustomMailProperties;
 import jakarta.mail.MessagingException;
 import java.util.Properties;
@@ -46,9 +46,9 @@ public class DigiwfEmailAutoConfiguration {
 
     @ConditionalOnMissingBean
     @Bean
-    public DigiwfEmailApi digiwfEmailApi(final ResourceLoader resourceLoader, final JavaMailSender javaMailSender,
+    public EmailApi emailApi(final ResourceLoader resourceLoader, final JavaMailSender javaMailSender,
             final FreeMarkerConfigurer freeMarkerConfigurer) {
-        return new DigiwfEmailApiImpl(javaMailSender, resourceLoader, freeMarkerConfigurer, this.customMailProperties.getFromAddress(),
+        return new EmailApiImpl(javaMailSender, resourceLoader, freeMarkerConfigurer, this.customMailProperties.getFromAddress(),
                 this.customMailProperties.getDefaultReplyToAddress());
     }
 
