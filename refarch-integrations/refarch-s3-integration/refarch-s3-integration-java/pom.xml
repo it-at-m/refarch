@@ -6,23 +6,17 @@
 
     <parent>
         <groupId>de.muenchen.refarch</groupId>
-        <artifactId>refarch-integrations</artifactId>
+        <artifactId>refarch-s3-integration</artifactId>
         <version>1.1.0-SNAPSHOT</version>
     </parent>
 
 
-    <artifactId>refarch-s3-integration</artifactId>
+    <artifactId>refarch-s3-integration-java</artifactId>
     <version>1.1.0-SNAPSHOT</version>
-    <name>refarch-s3-integration</name>
     <packaging>pom</packaging>
 
     <modules>
-        <module>refarch-s3-integration-core</module>
-        <module>refarch-s3-integration-starter</module>
-        <module>refarch-s3-integration-client-core</module>
-        <!-- Java -->
-        <module>refarch-s3-integration-java</module>
-        <!-- REST -->
-        <module>refarch-s3-integration-rest</module>
+        <module>refarch-s3-integration-java-client</module>
+        <module>refarch-s3-integration-java-client-starter</module>
     </modules>
 </project>
