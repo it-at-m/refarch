@@ -35,7 +35,7 @@ libraries are especially provided for usage in other integrations.
 
 ## Configuration
 
-Following are the properties to configure the different modules. Some of them a custom defined and others are synonyms
+Following are the properties to configure the different modules. Some of them are custom defined and others are synonyms
 for spring package properties.
 Whether a property is an alias can be checked in the corresponding `application.yml` of each module.
 
