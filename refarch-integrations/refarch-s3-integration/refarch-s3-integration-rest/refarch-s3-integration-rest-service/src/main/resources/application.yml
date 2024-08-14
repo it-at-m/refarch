@@ -10,7 +10,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${SSO_ISSUER_URL}
+          issuer-uri: ${refarch.security.sso-issuer-url}
 
 server:
   error:
@@ -36,7 +36,7 @@ management:
 
 security:
   oauth2:
-    resource.user-info-uri: ${SSO_ISSUER_URL}/protocol/openid-connect/userinfo
+    resource.user-info-uri: ${refarch.security.sso-issuer-url}/protocol/openid-connect/userinfo
 
 refarch:
   s3:
