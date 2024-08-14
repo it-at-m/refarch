@@ -3,6 +3,7 @@ package de.muenchen.refarch.email.integration;
 import de.muenchen.refarch.email.integration.application.port.in.SendMailPathsInPort;
 import de.muenchen.refarch.email.integration.domain.model.paths.TextMailPaths;
 import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFileRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +23,7 @@ public class TestService {
         mail.setReceivers("test.receiver@muenchen.de");
         mail.setSubject("Test");
         mail.setBody("This is a test");
-        mail.setFilePaths("/test/test-pdf.pdf");
+        mail.setFilePaths(List.of("/test/test-pdf.pdf"));
         sendMailPathsInPort.sendMailWithText(mail);
         log.info("Test mail sent");
     }
