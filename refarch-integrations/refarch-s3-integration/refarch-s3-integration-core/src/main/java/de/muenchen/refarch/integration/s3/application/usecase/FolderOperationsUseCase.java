@@ -1,11 +1,11 @@
 package de.muenchen.refarch.integration.s3.application.usecase;
 
-import de.muenchen.refarch.integration.s3.adapter.in.rest.validation.FolderInFilePathValidator;
 import de.muenchen.refarch.integration.s3.application.port.in.FolderOperationsInPort;
 import de.muenchen.refarch.integration.s3.application.port.out.S3OutPort;
 import de.muenchen.refarch.integration.s3.domain.exception.FileSystemAccessException;
 import de.muenchen.refarch.integration.s3.domain.model.FileSizesInFolder;
 import de.muenchen.refarch.integration.s3.domain.model.FilesInFolder;
+import de.muenchen.refarch.integration.s3.domain.validation.FolderInFilePathValidator;
 import java.util.Map;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;

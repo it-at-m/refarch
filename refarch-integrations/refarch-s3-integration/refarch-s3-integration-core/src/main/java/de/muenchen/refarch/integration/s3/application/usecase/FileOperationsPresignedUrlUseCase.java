@@ -1,12 +1,12 @@
 package de.muenchen.refarch.integration.s3.application.usecase;
 
-import de.muenchen.refarch.integration.s3.adapter.in.rest.validation.FolderInFilePathValidator;
 import de.muenchen.refarch.integration.s3.application.port.in.FileOperationsPresignedUrlInPort;
 import de.muenchen.refarch.integration.s3.application.port.out.S3OutPort;
 import de.muenchen.refarch.integration.s3.domain.exception.FileExistenceException;
 import de.muenchen.refarch.integration.s3.domain.exception.FileSystemAccessException;
 import de.muenchen.refarch.integration.s3.domain.model.FileData;
 import de.muenchen.refarch.integration.s3.domain.model.PresignedUrl;
+import de.muenchen.refarch.integration.s3.domain.validation.FolderInFilePathValidator;
 import io.minio.http.Method;
 import java.util.ArrayList;
 import java.util.List;
