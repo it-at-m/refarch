@@ -8,14 +8,12 @@ import de.muenchen.refarch.integration.s3.client.model.FileDataDto;
 import de.muenchen.refarch.integration.s3.client.model.PresignedUrlDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestClientException;
 import reactor.core.publisher.Mono;
 
 @Slf4j
-@Repository
 @RequiredArgsConstructor
 public class PresignedUrlRestRepository implements PresignedUrlRepository {
 

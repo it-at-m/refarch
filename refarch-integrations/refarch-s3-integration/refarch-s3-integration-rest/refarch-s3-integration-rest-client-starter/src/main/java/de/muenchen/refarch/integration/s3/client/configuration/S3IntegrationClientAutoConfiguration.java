@@ -6,6 +6,13 @@ import de.muenchen.refarch.integration.s3.client.api.FolderApiApi;
 import de.muenchen.refarch.integration.s3.client.domain.model.SupportedFileExtensions;
 import de.muenchen.refarch.integration.s3.client.factory.YamlPropertySourceFactory;
 import de.muenchen.refarch.integration.s3.client.properties.S3IntegrationClientProperties;
+import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFileRepository;
+import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFileRestRepository;
+import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFolderRepository;
+import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFolderRestRepository;
+import de.muenchen.refarch.integration.s3.client.repository.presignedurl.PresignedUrlRepository;
+import de.muenchen.refarch.integration.s3.client.repository.presignedurl.PresignedUrlRestRepository;
+import de.muenchen.refarch.integration.s3.client.repository.transfer.S3FileTransferRepository;
 import de.muenchen.refarch.integration.s3.client.service.FileValidationService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +47,7 @@ public class S3IntegrationClientAutoConfiguration {
 
     @PostConstruct
     public void init() {
-        log.info("[REFARCH-S3-INTEGRATION-CLIENT]: Staring integration client, security is {}.",
+        log.info("s3 rest client security is {}.",
                 s3IntegrationClientProperties.isEnableSecurity() ? "enabled" : "disabled");
     }
 
@@ -108,5 +115,29 @@ public class S3IntegrationClientAutoConfiguration {
     @ConditionalOnMissingBean
     public FolderApiApi folderApiApi(final ApiClient apiClient) {
         return new FolderApiApi(apiClient);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public PresignedUrlRepository presignedUrlRepository(
+            final FileApiApi fileApi) {
+        return new PresignedUrlRestRepository(fileApi);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public DocumentStorageFileRepository documentStorageFileRepository(
+            final PresignedUrlRepository presignedUrlRepository,
+            final S3FileTransferRepository s3FileTransferRepository,
+            final FileApiApi fileApi) {
+        return new DocumentStorageFileRestRepository(presignedUrlRepository,
+                s3FileTransferRepository, fileApi);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public DocumentStorageFolderRepository documentStorageFolderRepository(
+            final FolderApiApi folderApi) {
+        return new DocumentStorageFolderRestRepository(folderApi);
     }
 }
