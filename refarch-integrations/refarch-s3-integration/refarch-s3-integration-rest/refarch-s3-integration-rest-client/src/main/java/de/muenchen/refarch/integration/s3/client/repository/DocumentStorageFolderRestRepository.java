@@ -10,14 +10,12 @@ import java.util.Map;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestClientException;
 import reactor.core.publisher.Mono;
 
 @Slf4j
-@Repository
 @RequiredArgsConstructor
 public class DocumentStorageFolderRestRepository implements DocumentStorageFolderRepository {
     private final FolderApiApi folderApi;
