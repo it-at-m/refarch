@@ -22,10 +22,13 @@ and a [s3-integration starter](../refarch-s3-integration/README.md#usage).
 
 ### refarch-email-integration-starter
 
-| Property                                | Description                                       | Example |
-|-----------------------------------------|---------------------------------------------------|---------|
-| `spring.mail.host`                      | Host of smtp server used for sending mails.       |         |
-| `spring.mail.username`                  | Username of smtp server.                          |         |
-| `spring.mail.password`                  | Password of smtp server.                          |         |
-| `refarch.mail.from-address`             | Default from address used when sending mails.     |         |
-| `refarch.mail.default-reply-to-address` | Default reply to address used when sending mails. |         |
+| Property                                | Description                                       | Example                |
+|-----------------------------------------|---------------------------------------------------|------------------------|
+| `spring.mail.host`                      | Host of smtp server used for sending mails.       | `mail.example.com`     |
+| `spring.mail.port`                      | Host of smtp server used for sending mails.       | `1025`                 |
+| `spring.mail.username`                  | Username of smtp server.                          |                        |
+| `spring.mail.password`                  | Password of smtp server.                          |                        |
+| `refarch.mail.from-address`             | Default from address used when sending mails.     | `test@example.com`     |
+| `refarch.mail.default-reply-to-address` | Default reply to address used when sending mails. | `no_reply@example.com` |
+
+In addition, properties of selected [s3-integration starter](../refarch-s3-integration/README.md#usage).
