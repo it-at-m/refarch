@@ -31,16 +31,14 @@ class SendMailPathsUseCaseTest {
             "Test Mail",
             "This is a test mail",
             "test@muenchen.de",
-            "fileContext",
-            "folder/file.txt");
+            List.of("folder/file.txt"));
     private final TemplateMailPaths templateMail = new TemplateMailPaths(
             "mailReceiver1@muenchen.de,mailReceiver2@muenchen.de",
             "receiverCC@muenchen.de",
             "receiverBCC@muenchen.de",
             "Test Mail",
             "test@muenchen.de",
-            "fileContext",
-            "folder/file.txt",
+            List.of("folder/file.txt"),
             "template",
             Map.of("mail", Map.of()));
     private SendMailPathsInPort sendMailPathsInPort;

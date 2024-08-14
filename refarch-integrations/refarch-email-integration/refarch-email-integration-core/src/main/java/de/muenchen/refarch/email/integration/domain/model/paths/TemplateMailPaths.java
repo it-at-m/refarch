@@ -2,12 +2,12 @@ package de.muenchen.refarch.email.integration.domain.model.paths;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import java.util.List;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
-
-import java.util.Map;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -27,9 +27,9 @@ public class TemplateMailPaths extends BasicMailPaths {
     @NotEmpty(message = "No content given")
     private Map<String, Object> content;
 
-    public TemplateMailPaths(String receivers, String receiversCc, String receiversBcc, String subject, String replyTo, String fileContext, String filePaths,
+    public TemplateMailPaths(String receivers, String receiversCc, String receiversBcc, String subject, String replyTo, List<String> filePaths,
             String template, Map<String, Object> content) {
-        super(receivers, receiversCc, receiversBcc, subject, replyTo, fileContext, filePaths);
+        super(receivers, receiversCc, receiversBcc, subject, replyTo, filePaths);
         this.template = template;
         this.content = content;
     }
