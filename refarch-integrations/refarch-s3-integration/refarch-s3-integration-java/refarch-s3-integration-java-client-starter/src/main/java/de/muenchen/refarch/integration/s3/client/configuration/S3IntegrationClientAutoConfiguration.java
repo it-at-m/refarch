@@ -80,7 +80,7 @@ public class S3IntegrationClientAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnBean
+    @ConditionalOnMissingBean
     public DocumentStorageFolderRepository documentStorageFolderRepository(
             final FolderOperationsInPort folderOperationsInPort) {
         return new DocumentStorageFolderJavaRepository(folderOperationsInPort);
