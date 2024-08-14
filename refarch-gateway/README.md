@@ -11,7 +11,7 @@ via the corresponding [Helm-Chart](https://github.com/it-at-m/helm-charts/tree/m
 
 Beside the default functionality of Spring Cloud Gateway (i.e. routing) following features are preconfigured/provided:
 
-- oAuth2 login
+- OAuth 2.0 based login
 - Route protection
 - CSRF protection with whitelist
 - Cookie to JWT mapping for session management
