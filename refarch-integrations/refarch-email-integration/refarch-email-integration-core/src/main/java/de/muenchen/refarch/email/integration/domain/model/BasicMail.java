@@ -1,6 +1,7 @@
 package de.muenchen.refarch.email.integration.domain.model;
 
 import jakarta.validation.constraints.NotBlank;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -35,4 +36,8 @@ public class BasicMail {
      * Reply to address
      */
     private String replyTo;
+    /**
+     * List of attachment paths.
+     */
+    private List<String> filePaths;
 }

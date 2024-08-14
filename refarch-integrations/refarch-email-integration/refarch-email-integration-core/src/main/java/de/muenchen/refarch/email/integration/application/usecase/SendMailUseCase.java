@@ -1,12 +1,12 @@
 package de.muenchen.refarch.email.integration.application.usecase;
 
-import de.muenchen.refarch.email.integration.application.port.in.SendMailPathsInPort;
+import de.muenchen.refarch.email.integration.application.port.in.SendMailInPort;
 import de.muenchen.refarch.email.integration.application.port.out.LoadMailAttachmentOutPort;
 import de.muenchen.refarch.email.integration.application.port.out.MailOutPort;
 import de.muenchen.refarch.email.integration.domain.exception.TemplateError;
-import de.muenchen.refarch.email.integration.domain.model.paths.BasicMailPaths;
-import de.muenchen.refarch.email.integration.domain.model.paths.TemplateMailPaths;
-import de.muenchen.refarch.email.integration.domain.model.paths.TextMailPaths;
+import de.muenchen.refarch.email.integration.domain.model.BasicMail;
+import de.muenchen.refarch.email.integration.domain.model.TemplateMail;
+import de.muenchen.refarch.email.integration.domain.model.TextMail;
 import de.muenchen.refarch.email.model.FileAttachment;
 import freemarker.template.TemplateException;
 import jakarta.mail.MessagingException;
@@ -23,7 +23,7 @@ import org.springframework.validation.annotation.Validated;
 @Slf4j
 @RequiredArgsConstructor
 @Validated
-public class SendMailPathsUseCase implements SendMailPathsInPort {
+public class SendMailUseCase implements SendMailInPort {
 
     private final LoadMailAttachmentOutPort loadAttachmentOutPort;
     private final MailOutPort mailOutPort;
@@ -34,7 +34,7 @@ public class SendMailPathsUseCase implements SendMailPathsInPort {
      * @param mail mail that is sent
      */
     @Override
-    public void sendMailWithText(@Valid final TextMailPaths mail) {
+    public void sendMailWithText(@Valid final TextMail mail) {
         de.muenchen.refarch.email.model.Mail mailModel = createMail(mail);
         mailModel.setBody(mail.getBody());
 
@@ -42,7 +42,7 @@ public class SendMailPathsUseCase implements SendMailPathsInPort {
     }
 
     @Override
-    public void sendMailWithTemplate(@Valid final TemplateMailPaths mail) throws TemplateError {
+    public void sendMailWithTemplate(@Valid final TemplateMail mail) throws TemplateError {
         // get body from template
         try {
             Map<String, Object> content = new HashMap<>(mail.getContent());
@@ -62,7 +62,7 @@ public class SendMailPathsUseCase implements SendMailPathsInPort {
         }
     }
 
-    private de.muenchen.refarch.email.model.Mail createMail(BasicMailPaths mail) {
+    private de.muenchen.refarch.email.model.Mail createMail(BasicMail mail) {
         // load Attachments
         List<FileAttachment> attachments = loadAttachmentOutPort.loadAttachments(mail.getFilePaths());
 

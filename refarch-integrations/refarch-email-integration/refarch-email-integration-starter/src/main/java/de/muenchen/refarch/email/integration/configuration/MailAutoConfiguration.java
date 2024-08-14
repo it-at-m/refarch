@@ -3,10 +3,10 @@ package de.muenchen.refarch.email.integration.configuration;
 import de.muenchen.refarch.email.api.EmailApi;
 import de.muenchen.refarch.email.integration.adapter.out.mail.MailAdapter;
 import de.muenchen.refarch.email.integration.adapter.out.s3.S3Adapter;
-import de.muenchen.refarch.email.integration.application.port.in.SendMailPathsInPort;
+import de.muenchen.refarch.email.integration.application.port.in.SendMailInPort;
 import de.muenchen.refarch.email.integration.application.port.out.LoadMailAttachmentOutPort;
 import de.muenchen.refarch.email.integration.application.port.out.MailOutPort;
-import de.muenchen.refarch.email.integration.application.usecase.SendMailPathsUseCase;
+import de.muenchen.refarch.email.integration.application.usecase.SendMailUseCase;
 import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFileRepository;
 import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFolderRepository;
 import de.muenchen.refarch.integration.s3.client.service.FileValidationService;
@@ -24,8 +24,8 @@ public class MailAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public SendMailPathsInPort getSendMailPathsInPort(final LoadMailAttachmentOutPort loadAttachmentPort, final MailOutPort mailOutPort) {
-        return new SendMailPathsUseCase(loadAttachmentPort, mailOutPort);
+    public SendMailInPort getSendMailPathsInPort(final LoadMailAttachmentOutPort loadAttachmentPort, final MailOutPort mailOutPort) {
+        return new SendMailUseCase(loadAttachmentPort, mailOutPort);
     }
 
     @Bean

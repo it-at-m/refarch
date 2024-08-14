@@ -1,4 +1,4 @@
-package de.muenchen.refarch.email.integration.domain.model.paths;
+package de.muenchen.refarch.email.integration.domain.model;
 
 import jakarta.validation.constraints.NotBlank;
 import java.util.List;
@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 @Data
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class TextMailPaths extends BasicMailPaths {
+public class TextMail extends BasicMail {
 
     /**
      * Body of the mail.
@@ -22,7 +22,7 @@ public class TextMailPaths extends BasicMailPaths {
     @NotBlank(message = "No body given")
     private String body;
 
-    public TextMailPaths(String receivers, String receiversCc, String receiversBcc, String subject, String body, String replyTo,
+    public TextMail(String receivers, String receiversCc, String receiversBcc, String subject, String body, String replyTo,
             List<String> filePaths) {
         super(receivers, receiversCc, receiversBcc, subject, replyTo, filePaths);
         this.body = body;
