@@ -15,7 +15,7 @@ import org.springframework.util.unit.DataSize;
 /**
  * A service class for managing file extensions, detecting file types and checking file size.
  */
-public class FileService {
+public class FileValidationService {
 
     private static final String NO_FILE_EXTENSION = "No file extension found for %s";
 
@@ -33,7 +33,7 @@ public class FileService {
     @Getter
     private final DataSize maxBatchSize;
 
-    public FileService(final SupportedFileExtensions supportedFileExtensions, final DataSize maxFileSize, final DataSize maxBatchSize) {
+    public FileValidationService(final SupportedFileExtensions supportedFileExtensions, final DataSize maxFileSize, final DataSize maxBatchSize) {
         this.supportedFileExtensions = Objects.nonNull(supportedFileExtensions) ? supportedFileExtensions : new SupportedFileExtensions();
         this.maxFileSize = maxFileSize;
         this.maxBatchSize = maxBatchSize;

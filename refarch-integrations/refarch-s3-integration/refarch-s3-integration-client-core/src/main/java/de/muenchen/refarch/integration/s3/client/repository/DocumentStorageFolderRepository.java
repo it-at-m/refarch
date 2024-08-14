@@ -5,7 +5,6 @@ import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageExcept
 import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageServerErrorException;
 import java.util.Map;
 import java.util.Set;
-import reactor.core.publisher.Mono;
 
 public interface DocumentStorageFolderRepository {
     /**
@@ -29,7 +28,7 @@ public interface DocumentStorageFolderRepository {
      * @throws DocumentStorageException if the problem cannot be assigned directly to the document
      *             storage.
      */
-    Mono<Set<String>> getAllFilesInFolderRecursively(String pathToFolder)
+    Set<String> getAllFilesInFolderRecursively(String pathToFolder)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException;
 
     /**
@@ -42,6 +41,6 @@ public interface DocumentStorageFolderRepository {
      * @throws DocumentStorageException if the problem cannot be assigned directly to the document
      *             storage.
      */
-    Mono<Map<String, Long>> getAllFileSizesInFolderRecursively(String pathToFolder)
+    Map<String, Long> getAllFileSizesInFolderRecursively(String pathToFolder)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException;
 }

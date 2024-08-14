@@ -1,26 +1,26 @@
 package de.muenchen.refarch.integration.s3.client.configuration;
 
-import de.muenchen.refarch.integration.s3.client.ApiClient;
-import de.muenchen.refarch.integration.s3.client.api.FileApiApi;
-import de.muenchen.refarch.integration.s3.client.api.FolderApiApi;
+import de.muenchen.refarch.integration.s3.application.port.in.FileOperationsInPort;
+import de.muenchen.refarch.integration.s3.application.port.in.FileOperationsPresignedUrlInPort;
+import de.muenchen.refarch.integration.s3.application.port.in.FolderOperationsInPort;
 import de.muenchen.refarch.integration.s3.client.domain.model.SupportedFileExtensions;
 import de.muenchen.refarch.integration.s3.client.properties.S3IntegrationClientProperties;
+import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFileJavaRepository;
+import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFileRepository;
+import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFolderJavaRepository;
+import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFolderRepository;
+import de.muenchen.refarch.integration.s3.client.repository.presignedurl.PresignedUrlJavaRepository;
+import de.muenchen.refarch.integration.s3.client.repository.presignedurl.PresignedUrlRepository;
+import de.muenchen.refarch.integration.s3.client.repository.transfer.S3FileTransferRepository;
 import de.muenchen.refarch.integration.s3.client.service.FileValidationService;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.oauth2.client.AuthorizedClientServiceOAuth2AuthorizedClientManager;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
-import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 @ComponentScan(
@@ -34,39 +34,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class S3IntegrationClientAutoConfiguration {
 
     public final S3IntegrationClientProperties s3IntegrationClientProperties;
-
-    @PostConstruct
-    public void init() {
-        log.info("[REFARCH-S3-INTEGRATION-CLIENT]: Staring integration client, security is {}.",
-                s3IntegrationClientProperties.isEnableSecurity() ? "enabled" : "disabled");
-    }
-
-    @Bean
-    @ConditionalOnProperty(prefix = "refarch.s3.client", name = "enable-security", havingValue = "true")
-    public ApiClient securedApiClient(final ClientRegistrationRepository clientRegistrationRepository,
-            final OAuth2AuthorizedClientService authorizedClientService) {
-        return new ApiClient(
-                this.authenticatedWebClient(clientRegistrationRepository, authorizedClientService));
-    }
-
-    @Bean
-    @ConditionalOnProperty(prefix = "refarch.s3.client", name = "enable-security", havingValue = "false", matchIfMissing = true)
-    public ApiClient apiClient() {
-        return new ApiClient(
-                WebClient.builder().build());
-    }
-
-    private WebClient authenticatedWebClient(
-            final ClientRegistrationRepository clientRegistrationRepository,
-            final OAuth2AuthorizedClientService authorizedClientService) {
-        final var oauth = new ServletOAuth2AuthorizedClientExchangeFilterFunction(
-                new AuthorizedClientServiceOAuth2AuthorizedClientManager(
-                        clientRegistrationRepository, authorizedClientService));
-        oauth.setDefaultClientRegistrationId("s3");
-        return WebClient.builder()
-                .apply(oauth.oauth2Configuration())
-                .build();
-    }
 
     /**
      * Instance of a {@link FileValidationService} containing externally given supported file
@@ -97,13 +64,25 @@ public class S3IntegrationClientAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public FileApiApi fileApiApi(final ApiClient apiClient) {
-        return new FileApiApi(apiClient);
+    public PresignedUrlRepository presignedUrlRepository(
+            final FileOperationsPresignedUrlInPort fileOperationsPresignedUrlInPort) {
+        return new PresignedUrlJavaRepository(fileOperationsPresignedUrlInPort);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public FolderApiApi folderApiApi(final ApiClient apiClient) {
-        return new FolderApiApi(apiClient);
+    public DocumentStorageFileRepository documentStorageFileRepository(
+            final PresignedUrlRepository presignedUrlRepository,
+            final S3FileTransferRepository s3FileTransferRepository,
+            final FileOperationsInPort fileOperationsInPort) {
+        return new DocumentStorageFileJavaRepository(presignedUrlRepository,
+                s3FileTransferRepository, fileOperationsInPort);
+    }
+
+    @Bean
+    @ConditionalOnBean
+    public DocumentStorageFolderRepository documentStorageFolderRepository(
+            final FolderOperationsInPort folderOperationsInPort) {
+        return new DocumentStorageFolderJavaRepository(folderOperationsInPort);
     }
 }

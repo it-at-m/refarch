@@ -50,9 +50,9 @@ class PresignedUrlRestRepositoryTest {
 
         Mockito.reset(this.fileApi);
         Mockito.when(this.fileApi.get(pathToFile, expireInMinutes)).thenReturn(Mono.just(expected));
-        final Mono<String> result = this.presignedUrlRestRepository.getPresignedUrlGetFile(pathToFile, expireInMinutes);
+        final String result = this.presignedUrlRestRepository.getPresignedUrlGetFile(pathToFile, expireInMinutes);
         Mockito.verify(this.fileApi, Mockito.times(1)).get(pathToFile, expireInMinutes);
-        assertThat(result.block(), is(expected.getUrl()));
+        assertThat(result, is(expected.getUrl()));
         Mockito.reset(this.fileApi);
     }
 

@@ -3,7 +3,6 @@ package de.muenchen.refarch.integration.s3.client.repository.presignedurl;
 import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageClientErrorException;
 import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageException;
 import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageServerErrorException;
-import reactor.core.publisher.Mono;
 
 public interface PresignedUrlRepository {
 
@@ -19,7 +18,7 @@ public interface PresignedUrlRepository {
      * @throws DocumentStorageException if the problem cannot be assigned to either the client or the
      *             document storage.
      */
-    Mono<String> getPresignedUrlGetFile(String pathToFile, int expireInMinutes)
+    String getPresignedUrlGetFile(String pathToFile, int expireInMinutes)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException;
 
     /**

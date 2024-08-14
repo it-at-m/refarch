@@ -53,7 +53,7 @@ class DocumentStorageFileRestRepositoryTest {
         final int expireInMinutes = 10;
         final String presignedUrl = "the_presignedUrl";
 
-        when(this.presignedUrlRestRepository.getPresignedUrlGetFile(pathToFile, expireInMinutes)).thenReturn(Mono.just(presignedUrl));
+        when(this.presignedUrlRestRepository.getPresignedUrlGetFile(pathToFile, expireInMinutes)).thenReturn(presignedUrl);
         when(this.s3FileTransferRepository.getFile(presignedUrl)).thenReturn(new byte[] {});
         this.documentStorageFileRestRepository.getFile(pathToFile, expireInMinutes);
 
@@ -68,8 +68,8 @@ class DocumentStorageFileRestRepositoryTest {
         final String pathToFile = "path/to/file";
 
         when(fileApi.getFileSize(anyString())).thenReturn(Mono.just(fileSizeDto));
-        final Mono<Long> result = documentStorageFileRestRepository.getFileSize(pathToFile);
-        assertEquals(123L, result.block());
+        final Long result = documentStorageFileRestRepository.getFileSize(pathToFile);
+        assertEquals(123L, result);
         verify(fileApi, Mockito.times(1)).getFileSize(pathToFile);
 
         Mockito.reset(this.fileApi);

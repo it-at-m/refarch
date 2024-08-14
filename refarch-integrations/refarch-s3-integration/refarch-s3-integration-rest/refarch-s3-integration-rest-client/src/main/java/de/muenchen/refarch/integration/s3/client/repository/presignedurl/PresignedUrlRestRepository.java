@@ -22,11 +22,11 @@ public class PresignedUrlRestRepository implements PresignedUrlRepository {
     private final FileApiApi fileApi;
 
     @Override
-    public Mono<String> getPresignedUrlGetFile(final String pathToFile, final int expireInMinutes)
+    public String getPresignedUrlGetFile(final String pathToFile, final int expireInMinutes)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
         try {
             final Mono<PresignedUrlDto> presignedUrlDto = fileApi.get(pathToFile, expireInMinutes);
-            return presignedUrlDto.mapNotNull(PresignedUrlDto::getUrl);
+            return presignedUrlDto.block().getUrl();
         } catch (final HttpClientErrorException exception) {
             final String message = String.format("The request to create a presigned url to get a file failed %s.", exception.getStatusCode());
             log.error(message);
