@@ -1,9 +1,0 @@
-SSO_ISSUER_URL: http://keycloak:8100/auth/realms/local_realm
-refarch:
-  s3:
-    bucket-name: test-bucket
-    access-key: minio
-    secret-key: Test1234
-    url: http://localhost:9000
-server:
-  port: 8086

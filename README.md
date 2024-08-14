@@ -12,6 +12,7 @@ As counterpart there are also [refarch-templates](https://github.com/it-at-m/ref
 The usage of the different components is described in their corresponding README.md
 
 - [refarch-gateway](./refarch-gateway/README.md)
+- [refarch-integrations](./refarch-integrations/README.md)
 
 ## Contributing
 
