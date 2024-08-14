@@ -22,7 +22,6 @@ import org.springframework.security.oauth2.client.AuthorizedClientServiceOAuth2A
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
@@ -33,7 +32,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 )
 @RequiredArgsConstructor
 @EnableConfigurationProperties(S3IntegrationClientProperties.class)
-@PropertySource(value = ResourceUtils.CLASSPATH_URL_PREFIX + "application.yml", factory = YamlPropertySourceFactory.class)
+@PropertySource(value = "classpath:application-s3-client.yml", factory = YamlPropertySourceFactory.class)
 @Slf4j
 public class S3IntegrationClientAutoConfiguration {
 
