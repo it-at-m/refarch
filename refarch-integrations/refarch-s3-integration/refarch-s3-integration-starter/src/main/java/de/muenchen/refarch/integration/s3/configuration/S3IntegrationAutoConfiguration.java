@@ -3,9 +3,12 @@ package de.muenchen.refarch.integration.s3.configuration;
 import de.muenchen.refarch.integration.s3.adapter.out.s3.S3Adapter;
 import de.muenchen.refarch.integration.s3.application.port.in.CreatePresignedUrlsInPort;
 import de.muenchen.refarch.integration.s3.application.port.in.FileOperationsInPort;
+import de.muenchen.refarch.integration.s3.application.port.in.FolderOperationsInPort;
+import de.muenchen.refarch.integration.s3.application.port.out.S3OutPort;
 import de.muenchen.refarch.integration.s3.application.usecase.CreatePresignedUrlsUseCase;
 import de.muenchen.refarch.integration.s3.application.usecase.FileOperationsPresignedUrlUseCase;
 import de.muenchen.refarch.integration.s3.application.usecase.FileOperationsUseCase;
+import de.muenchen.refarch.integration.s3.application.usecase.FolderOperationsUseCase;
 import de.muenchen.refarch.integration.s3.domain.exception.FileSystemAccessException;
 import de.muenchen.refarch.integration.s3.properties.S3IntegrationProperties;
 import io.minio.MinioClient;
@@ -54,5 +57,11 @@ public class S3IntegrationAutoConfiguration {
     @Bean
     public FileOperationsPresignedUrlUseCase fileOperationsPresignedUrlUseCase(S3Adapter s3Adapter) {
         return new FileOperationsPresignedUrlUseCase(s3Adapter);
+    }
+
+    @ConditionalOnMissingBean
+    @Bean
+    public FolderOperationsInPort folderOperationsInPort(final S3OutPort s3OutPort) {
+        return new FolderOperationsUseCase(s3OutPort);
     }
 }
