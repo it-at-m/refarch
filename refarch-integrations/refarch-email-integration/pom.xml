@@ -24,5 +24,6 @@
         <module>refarch-email</module>
         <module>refarch-email-integration-core</module>
         <module>refarch-email-integration-starter</module>
+        <module>refarch-email-integration-rest-example</module>
     </modules>
 </project>
