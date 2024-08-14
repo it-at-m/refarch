@@ -4,6 +4,7 @@ import de.muenchen.refarch.integration.s3.client.ApiClient;
 import de.muenchen.refarch.integration.s3.client.api.FileApiApi;
 import de.muenchen.refarch.integration.s3.client.api.FolderApiApi;
 import de.muenchen.refarch.integration.s3.client.domain.model.SupportedFileExtensions;
+import de.muenchen.refarch.integration.s3.client.factory.YamlPropertySourceFactory;
 import de.muenchen.refarch.integration.s3.client.properties.S3IntegrationClientProperties;
 import de.muenchen.refarch.integration.s3.client.service.FileValidationService;
 import jakarta.annotation.PostConstruct;
@@ -16,10 +17,12 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.oauth2.client.AuthorizedClientServiceOAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
@@ -30,6 +33,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 )
 @RequiredArgsConstructor
 @EnableConfigurationProperties(S3IntegrationClientProperties.class)
+@PropertySource(value = ResourceUtils.CLASSPATH_URL_PREFIX + "application.yml", factory = YamlPropertySourceFactory.class)
 @Slf4j
 public class S3IntegrationClientAutoConfiguration {
 
