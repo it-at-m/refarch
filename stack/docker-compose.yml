@@ -1,0 +1,66 @@
+name: refarch-stack
+
+services:
+  # s3
+  minio:
+    image: quay.io/minio/minio:latest
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: Test1234
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    volumes:
+      - ./minio:/data
+    networks:
+      - internal
+    restart: &restart-policy on-failure:3
+    healthcheck:
+      test: [ "CMD-SHELL",  "curl http://localhost:9000/minio/health/live" ]
+    security_opt: &security_settings
+      - no-new-privileges:true
+
+  init-minio:
+    image: minio/mc
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+        mc config host add minio http://minio:9000 minio Test1234;
+        mc mb minio/test-bucket;
+        exit 0;
+      "
+    networks:
+      - internal
+    security_opt: *security_settings
+
+  # mail
+  mailpit:
+    image: axllent/mailpit:latest
+    ports:
+      - '1025:1025' # smtp server
+      - '8025:8025' # ui
+    restart: *restart-policy
+    # has own healthcheck
+    security_opt: *security_settings
+
+  # keycloak
+  keycloak:
+    extends:
+      file: docker-compose-refarch-base.yml
+      service: keycloak
+
+  db-postgres-keycloak:
+    extends:
+      file: docker-compose-refarch-base.yml
+      service: db-postgres-keycloak
+
+  init-keycloak:
+    extends:
+      file: docker-compose-refarch-base.yml
+      service: init-keycloak
+
+networks:
+  keycloak:
+  internal:

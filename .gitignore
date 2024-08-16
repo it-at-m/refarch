@@ -29,6 +29,9 @@ dist/
 nbdist/
 .nb-gradle/
 
-# Sonstiges
+# Stack
+minio/
+
+# Additional
 $(pwd)
 
