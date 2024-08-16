@@ -6,7 +6,7 @@ on:
       snapshot-release:
         description: 'Snapshot release?'
         type: boolean
-        default: true
+        default: false
       release-version:
         description: 'Release version'
         type: string
