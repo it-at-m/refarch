@@ -1,3 +1,6 @@
+SSO_ISSUER_URL: http://localhost:8100/auth/realms/local_realm
+SSO_CLIENT_ID: local
+SSO_CLIENT_SECRET: client_secret
 server:
   port: 8083
 spring:
@@ -15,8 +18,3 @@ spring:
           uri: http://localhost:4173/
           predicates:
             - "Path=/**"
-refarch:
-  security:
-    sso-issuer-url: http://localhost:8100/auth/realms/local_realm
-    sso-client-id: local
-    sso-client-secret: client_secret
