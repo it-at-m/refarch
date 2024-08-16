@@ -37,6 +37,11 @@ jobs:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: "temurin"
           cache: "maven"
+          server-id: "central"
+          server-username: CENTRAL_USERNAME
+          server-password: CENTRAL_PASSWORD
+          gpg-private-key: ${{ secrets.gpg_private_key }}
+          gpg-passphrase: SIGN_KEY_PASS
       - name: Maven build
         if: ${{ inputs.snapshot-release != false }}
         run: mvn --batch-mode clean install
@@ -47,6 +52,10 @@ jobs:
           git config --global user.name "GitHub Actions"
           mvn release:prepare -B -DreleaseVersion=${{ inputs.release-version }} -DdevelopmentVersion=${{ inputs.next-version }} -DpushChanges=false -DremoteTagging=false
           mvn release:perform -Darguments="-Dmaven.deploy.skip=true" -DlocalCheckout=true
+        env:
+          SIGN_KEY_PASS: ${{ secrets.gpg_passphrase }}
+          CENTRAL_USERNAME: ${{ secrets.sonatype_username }}
+          CENTRAL_PASSWORD: ${{ secrets.sonatype_password }}
       - name: "Upload target artifacts"
         uses: actions/upload-artifact@v4
         with:
@@ -91,6 +100,8 @@ jobs:
         include:
           - name: refarch-gateway
             path: ./refarch-gateway
+          - name: s3-integration-rest-service
+            path: ./refarch-integrations/refarch-s3-integration/refarch-s3-integration-rest-service
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
