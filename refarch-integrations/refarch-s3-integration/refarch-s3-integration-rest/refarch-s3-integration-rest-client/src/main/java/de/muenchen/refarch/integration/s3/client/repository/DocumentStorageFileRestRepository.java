@@ -7,13 +7,11 @@ import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageServer
 import de.muenchen.refarch.integration.s3.client.repository.presignedurl.PresignedUrlRepository;
 import de.muenchen.refarch.integration.s3.client.repository.transfer.S3FileTransferRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestClientException;
 
 @Slf4j
-@Repository
 public class DocumentStorageFileRestRepository extends DocumentStorageFileRepository {
     private final FileApiApi fileApi;
 
