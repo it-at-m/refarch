@@ -16,6 +16,11 @@
         <module>refarch-integrations</module>
     </modules>
 
+    <distributionManagement>
+        <repository>
+            <id>central</id>
+        </repository>
+    </distributionManagement>
     <scm>
         <url>https://github.com/it-at-m/refarch.git</url>
         <connection>scm:git:https://github.com/it-at-m/refarch.git</connection>
