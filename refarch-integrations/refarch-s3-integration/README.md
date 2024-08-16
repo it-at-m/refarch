@@ -41,13 +41,13 @@ Whether a property is an alias can be checked in the corresponding `application.
 
 ### s3-integration-rest-service
 
-| Property                          | Description                                                    | Example                                       |
-|-----------------------------------|----------------------------------------------------------------|-----------------------------------------------|
-| `refarch.s3.url`                  | Url of s3 endpoint to connect to.                              | `s3.example.com`                              |
-| `refarch.s3.bucket-name`          | Name of the bucket to connect to.                              | `refarch-bucket`                              |
-| `refarch.s3.access-key`           | Access key to use for connection.                              |                                               |
-| `refarch.s3.secret-key`           | Secret key to use for connection.                              |                                               |
-| `refarch.security.sso-issuer-url` | Issuer url of oAuth2 service used for securing rest endpoints. | `https://sso.example.com/auth/realms/refarch` |
+| Property                 | Description                                                    | Example                                       |
+|--------------------------|----------------------------------------------------------------|-----------------------------------------------|
+| `refarch.s3.url`         | Url of s3 endpoint to connect to.                              | `s3.example.com`                              |
+| `refarch.s3.bucket-name` | Name of the bucket to connect to.                              | `refarch-bucket`                              |
+| `refarch.s3.access-key`  | Access key to use for connection.                              |                                               |
+| `refarch.s3.secret-key`  | Secret key to use for connection.                              |                                               |
+| `SSO_ISSUER_URL`         | Issuer url of oAuth2 service used for securing rest endpoints. | `https://sso.example.com/auth/realms/refarch` |
 
 ### s3-integration-java-client-starter
 
@@ -65,6 +65,6 @@ All properties of [s3-integration-java-client-starter](#s3-integration-rest-clie
 |------------------------------------------|----------------------------------------------------------------------------|-----------------------------------------------|
 | `refarch.s3.client.document-storage-url` | Url to the RefArch S3 integration service.                                 | `http://s3-integration-service:8080`          |
 | `refarch.s3.client.enable-security`      | Switch to enable or disable oAuth2 authentication against s3 service.      | `true`                                        |
-| `refarch.security.sso-issuer-url`        | Issuer url of oAuth2 service to use for authentication against s3 service. | `https://sso.example.com/auth/realms/refarch` |
-| `refarch.s3.client.client-id`            | Client id to be used for authentication.                                   | `refarch_client`                              |
-| `refarch.s3.client.client-secret`        | Client secret to be used for gathering client service account token.       |                                               |
+| `SSO_ISSUER_URL`                         | Issuer url of oAuth2 service to use for authentication against s3 service. | `https://sso.example.com/auth/realms/refarch` |
+| `SSO_S3_CLIENT_ID`                       | Client id to be used for authentication.                                   | `refarch_client`                              |
+| `SSO_S3_CLIENT_SECRET`                   | Client secret to be used for gathering client service account token.       |                                               |
