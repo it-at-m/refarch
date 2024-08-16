@@ -51,7 +51,7 @@ jobs:
           git config --global user.email "github-actions@github.com"
           git config --global user.name "GitHub Actions"
           mvn release:prepare -B -DreleaseVersion=${{ inputs.release-version }} -DdevelopmentVersion=${{ inputs.next-version }} -DpushChanges=false -DremoteTagging=false
-          mvn release:perform -Darguments="-Dmaven.deploy.skip=true" -DlocalCheckout=true
+          mvn release:perform -DlocalCheckout=true
         env:
           SIGN_KEY_PASS: ${{ secrets.gpg_passphrase }}
           CENTRAL_USERNAME: ${{ secrets.sonatype_username }}
