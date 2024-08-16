@@ -4,14 +4,14 @@ spring:
       client:
         provider:
           keycloak:
-            issuer-uri: ${refarch.security.sso-issuer-url}
-            user-info-uri: ${refarch.security.sso-issuer-url}/protocol/openid-connect/userinfo
-            jwk-set-uri: ${refarch.security.sso-issuer-url}/protocol/openid-connect/certs
+            issuer-uri: ${SSO_ISSUER_URL}
+            user-info-uri: ${SSO_ISSUER_URL}/protocol/openid-connect/userinfo
+            jwk-set-uri: ${SSO_ISSUER_URL}/protocol/openid-connect/certs
             user-name-attribute: user_name
         registration:
           s3:
             provider: keycloak
             authorization-grant-type: client_credentials
-            client-id: ${refarch.s3.client.client-id}
-            client-secret: ${refarch.s3.client.client-secret}
+            client-id: ${SSO_S3_CLIENT_ID}
+            client-secret: ${SSO_S3_CLIENT_SECRET}
             scope: email, profile, openid  # needed for userInfo endpoint

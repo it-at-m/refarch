@@ -1,0 +1,20 @@
+SSO_ISSUER_URL: http://localhost:8100/auth/realms/local_realm
+SSO_CLIENT_ID: local
+SSO_CLIENT_SECRET: client_secret
+server:
+  port: 8083
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: backend
+          uri: http://localhost:39146/
+          predicates:
+            - "Path=/api/backend-service/rest/**"
+          filters:
+            - RewritePath=/api/digitalwf-backend-service/(?<urlsegments>.*), /$\{urlsegments}
+            - "RemoveResponseHeader=WWW-Authenticate"
+        - id: frontend
+          uri: http://localhost:4173/
+          predicates:
+            - "Path=/**"
