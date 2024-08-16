@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
     <configuration default="false" name="ApiGatewayApplication" type="SpringBootApplicationConfigurationType"
                    factoryName="Spring Boot" nameIsGenerated="true">
-        <option name="ACTIVE_PROFILES" value="local,local-conf,hazelcast-local"/>
+        <option name="ACTIVE_PROFILES" value="local,hazelcast-local"/>
         <module name="refarch-gateway"/>
         <option name="SPRING_BOOT_MAIN_CLASS" value="de.muenchen.refarch.gateway.ApiGatewayApplication"/>
         <extension name="net.ashald.envfile">
