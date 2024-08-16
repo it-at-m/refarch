@@ -91,6 +91,8 @@ jobs:
         include:
           - name: refarch-gateway
             path: ./refarch-gateway
+          - name: s3-integration-rest-service
+            path: ./refarch-integrations/refarch-s3-integration/refarch-s3-integration-rest-service
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
