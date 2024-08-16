@@ -41,16 +41,20 @@ Beside the default behaviour there are some special route prefixes which are han
 
 ## Configuration
 
-| Var                                                      | Description                                        | Example                                                                 |
-|----------------------------------------------------------|----------------------------------------------------|-------------------------------------------------------------------------|
-| `SSO_ISSUER_URL`                                         | Url of the oAuth2 server used for authentication.  | `https://sso.muenchen.de/auth/realms/muenchen.de`                       |
-| `SSO_CLIENT_ID`                                          | OAuth2 client id used for authentication.          |                                                                         |
-| `SSO_CLIENT_SECRET`                                      | OAuth2 client secret used for authentication.      |                                                                         |
-| `SPRING_CLOUD_GATEWAY_ROUTES_<index>_ID`                 | Id of a route definition.                          | `backend`                                                               |
-| `SPRING_CLOUD_GATEWAY_ROUTES_<index>_URI`                | The uri to route to if this route matches.         | `http://backend-service:8080/`                                          |
-| `SPRING_CLOUD_GATEWAY_ROUTES_<index>_PREDICATES_<index>` | Route predicates i.e. matcher.                     | `Path=/api/backend-service/**`                                          |
-| `SPRING_CLOUD_GATEWAY_ROUTES_<index>_FILTERS_<index>`    | List of filters applied to the route.              | `RewritePath=/api/backend-service/(?<urlsegments>.*), /$\{urlsegments}` |
-| `ALLOWED_ORIGINS_PUBLIC` (optional)                      | List of urls allowed as origin for public routes.  | `https://*.muenchen.de,http://localhost:*`                              |
-| `ALLOWED_ORIGINS_CLIENTS` (optional)                     | List of urls allowed as origin for clients routes. | `https://*.muenchen.de,http://localhost:*`                              |
-| `REFARCH_SECURITY_CSRFWHITELISTED_<index>` (optional)    | List of routes to disable csrf protection for.     | `/example/**`                                                           |
-| `INFO_APPSWITCHER_URL` (optional)                        | App switcher url for usage in refarch frontend.    | `https://appswitcher.muenchen.de`                                       |
+Following are the properties to configure the gateway. Some of them are custom defined and others are synonyms
+for spring package properties.
+Whether a property is an alias can be checked in the [`application.yml`](./src/main/resources/application.yml).
+
+| Var                                                        | Description                                        | Example                                                                 |
+|------------------------------------------------------------|----------------------------------------------------|-------------------------------------------------------------------------|
+| `refarch.security.sso-issuer-url`                          | Url of the oAuth2 server used for authentication.  | `https://sso.muenchen.de/auth/realms/muenchen.de`                       |
+| `refarch.security.sso-client-id`                           | OAuth2 client id used for authentication.          |                                                                         |
+| `refarch.security.sso-client-secret`                       | OAuth2 client secret used for authentication.      |                                                                         |
+| `spring.cloud.gateway.routes.*.id`                         | Id of a route definition.                          | `backend`                                                               |
+| `spring.cloud.gateway.routes.*.uri`                        | The uri to route to if this route matches.         | `http://backend-service:8080/`                                          |
+| `spring.cloud.gateway.routes.*.predicates.*`               | Route predicates i.e. matcher.                     | `Path=/api/backend-service/**`                                          |
+| `spring.cloud.gateway.routes.*.filters.*`                  | List of filters applied to the route.              | `RewritePath=/api/backend-service/(?<urlsegments>.*), /$\{urlsegments}` |
+| `refarch.security.cors.allowed-origins-public` (optional)  | List of urls allowed as origin for public routes.  | `https://*.muenchen.de,http://localhost:*`                              |
+| `refarch.security.cors.allowed-origins-clients` (optional) | List of urls allowed as origin for clients routes. | `https://*.muenchen.de,http://localhost:*`                              |
+| `refarch.security.csrf-whitelisted.*` (optional)           | List of routes to disable csrf protection for.     | `/example/**`                                                           |
+| `info.appswitcher.url` (optional)                          | App switcher url for usage in refarch frontend.    | `https://appswitcher.muenchen.de`                                       |
