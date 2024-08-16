@@ -12,15 +12,15 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${refarch.security.sso-issuer-url}
+          issuer-uri: ${SSO_ISSUER_URL}
       client:
         provider:
           keycloak:
-            issuer-uri: ${refarch.security.sso-issuer-url}
+            issuer-uri: ${SSO_ISSUER_URL}
         registration:
           keycloak:
-            client-id: ${refarch.security.sso-client-id}
-            client-secret: ${refarch.security.sso-client-secret}
+            client-id: ${SSO_CLIENT_ID}
+            client-secret: ${SSO_CLIENT_SECRET}
             scope: email, profile, openid  # needed for userInfo endpoint
             provider: keycloak
   cloud:
@@ -28,9 +28,9 @@ spring:
       globalcors:
         cors-configurations:
           '[/public/**]':
-            allowedOriginPatterns: ${refarch.security.cors.allowed-origins-public}
+            allowedOriginPatterns: ${ALLOWED_ORIGINS_PUBLIC}
           '[/clients/**]':
-            allowedOriginPatterns: ${refarch.security.cors.allowed-origins-clients}
+            allowedOriginPatterns: ${ALLOWED_ORIGINS_CLIENTS}
             allowedHeaders: "*"
             allowCredentials: true
       default-filters:
@@ -74,15 +74,6 @@ info:
   application:
     name: ${spring.application.name}
     version: '@project.version@'
-
-refarch:
-  security:
-    sso-issuer-url:
-    sso-client:
-    sso-secret:
-    cors:
-      allowed-origins-public:
-    csrf-whitelisted:
 
 config:
   map5xxto400: true
