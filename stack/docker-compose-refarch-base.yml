@@ -81,7 +81,7 @@ services:
 
   init-keycloak:
     container_name: init-keycloak
-    image: klg71/keycloakmigration:0.2.55
+    image: klg71/keycloakmigration:0.2.67
     depends_on:
       - keycloak
     environment:
