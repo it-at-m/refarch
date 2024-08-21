@@ -11,8 +11,8 @@ As counterpart there are also [refarch-templates](https://github.com/it-at-m/ref
 
 The usage of the different components is described in their corresponding README.md
 
-- [refarch-gateway](./refarch-gateway/README.md)
-- [refarch-integrations](./refarch-integrations/README.md)
+- [refarch-gateway](../refarch-gateway/README.md)
+- [refarch-integrations](../refarch-integrations/README.md)
 
 ## Contributing
 
@@ -30,11 +30,11 @@ Don't forget to give the project a star! Thanks again!
 5. Push to the Branch (`git push origin feature/AmazingFeature`)
 6. Open a Pull Request
 
-More about this in the [CODE_OF_CONDUCT](/CODE_OF_CONDUCT.md) file.
+More about this in the [CODE_OF_CONDUCT](./CODE_OF_CONDUCT.md) file.
 
 ## License
 
-Distributed under the MIT License. See [LICENSE](LICENSE) file for more information.
+Distributed under the MIT License. See [LICENSE](../LICENSE) file for more information.
 
 ## Contact
 
