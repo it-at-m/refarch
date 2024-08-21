@@ -2,19 +2,22 @@ changelog:
   categories:
     - title: 🎉 New Features
       labels:
-        - feature
+        - "Type: Feature"
     - title: 🐞 Bug Fixes
       labels:
-        - bug
-    - title: 🔨 Refactoring
+        - "Type: Bug"
+    - title: 🔨 Maintenance
       labels:
-        - refactoring
+        - "Type: Maintenance"
     - title: 📔 Documentation
       labels:
-        - documentation
-    - title: 🔨 Dependency Upgrades
+        - "Type: Documentation"
+    - title: ⬆️ Dependency Upgrades
       labels:
-        - dependencies
+        - "Type: Dependency"
+    - title: 🔒️ Security
+      labels:
+        - "Type: Security"
     - title: 💥 Breaking Changes
       labels:
         - BREAKING
