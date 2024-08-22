@@ -4,7 +4,7 @@ services:
   # s3
   minio:
     container_name: minio
-    image: quay.io/minio/minio:RELEASE.2024-08-17T01-24-54Z
+    image: quay.io/minio/minio:RELEASE.2024-08-17T01-24-54Z@sha256:6f23072e3e222e64fe6f86b31a7f7aca971e5129e55cbccef649b109b8e651a1
     command: server /data --console-address ":9001"
     environment:
       MINIO_ROOT_USER: minio
@@ -24,7 +24,7 @@ services:
 
   init-minio:
     container_name: init-minio
-    image: minio/mc:RELEASE.2024-08-17T11-33-50Z
+    image: minio/mc:RELEASE.2024-08-17T11-33-50Z@sha256:87382ad79da9f464a444aab607b3db9251c7fe7d1bfda0eb86cbacee2ca2b564
     depends_on:
       - minio
     entrypoint: >
@@ -40,7 +40,7 @@ services:
   # mail
   mailpit:
     container_name: mailpit
-    image: axllent/mailpit:v1.20.2
+    image: axllent/mailpit:v1.20.2@sha256:e6520318d3e6164b5f4213e9906ab01b17bf8eb01923d1d3458ea76ce2039254
     ports:
       - '1025:1025' # smtp server
       - '8025:8025' # ui
