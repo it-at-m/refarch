@@ -1,6 +1,6 @@
 # copy of https://github.com/it-at-m/refarch-templates/blob/main/stack/docker-compose.yml
 
-name: default-services
+name: refarch-stack
 
 services:
   postgres:

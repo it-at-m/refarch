@@ -1,8 +1,9 @@
-name: refarch-stack
+name: refarch-extended-stack
 
 services:
   # s3
   minio:
+    container_name: minio
     image: quay.io/minio/minio:RELEASE.2024-08-17T01-24-54Z
     command: server /data --console-address ":9001"
     environment:
@@ -22,6 +23,7 @@ services:
       - no-new-privileges:true
 
   init-minio:
+    container_name: init-minio
     image: minio/mc:RELEASE.2024-08-17T11-33-50Z
     depends_on:
       - minio
@@ -37,6 +39,7 @@ services:
 
   # mail
   mailpit:
+    container_name: mailpit
     image: axllent/mailpit:v1.20.2
     ports:
       - '1025:1025' # smtp server
