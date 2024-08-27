@@ -1,13 +1,15 @@
 #!/usr/bin/env node
 import * as fs from "fs";
-import {replaceInFile} from "replace-in-file";
+import {replaceInFile, replaceInFileSync} from "replace-in-file";
 import {input, select, Separator} from "@inquirer/prompts";
 
-async function startpoint() {
-    const FRONTEND = "frontend";
-    const BACKEND = "backend";
-    const EAI = "eai";
-    const EXIT = "exit"
+const FRONTEND = "frontend";
+const BACKEND = "backend";
+const EAI = "eai";
+const EXIT = "exit"
+
+async function projectConfiguration() {
+
     await select({
         message: 'Select Project/s you want to generate with space',
         choices: [
@@ -19,23 +21,21 @@ async function startpoint() {
         ]
     }).then(async (result: string) => {
         switch (result) {
+            case EAI:
             case BACKEND:
-                await generateBackendInteractiveCli();
+                await generateJavaInteractiveCli(EAI);
                 break;
             case FRONTEND:
                 await generateFrontendInteractiveCli();
                 break;
-            case EAI:
-                await generateEaiInteractiveCli();
-                break;
         }
         if (result != EXIT) {
-            await startpoint();
+            await projectConfiguration();
         }
     });
 }
 
-async function generateBackendInteractiveCli() {
+async function generateJavaInteractiveCli(application: string) {
     const groupId = await input({
         message: "Define value for property groupId (should match expression '^de\\.muenchen\\.[a-z0-9]+(\\.[a-z0-9]+)*$'): ",
         validate(value) {
@@ -54,12 +54,14 @@ async function generateBackendInteractiveCli() {
         },
         required: true,
     });
-    const projectName = await input({message: "Define value for Project Name:", required: true});
-    generateBackend(packageName, groupId, artifactId, projectName);
+    if(application == BACKEND) {
+        generateBackend(packageName, groupId, artifactId);
+    } else if (application == EAI){
+        generateEAI(packageName, groupId, artifactId)
+    }
 }
 
-
-function generateBackend(packageName, groupId, artifactId, projectName) {
+function generateBackend(packageName, groupId, artifactId) {
     fs.cpSync("../refarch-backend", "../refarch-backend-copy", {recursive: true});
     const replacements = [{
         files: "../refarch-backend-copy/src/main/java/de/muenchen/refarch/**/*.java",
@@ -75,52 +77,31 @@ function generateBackend(packageName, groupId, artifactId, projectName) {
         countMatches: true,
     }]
     Promise.all(
-        replacements.map(options => replaceInFile(options))
+        replacements.map(options => replaceInFileSync(options))
     ).then(result => {
-        fs.renameSync("../refarch-backend-copy", `../${projectName}`);
+        fs.renameSync("../refarch-backend-copy", `../${artifactId}`);
     });
 }
 
 async function generateFrontendInteractiveCli() {
     const name = await input({message: "Define value for property name:", required: true,});
-    await generateFrontend(name)
+    generateFrontend(name)
 }
 
-async function generateFrontend(name: string) {
+function generateFrontend(name: string) {
+    fs.cpSync("../refarch-frontend", "../refarch-frontend-copy", {recursive: true});
     const replacements = {
-        files: ["../refarch-frontend/package.json", "../refarch-frontend/package-lock.json"],
+        files: ["../refarch-frontend-copy/package.json", "../refarch-frontend-copy/package-lock.json"],
         from: [/refarch-frontend/g],
         to: [`package ${name}`],
         dry: true,
         countMatches: true,
     }
-    const result = await replaceInFile(replacements)
-    console.log(result);
+    replaceInFileSync(replacements)
 }
 
-async function generateEaiInteractiveCli() {
-    const groupId = await input({
-        message: "Define value for property groupId (should match expression '^de\\.muenchen\\.[a-z0-9]+(\\.[a-z0-9]+)*$'): ",
-        validate(value) {
-            const pass = value.match(/^de\.muenchen\.[a-z0-9]+(\.[a-z0-9]+)*$/g);
-            return pass ? true : "GroupId name not valid";
-        },
-        required: true,
-    });
-    const artifactId = await input({message: "Define value for property artifactId:", required: true,});
-    const packageName = await input({
-        message: "Define value for property package:",
-        default: groupId,
-        validate(value) {
-            const pass = value.match(/^de\.muenchen\.[a-z0-9]+(\.[a-z0-9]+)*$/g);
-            return pass ? true : "Package name not valid";
-        },
-        required: true,
-    });
-    await generateEAI(groupId, artifactId, packageName);
-}
 
-async function generateEAI(packageName, groupId, artifactId,) {
+function generateEAI(packageName, groupId, artifactId,) {
     fs.cpSync("../refarch-eai", "../refarch-eai-copy", {recursive: true});
     const replacements = [{
         files: "../refarch-eai-copy/src/main/java/de/muenchen/refarch/**/*.java",
@@ -136,7 +117,7 @@ async function generateEAI(packageName, groupId, artifactId,) {
         countMatches: true,
     }]
     Promise.all(
-        replacements.map(options => replaceInFile(options))
+        replacements.map(options => replaceInFileSync(options))
     ).then(result => {
         fs.renameSync("../refarch-eai-copy", `../${artifactId}`);
     });
@@ -148,4 +129,4 @@ function cleanup() {
     fs.rmSync("../refarch-frontend", {recursive: true})
 }
 
-module.exports = startpoint();
+module.exports = projectConfiguration();
