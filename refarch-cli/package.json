@@ -2,7 +2,9 @@
   "name": "scaffolding-refarch",
   "main": "index.ts",
   "scripts": {
-    "start": "tsx index.ts"
+    "start": "tsx index.ts",
+    "lint": "prettier . --check && eslint . ",
+    "fix": "prettier . --write && eslint . --fix"
   },
   "bin": {
     "scaffold": "index.ts"
@@ -12,14 +14,17 @@
   "description": "",
   "dependencies": {
     "@inquirer/prompts": "5.3.8",
-    "commander": "^12.1.0",
     "core-js": "3.38.0",
     "replace-in-file": "8.1.0"
   },
   "devDependencies": {
     "@inquirer/prompts": "5.3.8",
+    "@muenchen/prettier-codeformat": "1.0.2",
     "@types/core-js": "2.5.8",
     "@types/node": "22.2.0",
+    "@typescript-eslint/eslint-plugin": "^8.3.0",
+    "eslint": "8.57.0",
+    "prettier": "3.3.3",
     "replace-in-file": "8.1.0",
     "tsx": "4.17.0",
     "typescript": "5.5.4"
