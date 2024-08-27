@@ -12,15 +12,16 @@
   "description": "",
   "dependencies": {
     "@inquirer/prompts": "5.3.8",
+    "commander": "^12.1.0",
     "core-js": "3.38.0",
     "replace-in-file": "8.1.0"
   },
   "devDependencies": {
+    "@inquirer/prompts": "5.3.8",
     "@types/core-js": "2.5.8",
     "@types/node": "22.2.0",
     "replace-in-file": "8.1.0",
     "tsx": "4.17.0",
-    "typescript": "5.5.4",
-    "@inquirer/prompts": "5.3.8"
+    "typescript": "5.5.4"
   }
 }
