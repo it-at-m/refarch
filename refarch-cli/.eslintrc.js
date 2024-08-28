@@ -3,12 +3,13 @@ module.exports = {
   env: {
     node: true,
   },
+  plugins: ["eslint-plugin-tsdoc", "@typescript-eslint/eslint-plugin"],
   extends: [
     // JavaScript
-    "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
   ],
   rules: {
     "no-console": "error",
+    "tsdoc/syntax": "warn",
   },
 };
