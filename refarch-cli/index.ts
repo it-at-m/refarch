@@ -1,13 +1,16 @@
 #!/usr/bin/env node
-import * as fs from "fs";
-
-import { input, select, Separator } from "@inquirer/prompts";
+import {renameSync, rmSync, cpSync}from "fs";
+import { input, select, Separator, confirm } from "@inquirer/prompts";
 import { replaceInFileSync } from "replace-in-file";
 
 const FRONTEND = "frontend";
 const BACKEND = "backend";
 const EAI = "eai";
 const EXIT = "exit";
+let keepStack = true;
+let keepDocs = true;
+let hasBackendBeenGenerated = false;
+let hasEaiBeenGenerated = false;
 
 async function projectConfiguration() {
   await select({
@@ -66,7 +69,7 @@ async function generateJavaInteractiveCli(application: string) {
 }
 
 function generateBackend(packageName, groupId, artifactId) {
-  fs.cpSync("../refarch-backend", "../refarch-backend-copy", {
+  cpSync("../refarch-backend", "../refarch-backend-copy", {
     recursive: true,
   });
   const replacements = [
@@ -96,7 +99,7 @@ function generateBackend(packageName, groupId, artifactId) {
   ];
   Promise.all(replacements.map((options) => replaceInFileSync(options))).then(
     () => {
-      fs.renameSync("../refarch-backend-copy", `../${artifactId}`);
+      renameSync("../refarch-backend-copy", `../${artifactId}`);
     }
   );
 }
@@ -110,7 +113,7 @@ async function generateFrontendInteractiveCli() {
 }
 
 function generateFrontend(name: string) {
-  fs.cpSync("../refarch-frontend", "../refarch-frontend-copy", {
+  cpSync("../refarch-frontend", "../refarch-frontend-copy", {
     recursive: true,
   });
   const replacements = {
@@ -127,7 +130,7 @@ function generateFrontend(name: string) {
 }
 
 function generateEAI(packageName, groupId, artifactId) {
-  fs.cpSync("../refarch-eai", "../refarch-eai-copy", { recursive: true });
+  cpSync("../refarch-eai", "../refarch-eai-copy", { recursive: true });
   const replacements = [
     {
       files: "../refarch-eai-copy/src/main/java/de/muenchen/refarch/**/*.java",
@@ -154,15 +157,30 @@ function generateEAI(packageName, groupId, artifactId) {
   ];
   Promise.all(replacements.map((options) => replaceInFileSync(options))).then(
     () => {
-      fs.renameSync("../refarch-eai-copy", `../${artifactId}`);
+      renameSync("../refarch-eai-copy", `../${artifactId}`);
     }
   );
 }
 
+async function generateDefaultDocsAndStack() {
+  keepDocs = await confirm({message: "Want to keep the Docs folder"});
+  keepStack = await confirm({message: "Want to keep the Stack folder"});
+  //cleanup()
+}
+
 function cleanup() {
-  fs.rmSync("../refarch-eai", { recursive: true });
-  fs.rmSync("../refarch-backend", { recursive: true });
-  fs.rmSync("../refarch-frontend", { recursive: true });
+  if(!keepDocs) {
+    rmSync("../docs", {recursive: true});
+  }
+  if(!keepStack) {
+    rmSync("../stack", {recursive: true});
+  }
+  if(!hasBackendBeenGenerated && !hasEaiBeenGenerated) {
+    rmSync("../shared-files", {recursive: true});
+  }
+  rmSync("../refarch-eai", { recursive: true });
+  rmSync("../refarch-backend", { recursive: true });
+  rmSync("../refarch-frontend", { recursive: true });
 }
 
 module.exports = projectConfiguration();
