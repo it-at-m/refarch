@@ -40,12 +40,14 @@ async function projectConfiguration() {
     }
     if (result != EXIT) {
       await projectConfiguration();
+    } else {
+      await generateDefaultCliForDocsAndStack();
     }
   });
 }
 
 /**
- *  interactive CLI for the inputs, needed to generated the backend or eai
+ * interactive CLI for the inputs, needed to generate the backend or eai
  * @param application - java application that should be generated
  */
 async function generateJavaInteractiveCli(application: string) {
@@ -89,7 +91,7 @@ async function generateJavaInteractiveCli(application: string) {
  * @param groupId - The new groupId to use for the pom.xml file.
  * @param artifactId - The new artifactId to use for the pom.xml file and the name of the new folder
  */
-function generateBackend(packageName, groupId, artifactId) {
+function generateBackend(packageName: string, groupId: string, artifactId: string) {
   cpSync("../refarch-backend", "../refarch-backend-copy", {
     recursive: true,
   });
@@ -210,8 +212,8 @@ async function generateDefaultCliForDocsAndStack() {
 }
 
 /**
- * remove the templates for the frontend, backend and EAI.
- * remove the shared files if not java-application got generated
+ * remove the templates for the frontend, backend and eai.
+ * remove the shared files if no java-application got generated
  * remove the docs and stack depending on the user input
  */
 function cleanup() {

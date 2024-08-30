@@ -1,16 +1,14 @@
 {
   "name": "scaffolding-refarch",
-  "main": "index.ts",
+  "main": "index.js",
   "scripts": {
-    "start": "tsx index.ts",
+    "build": "tsc",
     "lint": "prettier . --check && eslint . ",
     "fix": "prettier . --write && eslint . --fix"
   },
   "bin": {
     "scaffold": "index.ts"
   },
-  "author": "",
-  "license": "ISC",
   "description": "",
   "dependencies": {
     "@inquirer/prompts": "5.3.8",
