@@ -38,7 +38,7 @@
         <jacoco.version>0.8.12</jacoco.version>
 
         <!-- Utility -->
-        <apache-commons-lang.version>3.16.0</apache-commons-lang.version>
+        <apache-commons-lang.version>3.17.0</apache-commons-lang.version>
 
         <!-- Additional required dependencies -->
         <hazelcast.version>5.5.0</hazelcast.version>
