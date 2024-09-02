@@ -37,6 +37,9 @@
         <!-- Testing -->
         <jacoco.version>0.8.12</jacoco.version>
 
+        <!-- Release -->
+        <maven-release-plugin.version>3.1.1</maven-release-plugin.version>
+
         <!-- Utility -->
         <apache-commons-lang.version>3.17.0</apache-commons-lang.version>
 
@@ -180,6 +183,18 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <!-- Release -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>${maven-release-plugin.version}</version>
+                <configuration>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <useReleaseProfile>false</useReleaseProfile>
+                    <releaseProfiles>release</releaseProfiles>
+                    <goals>deploy</goals>
+                </configuration>
             </plugin>
 
             <!-- Codeformatter Spotless -->
