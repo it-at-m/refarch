@@ -4,10 +4,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.3</version>
-        <relativePath/>
+        <groupId>de.muenchen</groupId>
+        <artifactId>refarch</artifactId>
+        <version>1.1.0-SNAPSHOT</version>
     </parent>
 
     <groupId>de.muenchen.refarch</groupId>
@@ -295,30 +294,4 @@
             </build>
         </profile>
     </profiles>
-
-    <scm>
-        <url>https://github.com/it-at-m/refarch.git</url>
-        <connection>scm:git:https://github.com/it-at-m/refarch.git</connection>
-        <developerConnection>scm:git:https://github.com/it-at-m/refarch.git</developerConnection>
-        <tag>HEAD</tag>
-    </scm>
-    <licenses>
-        <license>
-            <name>MIT</name>
-        </license>
-    </licenses>
-    <developers>
-        <developer>
-            <organization>it@M</organization>
-            <email>opensource@muenchen.de</email>
-            <url>https://github.com/it-at-m</url>
-        </developer>
-    </developers>
-
-    <distributionManagement>
-        <repository>
-            <id>central</id>
-            <url>http://central</url>
-        </repository>
-    </distributionManagement>
 </project>

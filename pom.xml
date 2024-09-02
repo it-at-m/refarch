@@ -3,6 +3,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.3.3</version>
+        <relativePath/>
+    </parent>
+
     <groupId>de.muenchen</groupId>
     <artifactId>refarch</artifactId>
     <name>refarch</name>
@@ -34,11 +41,4 @@
             <url>https://github.com/it-at-m</url>
         </developer>
     </developers>
-
-    <distributionManagement>
-        <repository>
-            <id>central</id>
-            <url>http://central</url>
-        </repository>
-    </distributionManagement>
 </project>
