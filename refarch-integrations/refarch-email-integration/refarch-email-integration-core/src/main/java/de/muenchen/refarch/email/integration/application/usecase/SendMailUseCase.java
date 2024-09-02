@@ -47,7 +47,6 @@ public class SendMailUseCase implements SendMailInPort {
         // get body from template
         try {
             Map<String, Object> content = new HashMap<>(mail.getContent());
-            content.put("footer", "DigiWF 2.0<br>IT-Referat der Stadt München");
             String body = this.mailOutPort.getBodyFromTemplate(mail.getTemplate(), content);
 
             Mail mailModel = createMail(mail);
