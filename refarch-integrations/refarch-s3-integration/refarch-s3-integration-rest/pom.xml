@@ -5,12 +5,12 @@
     <parent>
         <groupId>de.muenchen.refarch</groupId>
         <artifactId>refarch-s3-integration</artifactId>
-        <version>1.1.0-RC3</version>
+        <version>X.Y.Z-SNAPSHOT</version>
     </parent>
 
 
     <artifactId>refarch-s3-integration-rest</artifactId>
-    <version>1.1.0-RC3</version>
+    <version>X.Y.Z-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
