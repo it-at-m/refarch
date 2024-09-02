@@ -31,8 +31,10 @@ async function projectConfiguration() {
   }).then(async (result: string) => {
     switch (result) {
       case applications.EAI:
-      case applications.BACKEND:
         await generateJavaInteractiveCli(applications.EAI);
+        break;
+      case applications.BACKEND:
+        await generateJavaInteractiveCli(applications.BACKEND);
         break;
       case applications.FRONTEND:
         await generateFrontendInteractiveCli();
@@ -103,10 +105,8 @@ function generateBackend(
     {
       files:
         "../refarch-backend-copy/src/main/java/de/muenchen/refarch/**/*.java",
-      from: [/package de.muenchen.refarch/g, /import de.muenchen.refarch/g],
-      to: [`package ${packageName}`, `import ${packageName}`],
-      dry: true,
-      countMatches: true,
+      from: [/de.muenchen.refarch/g],
+      to: [`${packageName}`],
     },
     {
       files: "../refarch-backend-copy/pom.xml",
@@ -120,8 +120,6 @@ function generateBackend(
         `<artifactId>${artifactId}</artifactId>`,
         `<name>${artifactId}</name>`,
       ],
-      dry: true,
-      countMatches: true,
     },
   ];
   replacements.map((options) => replaceInFileSync(options));
@@ -175,10 +173,8 @@ function generateEAI(packageName: string, groupId: string, artifactId: string) {
   const replacements = [
     {
       files: "../refarch-eai-copy/src/main/java/de/muenchen/refarch/**/*.java",
-      from: [/package de.muenchen.refarch/g, /import de.muenchen.refarch/g],
-      to: [`package ${packageName}`, `import ${packageName}`],
-      dry: true,
-      countMatches: true,
+      from: [/de.muenchen.refarch/g],
+      to: [`${packageName}`],
     },
     {
       files: "../refarch-eai-copy/pom.xml",
