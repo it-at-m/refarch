@@ -4,28 +4,24 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
 import java.util.Map;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
+import lombok.Getter;
 
 @EqualsAndHashCode(callSuper = true)
-@Data
-@RequiredArgsConstructor
-@AllArgsConstructor
+@Getter
 public class TemplateMail extends BasicMail {
 
     /**
      * Template of the mail.
      */
     @NotBlank(message = "No template given")
-    private String template;
+    private final String template;
 
     /**
      * Bottom body of the mail.
      */
     @NotEmpty(message = "No content given")
-    private Map<String, Object> content;
+    private final Map<String, Object> content;
 
     public TemplateMail(String receivers, String receiversCc, String receiversBcc, String subject, String replyTo, List<String> filePaths,
             String template, Map<String, Object> content) {

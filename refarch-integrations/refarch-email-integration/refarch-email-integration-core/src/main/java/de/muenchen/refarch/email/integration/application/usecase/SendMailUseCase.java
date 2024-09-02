@@ -36,8 +36,7 @@ public class SendMailUseCase implements SendMailInPort {
      */
     @Override
     public void sendMailWithText(@Valid final TextMail mail) {
-        de.muenchen.refarch.email.model.Mail mailModel = createMail(mail);
-        mailModel.setBody(mail.getBody());
+        Mail mailModel = createMail(mail, mail.getBody(), false);
 
         this.sendMail(mailModel, null);
     }
@@ -49,9 +48,7 @@ public class SendMailUseCase implements SendMailInPort {
             Map<String, Object> content = new HashMap<>(mail.getContent());
             String body = this.mailOutPort.getBodyFromTemplate(mail.getTemplate(), content);
 
-            Mail mailModel = createMail(mail);
-            mailModel.setBody(body);
-            mailModel.setHtmlBody(true);
+            Mail mailModel = createMail(mail, body, true);
 
             this.sendMail(mailModel, "templates/email-logo.png");
 
@@ -62,19 +59,22 @@ public class SendMailUseCase implements SendMailInPort {
         }
     }
 
-    private Mail createMail(BasicMail mail) {
+    private Mail createMail(final BasicMail mail, final String body, final boolean htmlBody) {
         // load Attachments
         List<FileAttachment> attachments = loadAttachmentOutPort.loadAttachments(mail.getFilePaths());
 
         // send mail
-        return Mail.builder()
-                .receivers(mail.getReceivers())
-                .subject(mail.getSubject())
-                .replyTo(mail.getReplyTo())
-                .receiversCc(mail.getReceiversCc())
-                .receiversBcc(mail.getReceiversBcc())
-                .attachments(attachments)
-                .build();
+        return new Mail(
+                mail.getReceivers(),
+                mail.getReceiversCc(),
+                mail.getReceiversBcc(),
+                mail.getSubject(),
+                body,
+                htmlBody,
+                null,
+                mail.getReplyTo(),
+                attachments
+        );
     }
 
     private void sendMail(Mail mailModel, String logoPath) throws MailSendException {

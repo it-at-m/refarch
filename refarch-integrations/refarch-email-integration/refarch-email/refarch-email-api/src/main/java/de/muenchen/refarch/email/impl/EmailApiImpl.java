@@ -54,32 +54,32 @@ public class EmailApiImpl implements EmailApi {
     public void sendMail(@Valid Mail mail, String logoPath) throws MessagingException {
         final MimeMessage mimeMessage = this.mailSender.createMimeMessage();
 
-        mimeMessage.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mail.getReceivers()));
+        mimeMessage.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mail.receivers()));
 
         if (mail.hasReceiversCc()) {
-            mimeMessage.setRecipients(Message.RecipientType.CC, InternetAddress.parse(mail.getReceiversCc()));
+            mimeMessage.setRecipients(Message.RecipientType.CC, InternetAddress.parse(mail.receiversCc()));
         }
         if (mail.hasReceiversBcc()) {
-            mimeMessage.setRecipients(Message.RecipientType.BCC, InternetAddress.parse(mail.getReceiversBcc()));
+            mimeMessage.setRecipients(Message.RecipientType.BCC, InternetAddress.parse(mail.receiversBcc()));
         }
 
         if (mail.hasReplyTo()) {
-            mimeMessage.setReplyTo(InternetAddress.parse(mail.getReplyTo()));
+            mimeMessage.setReplyTo(InternetAddress.parse(mail.replyTo()));
         } else if (defaultReplyToAddress != null) {
             mimeMessage.setReplyTo(InternetAddress.parse(defaultReplyToAddress));
         }
 
         final var helper = new MimeMessageHelper(mimeMessage, true, StandardCharsets.UTF_8.name());
 
-        helper.setSubject(mail.getSubject());
-        helper.setText(mail.getBody(), mail.isHtmlBody());
+        helper.setSubject(mail.subject());
+        helper.setText(mail.body(), mail.htmlBody());
         // use custom sender
-        helper.setFrom(mail.hasSender() ? mail.getSender() : this.fromAddress);
+        helper.setFrom(mail.hasSender() ? mail.sender() : this.fromAddress);
 
         // mail attachments
-        if (mail.hasAttachement()) {
-            for (val attachment : mail.getAttachments()) {
-                helper.addAttachment(attachment.getFileName(), attachment.getFile());
+        if (mail.hasAttachment()) {
+            for (val attachment : mail.attachments()) {
+                helper.addAttachment(attachment.fileName(), attachment.file());
             }
         }
 
@@ -90,7 +90,7 @@ public class EmailApiImpl implements EmailApi {
         }
 
         this.mailSender.send(mimeMessage);
-        log.info("Mail {} sent to {}.", mail.getSubject(), mail.getReceivers());
+        log.info("Mail {} sent to {}.", mail.subject(), mail.receivers());
     }
 
     @Override

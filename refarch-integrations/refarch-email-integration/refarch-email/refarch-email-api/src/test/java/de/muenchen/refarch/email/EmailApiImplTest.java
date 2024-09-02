@@ -59,11 +59,17 @@ class EmailApiImplTest {
 
     @Test
     void testSendMail() throws MessagingException, IOException {
-        final Mail mail = Mail.builder()
-                .receivers(this.receiver)
-                .subject(this.subject)
-                .body(this.body)
-                .build();
+        final Mail mail = new Mail(
+                this.receiver,
+                null,
+                null,
+                this.subject,
+                this.body,
+                false,
+                null,
+                null,
+                null
+        );
         this.emailApi.sendMail(mail);
 
         final ArgumentCaptor<MimeMessage> messageArgumentCaptor = ArgumentCaptor.forClass(MimeMessage.class);
@@ -81,11 +87,17 @@ class EmailApiImplTest {
     void testSendMailNoDefaultReplyTo() throws MessagingException, IOException {
         var customAddress = new InternetAddress("custom.test@muenchen.de");
 
-        final Mail mail = Mail.builder()
-                .receivers(this.receiver)
-                .subject(this.subject)
-                .body(this.body)
-                .build();
+        final Mail mail = new Mail(
+                this.receiver,
+                null,
+                null,
+                this.subject,
+                this.body,
+                false,
+                null,
+                null,
+                null
+        );
         new EmailApiImpl(this.javaMailSender, this.resourceLoader, freeMarkerConfigurer, customAddress.getAddress(), null).sendMail(mail);
 
         final ArgumentCaptor<MimeMessage> messageArgumentCaptor = ArgumentCaptor.forClass(MimeMessage.class);
@@ -101,15 +113,17 @@ class EmailApiImplTest {
 
     @Test
     void testSendMailWithOptions() throws MessagingException, IOException {
-        final Mail mail = Mail.builder()
-                .receivers(this.receiver)
-                .subject(this.subject)
-                .body(this.body)
-                .replyTo(this.replyTo)
-                .receiversCc(this.receiverCC)
-                .receiversBcc(this.receiverBCC)
-                .sender(this.sender)
-                .build();
+        final Mail mail = new Mail(
+                this.receiver,
+                this.receiverCC,
+                this.receiverBCC,
+                this.subject,
+                this.body,
+                false,
+                this.sender,
+                this.replyTo,
+                null
+        );
         this.emailApi.sendMail(mail);
 
         final ArgumentCaptor<MimeMessage> messageArgumentCaptor = ArgumentCaptor.forClass(MimeMessage.class);
@@ -129,13 +143,22 @@ class EmailApiImplTest {
 
     @Test
     void sendMailWithAttachments() throws MessagingException, IOException {
-        final Mail mail = Mail.builder()
-                .receivers(this.receiver)
-                .subject(this.subject)
-                .body(this.body)
-                .attachments(List.of(
-                        new FileAttachment("Testanhang", new ByteArrayDataSource("FooBar".getBytes(), "text/plain"))))
-                .build();
+        final Mail mail = new Mail(
+                this.receiver,
+                null,
+                null,
+                this.subject,
+                this.body,
+                false,
+                null,
+                null,
+                List.of(
+                        new FileAttachment(
+                                "Testanhang",
+                                new ByteArrayDataSource("FooBar".getBytes(), "text/plain")
+                        )
+                )
+        );
         this.emailApi.sendMail(mail);
 
         final ArgumentCaptor<MimeMessage> messageArgumentCaptor = ArgumentCaptor.forClass(MimeMessage.class);
@@ -152,12 +175,17 @@ class EmailApiImplTest {
         var reply1 = new InternetAddress("address1@muenchen.de");
         var reply2 = new InternetAddress("address2@muenchen.de");
 
-        final Mail mail = Mail.builder()
-                .receivers(this.receiver)
-                .subject(this.subject)
-                .body(this.body)
-                .replyTo(reply1.getAddress() + "," + reply2.getAddress())
-                .build();
+        final Mail mail = new Mail(
+                this.receiver,
+                null,
+                null,
+                this.subject,
+                this.body,
+                false,
+                null,
+                reply1.getAddress() + "," + reply2.getAddress(),
+                null
+        );
         this.emailApi.sendMail(mail);
 
         final ArgumentCaptor<MimeMessage> messageArgumentCaptor = ArgumentCaptor.forClass(MimeMessage.class);
@@ -175,11 +203,17 @@ class EmailApiImplTest {
     void sendMailWithDefaultLogo() throws MessagingException, IOException {
         when(this.resourceLoader.getResource(anyString())).thenReturn(this.getResourceForText("Default Logo", true));
 
-        final Mail mail = Mail.builder()
-                .receivers(this.receiver)
-                .subject(this.subject)
-                .body(this.body)
-                .build();
+        final Mail mail = new Mail(
+                this.receiver,
+                null,
+                null,
+                this.subject,
+                this.body,
+                false,
+                null,
+                null,
+                null
+        );
         this.emailApi.sendMailWithDefaultLogo(mail);
 
         final ArgumentCaptor<MimeMessage> messageArgumentCaptor = ArgumentCaptor.forClass(MimeMessage.class);
@@ -196,11 +230,17 @@ class EmailApiImplTest {
     void sendMailWithCustomLogo() throws MessagingException, IOException {
         when(this.resourceLoader.getResource(anyString())).thenReturn(this.getResourceForText("Custom Logo", true));
 
-        final Mail mail = Mail.builder()
-                .receivers(this.receiver)
-                .subject(this.subject)
-                .body(this.body)
-                .build();
+        final Mail mail = new Mail(
+                this.receiver,
+                null,
+                null,
+                this.subject,
+                this.body,
+                false,
+                null,
+                null,
+                null
+        );
         this.emailApi.sendMail(mail, "some/random/path/on/classpath");
 
         final ArgumentCaptor<MimeMessage> messageArgumentCaptor = ArgumentCaptor.forClass(MimeMessage.class);

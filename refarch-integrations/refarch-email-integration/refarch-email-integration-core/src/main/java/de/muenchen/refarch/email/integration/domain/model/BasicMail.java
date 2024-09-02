@@ -3,11 +3,9 @@ package de.muenchen.refarch.email.integration.domain.model;
 import jakarta.validation.constraints.NotBlank;
 import java.util.List;
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.Getter;
 
-@Data
-@RequiredArgsConstructor
+@Getter
 @AllArgsConstructor
 public class BasicMail {
     /**

@@ -18,6 +18,7 @@ import de.muenchen.refarch.email.integration.domain.exception.TemplateError;
 import de.muenchen.refarch.email.integration.domain.model.TemplateMail;
 import de.muenchen.refarch.email.integration.domain.model.TextMail;
 import de.muenchen.refarch.email.model.FileAttachment;
+import de.muenchen.refarch.email.model.Mail;
 import freemarker.template.TemplateException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.util.ByteArrayDataSource;
@@ -59,15 +60,17 @@ class SendMailUseCaseTest {
     @Test
     void sendMail() throws MessagingException {
         sendMailInPort.sendMailWithText(mail);
-        final de.muenchen.refarch.email.model.Mail mailOutModel = de.muenchen.refarch.email.model.Mail.builder()
-                .receivers(mail.getReceivers())
-                .subject(mail.getSubject())
-                .body(mail.getBody())
-                .replyTo(mail.getReplyTo())
-                .receiversCc(mail.getReceiversCc())
-                .receiversBcc(mail.getReceiversBcc())
-                .attachments(List.of())
-                .build();
+        final Mail mailOutModel = new Mail(
+                mail.getReceivers(),
+                mail.getReceiversCc(),
+                mail.getReceiversBcc(),
+                mail.getSubject(),
+                mail.getBody(),
+                false,
+                null,
+                mail.getReplyTo(),
+                List.of()
+        );
         verify(mailOutPort).sendMail(mailOutModel, null);
     }
 
@@ -77,15 +80,17 @@ class SendMailUseCaseTest {
         when(loadMailAttachmentOutPort.loadAttachments(List.of("folder/file.txt"))).thenReturn(List.of(fileAttachment));
 
         sendMailInPort.sendMailWithText(mail);
-        final de.muenchen.refarch.email.model.Mail mailOutModel = de.muenchen.refarch.email.model.Mail.builder()
-                .receivers(mail.getReceivers())
-                .subject(mail.getSubject())
-                .body(mail.getBody())
-                .replyTo(mail.getReplyTo())
-                .receiversCc(mail.getReceiversCc())
-                .receiversBcc(mail.getReceiversBcc())
-                .attachments(List.of(fileAttachment))
-                .build();
+        final Mail mailOutModel = new Mail(
+                mail.getReceivers(),
+                mail.getReceiversCc(),
+                mail.getReceiversBcc(),
+                mail.getSubject(),
+                mail.getBody(),
+                false,
+                null,
+                mail.getReplyTo(),
+                List.of(fileAttachment)
+        );
         verify(mailOutPort).sendMail(mailOutModel, null);
     }
 
@@ -99,16 +104,17 @@ class SendMailUseCaseTest {
     void sendMailWithTemplate() throws MessagingException, TemplateException, IOException {
         when(mailOutPort.getBodyFromTemplate(anyString(), anyMap())).thenReturn("generated body");
         sendMailInPort.sendMailWithTemplate(templateMail);
-        final de.muenchen.refarch.email.model.Mail mailOutModel = de.muenchen.refarch.email.model.Mail.builder()
-                .receivers(mail.getReceivers())
-                .subject(mail.getSubject())
-                .htmlBody(true)
-                .body("generated body")
-                .replyTo(mail.getReplyTo())
-                .receiversCc(mail.getReceiversCc())
-                .receiversBcc(mail.getReceiversBcc())
-                .attachments(List.of())
-                .build();
+        final Mail mailOutModel = new Mail(
+                mail.getReceivers(),
+                mail.getReceiversCc(),
+                mail.getReceiversBcc(),
+                mail.getSubject(),
+                "generated body",
+                true,
+                null,
+                mail.getReplyTo(),
+                List.of()
+        );
         verify(mailOutPort).sendMail(mailOutModel, "templates/email-logo.png");
     }
 

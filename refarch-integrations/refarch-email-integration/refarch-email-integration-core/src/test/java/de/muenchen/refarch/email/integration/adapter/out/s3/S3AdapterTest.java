@@ -67,9 +67,9 @@ class S3AdapterTest {
 
                 final List<FileAttachment> fileAttachment = this.s3Adapter.loadAttachments(List.of(path));
 
-                assertThat(Arrays.equals(testFile, fileAttachment.getFirst().getFile().getInputStream().readAllBytes())).isTrue();
-                assertThat(file.getKey()).isEqualTo(fileAttachment.getFirst().getFileName());
-                assertThat(file.getValue()).isEqualTo(fileAttachment.getFirst().getFile().getContentType());
+                assertThat(Arrays.equals(testFile, fileAttachment.getFirst().file().getInputStream().readAllBytes())).isTrue();
+                assertThat(file.getKey()).isEqualTo(fileAttachment.getFirst().fileName());
+                assertThat(file.getValue()).isEqualTo(fileAttachment.getFirst().file().getContentType());
             } catch (final IOException e) {
                 log.warn("Could not read file: {}", file);
                 fail(e.getMessage());

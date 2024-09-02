@@ -22,14 +22,17 @@ class MailAdapterTest {
     @Test
     void sendMail() throws MessagingException {
         final MailAdapter mailAdapter = new MailAdapter(emailApi);
-        final Mail mail = Mail.builder()
-                .receivers("receivers")
-                .subject("subject")
-                .body("body")
-                .replyTo("replyTo")
-                .receiversCc("receiversCc")
-                .receiversBcc("receiversBcc")
-                .build();
+        final Mail mail = new Mail(
+                "receivers",
+                "receiversCc",
+                "receiversBcc",
+                "subject",
+                "body",
+                false,
+                null,
+                "replyTo",
+                null
+        );
         mailAdapter.sendMail(mail, "logoPath");
         verify(emailApi).sendMail(mail, "logoPath");
     }

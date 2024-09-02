@@ -2,33 +2,24 @@ package de.muenchen.refarch.email.model;
 
 import jakarta.validation.constraints.NotBlank;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class Mail {
+public record Mail(
+        @NotBlank
+        String receivers,
+        String receiversCc,
+        String receiversBcc,
+        @NotBlank
+        String subject,
+        @NotBlank
+        String body,
+        boolean htmlBody,
+        String sender,
+        String replyTo,
+        List<FileAttachment> attachments
+) {
 
-    @NotBlank
-    private String receivers;
-    @NotBlank
-    private String subject;
-    @NotBlank
-    private String body;
-    @Builder.Default
-    private boolean htmlBody = false;
-    private String replyTo;
-    private String receiversCc;
-    private String receiversBcc;
-    private String sender;
-    private List<FileAttachment> attachments;
-
-    public boolean hasAttachement() {
+    public boolean hasAttachment() {
         return attachments != null && !attachments.isEmpty();
     }
 
@@ -47,5 +38,4 @@ public class Mail {
     public boolean hasSender() {
         return StringUtils.isNotBlank(this.sender);
     }
-
 }
