@@ -5,6 +5,7 @@ inputs:
   registry:
     description: "Image registry to push image to"
     required: true
+    default: ghcr.io
   registry-username:
     description: "Username to authenticate against image registry"
     required: true
