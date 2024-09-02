@@ -1,15 +1,15 @@
 package de.muenchen.refarch.email.integration;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 
 @SpringBootApplication
+@RequiredArgsConstructor
 public class EmailJavaExampleApplication {
-    @Autowired
-    TestService testService;
+    private final TestService testService;
 
     public static void main(final String[] args) {
         SpringApplication.run(EmailJavaExampleApplication.class, args);
