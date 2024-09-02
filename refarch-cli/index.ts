@@ -85,7 +85,7 @@ async function generateJavaInteractiveCli(application: string) {
 
 /**
  * Generates a new BACKEND package with the provided package name, groupId and artifactId.
- * The function copies the existing `../refarch-backend` folder to a new folder named `../<artifactId>`.
+ * The function copies the existing `refarch-backend` folder to a new folder named `<artifactId>`.
  * It then performs string replacements on the Java files and pom.xml file within the new folder
  * to update the package name, groupId, and artifactId.
  *
@@ -98,18 +98,18 @@ function generateBackend(
   groupId: string,
   artifactId: string
 ) {
-  cpSync("../refarch-backend", "../refarch-backend-copy", {
+  cpSync("refarch-backend", "refarch-backend-copy", {
     recursive: true,
   });
   const replacements = [
     {
       files:
-        "../refarch-backend-copy/src/main/java/de/muenchen/refarch/**/*.java",
+        "refarch-backend-copy/src/main/java/de/muenchen/refarch/**/*.java",
       from: [/de.muenchen.refarch/g],
       to: [`${packageName}`],
     },
     {
-      files: "../refarch-backend-copy/pom.xml",
+      files: "refarch-backend-copy/pom.xml",
       from: [
         "<groupId>de.muenchen.refarch</groupId>",
         "<artifactId>refarch-backend</artifactId>",
@@ -123,7 +123,7 @@ function generateBackend(
     },
   ];
   replacements.map((options) => replaceInFileSync(options));
-  renameSync("../refarch-backend-copy", `../${artifactId}`);
+  renameSync("refarch-backend-copy", `${artifactId}`);
 }
 
 async function generateFrontendInteractiveCli() {
@@ -136,19 +136,19 @@ async function generateFrontendInteractiveCli() {
 
 /**
  * Generates a new FRONTEND directory with the provided name
- * The function copies the existing `../refarch-frontend` folder to a new folder named `../<name>`.
+ * The function copies the existing `refarch-frontend` folder to a new folder named `<name>`.
  * It then performs string replacements in the package.json and package-lock.json to update the name
  *
  * @param name - The new name to use for the application
  */
 function generateFrontend(name: string) {
-  cpSync("../refarch-frontend", "../refarch-frontend-copy", {
+  cpSync("refarch-frontend", "refarch-frontend-copy", {
     recursive: true,
   });
   const replacements = {
     files: [
-      "../refarch-frontend-copy/package.json",
-      "../refarch-frontend-copy/package-lock.json",
+      "refarch-frontend-copy/package.json",
+      "refarch-frontend-copy/package-lock.json",
     ],
     from: [/refarch-frontend/g],
     to: [`package ${name}`],
@@ -156,11 +156,12 @@ function generateFrontend(name: string) {
     countMatches: true,
   };
   replaceInFileSync(replacements);
+  renameSync("refarch-frontend-copy", `${name}`);
 }
 
 /**
  * Generates a new EAI package with the provided package name, groupId and artifactId.
- * The function copies the existing `../refarch-eai` folder to a new folder named `../<artifactId>`.
+ * The function copies the existing `refarch-eai` folder to a new folder named `<artifactId>`.
  * It then performs string replacements on the Java files and pom.xml file within the new folder
  * to update the package name, groupId, and artifactId.
  *
@@ -169,15 +170,15 @@ function generateFrontend(name: string) {
  * @param  artifactId - The new artifactId to use for the pom.xml file and the name of the new folder
  */
 function generateEAI(packageName: string, groupId: string, artifactId: string) {
-  cpSync("../refarch-eai", "../refarch-eai-copy", { recursive: true });
+  cpSync("refarch-eai", "refarch-eai-copy", { recursive: true });
   const replacements = [
     {
-      files: "../refarch-eai-copy/src/main/java/de/muenchen/refarch/**/*.java",
+      files: "refarch-eai-copy/src/main/java/de/muenchen/refarch/**/*.java",
       from: [/de.muenchen.refarch/g],
       to: [`${packageName}`],
     },
     {
-      files: "../refarch-eai-copy/pom.xml",
+      files: "refarch-eai-copy/pom.xml",
       from: [
         "<groupId>de.muenchen.refarch</groupId>",
         "<artifactId>refarch-eai</artifactId>",
@@ -193,7 +194,7 @@ function generateEAI(packageName: string, groupId: string, artifactId: string) {
     },
   ];
   replacements.map((options) => replaceInFileSync(options));
-  renameSync("../refarch-eai-copy", `../${artifactId}`);
+  renameSync("refarch-eai-copy", `${artifactId}`);
 }
 
 /**
@@ -202,7 +203,7 @@ function generateEAI(packageName: string, groupId: string, artifactId: string) {
 async function generateDefaultCliForDocsAndStack() {
   keepDocs = await confirm({ message: "Want to keep the Docs folder" });
   keepStack = await confirm({ message: "Want to keep the Stack folder" });
-  //cleanup()
+  cleanup()
 }
 
 /**
@@ -212,17 +213,17 @@ async function generateDefaultCliForDocsAndStack() {
  */
 function cleanup() {
   if (!keepDocs) {
-    rmSync("../docs", { recursive: true });
+    rmSync("docs", { recursive: true });
   }
   if (!keepStack) {
-    rmSync("../stack", { recursive: true });
+    rmSync("stack", { recursive: true });
   }
   if (!hasJavaApplicationBeenGenerated) {
-    rmSync("../shared-files", { recursive: true });
+    rmSync("shared-files", { recursive: true });
   }
-  rmSync("../refarch-eai", { recursive: true });
-  rmSync("../refarch-backend", { recursive: true });
-  rmSync("../refarch-frontend", { recursive: true });
+  rmSync("refarch-eai", { recursive: true });
+  rmSync("refarch-backend", { recursive: true });
+  rmSync("refarch-frontend", { recursive: true });
 }
 
 export default projectConfiguration();
