@@ -49,7 +49,7 @@ jobs:
           gpg-passphrase: SIGN_KEY_PASS
       - name: Maven build
         if: ${{ inputs.snapshot-release != false }}
-        run: mvn --batch-mode clean install
+        run: mvn -f ./${{ inputs.module }}/pom.xml --batch-mode clean install
       - name: Maven release
         if: ${{ inputs.snapshot-release == false }}
         run: |
