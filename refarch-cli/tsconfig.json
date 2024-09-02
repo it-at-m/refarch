@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
-    "outDir": "./dist",
-    "strict": true,
-    "target": "es6",
-    "module": "ES6",
-    "sourceMap": true,
+    "skipLibCheck": true,
+    "module": "NodeNext",
+    "target": "ESNext",
     "esModuleInterop": true,
-    "moduleResolution": "node"
-  }
+    "declaration": true,
+    "outDir": "./dist",
+    "moduleResolution": "NodeNext"
+  },
+  "exclude": [ "node_modules", "./dist/**/*" ]
 }

@@ -68,7 +68,7 @@ async function generateJavaInteractiveCli(application: string) {
   const packageName = await input({
     message: "Define value for property package:",
     default: groupId,
-    validate(value) {
+    validate(value: string) {
       const pass = value.match(/^de\.muenchen\.[a-z0-9]+(\.[a-z0-9]+)*$/g);
       return pass ? true : "Package name not valid";
     },
@@ -91,7 +91,11 @@ async function generateJavaInteractiveCli(application: string) {
  * @param groupId - The new groupId to use for the pom.xml file.
  * @param artifactId - The new artifactId to use for the pom.xml file and the name of the new folder
  */
-function generateBackend(packageName: string, groupId: string, artifactId: string) {
+function generateBackend(
+  packageName: string,
+  groupId: string,
+  artifactId: string
+) {
   cpSync("../refarch-backend", "../refarch-backend-copy", {
     recursive: true,
   });
@@ -120,11 +124,8 @@ function generateBackend(packageName: string, groupId: string, artifactId: strin
       countMatches: true,
     },
   ];
-  Promise.all(replacements.map((options) => replaceInFileSync(options))).then(
-    () => {
-      renameSync("../refarch-backend-copy", `../${artifactId}`);
-    }
-  );
+  replacements.map((options) => replaceInFileSync(options));
+  renameSync("../refarch-backend-copy", `../${artifactId}`);
 }
 
 async function generateFrontendInteractiveCli() {
@@ -195,11 +196,8 @@ function generateEAI(packageName: string, groupId: string, artifactId: string) {
       countMatches: true,
     },
   ];
-  Promise.all(replacements.map((options) => replaceInFileSync(options))).then(
-    () => {
-      renameSync("../refarch-eai-copy", `../${artifactId}`);
-    }
-  );
+  replacements.map((options) => replaceInFileSync(options));
+  renameSync("../refarch-eai-copy", `../${artifactId}`);
 }
 
 /**
@@ -231,4 +229,4 @@ function cleanup() {
   rmSync("../refarch-frontend", { recursive: true });
 }
 
-module.exports = projectConfiguration();
+export default projectConfiguration();
