@@ -1,0 +1,59 @@
+name: build-image
+description: "Builds and pushes a docker image"
+
+inputs:
+  registry:
+    description: "Image registry to push image to"
+    required: true
+  registry-username:
+    description: "Username to authenticate against image registry"
+    required: true
+  registry-password:
+    description: "Password to authenticate against image registry"
+    required: true
+  path:
+    description: "Path to the Dockerfile to build image from"
+    required: true
+  image-name:
+    description: "Name to give the image"
+    required: true
+  image-tags:
+    description: "Tags to tag image with"
+    required: false
+    default: |
+      type=raw,value=latest
+  image-labels:
+    description: "Labels to add to image"
+    required: false
+    default: |
+      org.opencontainers.image.description=See ${{ github.server_url }}/${{ github.repository }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+    - name: Download a single artifact
+      uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+      with:
+        name: target
+    - name: Login to Registry
+      uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
+      with:
+        registry: ${{ inputs.registry }}
+        username: ${{ inputs.registry-username }}
+        password: ${{ inputs.registry-password }}
+    - name: Extract metadata (tags, labels) for Docker
+      id: meta
+      uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81 # v5.5.1
+      with:
+        images: "${{ inputs.registry }}/${{ github.repository }}/${{ inputs.image-name }}"
+        tags: ${{inputs.image-tags}}
+        labels: ${{inputs.image-labels}}
+    - name: Build and push image
+      uses: docker/build-push-action@5cd11c3a4ced054e52742c5fd54dca954e0edd85 # v6.7.0
+      with:
+        context: ./${{ inputs.path }}
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
