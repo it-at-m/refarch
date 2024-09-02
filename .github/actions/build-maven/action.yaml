@@ -63,7 +63,7 @@ runs:
       env:
         SIGN_KEY_PASS: ${{ inputs.gpg-passphrase }}
         CENTRAL_USERNAME: ${{ inputs.sonatype-username }}
-        CENTRAL_PASSWORD: ${{ insputs.sonatype-password }}
+        CENTRAL_PASSWORD: ${{ inputs.sonatype-password }}
     - name: "Upload target artifacts"
       uses: actions/upload-artifact@834a144ee995460fba8ed112a2fc961b36a5ec5a # v4.3.6
       with:
