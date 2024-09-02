@@ -96,7 +96,7 @@ jobs:
             });
             console.log(`Pull Request created: ${pullResult.data.html_url}`);
 
-  build-images-gateway:
+  build-images:
     if: inputs.build-images == true
     needs: build-maven
     runs-on: ubuntu-latest
