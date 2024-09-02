@@ -2,8 +2,6 @@ name: build-gateway
 
 on:
   pull_request:
-    paths:
-      - refarch-gateway/**
   push:
     branches:
       - main

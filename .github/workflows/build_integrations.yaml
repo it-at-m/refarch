@@ -2,8 +2,6 @@ name: build-integrations
 
 on:
   pull_request:
-    paths:
-      - refarch-integrations/**
   push:
     branches:
       - main
