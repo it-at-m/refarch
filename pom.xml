@@ -35,16 +35,10 @@
         </developer>
     </developers>
 
-    <repositories>
+    <distributionManagement>
         <repository>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
             <id>central</id>
             <url>http://central</url>
         </repository>
-    </repositories>
+    </distributionManagement>
 </project>

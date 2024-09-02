@@ -314,4 +314,11 @@
             <url>https://github.com/it-at-m</url>
         </developer>
     </developers>
+
+    <distributionManagement>
+        <repository>
+            <id>central</id>
+            <url>http://central</url>
+        </repository>
+    </distributionManagement>
 </project>
