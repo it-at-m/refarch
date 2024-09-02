@@ -1,0 +1,103 @@
+name: ""
+description: ""
+
+inputs:
+  module:
+    description: 'Module to build'
+    required: true
+  release:
+    description: 'Release?'
+    default: "false"
+  release-version:
+    description: 'Release version'
+    required: false
+    default: "X.Y.Z"
+  next-version:
+    description: "Next version to use after release"
+    required: false
+    default: "X.Y.Z-SNAPSHOT"
+  java-version:
+    description: "Jave version used for building"
+    required: false
+    default: "21"
+  gpg-private-key:
+    description: "Gpg private key used for signing packages for maven central release"
+    required: false
+  gpg-passphrase:
+    description: "Gpg passphrase for private key"
+    required: false
+  sonatype-username:
+    description: "Sonatype username for maven central release"
+    required: false
+  sonatype-password:
+    description: "Sonatype password for maven central release"
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+    - name: Set up JDK
+      uses: actions/setup-java@6a0805fcefea3d4657a47ac4c165951e33482018 # v4.2.2
+      with:
+        java-version: ${{ inputs.java-version }}
+        distribution: "temurin"
+        cache: "maven"
+        cache-dependency-path: "./${{ inputs.module }}/pom.xml"
+        server-id: "central"
+        server-username: CENTRAL_USERNAME
+        server-password: CENTRAL_PASSWORD
+        gpg-private-key: ${{ inputs.gpg-private-key }}
+        gpg-passphrase: SIGN_KEY_PASS
+    - name: Maven build
+      if: ${{ inputs.release != true }}
+      shell: bash
+      run: mvn -f ./${{ inputs.module }}/pom.xml --batch-mode clean install
+    - name: Maven release
+      if: ${{ inputs.release == true }}
+      shell: bash
+      run: |
+        git config --global user.email "github-actions@github.com"
+        git config --global user.name "GitHub Actions"
+        mvn release:prepare -f ./${{ inputs.module }}/pom.xml -B -DreleaseVersion=${{ inputs.release-version }} -DdevelopmentVersion=${{ inputs.next-version }} -DpushChanges=false -DremoteTagging=false
+        mvn release:perform -f ./${{ inputs.module }}/pom.xml -DlocalCheckout=true
+      env:
+        SIGN_KEY_PASS: ${{ inputs.gpg-passphrase }}
+        CENTRAL_USERNAME: ${{ inpus.sonatype-username }}
+        CENTRAL_PASSWORD: ${{ insputs.sonatype-password }}
+    - name: "Upload target artifacts"
+      uses: actions/upload-artifact@834a144ee995460fba8ed112a2fc961b36a5ec5a # v4.3.6
+      with:
+        name: target
+        path: "**/target"
+        retention-days: 5
+    - name: Push changes to new branch
+      if: ${{ inputs.release == true }}
+      shell: bash
+      run: |
+        git checkout -b ${{ github.ref_name }}-version-bump
+        git push --force origin ${{ github.ref_name }}-version-bump
+    - name: Create pull request
+      if: ${{ inputs.release == true }}
+      uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+      with:
+        script: |
+          const { repo, owner } = context.repo;
+          const pullResult = await github.rest.pulls.create({
+            title: 'chore: bump release version ${{ github.ref_name }}',
+            owner,
+            repo,
+            head: '${{ github.ref_name }}-version-bump',
+            base: '${{ github.ref_name }}',
+            body: [
+              'This PR is auto-generated'
+            ].join('\n')
+          });
+          await github.rest.issues.addAssignees({
+            owner,
+            repo,
+            issue_number: pullResult.data.number,
+            assignees: ['${{ github.actor }}'],
+          });
+          console.log(`Pull Request created: ${pullResult.data.html_url}`);
