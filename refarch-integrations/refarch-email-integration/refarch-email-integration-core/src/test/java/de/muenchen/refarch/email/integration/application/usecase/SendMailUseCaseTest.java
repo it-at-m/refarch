@@ -1,7 +1,15 @@
 package de.muenchen.refarch.email.integration.application.usecase;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.catchThrowableOfType;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyMap;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import de.muenchen.refarch.email.integration.application.port.in.SendMailInPort;
 import de.muenchen.refarch.email.integration.application.port.out.LoadMailAttachmentOutPort;

@@ -2,7 +2,10 @@ package de.muenchen.refarch.email;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import de.muenchen.refarch.email.api.EmailApi;
 import de.muenchen.refarch.email.impl.EmailApiImpl;

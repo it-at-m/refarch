@@ -1,7 +1,11 @@
 package de.muenchen.refarch.email.integration.adapter.out.mail;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.anyMap;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import de.muenchen.refarch.email.api.EmailApi;
 import de.muenchen.refarch.email.model.Mail;
