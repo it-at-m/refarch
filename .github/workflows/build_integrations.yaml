@@ -12,7 +12,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
-      - uses: ./.github/actions/build-maven
+      - name: Maven build
+        uses: ./.github/actions/build-maven
         with:
           module: refarch-integrations
 
@@ -28,7 +29,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
-      - uses: ./.github/actions/build-image
+      - name: Build and push image
+        uses: ./.github/actions/build-image
         with:
           registry-username: ${{ github.actor }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
