@@ -68,8 +68,7 @@ class EmailApiImplTest {
                 false,
                 null,
                 null,
-                null
-        );
+                null);
         this.emailApi.sendMail(mail);
 
         final ArgumentCaptor<MimeMessage> messageArgumentCaptor = ArgumentCaptor.forClass(MimeMessage.class);
@@ -96,8 +95,7 @@ class EmailApiImplTest {
                 false,
                 null,
                 null,
-                null
-        );
+                null);
         new EmailApiImpl(this.javaMailSender, this.resourceLoader, freeMarkerConfigurer, customAddress.getAddress(), null).sendMail(mail);
 
         final ArgumentCaptor<MimeMessage> messageArgumentCaptor = ArgumentCaptor.forClass(MimeMessage.class);
@@ -122,8 +120,7 @@ class EmailApiImplTest {
                 false,
                 this.sender,
                 this.replyTo,
-                null
-        );
+                null);
         this.emailApi.sendMail(mail);
 
         final ArgumentCaptor<MimeMessage> messageArgumentCaptor = ArgumentCaptor.forClass(MimeMessage.class);
@@ -155,10 +152,7 @@ class EmailApiImplTest {
                 List.of(
                         new FileAttachment(
                                 "Testanhang",
-                                new ByteArrayDataSource("FooBar".getBytes(), "text/plain")
-                        )
-                )
-        );
+                                new ByteArrayDataSource("FooBar".getBytes(), "text/plain"))));
         this.emailApi.sendMail(mail);
 
         final ArgumentCaptor<MimeMessage> messageArgumentCaptor = ArgumentCaptor.forClass(MimeMessage.class);
@@ -184,8 +178,7 @@ class EmailApiImplTest {
                 false,
                 null,
                 reply1.getAddress() + "," + reply2.getAddress(),
-                null
-        );
+                null);
         this.emailApi.sendMail(mail);
 
         final ArgumentCaptor<MimeMessage> messageArgumentCaptor = ArgumentCaptor.forClass(MimeMessage.class);
@@ -212,8 +205,7 @@ class EmailApiImplTest {
                 false,
                 null,
                 null,
-                null
-        );
+                null);
         this.emailApi.sendMailWithDefaultLogo(mail);
 
         final ArgumentCaptor<MimeMessage> messageArgumentCaptor = ArgumentCaptor.forClass(MimeMessage.class);
@@ -239,8 +231,7 @@ class EmailApiImplTest {
                 false,
                 null,
                 null,
-                null
-        );
+                null);
         this.emailApi.sendMail(mail, "some/random/path/on/classpath");
 
         final ArgumentCaptor<MimeMessage> messageArgumentCaptor = ArgumentCaptor.forClass(MimeMessage.class);

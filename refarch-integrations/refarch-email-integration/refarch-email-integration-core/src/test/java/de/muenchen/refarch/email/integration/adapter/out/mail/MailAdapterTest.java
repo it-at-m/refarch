@@ -31,8 +31,7 @@ class MailAdapterTest {
                 false,
                 null,
                 "replyTo",
-                null
-        );
+                null);
         mailAdapter.sendMail(mail, "logoPath");
         verify(emailApi).sendMail(mail, "logoPath");
     }

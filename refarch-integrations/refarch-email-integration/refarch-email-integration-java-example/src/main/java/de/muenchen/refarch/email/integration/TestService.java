@@ -26,8 +26,7 @@ public class TestService {
                 "Test",
                 "This is a test",
                 null,
-                List.of("/test/test-pdf.pdf")
-        );
+                List.of("/test/test-pdf.pdf"));
         sendMailInPort.sendMailWithText(mail);
         log.info("Test mail sent");
     }

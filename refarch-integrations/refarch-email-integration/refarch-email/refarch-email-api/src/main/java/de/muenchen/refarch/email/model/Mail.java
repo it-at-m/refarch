@@ -5,19 +5,15 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 public record Mail(
-        @NotBlank
-        String receivers,
+        @NotBlank String receivers,
         String receiversCc,
         String receiversBcc,
-        @NotBlank
-        String subject,
-        @NotBlank
-        String body,
+        @NotBlank String subject,
+        @NotBlank String body,
         boolean htmlBody,
         String sender,
         String replyTo,
-        List<FileAttachment> attachments
-) {
+        List<FileAttachment> attachments) {
 
     public boolean hasAttachment() {
         return attachments != null && !attachments.isEmpty();

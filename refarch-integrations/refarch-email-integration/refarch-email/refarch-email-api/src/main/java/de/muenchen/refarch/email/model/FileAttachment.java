@@ -4,6 +4,5 @@ import jakarta.mail.util.ByteArrayDataSource;
 
 public record FileAttachment(
         String fileName,
-        ByteArrayDataSource file
-) {
+        ByteArrayDataSource file) {
 }

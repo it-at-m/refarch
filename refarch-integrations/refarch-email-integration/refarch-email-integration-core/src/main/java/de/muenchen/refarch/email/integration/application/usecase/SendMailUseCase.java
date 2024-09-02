@@ -73,8 +73,7 @@ public class SendMailUseCase implements SendMailInPort {
                 htmlBody,
                 null,
                 mail.getReplyTo(),
-                attachments
-        );
+                attachments);
     }
 
     private void sendMail(Mail mailModel, String logoPath) throws MailSendException {

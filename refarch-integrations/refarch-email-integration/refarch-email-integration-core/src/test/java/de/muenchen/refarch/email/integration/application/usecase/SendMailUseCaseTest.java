@@ -69,8 +69,7 @@ class SendMailUseCaseTest {
                 false,
                 null,
                 mail.getReplyTo(),
-                List.of()
-        );
+                List.of());
         verify(mailOutPort).sendMail(mailOutModel, null);
     }
 
@@ -89,8 +88,7 @@ class SendMailUseCaseTest {
                 false,
                 null,
                 mail.getReplyTo(),
-                List.of(fileAttachment)
-        );
+                List.of(fileAttachment));
         verify(mailOutPort).sendMail(mailOutModel, null);
     }
 
@@ -113,8 +111,7 @@ class SendMailUseCaseTest {
                 true,
                 null,
                 mail.getReplyTo(),
-                List.of()
-        );
+                List.of());
         verify(mailOutPort).sendMail(mailOutModel, "templates/email-logo.png");
     }
 
