@@ -19,11 +19,15 @@ public class TestService {
 
     void testSendMail() {
         this.uploadTestFile();
-        TextMail mail = new TextMail();
-        mail.setReceivers("test.receiver@muenchen.de");
-        mail.setSubject("Test");
-        mail.setBody("This is a test");
-        mail.setFilePaths(List.of("/test/test-pdf.pdf"));
+        TextMail mail = new TextMail(
+                "test.receiver@muenchen.de",
+                null,
+                null,
+                "Test",
+                "This is a test",
+                null,
+                List.of("/test/test-pdf.pdf")
+        );
         sendMailInPort.sendMailWithText(mail);
         log.info("Test mail sent");
     }
