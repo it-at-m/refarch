@@ -7,17 +7,17 @@
 "Type: Documentation":
   - head-branch: [ '^docs', "documentation" ]
   - changed-files:
-      - any-glob-to-any-file: ['docs/**']
+      - any-glob-to-any-file: [ 'docs/**' ]
 "Type: Dependency":
   - head-branch: [ '^dep', 'dependency' ]
 "Type: Security":
   - head-branch: [ '^sec', 'security' ]
 "Component: API-Gateway":
   - changed-files:
-      - any-glob-to-any-file: ['refarch-gateway/**']
-"Component: Integration":
+      - any-glob-to-any-file: [ 'refarch-gateway/**' ]
+"Component: Integrations":
   - changed-files:
-      - any-glob-to-any-file: ['refarch-integrations/**']
+      - any-glob-to-any-file: [ 'refarch-integrations/**' ]
 "Component: CLI":
   - changed-files:
-      - any-glob-to-any-file: ['refarch-cli/**']
+      - any-glob-to-any-file: [ 'refarch-cli/**' ]
