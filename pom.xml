@@ -12,7 +12,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>refarch-gateway</module>
+        <!--<module>refarch-gateway</module>-->
         <module>refarch-integrations</module>
     </modules>
 
