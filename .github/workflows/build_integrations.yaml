@@ -1,0 +1,18 @@
+name: build-integrations
+
+on:
+  pull_request:
+    paths:
+      - refarch-integrations/**
+  push:
+    branches:
+      - main
+
+jobs:
+  maven:
+    uses: ./.github/workflows/maven.yaml
+    with:
+      module: refarch-integrations
+      build-images: ${{ github.ref_name == 'main' }}
+      release-version: dev
+    secrets: inherit

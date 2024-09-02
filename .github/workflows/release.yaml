@@ -3,6 +3,13 @@ name: release
 on:
   workflow_dispatch:
     inputs:
+      module:
+        description: 'Module to release'
+        type: choice
+        required: true
+        options:
+          - refarch-gateway
+          - refarch-integrations
       snapshot-release:
         description: 'Snapshot release?'
         type: boolean
@@ -22,6 +29,7 @@ jobs:
   build:
     uses: ./.github/workflows/maven.yaml
     with:
+      module: ${{ inputs.module }}
       snapshot-release: ${{ inputs.snapshot-release != false }}
       build-images: true
       release-version: ${{ inputs.release-version }}
@@ -36,7 +44,7 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@c062e08bd532815e2082a85e87e3ef29c3e6d191 # v2.0.8
         with:
-          tag_name: ${{ github.event.inputs.release-version }}
+          tag_name: "${{ inputs.module }}_${{ github.event.inputs.release-version }}"
           draft: false
           prerelease: false
           generate_release_notes: true

@@ -6,6 +6,10 @@ env:
 on:
   workflow_call:
     inputs:
+      module:
+        description: 'Module to build'
+        type: string
+        required: true
       snapshot-release:
         description: 'Snapshot release?'
         type: boolean
@@ -20,7 +24,7 @@ on:
         required: false
         default: "X.Y.Z"
       next-version:
-        description: "Next version to use after release."
+        description: "Next version to use after release"
         type: string
         required: false
         default: "X.Y.Z-SNAPSHOT"
@@ -37,6 +41,7 @@ jobs:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: "temurin"
           cache: "maven"
+          cache-dependency-path: "./${{ inputs.module }}/pom.xml"
           server-id: "central"
           server-username: CENTRAL_USERNAME
           server-password: CENTRAL_PASSWORD
@@ -50,8 +55,8 @@ jobs:
         run: |
           git config --global user.email "github-actions@github.com"
           git config --global user.name "GitHub Actions"
-          mvn release:prepare -B -DreleaseVersion=${{ inputs.release-version }} -DdevelopmentVersion=${{ inputs.next-version }} -DpushChanges=false -DremoteTagging=false
-          mvn release:perform -DlocalCheckout=true
+          mvn release:prepare -f ./${{ inputs.module }}/pom.xml -B -DreleaseVersion=${{ inputs.release-version }} -DdevelopmentVersion=${{ inputs.next-version }} -DpushChanges=false -DremoteTagging=false
+          mvn release:perform -f ./${{ inputs.module }}/pom.xml -DlocalCheckout=true
         env:
           SIGN_KEY_PASS: ${{ secrets.gpg_passphrase }}
           CENTRAL_USERNAME: ${{ secrets.sonatype_username }}
@@ -92,7 +97,7 @@ jobs:
             console.log(`Pull Request created: ${pullResult.data.html_url}`);
 
   build-images:
-    if: inputs.build-images == true
+    if: inputs.build-images == true && inputs.module == matrix.module
     needs: build-maven
     runs-on: ubuntu-latest
     strategy:
@@ -100,8 +105,10 @@ jobs:
         include:
           - name: refarch-gateway
             path: ./refarch-gateway
+            module: refarch-gateway
           - name: s3-integration-rest-service
             path: ./refarch-integrations/refarch-s3-integration/refarch-s3-integration-rest/refarch-s3-integration-rest-service
+            module: refarch-integrations
     steps:
       - name: Checkout code
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
