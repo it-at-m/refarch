@@ -17,7 +17,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 @RequiredArgsConstructor
 @EnableConfigurationProperties({ MailProperties.class, CustomMailProperties.class })
-public class DigiwfEmailAutoConfiguration {
+public class EmailAutoConfiguration {
 
     private final MailProperties mailProperties;
     private final CustomMailProperties customMailProperties;
