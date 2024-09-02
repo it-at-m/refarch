@@ -7,10 +7,28 @@ on:
       - main
 
 jobs:
-  maven:
-    uses: ./.github/workflows/maven.yaml
-    with:
-      module: refarch-integrations
-      build-images: ${{ github.ref_name == 'main' }}
-      release-version: dev
-    secrets: inherit
+  build-maven:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/actions/build-maven
+        with:
+          module: refarch-integrations
+
+  build-images:
+    if: github.ref_name == 'main'
+    needs: build-maven
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - name: s3-integration-rest-service
+            path: ./refarch-integrations/refarch-s3-integration/refarch-s3-integration-rest/refarch-s3-integration-rest-service
+    steps:
+      - uses: ./.github/actions/build-image
+        with:
+          registry-username: ${{ github.actor }}
+          registry-password: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ matrix.path }}
+          image-name: ${{ matrix.name }}
+          image-tags: |
+            type=raw,value=dev

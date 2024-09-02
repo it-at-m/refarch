@@ -7,10 +7,23 @@ on:
       - main
 
 jobs:
-  maven:
-    uses: ./.github/workflows/maven.yaml
-    with:
-      module: refarch-gateway
-      build-images: ${{ github.ref_name == 'main' }}
-      release-version: dev
-    secrets: inherit
+  build-maven:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/actions/build-maven
+        with:
+          module: refarch-gateway
+
+  build-images:
+    if: github.ref_name == 'main'
+    needs: build-maven
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/actions/build-image
+        with:
+          registry-username: ${{ github.actor }}
+          registry-password: ${{ secrets.GITHUB_TOKEN }}
+          path: ./refarch-gateway
+          image-name: refarch-gateway
+          image-tags: |
+            type=raw,value=dev
