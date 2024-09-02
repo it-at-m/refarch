@@ -8,6 +8,7 @@ import de.muenchen.refarch.email.integration.domain.model.BasicMail;
 import de.muenchen.refarch.email.integration.domain.model.TemplateMail;
 import de.muenchen.refarch.email.integration.domain.model.TextMail;
 import de.muenchen.refarch.email.model.FileAttachment;
+import de.muenchen.refarch.email.model.Mail;
 import freemarker.template.TemplateException;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
@@ -49,7 +50,7 @@ public class SendMailUseCase implements SendMailInPort {
             content.put("footer", "DigiWF 2.0<br>IT-Referat der Stadt München");
             String body = this.mailOutPort.getBodyFromTemplate(mail.getTemplate(), content);
 
-            de.muenchen.refarch.email.model.Mail mailModel = createMail(mail);
+            Mail mailModel = createMail(mail);
             mailModel.setBody(body);
             mailModel.setHtmlBody(true);
 
@@ -62,12 +63,12 @@ public class SendMailUseCase implements SendMailInPort {
         }
     }
 
-    private de.muenchen.refarch.email.model.Mail createMail(BasicMail mail) {
+    private Mail createMail(BasicMail mail) {
         // load Attachments
         List<FileAttachment> attachments = loadAttachmentOutPort.loadAttachments(mail.getFilePaths());
 
         // send mail
-        return de.muenchen.refarch.email.model.Mail.builder()
+        return Mail.builder()
                 .receivers(mail.getReceivers())
                 .subject(mail.getSubject())
                 .replyTo(mail.getReplyTo())
@@ -77,7 +78,7 @@ public class SendMailUseCase implements SendMailInPort {
                 .build();
     }
 
-    private void sendMail(de.muenchen.refarch.email.model.Mail mailModel, String logoPath) throws MailSendException {
+    private void sendMail(Mail mailModel, String logoPath) throws MailSendException {
         try {
             this.mailOutPort.sendMail(mailModel, logoPath);
         } catch (final MessagingException ex) {
