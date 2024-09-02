@@ -50,8 +50,8 @@ jobs:
         run: |
           git config --global user.email "github-actions@github.com"
           git config --global user.name "GitHub Actions"
-          mvn release:prepare -f ./refarch-integrations/pom.xml -B -DreleaseVersion=${{ inputs.release-version }} -DdevelopmentVersion=${{ inputs.next-version }} -DpushChanges=false -DremoteTagging=false
-          mvn release:perform -f ./refarch-integrations/pom.xml -DlocalCheckout=true
+          mvn release:prepare -B -DreleaseVersion=${{ inputs.release-version }} -DdevelopmentVersion=${{ inputs.next-version }} -DpushChanges=false -DremoteTagging=false
+          mvn release:perform -DlocalCheckout=true
         env:
           SIGN_KEY_PASS: ${{ secrets.gpg_passphrase }}
           CENTRAL_USERNAME: ${{ secrets.sonatype_username }}
