@@ -10,6 +10,8 @@ jobs:
   build-maven:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
       - uses: ./.github/actions/build-maven
         with:
           module: refarch-integrations
@@ -24,6 +26,8 @@ jobs:
           - name: s3-integration-rest-service
             path: ./refarch-integrations/refarch-s3-integration/refarch-s3-integration-rest/refarch-s3-integration-rest-service
     steps:
+      - name: Checkout code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
       - uses: ./.github/actions/build-image
         with:
           registry-username: ${{ github.actor }}

@@ -10,6 +10,8 @@ jobs:
   build-maven:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
       - uses: ./.github/actions/build-maven
         with:
           module: refarch-gateway
@@ -19,6 +21,8 @@ jobs:
     needs: build-maven
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
       - uses: ./.github/actions/build-image
         with:
           registry-username: ${{ github.actor }}
