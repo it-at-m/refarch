@@ -150,10 +150,8 @@ function generateFrontend(name: string) {
       "refarch-frontend-copy/package.json",
       "refarch-frontend-copy/package-lock.json",
     ],
-    from: [/refarch-frontend/g],
-    to: [`package ${name}`],
-    dry: true,
-    countMatches: true,
+    from: /refarch-frontend/g,
+    to: `package ${name}`,
   };
   replaceInFileSync(replacements);
   renameSync("refarch-frontend-copy", `${name}`);
@@ -174,8 +172,8 @@ function generateEAI(packageName: string, groupId: string, artifactId: string) {
   const replacements = [
     {
       files: "refarch-eai-copy/src/main/java/de/muenchen/refarch/**/*.java",
-      from: [/de.muenchen.refarch/g],
-      to: [`${packageName}`],
+      from: /de.muenchen.refarch/g,
+      to: `${packageName}`,
     },
     {
       files: "refarch-eai-copy/pom.xml",
@@ -189,8 +187,6 @@ function generateEAI(packageName: string, groupId: string, artifactId: string) {
         `<artifactId>${artifactId}</artifactId>`,
         `<name>${artifactId}</name>`,
       ],
-      dry: true,
-      countMatches: true,
     },
   ];
   replacements.map((options) => replaceInFileSync(options));
