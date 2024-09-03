@@ -11,11 +11,27 @@
 
     <artifactId>refarch-dms-integration-fabasoft-mock</artifactId>
 
+    <properties>
+        <wiremock-standalone.version>3.9.1</wiremock-standalone.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>de.muenchen.refarch</groupId>
             <artifactId>refarch-dms-integration-fabasoft-api</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <!-- Testing -->
+        <dependency>
+            <groupId>org.wiremock</groupId>
+            <artifactId>wiremock-standalone</artifactId>
+            <version>${wiremock-standalone.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
         </dependency>
     </dependencies>
 

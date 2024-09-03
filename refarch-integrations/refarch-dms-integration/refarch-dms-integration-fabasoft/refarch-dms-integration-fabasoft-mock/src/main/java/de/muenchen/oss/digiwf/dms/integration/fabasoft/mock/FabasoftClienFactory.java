@@ -16,7 +16,6 @@ import jakarta.xml.ws.BindingProvider;
  */
 public class FabasoftClienFactory {
 
-
     public static LHMBAI151700GIWSDSoap dmsWsClient(String address) {
         final LHMBAI151700GIWSD service = new LHMBAI151700GIWSD();
         final LHMBAI151700GIWSDSoap soapClient = service.getLHMBAI151700GIWSDSoap();

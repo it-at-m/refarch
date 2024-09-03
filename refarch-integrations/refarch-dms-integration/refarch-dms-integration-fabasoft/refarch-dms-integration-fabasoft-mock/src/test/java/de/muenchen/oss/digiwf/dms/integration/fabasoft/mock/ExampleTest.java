@@ -5,7 +5,6 @@ import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.CreateProcedureGIRespons
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.LHMBAI151700GIWSDSoap;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
-import de.muenchen.oss.digiwf.integration.e2e.test.wsdl.DigiwfWiremockWsdlUtility;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +13,6 @@ public class ExampleTest {
 
     private LHMBAI151700GIWSDSoap soapClient;
 
-
     @BeforeEach
     public void setUp(WireMockRuntimeInfo wmRuntimeInfo) {
         soapClient = FabasoftClienFactory.dmsWsClient("http://localhost:" + wmRuntimeInfo.getHttpPort() + "/");
@@ -22,7 +20,7 @@ public class ExampleTest {
 
     @Test
     public void execute_createProcedure_request() {
-        DigiwfWiremockWsdlUtility.stubOperation(
+        WiremockWsdlUtility.stubOperation(
                 "CreateProcedureGI",
                 CreateProcedureGI.class, (u) -> "new procedure".equals(u.getShortname()),
                 new CreateProcedureGIResponse());
@@ -38,6 +36,5 @@ public class ExampleTest {
         final CreateProcedureGIResponse response = this.soapClient.createProcedureGI(request);
 
     }
-
 
 }
