@@ -19,7 +19,6 @@
         <module>refarch-dms-integration-core</module>
         <module>refarch-dms-integration-fabasoft</module>
         <module>refarch-dms-integration-starter</module>
-        <module>refarch-dms-integration-service</module>
     </modules>
 
     <dependencyManagement>
