@@ -1,8 +1,6 @@
 package de.muenchen.oss.digiwf.dms.integration.configuration;
 
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.LHMBAI151700GIWSDSoap;
-import de.muenchen.refarch.integration.dms.adapter.out.fabasoft.auth.DmsUserAdapter;
-import de.muenchen.refarch.integration.dms.adapter.out.fabasoft.auth.MockDmsUserAdapter;
 import de.muenchen.refarch.integration.dms.adapter.out.fabasoft.FabasoftAdapter;
 import de.muenchen.refarch.integration.dms.adapter.out.fabasoft.FabasoftClientConfiguration;
 import de.muenchen.refarch.integration.dms.adapter.out.fabasoft.FabasoftProperties;
@@ -178,8 +176,8 @@ public class DmsAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public ReadMetadataInPort readMetadataInPort(ReadMetadataOutPort readMetadataOutPort, DmsUserOutPort dmsUserOutPort) {
-        return new ReadMetadataUseCase(readMetadataOutPort, dmsUserOutPort);
+    public ReadMetadataInPort readMetadataInPort(ReadMetadataOutPort readMetadataOutPort) {
+        return new ReadMetadataUseCase(readMetadataOutPort);
     }
 
     @Bean
@@ -225,20 +223,6 @@ public class DmsAutoConfiguration {
     @Bean
     public Consumer<Message<SearchObjectDto>> searchSubjectArea(final StreamingAdapter streamingAdapter) {
         return streamingAdapter.searchSubjectArea();
-    }
-
-    @Profile("!local")
-    @Bean
-    @ConditionalOnMissingBean
-    public DmsUserAdapter dmsUserAdapter(final UserAuthenticationProvider userAuthenticationProvider) {
-        return new DmsUserAdapter(userAuthenticationProvider);
-    }
-
-    @Profile("local")
-    @Bean
-    @ConditionalOnMissingBean
-    public MockDmsUserAdapter mockDmsUserAdapter() {
-        return new MockDmsUserAdapter();
     }
 
     @Bean

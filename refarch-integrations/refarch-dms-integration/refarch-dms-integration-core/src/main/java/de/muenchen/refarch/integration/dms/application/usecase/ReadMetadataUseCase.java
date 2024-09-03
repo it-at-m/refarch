@@ -5,7 +5,6 @@ import de.muenchen.refarch.integration.dms.domain.exception.DmsException;
 import de.muenchen.refarch.integration.dms.domain.model.Metadata;
 import de.muenchen.refarch.integration.dms.domain.model.ObjectType;
 import de.muenchen.refarch.integration.dms.application.port.in.ReadMetadataInPort;
-import de.muenchen.refarch.integration.dms.application.port.out.DmsUserOutPort;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -17,16 +16,12 @@ public class ReadMetadataUseCase implements ReadMetadataInPort {
 
     private final ReadMetadataOutPort readMetadataOutPort;
 
-    private final DmsUserOutPort dmsUserOutPort;
-
     @Override
     public Metadata readMetadata(
             @NotNull final ObjectType objectclass,
-            @NotBlank final String coo
+            @NotBlank final String coo,
+            @NotBlank final String user
     ) throws DmsException {
-
-        String user = dmsUserOutPort.getDmsUser();
-
         if (objectclass == ObjectType.Schriftstueck) {
             return readMetadataOutPort.readContentMetadata(coo, user);
         }
