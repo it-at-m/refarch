@@ -1,0 +1,9 @@
+digiwf:
+  integration:
+    dms:
+      fabasoft:
+        username: fv2dmseai.k.digitalpilot
+        password: OM1A91x7igsnzx7mGHlNeiNUjgma
+        address: http://dmsineai-k-dmsineai-k.apps.capk.muenchen.de/services/dms
+        uiurl: https://dms21-k2.muenchen.de/fsc/mx/%s
+      mockuser: simon.hirtreiter

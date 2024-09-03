@@ -1,0 +1,24 @@
+logging:
+  level:
+    org.apache.kafka.clients.admin: WARN
+    org.apache.kafka.clients.consumer: WARN
+    org.apache.kafka.clients.producer: WARN
+    org.apache.zookeeper: WARN
+    kafka: WARN
+    state.change.logger: WARN
+
+io:
+  muenchendigital:
+    digiwf:
+      message:
+        deadLetterQueueDestination: itest_dead
+
+spring:
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: ${spring.embedded.kafka.brokers}
+
+# overwrite vars
+DIGIWF_ENV: itest

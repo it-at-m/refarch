@@ -1,0 +1,102 @@
+server:
+  port: '${MUCS_DMS_INTEGRATION_SERVER_PORT:8080}'
+  shutdown: graceful
+spring:
+  application:
+    name: '@project.artifactId@'
+  cloud:
+    stream:
+      bindings:
+        functionRouter-in-0:
+          group: "dwf-dms-service"
+          destination: "dwf-mucs-dms-${DIGIWF_ENV},dwf-dms-${DIGIWF_ENV}" #TODO remove dwf-dms-${DIGIWF_ENV} after topic migration
+        sendMessage-out-0:
+          destination: "dwf-connector-${DIGIWF_ENV}"
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: ${SSO_ISSUER_URL}
+            user-info-uri: ${SSO_BASE_URL}/realms/${SSO_REALM}/protocol/openid-connect/userinfo
+            jwk-set-uri: ${SSO_BASE_URL}/realms/${SSO_REALM}/protocol/openid-connect/certs
+            user-name-attribute: user_name
+        registration:
+          s3:
+            provider: keycloak
+            authorization-grant-type: client_credentials
+            client-id: ${SSO_DMS_CLIENT_ID}
+            client-secret: ${SSO_DMS_CLIENT_SECRET}
+            scope: email, profile, openid  # needed for userInfo endpoint
+# Config for spring actuator endpoints
+management:
+  server.port: ${server.port}
+  endpoints:
+    enabled-by-default: false
+    web:
+      exposure:
+        include: health, info, prometheus, livenessstate, readinessstate
+      path-mapping:
+        prometheus: metrics
+  endpoint:
+    health.enabled: true
+    info.enabled: true
+    prometheus.enabled: true
+  info:
+    env:
+      enabled: true
+
+digiwf:
+  integration:
+    dms:
+      fabasoft:
+        businessapp: digiwf
+        username: ${FABASOFT_DMS_USERNAME}
+        password: ${FABASOFT_DMS_PASSWORD}
+        address: "${FABASOFT_DMS_HOST:http://localhost}:${FABASOFT_DMS_PORT:8191}/services/dms"
+        uiurl: ${FABASOFT_DMS_UIURL}
+        enable-MTOM: ${FABASOFT_ENABLE_MTOM:true}
+  s3:
+    client:
+      document-storage-url: "${DOCUMENT_STORAGE_HOST:http://localhost}:${DOCUMENT_STORAGE_PORT:8080}"
+      enable-security: true
+      max-file-size: ${S3_MAX_FILE_SIZE:100MB}
+      max-batch-size: ${S3_MAX_BATCH_SIZE:100MB}
+  security:
+    client-id: ${SSO_DMS_CLIENT_ID}
+    client-secret: ${SSO_DMS_CLIENT_SECRET}
+
+io:
+  muenchendigital:
+    digiwf:
+      message:
+        incidentDestination: "dwf-connector-incident-${DIGIWF_ENV}"
+        bpmnErrorDestination: "dwf-connector-bpmnerror-${DIGIWF_ENV}"
+        correlateMessageDestination: "dwf-connector-${DIGIWF_ENV}"
+        deadLetterQueueDestination: "dwf-connector-incident-${DIGIWF_ENV}"
+
+de:
+  muenchen:
+    oss:
+      digiwf:
+        dms:
+          supported-file-extensions:
+            pdf: "application/pdf"
+            txt: "text/plain"
+            png: "image/png"
+            jpg: "image/jpeg"
+            docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            pptx: "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+            vsdx: "application/vnd.visio2013"
+            mpp: "application/vnd.ms-project"
+            odf: "application/vnd.oasis.opendocument.formula"
+            odp: "application/vnd.oasis.opendocument.presentation"
+            ods: "application/vnd.oasis.opendocument.spreadsheet"
+            odt: "application/vnd.oasis.opendocument.text"
+
+feign:
+  client:
+    config:
+      digiwf-process-config:
+        url: ${ENGINE_REST_ENDPOINT_URL}
