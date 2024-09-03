@@ -1,8 +1,6 @@
 package de.muenchen.refarch.integration.dms.adapter.out.fabasoft;
 
-import de.muenchen.oss.digiwf.message.process.api.error.BpmnError;
-import de.muenchen.oss.digiwf.message.process.api.error.IncidentError;
-import de.muenchen.refarch.integration.dms.adapter.out.fabasoft.DMSErrorHandler;
+import de.muenchen.refarch.integration.dms.domain.exception.DmsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,41 +17,43 @@ class DMSErrorHandlerTest {
     }
 
     @Test
-    void handleIncident() {
+    void handleDmsExceptionUnknown() {
 
         int errorCode = -1;
+        String statusCode = "UNBEKANNTER_FEHLER";
         String errorMessage = "Unbekannter Fehler";
 
-        IncidentError incidentError = assertThrows(IncidentError.class, () -> this.dmsErrorHandler.handleError(errorCode, errorMessage));
+        DmsException dmsException = assertThrows(DmsException.class, () -> this.dmsErrorHandler.handleError(errorCode, errorMessage));
 
-        String actualMessage = incidentError.getErrorMessage();
+        String actualMessage = dmsException.getMessage();
 
-        assertEquals(errorMessage, actualMessage);
+        assertEquals(statusCode + ": " + errorMessage, actualMessage);
 
+        assertEquals(statusCode, dmsException.getStatusCode());
     }
 
     @Test
-    void handleBPMNError() {
+    void handleDmsException() {
 
         int errorCode = 2;
+        String statusCode = "FEHLENDE_BERECHTIGUNG";
         String errorMessage = "Fehlende Berechtigung";
 
-        BpmnError bpmnError = assertThrows(BpmnError.class, () -> this.dmsErrorHandler.handleError(errorCode, errorMessage));
+        DmsException dmsException = assertThrows(DmsException.class, () -> this.dmsErrorHandler.handleError(errorCode, errorMessage));
 
-        String actualMessage = bpmnError.getErrorMessage();
+        String actualMessage = dmsException.getMessage();
 
-        assertEquals(errorMessage, actualMessage);
+        assertEquals(statusCode + ": " + errorMessage, actualMessage);
 
-        assertEquals("FEHLENDE_BERECHTIGUNG",bpmnError.getErrorCode());
+        assertEquals(statusCode, dmsException.getStatusCode());
 
     }
 
     @Test
-    void uebertragungErfolgreich() {
+    void uebertragungErfolgreich() throws DmsException {
 
         int code = 0;
 
         this.dmsErrorHandler.handleError(code, null);
-
     }
 }

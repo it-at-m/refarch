@@ -7,6 +7,7 @@ import de.muenchen.refarch.integration.dms.domain.exception.DmsException;
 import de.muenchen.refarch.integration.dms.domain.model.Content;
 import de.muenchen.refarch.integration.dms.domain.model.DocumentResponse;
 import de.muenchen.refarch.integration.dms.domain.model.DocumentType;
+import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageException;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -25,7 +26,7 @@ class UpdateDocumentUseCaseTest {
     private final UpdateDocumentUseCase updateDocumentUseCase = new UpdateDocumentUseCase(updateDocumentOutPort, listContentOutPort, loadFileOutPort);
 
     @Test
-    void updateDocument() throws DmsException {
+    void updateDocument() throws DmsException, DocumentStorageException {
 
         Content content = new Content("extension", "name", "content".getBytes());
 

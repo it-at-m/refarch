@@ -9,6 +9,7 @@ import de.muenchen.refarch.integration.dms.domain.model.DocumentResponse;
 import de.muenchen.refarch.integration.dms.domain.model.DocumentType;
 import de.muenchen.refarch.integration.dms.application.port.in.CreateDocumentInPort;
 import de.muenchen.refarch.integration.dms.application.port.out.LoadFileOutPort;
+import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 
@@ -32,7 +33,7 @@ public class CreateDocumentUseCase implements CreateDocumentInPort {
             final String user,
             final DocumentType type,
             final List<String> filepaths
-    ) throws DmsException {
+    ) throws DmsException, DocumentStorageException {
 
         final List<Content> contents = loadFileOutPort.loadFiles(filepaths);
 

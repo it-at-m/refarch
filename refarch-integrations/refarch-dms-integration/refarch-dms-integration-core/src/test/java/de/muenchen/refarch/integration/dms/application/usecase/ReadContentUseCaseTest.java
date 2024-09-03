@@ -4,6 +4,7 @@ import de.muenchen.refarch.integration.dms.application.port.out.ReadContentOutPo
 import de.muenchen.refarch.integration.dms.application.port.out.TransferContentOutPort;
 import de.muenchen.refarch.integration.dms.domain.exception.DmsException;
 import de.muenchen.refarch.integration.dms.domain.model.Content;
+import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageException;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -20,7 +21,7 @@ class ReadContentUseCaseTest {
     private final ReadContentUseCase readContentUseCase = new ReadContentUseCase(transferContentOutPort, readContent);
 
     @Test
-    void readContent() throws DmsException {
+    void readContent() throws DmsException, DocumentStorageException {
 
         Content content = new Content("extension", "name", "content".getBytes());
 

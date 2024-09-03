@@ -3,13 +3,14 @@ package de.muenchen.refarch.integration.dms.adapter.out.fabasoft;
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.*;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
+import de.muenchen.refarch.integration.dms.domain.exception.DmsException;
 import de.muenchen.refarch.integration.dms.domain.model.Content;
 import de.muenchen.refarch.integration.dms.domain.model.Document;
 import de.muenchen.refarch.integration.dms.domain.model.DocumentType;
 import de.muenchen.refarch.integration.dms.domain.model.File;
 import de.muenchen.refarch.integration.dms.domain.model.Procedure;
 import de.muenchen.refarch.integration.dms.fabasoft.mock.FabasoftClienFactory;
-import de.muenchen.oss.digiwf.integration.e2e.test.wsdl.DigiwfWiremockWsdlUtility;
+import de.muenchen.refarch.integration.dms.fabasoft.mock.WiremockWsdlUtility;
 import lombok.val;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,11 +40,11 @@ class FabasoftAdapterTest {
     }
 
     @Test
-    void execute_createFile_request() {
+    void execute_createFile_request() throws DmsException {
         val response = new CreateFileGIResponse();
         response.setObjid("1234567890");
 
-        DigiwfWiremockWsdlUtility.stubOperation(
+        WiremockWsdlUtility.stubOperation(
                 "CreateFileGI",
                 CreateFileGI.class, (u) -> "new file".equals(u.getShortname()),
                 response);
@@ -56,11 +57,11 @@ class FabasoftAdapterTest {
     }
 
     @Test
-    void execute_createProcedure_request() {
+    void execute_createProcedure_request() throws DmsException {
         val response = new CreateProcedureGIResponse();
         response.setObjid("1234567890");
 
-        DigiwfWiremockWsdlUtility.stubOperation(
+        WiremockWsdlUtility.stubOperation(
                 "CreateProcedureGI",
                 CreateProcedureGI.class, (u) -> "new procedure".equals(u.getShortname()),
                 response);
@@ -73,11 +74,11 @@ class FabasoftAdapterTest {
     }
 
     @Test
-    void execute_depositObject_request() {
+    void execute_depositObject_request() throws DmsException {
         val response = new DepositObjectGIResponse();
         response.setObjid("objectCoo");
 
-        DigiwfWiremockWsdlUtility.stubOperation(
+        WiremockWsdlUtility.stubOperation(
                 "DepositObjectGI",
                 DepositObjectGI.class, (u) -> true,
                 response);
@@ -87,13 +88,13 @@ class FabasoftAdapterTest {
     }
 
     @Test
-    void execute_createIncomingDocument_request() {
+    void execute_createIncomingDocument_request() throws DmsException {
         Content content = new Content("extension", "name", "content".getBytes());
 
         val response = new CreateIncomingGIResponse();
         response.setObjid("documentCOO");
 
-        DigiwfWiremockWsdlUtility.stubOperation(
+        WiremockWsdlUtility.stubOperation(
                 "CreateIncomingGI",
                 CreateIncomingGI.class, (u) -> true,
                 response);
@@ -104,13 +105,13 @@ class FabasoftAdapterTest {
     }
 
     @Test
-    void execute_createOutgoingDocument_request() {
+    void execute_createOutgoingDocument_request() throws DmsException {
         Content content = new Content("extension", "name", "content".getBytes());
 
         val response = new CreateOutgoingGIResponse();
         response.setObjid("documentCOO");
 
-        DigiwfWiremockWsdlUtility.stubOperation(
+        WiremockWsdlUtility.stubOperation(
                 "CreateOutgoingGI",
                 CreateOutgoingGI.class, (u) -> true,
                 response);
@@ -121,13 +122,13 @@ class FabasoftAdapterTest {
     }
 
     @Test
-    void execute_createInternalDocument_request() {
+    void execute_createInternalDocument_request() throws DmsException {
         Content content = new Content("extension", "name", "content".getBytes());
 
         val response = new CreateInternalGIResponse();
         response.setObjid("documentCOO");
 
-        DigiwfWiremockWsdlUtility.stubOperation(
+        WiremockWsdlUtility.stubOperation(
                 "CreateInternalGI",
                 CreateInternalGI.class, (u) -> true,
                 response);
@@ -138,13 +139,13 @@ class FabasoftAdapterTest {
     }
 
     @Test
-    void execute_updateIncomingDocument_request() {
+    void execute_updateIncomingDocument_request() throws DmsException {
         Content content = new Content("extension", "name", "content".getBytes());
 
         val response = new UpdateIncomingGIResponse();
         response.setObjid("documentCOO");
 
-        DigiwfWiremockWsdlUtility.stubOperation(
+        WiremockWsdlUtility.stubOperation(
                 "UpdateIncomingGI",
                 UpdateIncomingGI.class, (u) -> true,
                 response);
@@ -153,13 +154,13 @@ class FabasoftAdapterTest {
     }
 
     @Test
-    void execute_updateOutgoingDocument_request() {
+    void execute_updateOutgoingDocument_request() throws DmsException {
         Content content = new Content("extension", "name", "content".getBytes());
 
         val response = new UpdateOutgoingGIResponse();
         response.setObjid("documentCOO");
 
-        DigiwfWiremockWsdlUtility.stubOperation(
+        WiremockWsdlUtility.stubOperation(
                 "UpdateOutgoingGI",
                 UpdateOutgoingGI.class, (u) -> true,
                 response);
@@ -168,13 +169,13 @@ class FabasoftAdapterTest {
     }
 
     @Test
-    void execute_updateInternalDocument_request() {
+    void execute_updateInternalDocument_request() throws DmsException {
         Content content = new Content("extension", "name", "content".getBytes());
 
         val response = new UpdateInternalGIResponse();
         response.setObjid("documentCOO");
 
-        DigiwfWiremockWsdlUtility.stubOperation(
+        WiremockWsdlUtility.stubOperation(
                 "UpdateInternalGI",
                 UpdateInternalGI.class, (u) -> true,
                 response);
@@ -183,11 +184,11 @@ class FabasoftAdapterTest {
     }
 
     @Test
-    void execute_cancelObject_request() {
+    void execute_cancelObject_request() throws DmsException {
         val response = new CancelObjectGIResponse();
         response.setStatus(0);
 
-        DigiwfWiremockWsdlUtility.stubOperation(
+        WiremockWsdlUtility.stubOperation(
                 "CancelObjectGI",
                 CancelObjectGI.class, (u) -> true,
                 response);
@@ -196,7 +197,7 @@ class FabasoftAdapterTest {
     }
 
     @Test
-    void execute_list_files() {
+    void execute_list_files() throws DmsException {
         val file1 = new LHMBAI151700GIObjectType();
         file1.setLHMBAI151700Objaddress("contentCoo1");
         file1.setLHMBAI151700Objname("File-Name");
@@ -207,7 +208,7 @@ class FabasoftAdapterTest {
         response.setStatus(0);
         response.setGiobjecttype(content);
 
-        DigiwfWiremockWsdlUtility.stubOperation(
+        WiremockWsdlUtility.stubOperation(
                 "ReadDocumentGIObjects",
                 CancelObjectGI.class, (u) -> true,
                 response);
@@ -221,7 +222,7 @@ class FabasoftAdapterTest {
     }
 
     @Test
-    void execute_read_files() {
+    void execute_read_files() throws DmsException {
         val content = new LHMBAI151700GIAttachmentType();
         content.setLHMBAI151700Filename("filename");
         content.setLHMBAI151700Fileextension("extension");
@@ -231,7 +232,7 @@ class FabasoftAdapterTest {
         response.setStatus(0);
         response.setGiattachmenttype(content);
 
-        DigiwfWiremockWsdlUtility.stubOperation(
+        WiremockWsdlUtility.stubOperation(
                 "ReadContentObjectGI",
                 CancelObjectGI.class, (u) -> true,
                 response);
@@ -248,7 +249,7 @@ class FabasoftAdapterTest {
      * Tests a file search.
      */
     @Test
-    void execute_searchFile_request() {
+    void execute_searchFile_request() throws DmsException {
         internalSearchFileCallTest(DMSObjectClass.Sachakte, "searchString", "user", null, null);
     }
 
@@ -256,7 +257,7 @@ class FabasoftAdapterTest {
      * Tests a file search but includes refinement on a business date/'Fachdatum'.
      */
     @Test
-    void execute_searchFile_request_business_data() {
+    void execute_searchFile_request_business_data() throws DmsException {
         internalSearchFileCallTest(DMSObjectClass.Sachakte, "searchString", "user", "reference", "value");
     }
 
@@ -264,7 +265,7 @@ class FabasoftAdapterTest {
      * Tests a subject search.
      */
     @Test
-    void execute_searchSubjectArea_request() {
+    void execute_searchSubjectArea_request() throws DmsException {
         val file = new LHMBAI151700GIObjectType();
         file.setLHMBAI151700Objaddress("testCoo");
         file.setLHMBAI151700Objname("testName");
@@ -276,7 +277,7 @@ class FabasoftAdapterTest {
         response.setStatus(0);
         response.setGiobjecttype(array);
 
-        DigiwfWiremockWsdlUtility.stubOperation(
+        WiremockWsdlUtility.stubOperation(
                 "SearchObjNameGI",
                 SearchObjNameGI.class, (u) -> u.getObjclass().equals(DMSObjectClass.Aktenplaneintrag.getName()),
                 response);
@@ -286,7 +287,8 @@ class FabasoftAdapterTest {
         assertThat(files.size()).isEqualTo(1);
     }
 
-    private void internalSearchFileCallTest(final DMSObjectClass dmsObjectClass, final String searchString, final String user, final String reference, final String value) {
+    private void internalSearchFileCallTest(final DMSObjectClass dmsObjectClass, final String searchString, final String user, final String reference, final String value)
+            throws DmsException {
         val file = new LHMBAI151700GIObjectType();
         file.setLHMBAI151700Objaddress("testCoo");
         file.setLHMBAI151700Objname("testName");
@@ -298,7 +300,7 @@ class FabasoftAdapterTest {
         response.setStatus(0);
         response.setGiobjecttype(array);
 
-        DigiwfWiremockWsdlUtility.stubOperation(
+        WiremockWsdlUtility.stubOperation(
                 "SearchObjNameGI",
                 SearchObjNameGI.class, (u) -> u.getObjclass().equals(dmsObjectClass.getName()) && validateBusinessData(u),
                 response);
@@ -317,7 +319,7 @@ class FabasoftAdapterTest {
     }
 
     @Test
-    void execute_read_metadata() {
+    void execute_read_metadata() throws DmsException {
 
         val response = new ReadMetadataObjectGIResponse();
         response.setStatus(0);
@@ -325,7 +327,7 @@ class FabasoftAdapterTest {
         response.setObjname("name");
 
 
-        DigiwfWiremockWsdlUtility.stubOperation(
+        WiremockWsdlUtility.stubOperation(
                 "ReadMetadataObjectGI",
                 ReadMetadataObjectGI.class, (u) -> true,
                 response);
@@ -337,7 +339,7 @@ class FabasoftAdapterTest {
     }
 
     @Test
-    void execute_read_content_metadata() {
+    void execute_read_content_metadata() throws DmsException {
         val content = new LHMBAI151700GIMetadataType();
         content.setLHMBAI151700Filename("name");
         content.setLHMBAI151700Objclass("pdf");
@@ -346,7 +348,7 @@ class FabasoftAdapterTest {
         response.setStatus(0);
         response.setGimetadatatype(content);
 
-        DigiwfWiremockWsdlUtility.stubOperation(
+        WiremockWsdlUtility.stubOperation(
                 "ReadContentObjectMetaDataGI",
                 ReadContentObjectMetaDataGI.class, (u) -> true,
                 response);

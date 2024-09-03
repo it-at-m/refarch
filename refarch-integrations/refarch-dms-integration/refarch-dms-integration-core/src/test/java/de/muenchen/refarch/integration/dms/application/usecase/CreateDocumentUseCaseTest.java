@@ -8,6 +8,7 @@ import de.muenchen.refarch.integration.dms.domain.model.Content;
 import de.muenchen.refarch.integration.dms.domain.model.Document;
 import de.muenchen.refarch.integration.dms.domain.model.DocumentResponse;
 import de.muenchen.refarch.integration.dms.domain.model.DocumentType;
+import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageException;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -28,7 +29,7 @@ class CreateDocumentUseCaseTest {
     private final CreateDocumentUseCase createDocumentUseCase = new CreateDocumentUseCase(createDocumentOutPort, loadFileOutPort, listContentOutPort);
 
     @Test
-    void createDocument() throws DmsException {
+    void createDocument() throws DmsException, DocumentStorageException {
         Content content = new Content("extension", "name", "content".getBytes());
         List<String> filepaths = List.of("path/content.pdf");
         LocalDate testDate = LocalDate.parse("2023-12-01");
