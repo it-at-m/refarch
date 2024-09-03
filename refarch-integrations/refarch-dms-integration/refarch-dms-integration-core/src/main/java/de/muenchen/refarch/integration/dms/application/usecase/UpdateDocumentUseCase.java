@@ -26,12 +26,10 @@ public class UpdateDocumentUseCase implements UpdateDocumentInPort {
             final String documentCOO,
             final String user,
             final DocumentType type,
-            final List<String> filepaths,
-            final String fileContext,
-            final String processDefinition
+            final List<String> filepaths
     ) {
 
-        final List<Content> contents = loadFileOutPort.loadFiles(filepaths, fileContext, processDefinition);
+        final List<Content> contents = loadFileOutPort.loadFiles(filepaths);
 
         updateDocumentOutPort.updateDocument(documentCOO, type, contents, user);
         List<String> contentCoos = listContentOutPort.listContentCoos(documentCOO, user);

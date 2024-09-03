@@ -30,12 +30,10 @@ public class CreateDocumentUseCase implements CreateDocumentInPort {
             final LocalDate date,
             final String user,
             final DocumentType type,
-            final List<String> filepaths,
-            final String fileContext,
-            final String processDefinition
+            final List<String> filepaths
     ) {
 
-        final List<Content> contents = loadFileOutPort.loadFiles(filepaths, fileContext, processDefinition);
+        final List<Content> contents = loadFileOutPort.loadFiles(filepaths);
 
         final Document document = new Document(procedureCOO, title, date, type, contents);
 

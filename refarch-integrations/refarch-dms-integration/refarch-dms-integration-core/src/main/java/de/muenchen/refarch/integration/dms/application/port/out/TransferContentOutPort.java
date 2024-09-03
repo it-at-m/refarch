@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface TransferContentOutPort {
 
-    void transferContent(List<Content> content, String filepath, String fileContext, String processDefinition);
+    void transferContent(List<Content> content, String filepath);
 
 }

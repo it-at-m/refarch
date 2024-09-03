@@ -35,16 +35,15 @@ class CreateDocumentUseCaseTest {
         String user = "user";
         List<String> fileCoos = List.of("contentCoo1", "contentCoo2");
 
-        when(this.loadFileOutPort.loadFiles(any(), any(), any())).thenReturn(List.of(content));
+        when(this.loadFileOutPort.loadFiles(any())).thenReturn(List.of(content));
         when(this.createDocumentOutPort.createDocument(any(), any())).thenReturn(docCoo);
         when(this.listContentOutPort.listContentCoos(docCoo, user)).thenReturn(fileCoos);
 
-        DocumentResponse documentResponse = createDocumentUseCase.createDocument("procedureCOO", "title", testDate, "user", DocumentType.EINGEHEND, filepaths, "filecontext",
-                "processDefinitionId");
+        DocumentResponse documentResponse = createDocumentUseCase.createDocument("procedureCOO", "title", testDate, "user", DocumentType.EINGEHEND, filepaths);
 
         assertEquals(docCoo, documentResponse.getDocumentCoo());
         assertEquals(fileCoos, documentResponse.getContentCoos());
-        verify(this.loadFileOutPort, times(1)).loadFiles(filepaths, "filecontext", "processDefinitionId");
+        verify(this.loadFileOutPort, times(1)).loadFiles(filepaths);
         verify(this.createDocumentOutPort, times(1)).createDocument(new Document("procedureCOO", "title", testDate, DocumentType.EINGEHEND, List.of(content)),
                 user);
         verify(this.listContentOutPort, times(1)).listContentCoos(docCoo, user);

@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface UpdateDocumentInPort {
 
-    DocumentResponse updateDocument(String documentCOO, String user, DocumentType type, List<String> filepaths, String fileContext, String processDefinition);
+    DocumentResponse updateDocument(String documentCOO, String user, DocumentType type, List<String> filepaths);
 
 }

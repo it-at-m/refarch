@@ -21,10 +21,8 @@ public class ReadContentUseCase implements ReadContentInPort {
     public void readContent(
             final List<String> contentCoos,
             @NotBlank final String user,
-            @NotBlank final String filePath,
-            @NotBlank final String fileContext,
-            @NotBlank final String processDefinitionId) {
+            @NotBlank final String filePath) {
         val content = readContentOutPort.readContent(contentCoos, user);
-        transferContentOutPort.transferContent(content, filePath, fileContext, processDefinitionId);
+        transferContentOutPort.transferContent(content, filePath);
     }
 }

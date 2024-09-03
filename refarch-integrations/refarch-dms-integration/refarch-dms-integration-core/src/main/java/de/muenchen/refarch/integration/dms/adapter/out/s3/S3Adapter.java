@@ -32,23 +32,22 @@ public class S3Adapter implements LoadFileOutPort, TransferContentOutPort {
     private final FileValidationService fileService;
 
     @Override
-    public List<Content> loadFiles(final List<String> filePaths, final String fileContext, final String processDefinition) {
-        validateFileSizes(filePaths, fileContext);
+    public List<Content> loadFiles(final List<String> filePaths) {
+        validateFileSizes(filePaths);
         final List<Content> contents = new ArrayList<>();
         filePaths.forEach(path -> {
-            final String fullPath = fileContext + "/" + path;
-            if (fullPath.endsWith("/")) {
-                contents.addAll(getFilesFromFolder(fullPath));
+            if (path.endsWith("/")) {
+                contents.addAll(getFilesFromFolder(path));
             } else {
-                contents.add(getFile(fullPath));
+                contents.add(getFile(path));
             }
         });
         return contents;
     }
 
-    private void validateFileSizes(final List<String> filePaths, final String fileContext) {
+    private void validateFileSizes(final List<String> filePaths) {
         // Collect file sizes along with their paths
-        final Map<String, Long> fileSizesWithPaths = getFileSizesWithPaths(filePaths, fileContext);
+        final Map<String, Long> fileSizesWithPaths = getFileSizesWithPaths(filePaths);
 
         // Filter files exceeding maximum size
         final Map<String, Long> oversizedFiles = fileService.getOversizedFiles(fileSizesWithPaths);
@@ -68,9 +67,8 @@ public class S3Adapter implements LoadFileOutPort, TransferContentOutPort {
                     totalFileSize.toMegabytes(), fileService.getMaxBatchSize().toMegabytes()));
     }
 
-    private Map<String, Long> getFileSizesWithPaths(final List<String> filePaths, final String fileContext) {
+    private Map<String, Long> getFileSizesWithPaths(final List<String> filePaths) {
         return filePaths.stream()
-                .map(path -> fileContext + "/" + path)
                 .flatMap(path -> getFileSizeForPath(path).entrySet().stream())
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
@@ -133,15 +131,13 @@ public class S3Adapter implements LoadFileOutPort, TransferContentOutPort {
     }
 
     @Override
-    public void transferContent(final List<Content> content, final String filepath, final String fileContext, final String processDefinitionId) {
-        val fullPath = fileContext + "/" + filepath;
-
+    public void transferContent(final List<Content> content, final String filepath) {
         for (val file : content) {
             try {
-                val fullFilePath = (fullPath + "/" + file.getName() + "." + file.getExtension()).replace("//", "/");
+                val fullFilePath = (filepath + "/" + file.getName() + "." + file.getExtension()).replace("//", "/");
                 this.documentStorageFileRepository.saveFile(fullFilePath, file.getContent(), 1);
             } catch (Exception e) {
-                throw new BpmnError("SAVE_FILE_FAILED", "An file could not be saved to path: " + fullPath);
+                throw new BpmnError("SAVE_FILE_FAILED", "An file could not be saved to path: " + filepath);
             }
         }
     }
