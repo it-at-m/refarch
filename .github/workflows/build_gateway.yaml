@@ -1,0 +1,35 @@
+name: build-gateway
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-maven:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Maven build
+        uses: ./.github/actions/build-maven
+        with:
+          module: refarch-gateway
+
+  build-images:
+    if: github.ref_name == 'main'
+    needs: build-maven
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Build and push image
+        uses: ./.github/actions/build-image
+        with:
+          registry-username: ${{ github.actor }}
+          registry-password: ${{ secrets.GITHUB_TOKEN }}
+          path: ./refarch-gateway
+          image-name: refarch-gateway
+          image-tags: |
+            type=raw,value=dev

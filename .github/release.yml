@@ -1,23 +1,100 @@
 changelog:
   categories:
-    - title: 🎉 New Features
+    # refarch-gateway
+    - title: Gateway - 🎉 New Features
       labels:
         - "Type: Feature"
-    - title: 🐞 Bug Fixes
+      exclude: &filter-gateway
+        labels:
+          - "Component: Integrations"
+          - "Component: CLI"
+    - title: Gateway - 🐞 Bug Fixes
       labels:
         - "Type: Bug"
-    - title: 🔨 Maintenance
+      exclude: *filter-gateway
+    - title: Gateway - 🔨 Maintenance
       labels:
         - "Type: Maintenance"
-    - title: 📔 Documentation
+      exclude: *filter-gateway
+    - title: Gateway - 📔 Documentation
       labels:
         - "Type: Documentation"
-    - title: ⬆️ Dependency Upgrades
+      exclude: *filter-gateway
+    - title: Gateway - ⬆️ Dependency Upgrades
       labels:
         - "Type: Dependency"
-    - title: 🔒️ Security
+      exclude: *filter-gateway
+    - title: Gateway - 🔒️ Security
       labels:
         - "Type: Security"
-    - title: 💥 Breaking Changes
+      exclude: *filter-gateway
+    - title: Gateway - 💥 Breaking Changes
       labels:
         - BREAKING
+      exclude: *filter-gateway
+
+    # refarch-integrations
+    - title: Integrations - 🎉 New Features
+      labels:
+        - "Type: Feature"
+      exclude: &filter-integrations
+        labels:
+          - "Component: API-Gateway"
+          - "Component: CLI"
+    - title: Integrations - 🐞 Bug Fixes
+      labels:
+        - "Type: Bug"
+      exclude: *filter-integrations
+    - title: Integrations - 🔨 Maintenance
+      labels:
+        - "Type: Maintenance"
+      exclude: *filter-integrations
+    - title: Integrations - 📔 Documentation
+      labels:
+        - "Type: Documentation"
+      exclude: *filter-integrations
+    - title: Integrations - ⬆️ Dependency Upgrades
+      labels:
+        - "Type: Dependency"
+      exclude: *filter-integrations
+    - title: Integrations - 🔒️ Security
+      labels:
+        - "Type: Security"
+      exclude: *filter-integrations
+    - title: Integrations - 💥 Breaking Changes
+      labels:
+        - BREAKING
+      exclude: *filter-integrations
+
+    # refarch-cli
+    - title: CLI - 🎉 New Features
+      labels:
+        - "Type: Feature"
+      exclude: &filter-cli
+        labels:
+          - "Component: API-Gateway"
+          - "Component: Integrations"
+    - title: CLI - 🐞 Bug Fixes
+      labels:
+        - "Type: Bug"
+      exclude: *filter-cli
+    - title: CLI - 🔨 Maintenance
+      labels:
+        - "Type: Maintenance"
+      exclude: *filter-cli
+    - title: CLI - 📔 Documentation
+      labels:
+        - "Type: Documentation"
+      exclude: *filter-cli
+    - title: CLI - ⬆️ Dependency Upgrades
+      labels:
+        - "Type: Dependency"
+      exclude: *filter-cli
+    - title: CLI - 🔒️ Security
+      labels:
+        - "Type: Security"
+      exclude: *filter-cli
+    - title: CLI - 💥 Breaking Changes
+      labels:
+        - BREAKING
+      exclude: *filter-cli

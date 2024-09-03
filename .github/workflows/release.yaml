@@ -3,8 +3,15 @@ name: release
 on:
   workflow_dispatch:
     inputs:
-      snapshot-release:
-        description: 'Snapshot release?'
+      module:
+        description: 'Module to release'
+        type: choice
+        required: true
+        options:
+          - refarch-gateway
+          - refarch-integrations
+      release:
+        description: 'Release?'
         type: boolean
         default: true
       release-version:
@@ -13,30 +20,80 @@ on:
         required: true
         default: "X.Y.Z"
       next-version:
-        description: "Next version to use after release."
+        description: "Next version to use after release"
         type: string
         required: true
         default: "X.Y.Z-SNAPSHOT"
 
 jobs:
-  build:
-    uses: ./.github/workflows/maven.yaml
-    with:
-      snapshot-release: ${{ inputs.snapshot-release != false }}
-      build-images: true
-      release-version: ${{ inputs.release-version }}
-    secrets: inherit
+  build-maven:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Maven build and release
+        uses: ./.github/actions/build-maven
+        with:
+          module: ${{ inputs.module }}
+          release: ${{ inputs.release }}
+          release-version: ${{ inputs.release-version }}
+          next-version: ${{ inputs.next-version }}
+          gpg-private-key: ${{ secrets.gpg_private_key }}
+          gpg-passphrase: ${{ secrets.gpg_passphrase }}
+          sonatype-username: ${{ secrets.sonatype_username }}
+          sonatype-password: ${{ secrets.sonatype_password }}
+
+  build-images-gateway:
+    if: inputs.module == 'refarch-gateway'
+    needs: build-maven
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Build and push image
+        uses: ./.github/actions/build-image
+        with:
+          registry-username: ${{ github.actor }}
+          registry-password: ${{ secrets.GITHUB_TOKEN }}
+          path: ./refarch-gateway
+          image-name: refarch-gateway
+          image-tags: |
+            type=raw,value=${{ inputs.release-version }}
+            type=raw,value=latest,enable=${{ inputs.release == true }}
+
+  build-images-integrations:
+    if: inputs.module == 'refarch-integrations'
+    needs: build-maven
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - name: s3-integration-rest-service
+            path: ./refarch-integrations/refarch-s3-integration/refarch-s3-integration-rest/refarch-s3-integration-rest-service
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Build and push images
+        uses: ./.github/actions/build-image
+        with:
+          registry-username: ${{ github.actor }}
+          registry-password: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ matrix.path }}
+          image-name: ${{ matrix.name }}
+          image-tags: |
+            type=raw,value=${{ inputs.release-version }}
+            type=raw,value=latest,enable=${{ inputs.release == true }}
 
   create-github-release:
-    if: ${{ inputs.snapshot-release == false }}
-    needs: build
+    if: ${{ inputs.release == true }}
+    needs: build-maven
     runs-on: ubuntu-latest
     steps:
       - name: Create GitHub Release
         id: create_release
         uses: softprops/action-gh-release@c062e08bd532815e2082a85e87e3ef29c3e6d191 # v2.0.8
         with:
-          tag_name: ${{ github.event.inputs.release-version }}
+          tag_name: "${{ inputs.module }}_${{ github.event.inputs.release-version }}"
           draft: false
           prerelease: false
           generate_release_notes: true
