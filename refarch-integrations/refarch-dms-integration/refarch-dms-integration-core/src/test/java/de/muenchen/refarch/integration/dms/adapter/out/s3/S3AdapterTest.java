@@ -1,7 +1,6 @@
 package de.muenchen.refarch.integration.dms.adapter.out.s3;
 
-import de.muenchen.refarch.integration.dms.adapter.out.s3.S3Adapter;
-import de.muenchen.refarch.integration.dms.domain.Content;
+import de.muenchen.refarch.integration.dms.domain.model.Content;
 import de.muenchen.oss.digiwf.message.process.api.error.BpmnError;
 import de.muenchen.oss.digiwf.process.api.config.api.ProcessConfigApi;
 import de.muenchen.oss.digiwf.process.api.config.api.dto.ConfigEntryTO;

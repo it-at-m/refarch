@@ -1,7 +1,7 @@
 package de.muenchen.refarch.integration.dms.adapter.in.streaming;
 
-import de.muenchen.refarch.integration.dms.domain.DocumentResponse;
-import de.muenchen.refarch.integration.dms.domain.DocumentType;
+import de.muenchen.refarch.integration.dms.domain.model.DocumentResponse;
+import de.muenchen.refarch.integration.dms.domain.model.DocumentType;
 import de.muenchen.oss.digiwf.message.process.api.error.IncidentError;
 import jakarta.validation.ValidationException;
 import org.jetbrains.annotations.NotNull;

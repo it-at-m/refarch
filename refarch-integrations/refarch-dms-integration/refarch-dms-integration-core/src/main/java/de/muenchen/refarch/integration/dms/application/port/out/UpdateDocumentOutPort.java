@@ -1,7 +1,7 @@
 package de.muenchen.refarch.integration.dms.application.port.out;
 
-import de.muenchen.refarch.integration.dms.domain.Content;
-import de.muenchen.refarch.integration.dms.domain.DocumentType;
+import de.muenchen.refarch.integration.dms.domain.model.Content;
+import de.muenchen.refarch.integration.dms.domain.model.DocumentType;
 
 import java.util.List;
 

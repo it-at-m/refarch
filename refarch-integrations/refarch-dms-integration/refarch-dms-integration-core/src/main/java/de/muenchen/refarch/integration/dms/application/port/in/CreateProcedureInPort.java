@@ -1,6 +1,6 @@
 package de.muenchen.refarch.integration.dms.application.port.in;
 
-import de.muenchen.refarch.integration.dms.domain.Procedure;
+import de.muenchen.refarch.integration.dms.domain.model.Procedure;
 import jakarta.validation.constraints.NotBlank;
 
 public interface CreateProcedureInPort {

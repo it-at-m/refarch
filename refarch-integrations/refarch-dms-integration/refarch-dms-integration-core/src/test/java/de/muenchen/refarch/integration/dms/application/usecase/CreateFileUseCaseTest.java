@@ -1,8 +1,7 @@
 package de.muenchen.refarch.integration.dms.application.usecase;
 
 import de.muenchen.refarch.integration.dms.application.port.out.CreateFileOutPort;
-import de.muenchen.refarch.integration.dms.application.usecase.CreateFileUseCase;
-import de.muenchen.refarch.integration.dms.domain.File;
+import de.muenchen.refarch.integration.dms.domain.model.File;
 import org.junit.jupiter.api.Test;
 
 import static org.mockito.ArgumentMatchers.any;

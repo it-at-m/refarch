@@ -1,6 +1,6 @@
 package de.muenchen.refarch.integration.dms.application.usecase;
 
-import de.muenchen.refarch.integration.dms.domain.File;
+import de.muenchen.refarch.integration.dms.domain.model.File;
 import de.muenchen.refarch.integration.dms.application.port.in.CreateFileInPort;
 import de.muenchen.refarch.integration.dms.application.port.out.CreateFileOutPort;
 import jakarta.validation.constraints.NotBlank;

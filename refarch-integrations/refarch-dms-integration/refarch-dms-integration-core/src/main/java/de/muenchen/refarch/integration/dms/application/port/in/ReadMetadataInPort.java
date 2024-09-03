@@ -1,7 +1,7 @@
 package de.muenchen.refarch.integration.dms.application.port.in;
 
-import de.muenchen.refarch.integration.dms.domain.Metadata;
-import de.muenchen.refarch.integration.dms.domain.ObjectType;
+import de.muenchen.refarch.integration.dms.domain.model.Metadata;
+import de.muenchen.refarch.integration.dms.domain.model.ObjectType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 

@@ -1,6 +1,6 @@
 package de.muenchen.refarch.integration.dms.application.port.out;
 
-import de.muenchen.refarch.integration.dms.domain.Document;
+import de.muenchen.refarch.integration.dms.domain.model.Document;
 
 public interface CreateDocumentOutPort {
 

@@ -1,6 +1,6 @@
 package de.muenchen.refarch.integration.dms.application.port.out;
 
-import de.muenchen.refarch.integration.dms.domain.File;
+import de.muenchen.refarch.integration.dms.domain.model.File;
 
 public interface CreateFileOutPort {
 

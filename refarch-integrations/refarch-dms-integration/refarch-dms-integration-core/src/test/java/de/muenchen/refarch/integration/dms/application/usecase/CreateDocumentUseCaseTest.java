@@ -3,11 +3,10 @@ package de.muenchen.refarch.integration.dms.application.usecase;
 import de.muenchen.refarch.integration.dms.application.port.out.CreateDocumentOutPort;
 import de.muenchen.refarch.integration.dms.application.port.out.ListContentOutPort;
 import de.muenchen.refarch.integration.dms.application.port.out.LoadFileOutPort;
-import de.muenchen.refarch.integration.dms.application.usecase.CreateDocumentUseCase;
-import de.muenchen.refarch.integration.dms.domain.Content;
-import de.muenchen.refarch.integration.dms.domain.Document;
-import de.muenchen.refarch.integration.dms.domain.DocumentResponse;
-import de.muenchen.refarch.integration.dms.domain.DocumentType;
+import de.muenchen.refarch.integration.dms.domain.model.Content;
+import de.muenchen.refarch.integration.dms.domain.model.Document;
+import de.muenchen.refarch.integration.dms.domain.model.DocumentResponse;
+import de.muenchen.refarch.integration.dms.domain.model.DocumentType;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;

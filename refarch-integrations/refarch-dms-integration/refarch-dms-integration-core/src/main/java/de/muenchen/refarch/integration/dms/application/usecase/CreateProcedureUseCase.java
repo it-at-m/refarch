@@ -1,7 +1,7 @@
 package de.muenchen.refarch.integration.dms.application.usecase;
 
 import de.muenchen.refarch.integration.dms.application.port.out.CreateProcedureOutPort;
-import de.muenchen.refarch.integration.dms.domain.Procedure;
+import de.muenchen.refarch.integration.dms.domain.model.Procedure;
 import de.muenchen.refarch.integration.dms.application.port.in.CreateProcedureInPort;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;

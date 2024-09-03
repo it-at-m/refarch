@@ -1,7 +1,7 @@
 package de.muenchen.refarch.integration.dms.application.port.in;
 
-import de.muenchen.refarch.integration.dms.domain.DocumentResponse;
-import de.muenchen.refarch.integration.dms.domain.DocumentType;
+import de.muenchen.refarch.integration.dms.domain.model.DocumentResponse;
+import de.muenchen.refarch.integration.dms.domain.model.DocumentType;
 
 import java.time.LocalDate;
 import java.util.List;

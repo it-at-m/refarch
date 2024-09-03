@@ -1,4 +1,4 @@
-package de.muenchen.refarch.integration.dms.domain;
+package de.muenchen.refarch.integration.dms.domain.model;
 
 import lombok.Data;
 

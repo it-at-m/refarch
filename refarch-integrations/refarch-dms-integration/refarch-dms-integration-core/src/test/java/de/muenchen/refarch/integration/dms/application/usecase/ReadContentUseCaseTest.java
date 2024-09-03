@@ -2,8 +2,7 @@ package de.muenchen.refarch.integration.dms.application.usecase;
 
 import de.muenchen.refarch.integration.dms.application.port.out.ReadContentOutPort;
 import de.muenchen.refarch.integration.dms.application.port.out.TransferContentOutPort;
-import de.muenchen.refarch.integration.dms.application.usecase.ReadContentUseCase;
-import de.muenchen.refarch.integration.dms.domain.Content;
+import de.muenchen.refarch.integration.dms.domain.model.Content;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

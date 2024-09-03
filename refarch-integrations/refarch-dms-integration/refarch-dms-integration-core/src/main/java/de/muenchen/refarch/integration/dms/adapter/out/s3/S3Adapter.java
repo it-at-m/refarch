@@ -1,7 +1,7 @@
 package de.muenchen.refarch.integration.dms.adapter.out.s3;
 
 import de.muenchen.refarch.integration.dms.application.port.out.TransferContentOutPort;
-import de.muenchen.refarch.integration.dms.domain.Content;
+import de.muenchen.refarch.integration.dms.domain.model.Content;
 import de.muenchen.refarch.integration.dms.application.port.out.LoadFileOutPort;
 import de.muenchen.oss.digiwf.message.process.api.error.BpmnError;
 import de.muenchen.oss.digiwf.s3.integration.client.exception.DocumentStorageClientErrorException;

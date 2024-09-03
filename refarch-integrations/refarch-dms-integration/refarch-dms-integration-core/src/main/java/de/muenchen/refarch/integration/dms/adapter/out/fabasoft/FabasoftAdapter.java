@@ -1,8 +1,6 @@
 package de.muenchen.refarch.integration.dms.adapter.out.fabasoft;
 
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.*;
-import de.muenchen.oss.digiwf.dms.integration.application.port.out.*;
-import de.muenchen.oss.digiwf.dms.integration.domain.*;
 import de.muenchen.refarch.integration.dms.application.port.out.CancelObjectOutPort;
 import de.muenchen.refarch.integration.dms.application.port.out.CreateDocumentOutPort;
 import de.muenchen.refarch.integration.dms.application.port.out.CreateProcedureOutPort;
@@ -13,12 +11,12 @@ import de.muenchen.refarch.integration.dms.application.port.out.ReadMetadataOutP
 import de.muenchen.refarch.integration.dms.application.port.out.SearchFileOutPort;
 import de.muenchen.refarch.integration.dms.application.port.out.SearchSubjectAreaOutPort;
 import de.muenchen.refarch.integration.dms.application.port.out.UpdateDocumentOutPort;
-import de.muenchen.refarch.integration.dms.domain.Content;
-import de.muenchen.refarch.integration.dms.domain.Document;
-import de.muenchen.refarch.integration.dms.domain.DocumentType;
-import de.muenchen.refarch.integration.dms.domain.File;
-import de.muenchen.refarch.integration.dms.domain.Metadata;
-import de.muenchen.refarch.integration.dms.domain.Procedure;
+import de.muenchen.refarch.integration.dms.domain.model.Content;
+import de.muenchen.refarch.integration.dms.domain.model.Document;
+import de.muenchen.refarch.integration.dms.domain.model.DocumentType;
+import de.muenchen.refarch.integration.dms.domain.model.File;
+import de.muenchen.refarch.integration.dms.domain.model.Metadata;
+import de.muenchen.refarch.integration.dms.domain.model.Procedure;
 import de.muenchen.refarch.integration.dms.application.port.out.CreateFileOutPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,6 +1,6 @@
 package de.muenchen.refarch.integration.dms.adapter.in.streaming;
 
-import de.muenchen.refarch.integration.dms.domain.Procedure;
+import de.muenchen.refarch.integration.dms.domain.model.Procedure;
 import de.muenchen.oss.digiwf.message.process.api.error.IncidentError;
 import jakarta.validation.ValidationException;
 import org.junit.jupiter.api.Assertions;

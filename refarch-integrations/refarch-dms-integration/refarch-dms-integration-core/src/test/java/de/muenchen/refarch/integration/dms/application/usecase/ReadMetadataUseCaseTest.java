@@ -2,9 +2,8 @@ package de.muenchen.refarch.integration.dms.application.usecase;
 
 import de.muenchen.refarch.integration.dms.application.port.out.DmsUserOutPort;
 import de.muenchen.refarch.integration.dms.application.port.out.ReadMetadataOutPort;
-import de.muenchen.refarch.integration.dms.application.usecase.ReadMetadataUseCase;
-import de.muenchen.refarch.integration.dms.domain.Metadata;
-import de.muenchen.refarch.integration.dms.domain.ObjectType;
+import de.muenchen.refarch.integration.dms.domain.model.Metadata;
+import de.muenchen.refarch.integration.dms.domain.model.ObjectType;
 import de.muenchen.oss.digiwf.message.process.api.error.BpmnError;
 import org.junit.jupiter.api.Test;
 
