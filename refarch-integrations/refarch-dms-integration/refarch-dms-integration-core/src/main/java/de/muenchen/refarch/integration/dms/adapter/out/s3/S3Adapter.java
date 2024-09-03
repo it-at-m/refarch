@@ -4,14 +4,12 @@ import de.muenchen.refarch.integration.dms.application.port.out.TransferContentO
 import de.muenchen.refarch.integration.dms.domain.model.Content;
 import de.muenchen.refarch.integration.dms.application.port.out.LoadFileOutPort;
 import de.muenchen.oss.digiwf.message.process.api.error.BpmnError;
-import de.muenchen.oss.digiwf.s3.integration.client.exception.DocumentStorageClientErrorException;
-import de.muenchen.oss.digiwf.s3.integration.client.exception.DocumentStorageException;
-import de.muenchen.oss.digiwf.s3.integration.client.exception.DocumentStorageServerErrorException;
-import de.muenchen.oss.digiwf.s3.integration.client.exception.PropertyNotSetException;
-import de.muenchen.oss.digiwf.s3.integration.client.repository.DocumentStorageFileRepository;
-import de.muenchen.oss.digiwf.s3.integration.client.repository.DocumentStorageFolderRepository;
-import de.muenchen.oss.digiwf.s3.integration.client.service.FileService;
-import de.muenchen.oss.digiwf.s3.integration.client.service.S3StorageUrlProvider;
+import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageClientErrorException;
+import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageException;
+import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageServerErrorException;
+import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFileRepository;
+import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFolderRepository;
+import de.muenchen.refarch.integration.s3.client.service.FileValidationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -31,33 +29,26 @@ public class S3Adapter implements LoadFileOutPort, TransferContentOutPort {
 
     private final DocumentStorageFileRepository documentStorageFileRepository;
     private final DocumentStorageFolderRepository documentStorageFolderRepository;
-    private final FileService fileService;
-    private final S3StorageUrlProvider s3DomainService;
+    private final FileValidationService fileService;
 
     @Override
     public List<Content> loadFiles(final List<String> filePaths, final String fileContext, final String processDefinition) {
-        final String s3Storage;
-        try {
-            s3Storage = s3DomainService.provideS3StorageUrl(processDefinition);
-        } catch (final PropertyNotSetException e) {
-            throw new BpmnError(LOAD_FOLDER_FAILED, e.getMessage());
-        }
-        validateFileSizes(filePaths, fileContext, s3Storage);
+        validateFileSizes(filePaths, fileContext);
         final List<Content> contents = new ArrayList<>();
         filePaths.forEach(path -> {
             final String fullPath = fileContext + "/" + path;
             if (fullPath.endsWith("/")) {
-                contents.addAll(getFilesFromFolder(fullPath, s3Storage));
+                contents.addAll(getFilesFromFolder(fullPath));
             } else {
-                contents.add(getFile(fullPath, s3Storage));
+                contents.add(getFile(fullPath));
             }
         });
         return contents;
     }
 
-    private void validateFileSizes(final List<String> filePaths, final String fileContext, final String s3Storage) {
+    private void validateFileSizes(final List<String> filePaths, final String fileContext) {
         // Collect file sizes along with their paths
-        final Map<String, Long> fileSizesWithPaths = getFileSizesWithPaths(filePaths, fileContext, s3Storage);
+        final Map<String, Long> fileSizesWithPaths = getFileSizesWithPaths(filePaths, fileContext);
 
         // Filter files exceeding maximum size
         final Map<String, Long> oversizedFiles = fileService.getOversizedFiles(fileSizesWithPaths);
@@ -77,57 +68,56 @@ public class S3Adapter implements LoadFileOutPort, TransferContentOutPort {
                     totalFileSize.toMegabytes(), fileService.getMaxBatchSize().toMegabytes()));
     }
 
-    private Map<String, Long> getFileSizesWithPaths(final List<String> filePaths, final String fileContext, final String s3Storage) {
+    private Map<String, Long> getFileSizesWithPaths(final List<String> filePaths, final String fileContext) {
         return filePaths.stream()
                 .map(path -> fileContext + "/" + path)
-                .flatMap(path -> getFileSizeForPath(path, s3Storage).entrySet().stream())
+                .flatMap(path -> getFileSizeForPath(path).entrySet().stream())
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    private Map<String, Long> getFileSizeForPath(final String path, final String s3Storage) {
+    private Map<String, Long> getFileSizeForPath(final String path) {
         if (path.endsWith("/")) {
-            return getSizesInFolderRecursively(path, s3Storage);
+            return getSizesInFolderRecursively(path);
         } else {
-            return Map.of(path, getFileSize(path, s3Storage));
+            return Map.of(path, getFileSize(path));
         }
     }
 
-    private Map<String, Long> getSizesInFolderRecursively(final String folderPath, final String s3Storage) {
+    private Map<String, Long> getSizesInFolderRecursively(final String folderPath) {
         try {
             return Objects.requireNonNull(documentStorageFolderRepository
-                    .getAllFileSizesInFolderRecursively(folderPath, s3Storage)
-                    .block());
+                    .getAllFileSizesInFolderRecursively(folderPath));
         } catch (final DocumentStorageException | DocumentStorageServerErrorException | DocumentStorageClientErrorException e) {
             throw new BpmnError(LOAD_FOLDER_FAILED, "Metadata of a folder could not be loaded from url: " + folderPath);
         }
     }
 
-    private long getFileSize(final String filePath, final String s3Storage) {
+    private long getFileSize(final String filePath) {
         try {
             return Objects.requireNonNull(documentStorageFileRepository
-                    .getFileSize(filePath, s3Storage).block());
+                    .getFileSize(filePath));
         } catch (final DocumentStorageException | DocumentStorageServerErrorException | DocumentStorageClientErrorException e) {
             throw new BpmnError(LOAD_FOLDER_FAILED, "Metadata of a folder could not be loaded from url: " + filePath);
         }
     }
 
-    private List<Content> getFilesFromFolder(final String folderPath, final String s3Storage) {
+    private List<Content> getFilesFromFolder(final String folderPath) {
         try {
             final List<Content> contents = new ArrayList<>();
             final Set<String> filepath;
-            filepath = documentStorageFolderRepository.getAllFilesInFolderRecursively(folderPath, s3Storage).block();
+            filepath = documentStorageFolderRepository.getAllFilesInFolderRecursively(folderPath);
             if (Objects.isNull(filepath)) throw new BpmnError(LOAD_FOLDER_FAILED, "An folder could not be loaded from url: " + folderPath);
-            filepath.forEach(file -> contents.add(getFile(file, s3Storage)));
+            filepath.forEach(file -> contents.add(getFile(file)));
             return contents;
         } catch (final DocumentStorageException | DocumentStorageServerErrorException | DocumentStorageClientErrorException e) {
             throw new BpmnError(LOAD_FOLDER_FAILED, "An folder could not be loaded from url: " + folderPath);
         }
     }
 
-    private Content getFile(final String filePath, final String s3Storage) {
+    private Content getFile(final String filePath) {
         try {
             final byte[] bytes;
-            bytes = this.documentStorageFileRepository.getFile(filePath, 3, s3Storage);
+            bytes = this.documentStorageFileRepository.getFile(filePath, 3);
             final String mimeType = fileService.detectFileType(bytes);
             final String filename = FilenameUtils.getBaseName(filePath);
 
@@ -144,20 +134,12 @@ public class S3Adapter implements LoadFileOutPort, TransferContentOutPort {
 
     @Override
     public void transferContent(final List<Content> content, final String filepath, final String fileContext, final String processDefinitionId) {
-        final String s3Storage;
-        try {
-            s3Storage = s3DomainService.provideS3StorageUrl(processDefinitionId);
-        } catch (final PropertyNotSetException e) {
-            throw new BpmnError("SAVE_FILE_FAILED", e.getMessage());
-        }
-
         val fullPath = fileContext + "/" + filepath;
 
         for (val file : content) {
             try {
                 val fullFilePath = (fullPath + "/" + file.getName() + "." + file.getExtension()).replace("//", "/");
-                this.documentStorageFileRepository.saveFile(fullFilePath, file.getContent(), 1,
-                        s3Storage);
+                this.documentStorageFileRepository.saveFile(fullFilePath, file.getContent(), 1);
             } catch (Exception e) {
                 throw new BpmnError("SAVE_FILE_FAILED", "An file could not be saved to path: " + fullPath);
             }
