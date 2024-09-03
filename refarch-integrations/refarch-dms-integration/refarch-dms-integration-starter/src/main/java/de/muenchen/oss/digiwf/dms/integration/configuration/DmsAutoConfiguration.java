@@ -5,16 +5,9 @@ import de.muenchen.refarch.integration.dms.adapter.out.fabasoft.FabasoftAdapter;
 import de.muenchen.refarch.integration.dms.adapter.out.fabasoft.FabasoftClientConfiguration;
 import de.muenchen.refarch.integration.dms.adapter.out.fabasoft.FabasoftProperties;
 import de.muenchen.refarch.integration.dms.adapter.out.s3.S3Adapter;
-import de.muenchen.oss.digiwf.message.process.api.ErrorApi;
-import de.muenchen.oss.digiwf.message.process.api.ProcessApi;
-import de.muenchen.oss.digiwf.process.api.config.api.ProcessConfigApi;
-import de.muenchen.oss.digiwf.s3.integration.client.properties.SupportedFileExtensions;
-import de.muenchen.oss.digiwf.s3.integration.client.repository.DocumentStorageFileRepository;
-import de.muenchen.oss.digiwf.s3.integration.client.repository.DocumentStorageFolderRepository;
-import de.muenchen.oss.digiwf.s3.integration.client.service.FileService;
-import de.muenchen.oss.digiwf.s3.integration.client.service.S3DomainProvider;
-import de.muenchen.oss.digiwf.s3.integration.client.service.S3StorageUrlProvider;
-import de.muenchen.oss.digiwf.spring.security.authentication.UserAuthenticationProvider;
+import de.muenchen.refarch.integration.s3.client.domain.model.SupportedFileExtensions;
+import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFileRepository;
+import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFolderRepository;
 import de.muenchen.refarch.integration.dms.application.port.in.CancelObjectInPort;
 import de.muenchen.refarch.integration.dms.application.port.in.CreateDocumentInPort;
 import de.muenchen.refarch.integration.dms.application.port.in.CreateFileInPort;
@@ -30,7 +23,6 @@ import de.muenchen.refarch.integration.dms.application.port.out.CreateDocumentOu
 import de.muenchen.refarch.integration.dms.application.port.out.CreateFileOutPort;
 import de.muenchen.refarch.integration.dms.application.port.out.CreateProcedureOutPort;
 import de.muenchen.refarch.integration.dms.application.port.out.DepositObjectOutPort;
-import de.muenchen.refarch.integration.dms.application.port.out.DmsUserOutPort;
 import de.muenchen.refarch.integration.dms.application.port.out.ListContentOutPort;
 import de.muenchen.refarch.integration.dms.application.port.out.LoadFileOutPort;
 import de.muenchen.refarch.integration.dms.application.port.out.ReadContentOutPort;
@@ -49,16 +41,13 @@ import de.muenchen.refarch.integration.dms.application.usecase.ReadMetadataUseCa
 import de.muenchen.refarch.integration.dms.application.usecase.SearchFileUseCase;
 import de.muenchen.refarch.integration.dms.application.usecase.SearchSubjectAreaUseCase;
 import de.muenchen.refarch.integration.dms.application.usecase.UpdateDocumentUseCase;
+import de.muenchen.refarch.integration.s3.client.service.FileValidationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Profile;
-import org.springframework.messaging.Message;
-
-import java.util.function.Consumer;
 
 @Configuration
 @RequiredArgsConstructor
@@ -78,25 +67,12 @@ public class DmsAutoConfiguration {
         return fabasoftClientConfiguration.dmsWsClient();
     }
 
-    /**
-     * Constructs an {@link S3DomainProvider} instance specifically tailored for this integration to retrieve the domain-specific S3 storage URL for a given
-     * process if its process configuration contains a value for
-     * {@link de.muenchen.oss.digiwf.process.api.config.ProcessConfigConstants#APP_FILE_S3_SYNC_CONFIG}.
-     *
-     * @param processConfigApi {@link ProcessConfigApi} offers access to a process configuration for a given process definition id.
-     * @return S3DomainProvider {@link S3DomainProvider} that retrieves the domain-specific S3 storage url for a process if configured.
-     */
-    @Bean
-    public S3DomainProvider s3DomainProvider(final ProcessConfigApi processConfigApi) {
-        return processConfigApi::getAppFileS3SyncConfig;
-    }
-
     @Bean
     @ConditionalOnMissingBean
     public S3Adapter s3Adapter(final DocumentStorageFileRepository documentStorageFileRepository,
-                               final DocumentStorageFolderRepository documentStorageFolderRepository, final FileService fileService,
-                               final S3StorageUrlProvider s3StorageUrlProvider) {
-        return new S3Adapter(documentStorageFileRepository, documentStorageFolderRepository, fileService, s3StorageUrlProvider);
+            final DocumentStorageFolderRepository documentStorageFolderRepository,
+            final FileValidationService fileValidationService) {
+        return new S3Adapter(documentStorageFileRepository, documentStorageFolderRepository, fileValidationService);
     }
 
     /**
@@ -179,79 +155,4 @@ public class DmsAutoConfiguration {
     public ReadMetadataInPort readMetadataInPort(ReadMetadataOutPort readMetadataOutPort) {
         return new ReadMetadataUseCase(readMetadataOutPort);
     }
-
-    @Bean
-    public Consumer<Message<CreateFileDto>> createFile(final StreamingAdapter streamingAdapter) {
-        return streamingAdapter.createFile();
-    }
-
-    @Bean
-    public Consumer<Message<CreateProcedureDto>> createProcedure(final StreamingAdapter streamingAdapter) {
-        return streamingAdapter.createProcedure();
-    }
-
-    @Bean
-    public Consumer<Message<CreateDocumentDto>> createDocument(final StreamingAdapter streamingAdapter) {
-        return streamingAdapter.createDocument();
-    }
-
-    @Bean
-    public Consumer<Message<UpdateDocumentDto>> updateDocument(final StreamingAdapter streamingAdapter) {
-        return streamingAdapter.updateDocument();
-    }
-
-    @Bean
-    public Consumer<Message<DepositObjectDto>> depositObject(final StreamingAdapter streamingAdapter) {
-        return streamingAdapter.depositObject();
-    }
-
-    @Bean
-    public Consumer<Message<CancelObjectDto>> cancelObject(final StreamingAdapter streamingAdapter) {
-        return streamingAdapter.cancelObject();
-    }
-
-    @Bean
-    public Consumer<Message<ReadContentDto>> readContent(final StreamingAdapter streamingAdapter) {
-        return streamingAdapter.readContent();
-    }
-
-    @Bean
-    public Consumer<Message<SearchObjectDto>> searchFile(final StreamingAdapter streamingAdapter) {
-        return streamingAdapter.searchFile();
-    }
-
-    @Bean
-    public Consumer<Message<SearchObjectDto>> searchSubjectArea(final StreamingAdapter streamingAdapter) {
-        return streamingAdapter.searchSubjectArea();
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public StreamingAdapter streamingAdapter(
-            final ProcessApi processApi,
-            final ErrorApi errorApi,
-            final CreateFileInPort createFileInPort,
-            final CreateProcedureInPort createProcedureInPort,
-            final CreateDocumentInPort createDocumentInPort,
-            final UpdateDocumentInPort updateDocumentInPort,
-            final DepositObjectInPort depositObjectInPort,
-            final CancelObjectInPort cancelObjectInPort,
-            final ReadContentInPort readContentInPort,
-            final SearchFileInPort searchFileInPort,
-            final SearchSubjectAreaInPort searchSubjectAreaInPort
-    ) {
-        return new StreamingAdapter(
-                processApi,
-                errorApi,
-                createFileInPort,
-                createProcedureInPort,
-                createDocumentInPort,
-                updateDocumentInPort,
-                depositObjectInPort,
-                cancelObjectInPort,
-                readContentInPort,
-                searchFileInPort,
-                searchSubjectAreaInPort);
-    }
-
 }
