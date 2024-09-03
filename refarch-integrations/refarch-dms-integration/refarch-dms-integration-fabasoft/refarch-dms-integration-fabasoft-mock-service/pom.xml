@@ -4,17 +4,17 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>digiwf-dms-integration-fabasoft</artifactId>
-        <groupId>de.muenchen.oss.digiwf</groupId>
-        <version>1.14.0-SNAPSHOT</version>
+        <groupId>de.muenchen.refarch</groupId>
+        <artifactId>refarch-dms-integration-fabasoft</artifactId>
+        <version>1.1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>digiwf-dms-integration-fabasoft-mock-service</artifactId>
+    <artifactId>refarch-dms-integration-fabasoft-mock-service</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>de.muenchen.oss.digiwf</groupId>
-            <artifactId>digiwf-dms-integration-fabasoft-mock</artifactId>
+            <groupId>de.muenchen.refarch</groupId>
+            <artifactId>refarch-dms-integration-fabasoft-mock</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -23,12 +23,6 @@
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
 
-        <!-- This is usually a test dependency, but we need it for the mock service -->
-        <dependency>
-            <groupId>de.muenchen.oss.digiwf</groupId>
-            <artifactId>digiwf-e2e-test-starter</artifactId>
-            <version>${project.version}</version>
-        </dependency>
         <dependency>
             <groupId>org.wiremock</groupId>
             <artifactId>wiremock-standalone</artifactId>

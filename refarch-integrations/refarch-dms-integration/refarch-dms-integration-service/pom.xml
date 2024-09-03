@@ -2,17 +2,17 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>digiwf-dms-integration</artifactId>
-        <groupId>de.muenchen.oss.digiwf</groupId>
-        <version>1.14.0-SNAPSHOT</version>
-    </parent>
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>de.muenchen.refarch</groupId>
+        <artifactId>digiwf-dms-integration</artifactId>
+        <version>1.1.0-SNAPSHOT</version>
+    </parent>
 
-    <artifactId>digiwf-dms-integration-service</artifactId>
+    <artifactId>refarch-dms-integration-service</artifactId>
 
     <properties>
-        <rest.base-package-name>de.muenchen.oss.digiwf.dms.integration.application.port.in.rest</rest.base-package-name>
+        <rest.base-package-name>de.muenchen.refarch.integration.dms.application.port.in.rest</rest.base-package-name>
     </properties>
 
     <dependencies>
@@ -23,8 +23,8 @@
 
         <!-- email -->
         <dependency>
-            <groupId>de.muenchen.oss.digiwf</groupId>
-            <artifactId>digiwf-dms-integration-starter</artifactId>
+            <groupId>de.muenchen.refarch</groupId>
+            <artifactId>refarch-dms-integration-starter</artifactId>
             <version>${project.version}</version>
         </dependency>
 

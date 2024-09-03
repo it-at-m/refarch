@@ -67,7 +67,7 @@ the configuration in an environment like docker.
 
 1. Build it with `mvn clean install`
 2. Run the Stack using `docker-compose`
-3. Run the Dms Integration ([digiwf-dms-integration-service](digiwf-dms-integration-service)
+3. Run the Dms Integration ([digiwf-dms-integration-service](refarch-dms-integration-service)
 
 ### Testing with DigiWF
 
