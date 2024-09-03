@@ -1,4 +1,4 @@
-package de.muenchen.refarch.integration.dms.adapter.out.auth;
+package de.muenchen.refarch.integration.dms.adapter.out.fabasoft.auth;
 
 import de.muenchen.refarch.integration.dms.application.port.out.DmsUserOutPort;
 import org.springframework.beans.factory.annotation.Value;

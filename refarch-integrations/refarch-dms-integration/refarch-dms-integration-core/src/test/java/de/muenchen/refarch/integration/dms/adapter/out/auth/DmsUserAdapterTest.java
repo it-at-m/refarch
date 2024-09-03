@@ -1,7 +1,7 @@
 package de.muenchen.refarch.integration.dms.adapter.out.auth;
 
 import de.muenchen.oss.digiwf.spring.security.authentication.UserAuthenticationProvider;
-import de.muenchen.refarch.integration.dms.adapter.out.auth.DmsUserAdapter;
+import de.muenchen.refarch.integration.dms.adapter.out.fabasoft.auth.DmsUserAdapter;
 import org.junit.jupiter.api.Test;
 
 import static org.mockito.Mockito.mock;

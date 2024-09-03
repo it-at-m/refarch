@@ -1,8 +1,8 @@
 package de.muenchen.oss.digiwf.dms.integration.configuration;
 
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.LHMBAI151700GIWSDSoap;
-import de.muenchen.refarch.integration.dms.adapter.out.auth.DmsUserAdapter;
-import de.muenchen.refarch.integration.dms.adapter.out.auth.MockDmsUserAdapter;
+import de.muenchen.refarch.integration.dms.adapter.out.fabasoft.auth.DmsUserAdapter;
+import de.muenchen.refarch.integration.dms.adapter.out.fabasoft.auth.MockDmsUserAdapter;
 import de.muenchen.refarch.integration.dms.adapter.out.fabasoft.FabasoftAdapter;
 import de.muenchen.refarch.integration.dms.adapter.out.fabasoft.FabasoftClientConfiguration;
 import de.muenchen.refarch.integration.dms.adapter.out.fabasoft.FabasoftProperties;
