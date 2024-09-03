@@ -1,0 +1,19 @@
+server:
+  port: 8087
+spring:
+  mail:
+    host: localhost
+    port: 1025
+    username: test@muenchen.de
+    password: secret
+refarch:
+  mail:
+    from-address: test@muenchen.de
+    default-reply-to-address: no_reply@muenchen.de
+  s3:
+    client:
+      document-storage-url: http://localhost:8086
+      enable-security: true
+SSO_ISSUER_URL: http://keycloak:8100/auth/realms/local_realm
+SSO_S3_CLIENT_ID: local
+SSO_S3_CLIENT_SECRET: client_secret
