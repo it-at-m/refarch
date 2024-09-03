@@ -28,7 +28,6 @@ class FabasoftAdapterTest {
     private final FabasoftProperties properties = new FabasoftProperties();
     private FabasoftAdapter fabasoftAdapter;
 
-
     @BeforeEach
     public void setUp(WireMockRuntimeInfo wmRuntimeInfo) {
         this.properties.setUsername("user");
@@ -83,7 +82,6 @@ class FabasoftAdapterTest {
                 DepositObjectGI.class, (u) -> true,
                 response);
 
-
         fabasoftAdapter.depositObject("objectCoo", "user");
     }
 
@@ -99,7 +97,8 @@ class FabasoftAdapterTest {
                 CreateIncomingGI.class, (u) -> true,
                 response);
 
-        val documentResponse = fabasoftAdapter.createDocument(new Document("procedureCOO", "title", LocalDate.parse("2023-12-31"), DocumentType.EINGEHEND, List.of(content)), "user");
+        val documentResponse = fabasoftAdapter
+                .createDocument(new Document("procedureCOO", "title", LocalDate.parse("2023-12-31"), DocumentType.EINGEHEND, List.of(content)), "user");
 
         assertEquals(documentResponse, "documentCOO");
     }
@@ -116,7 +115,8 @@ class FabasoftAdapterTest {
                 CreateOutgoingGI.class, (u) -> true,
                 response);
 
-        val documentResponse = fabasoftAdapter.createDocument(new Document("procedureCOO", "title", LocalDate.parse("2023-12-31"), DocumentType.AUSGEHEND, List.of(content)), "user");
+        val documentResponse = fabasoftAdapter
+                .createDocument(new Document("procedureCOO", "title", LocalDate.parse("2023-12-31"), DocumentType.AUSGEHEND, List.of(content)), "user");
 
         assertEquals(documentResponse, "documentCOO");
     }
@@ -133,7 +133,8 @@ class FabasoftAdapterTest {
                 CreateInternalGI.class, (u) -> true,
                 response);
 
-        val documentResponse = fabasoftAdapter.createDocument(new Document("procedureCOO", "title", LocalDate.parse("2023-12-31"), DocumentType.INTERN, List.of(content)), "user");
+        val documentResponse = fabasoftAdapter
+                .createDocument(new Document("procedureCOO", "title", LocalDate.parse("2023-12-31"), DocumentType.INTERN, List.of(content)), "user");
 
         assertEquals(documentResponse, "documentCOO");
     }
@@ -287,7 +288,8 @@ class FabasoftAdapterTest {
         assertThat(files.size()).isEqualTo(1);
     }
 
-    private void internalSearchFileCallTest(final DMSObjectClass dmsObjectClass, final String searchString, final String user, final String reference, final String value)
+    private void internalSearchFileCallTest(final DMSObjectClass dmsObjectClass, final String searchString, final String user, final String reference,
+            final String value)
             throws DmsException {
         val file = new LHMBAI151700GIObjectType();
         file.setLHMBAI151700Objaddress("testCoo");
@@ -326,7 +328,6 @@ class FabasoftAdapterTest {
         response.setObjclass("Vorgang");
         response.setObjname("name");
 
-
         WiremockWsdlUtility.stubOperation(
                 "ReadMetadataObjectGI",
                 ReadMetadataObjectGI.class, (u) -> true,
@@ -358,6 +359,5 @@ class FabasoftAdapterTest {
         assertThat(metadata.getName()).isEqualTo("name");
         assertThat(metadata.getType()).isEqualTo("pdf");
     }
-
 
 }

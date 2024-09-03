@@ -7,8 +7,8 @@ import lombok.Data;
  */
 @Data
 public class Metadata {
-  private final String name;
-  private final String type;
-  private final String url;
+    private final String name;
+    private final String type;
+    private final String url;
 
 }

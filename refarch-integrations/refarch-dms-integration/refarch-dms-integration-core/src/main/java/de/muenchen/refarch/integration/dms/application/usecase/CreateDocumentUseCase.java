@@ -32,8 +32,7 @@ public class CreateDocumentUseCase implements CreateDocumentInPort {
             final LocalDate date,
             final String user,
             final DocumentType type,
-            final List<String> filepaths
-    ) throws DmsException, DocumentStorageException {
+            final List<String> filepaths) throws DmsException, DocumentStorageException {
 
         final List<Content> contents = loadFileOutPort.loadFiles(filepaths);
 

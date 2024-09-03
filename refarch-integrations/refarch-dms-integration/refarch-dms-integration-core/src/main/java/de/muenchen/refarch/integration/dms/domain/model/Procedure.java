@@ -1,6 +1,5 @@
 package de.muenchen.refarch.integration.dms.domain.model;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

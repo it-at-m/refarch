@@ -53,7 +53,8 @@ public class S3Adapter implements LoadFileOutPort, TransferContentOutPort {
             final String filesOverMaxString = oversizedFiles.entrySet().stream()
                     .map(entry -> entry.getKey() + ": " + DataSize.ofBytes(entry.getValue()).toMegabytes() + " MB")
                     .collect(Collectors.joining(System.lineSeparator()));
-            throw new FileSizeValidationException(String.format("The following files exceed the maximum size of %d MB:%n%s", fileService.getMaxFileSize().toMegabytes(), filesOverMaxString));
+            throw new FileSizeValidationException(
+                    String.format("The following files exceed the maximum size of %d MB:%n%s", fileService.getMaxFileSize().toMegabytes(), filesOverMaxString));
         }
 
         // Validate total batch size
@@ -128,8 +129,7 @@ public class S3Adapter implements LoadFileOutPort, TransferContentOutPort {
                 throw new FileTypeValidationException("The type of this file is not supported: " + filePath);
 
             return new Content(fileService.getFileExtension(mimeType), filename, bytes);
-        } catch (final DocumentStorageException | DocumentStorageServerErrorException |
-                       DocumentStorageClientErrorException e) {
+        } catch (final DocumentStorageException | DocumentStorageServerErrorException | DocumentStorageClientErrorException e) {
             throw new DocumentStorageException("An file could not be loaded from url: " + filePath, e);
         }
     }

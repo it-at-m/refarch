@@ -7,7 +7,6 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 
-
 @Validated
 @RequiredArgsConstructor
 public class CancelObjectUseCase implements CancelObjectInPort {

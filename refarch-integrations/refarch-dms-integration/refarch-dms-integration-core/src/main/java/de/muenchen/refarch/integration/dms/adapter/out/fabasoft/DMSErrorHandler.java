@@ -7,7 +7,7 @@ public class DMSErrorHandler {
 
         final DMSStatusCode statusCode = DMSStatusCode.byCode(code);
 
-        if (statusCode != DMSStatusCode.UEBERTRAGUNG_ERFORLGREICH){
+        if (statusCode != DMSStatusCode.UEBERTRAGUNG_ERFORLGREICH) {
             throw new DmsException(statusCode.toString(), errorMessage);
         }
     }

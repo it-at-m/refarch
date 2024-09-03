@@ -18,7 +18,6 @@ public class SearchFileUseCase implements SearchFileInPort {
     @Override
     public List<String> searchFile(final String searchString, final String user, final String reference, final String value) throws DmsException {
 
-
         val files = searchFileOutPort.searchFile(searchString, user, reference, value);
 
         if (files.isEmpty()) {

@@ -18,8 +18,7 @@ public class CreateFileUseCase implements CreateFileInPort {
     public String createFile(
             @NotBlank final String titel,
             @NotBlank final String apentryCOO,
-            @NotBlank final String user
-    ) throws DmsException {
+            @NotBlank final String user) throws DmsException {
         final File file = new File(apentryCOO, titel);
 
         return createFileOutPort.createFile(file, user);

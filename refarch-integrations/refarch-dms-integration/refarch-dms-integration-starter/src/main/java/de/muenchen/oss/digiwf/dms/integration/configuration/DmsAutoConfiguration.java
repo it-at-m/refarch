@@ -52,7 +52,7 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @RequiredArgsConstructor
 @Import(FabasoftClientConfiguration.class)
-@EnableConfigurationProperties({FabasoftProperties.class, DmsProperties.class})
+@EnableConfigurationProperties({ FabasoftProperties.class, DmsProperties.class })
 public class DmsAutoConfiguration {
 
     @Bean
@@ -76,7 +76,8 @@ public class DmsAutoConfiguration {
     }
 
     /**
-     * Offers a {@link java.util.Map} of supported file extensions for this integration in form of a {@link SupportedFileExtensions} object.
+     * Offers a {@link java.util.Map} of supported file extensions for this integration in form of a
+     * {@link SupportedFileExtensions} object.
      *
      * @param dmsProperties {@link DmsProperties} contains the supported file extensions.
      * @return {@link SupportedFileExtensions} object representing the supported file extensions.
@@ -105,8 +106,7 @@ public class DmsAutoConfiguration {
     public CreateDocumentInPort createDocumentInPort(
             final CreateDocumentOutPort createDocumentOutPort,
             final LoadFileOutPort loadFileOutPort,
-            final ListContentOutPort listContentOutPort
-    ) {
+            final ListContentOutPort listContentOutPort) {
         return new CreateDocumentUseCase(createDocumentOutPort, loadFileOutPort, listContentOutPort);
     }
 
@@ -115,8 +115,7 @@ public class DmsAutoConfiguration {
     public UpdateDocumentInPort updateDocumentInPort(
             final UpdateDocumentOutPort updateDocumentOutPort,
             final LoadFileOutPort loadFileOutPort,
-            final ListContentOutPort listContentOutPort
-    ) {
+            final ListContentOutPort listContentOutPort) {
         return new UpdateDocumentUseCase(updateDocumentOutPort, listContentOutPort, loadFileOutPort);
     }
 

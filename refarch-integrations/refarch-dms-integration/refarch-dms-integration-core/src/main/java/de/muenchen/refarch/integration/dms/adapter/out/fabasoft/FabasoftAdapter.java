@@ -95,9 +95,9 @@ public class FabasoftAdapter implements
     @Override
     public String createDocument(final Document document, final String user) throws DmsException {
         return switch (document.getType()) {
-            case EINGEHEND -> this.createIncomingDocument(document, user);
-            case AUSGEHEND -> this.createOutgoingDocument(document, user);
-            case INTERN -> this.createInternalDocument(document, user);
+        case EINGEHEND -> this.createIncomingDocument(document, user);
+        case AUSGEHEND -> this.createOutgoingDocument(document, user);
+        case INTERN -> this.createInternalDocument(document, user);
         };
     }
 
@@ -195,17 +195,17 @@ public class FabasoftAdapter implements
     @Override
     public void updateDocument(final String documentCOO, final DocumentType type, final List<Content> contents, final String user) throws DmsException {
         switch (type) {
-            case EINGEHEND:
-                this.updateIncomingDocument(documentCOO, contents, user);
-                return;
-            case AUSGEHEND:
-                this.updateOutgoingDocument(documentCOO, contents, user);
-                return;
-            case INTERN:
-                this.updateInternalDocument(documentCOO, contents, user);
-                return;
-            default:
-                throw new AssertionError("must not happen");
+        case EINGEHEND:
+            this.updateIncomingDocument(documentCOO, contents, user);
+            return;
+        case AUSGEHEND:
+            this.updateOutgoingDocument(documentCOO, contents, user);
+            return;
+        case INTERN:
+            this.updateInternalDocument(documentCOO, contents, user);
+            return;
+        default:
+            throw new AssertionError("must not happen");
         }
     }
 
@@ -274,7 +274,6 @@ public class FabasoftAdapter implements
 
         dmsErrorHandler.handleError(response.getStatus(), response.getErrormessage());
     }
-
 
     @Override
     public void depositObject(String objectCoo, String user) throws DmsException {
@@ -348,8 +347,7 @@ public class FabasoftAdapter implements
         return new Content(
                 response.getGiattachmenttype().getLHMBAI151700Fileextension(),
                 response.getGiattachmenttype().getLHMBAI151700Filename(),
-                response.getGiattachmenttype().getLHMBAI151700Filecontent()
-        );
+                response.getGiattachmenttype().getLHMBAI151700Filecontent());
     }
 
     @Override
@@ -381,8 +379,7 @@ public class FabasoftAdapter implements
         return new Metadata(
                 response.getObjname(),
                 response.getObjclass(),
-                String.format(this.properties.getUiurl(), coo)
-        );
+                String.format(this.properties.getUiurl(), coo));
     }
 
     @Override
@@ -400,8 +397,7 @@ public class FabasoftAdapter implements
         return new Metadata(
                 response.getGimetadatatype().getLHMBAI151700Filename(),
                 response.getGimetadatatype().getLHMBAI151700Objclass(),
-                String.format(this.properties.getUiurl(), coo)
-        );
+                String.format(this.properties.getUiurl(), coo));
     }
 
     //------------------------------------- HELPER METHODS -------------------------------------------
@@ -409,9 +405,9 @@ public class FabasoftAdapter implements
     /**
      * Searches for an object.
      *
-     * @param searchString   string to search for
+     * @param searchString string to search for
      * @param dmsObjectClass object class for a soap request
-     * @param username       account name
+     * @param username account name
      * @return List of discovered objects
      */
     private List<LHMBAI151700GIObjectType> searchObject(final String searchString, final DMSObjectClass dmsObjectClass, final String username)
@@ -422,14 +418,15 @@ public class FabasoftAdapter implements
     /**
      * Searches for an object.
      *
-     * @param searchString   string to search for
+     * @param searchString string to search for
      * @param dmsObjectClass object class for a soap request
-     * @param username       account name
-     * @param reference      (optional) 'Fachdatum'/business case to refine a search
-     * @param value          (optional) value of 'Fachdatum'/business case
+     * @param username account name
+     * @param reference (optional) 'Fachdatum'/business case to refine a search
+     * @param value (optional) value of 'Fachdatum'/business case
      * @return List of discovered objects
      */
-    private List<LHMBAI151700GIObjectType> searchObject(final String searchString, final DMSObjectClass dmsObjectClass, final String username, final String reference, final String value)
+    private List<LHMBAI151700GIObjectType> searchObject(final String searchString, final DMSObjectClass dmsObjectClass, final String username,
+            final String reference, final String value)
             throws DmsException {
         //logging for dms team
         log.info("calling SearchObjNameGI Userlogin: {} SearchString: {} Objclass: {} Reference: {} Value: {}", username, searchString,
@@ -456,7 +453,6 @@ public class FabasoftAdapter implements
 
     private XMLGregorianCalendar convertDate(final LocalDate date) {
         return DatatypeFactory.newDefaultInstance().newXMLGregorianCalendar(
-                GregorianCalendar.from(date.atStartOfDay(ZoneId.systemDefault()))
-        );
+                GregorianCalendar.from(date.atStartOfDay(ZoneId.systemDefault())));
     }
 }

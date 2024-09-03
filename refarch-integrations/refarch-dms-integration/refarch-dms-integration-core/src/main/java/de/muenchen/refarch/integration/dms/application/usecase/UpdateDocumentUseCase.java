@@ -28,8 +28,7 @@ public class UpdateDocumentUseCase implements UpdateDocumentInPort {
             final String documentCOO,
             final String user,
             final DocumentType type,
-            final List<String> filepaths
-    ) throws DmsException, DocumentStorageException {
+            final List<String> filepaths) throws DmsException, DocumentStorageException {
 
         final List<Content> contents = loadFileOutPort.loadFiles(filepaths);
 

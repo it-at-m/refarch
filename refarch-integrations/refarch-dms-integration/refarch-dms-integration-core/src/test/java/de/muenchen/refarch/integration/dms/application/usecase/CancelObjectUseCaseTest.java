@@ -24,5 +24,4 @@ class CancelObjectUseCaseTest {
         verify(this.cancelObjectOutPort, times(1)).cancelObject("objectCoo", "user");
     }
 
-
 }

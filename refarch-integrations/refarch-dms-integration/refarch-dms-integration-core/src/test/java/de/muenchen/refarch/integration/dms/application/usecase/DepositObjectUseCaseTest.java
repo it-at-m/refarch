@@ -24,5 +24,4 @@ class DepositObjectUseCaseTest {
         verify(this.depositObjectOutPort, times(1)).depositObject("objectCoo", "user");
     }
 
-
 }

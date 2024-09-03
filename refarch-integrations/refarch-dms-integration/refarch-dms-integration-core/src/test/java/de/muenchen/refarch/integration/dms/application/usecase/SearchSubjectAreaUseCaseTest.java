@@ -26,5 +26,4 @@ class SearchSubjectAreaUseCaseTest {
         verify(this.searchSubjectAreaOutPort, times(1)).searchSubjectArea("searchString", "user");
     }
 
-
 }

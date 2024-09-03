@@ -40,7 +40,9 @@ class ReadMetadataUseCaseTest {
 
         DmsException dmsException = catchThrowableOfType(() -> readMetadataUseCase.readMetadata(ObjectType.Sachakte, "coo", "user"), DmsException.class);
 
-        String expectedMessage = String.format("WRONG_INPUT_OBJECT_CLASS: The input object with the COO address %s is invalid because it is of the object class %s and this does not match the expected object class(es) %s.", "coo", "Ausgang", "Sachakte");
+        String expectedMessage = String.format(
+                "WRONG_INPUT_OBJECT_CLASS: The input object with the COO address %s is invalid because it is of the object class %s and this does not match the expected object class(es) %s.",
+                "coo", "Ausgang", "Sachakte");
         String actualMessage = dmsException.getMessage();
 
         assertThat(actualMessage).isEqualTo(expectedMessage);
