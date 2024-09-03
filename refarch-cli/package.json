@@ -12,13 +12,12 @@
   },
   "description": "",
   "dependencies": {
-    "@inquirer/prompts": "5.3.8",
-    "@microsoft/tsdoc": "^0.15.0",
-    "core-js": "3.38.0",
+    "@inquirer/prompts": "5.4.0",
+    "core-js": "3.38.1",
     "replace-in-file": "8.1.0"
   },
   "devDependencies": {
-    "@inquirer/prompts": "5.3.8",
+    "@microsoft/tsdoc": "0.15.0",
     "@rollup/plugin-typescript": "11.1.6",
     "@rollup/plugin-node-resolve": "15.2.3",
     "@rollup/plugin-commonjs": "26.0.1",
@@ -26,12 +25,10 @@
     "@muenchen/prettier-codeformat": "1.0.2",
     "@types/core-js": "2.5.8",
     "@types/node": "22.2.0",
-    "@typescript-eslint/eslint-plugin": "^8.3.0",
+    "@typescript-eslint/eslint-plugin": "^8.4.0",
     "eslint": "8.57.0",
     "eslint-plugin-tsdoc": "^0.3.0",
     "prettier": "3.3.3",
-    "replace-in-file": "8.1.0",
-    "tsx": "4.17.0",
     "typescript": "5.5.4",
     "rollup": "4.21.2",
     "tslib": "2.7.0"
