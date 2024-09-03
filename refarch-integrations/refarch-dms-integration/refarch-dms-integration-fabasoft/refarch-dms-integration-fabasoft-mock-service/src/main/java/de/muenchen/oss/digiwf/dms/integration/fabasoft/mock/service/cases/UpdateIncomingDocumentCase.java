@@ -3,7 +3,7 @@ package de.muenchen.oss.digiwf.dms.integration.fabasoft.mock.service.cases;
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.UpdateIncomingGI;
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.UpdateIncomingGIResponse;
 import com.github.tomakehurst.wiremock.WireMockServer;
-import de.muenchen.oss.digiwf.integration.e2e.test.wsdl.DigiwfWiremockWsdlUtility;
+import de.muenchen.oss.digiwf.dms.integration.fabasoft.mock.WiremockWsdlUtility;
 import lombok.val;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +16,7 @@ public class UpdateIncomingDocumentCase implements MockCase {
         val updateIncomingGIResponse = new UpdateIncomingGIResponse();
         updateIncomingGIResponse.setObjid("1234567890");
 
-        DigiwfWiremockWsdlUtility.stubOperation(
+        WiremockWsdlUtility.stubOperation(
                 server,
                 "UpdateIncomingGI",
                 UpdateIncomingGI.class, (u) -> true,

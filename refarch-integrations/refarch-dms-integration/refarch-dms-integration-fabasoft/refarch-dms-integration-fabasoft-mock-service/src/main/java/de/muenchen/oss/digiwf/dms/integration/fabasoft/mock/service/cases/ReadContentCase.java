@@ -4,7 +4,7 @@ import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.CancelObjectGI;
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.LHMBAI151700GIAttachmentType;
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.ReadContentObjectGIResponse;
 import com.github.tomakehurst.wiremock.WireMockServer;
-import de.muenchen.oss.digiwf.integration.e2e.test.wsdl.DigiwfWiremockWsdlUtility;
+import de.muenchen.oss.digiwf.dms.integration.fabasoft.mock.WiremockWsdlUtility;
 import lombok.val;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -34,7 +34,7 @@ public class ReadContentCase implements MockCase {
         response.setStatus(0);
         response.setGiattachmenttype(content);
 
-        DigiwfWiremockWsdlUtility.stubOperation(
+        WiremockWsdlUtility.stubOperation(
                 server,
                 "ReadContentObjectGI",
                 CancelObjectGI.class, (u) -> true,

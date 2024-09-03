@@ -4,9 +4,10 @@ import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.LHMBAI151700GIMetadataTy
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.ReadContentObjectMetaDataGI;
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.ReadContentObjectMetaDataGIResponse;
 import com.github.tomakehurst.wiremock.WireMockServer;
-import de.muenchen.oss.digiwf.integration.e2e.test.wsdl.DigiwfWiremockWsdlUtility;
+import de.muenchen.oss.digiwf.dms.integration.fabasoft.mock.WiremockWsdlUtility;
 import lombok.val;
 import org.springframework.stereotype.Component;
+
 @Component
 public class ReadContentObjectMetaDataCase implements MockCase {
 
@@ -21,7 +22,7 @@ public class ReadContentObjectMetaDataCase implements MockCase {
         response.setStatus(0);
         response.setGimetadatatype(content);
 
-        DigiwfWiremockWsdlUtility.stubOperation(
+        WiremockWsdlUtility.stubOperation(
                 server,
                 "ReadContentObjectMetaDataGI",
                 ReadContentObjectMetaDataGI.class, (u) -> true,
