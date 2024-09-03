@@ -11,11 +11,16 @@
 
     <artifactId>refarch-dms-integration-fabasoft-api</artifactId>
 
+    <properties>
+        <cxf-codegen-plugin.version>4.0.4</cxf-codegen-plugin.version>
+    </properties>
+
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-codegen-plugin</artifactId>
+                <version>${cxf-codegen-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>generate-sources</id>
