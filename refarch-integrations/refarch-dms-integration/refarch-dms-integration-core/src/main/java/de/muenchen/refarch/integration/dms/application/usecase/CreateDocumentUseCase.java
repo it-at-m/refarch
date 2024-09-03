@@ -2,6 +2,7 @@ package de.muenchen.refarch.integration.dms.application.usecase;
 
 import de.muenchen.refarch.integration.dms.application.port.out.CreateDocumentOutPort;
 import de.muenchen.refarch.integration.dms.application.port.out.ListContentOutPort;
+import de.muenchen.refarch.integration.dms.domain.exception.DmsException;
 import de.muenchen.refarch.integration.dms.domain.model.Content;
 import de.muenchen.refarch.integration.dms.domain.model.Document;
 import de.muenchen.refarch.integration.dms.domain.model.DocumentResponse;
@@ -31,7 +32,7 @@ public class CreateDocumentUseCase implements CreateDocumentInPort {
             final String user,
             final DocumentType type,
             final List<String> filepaths
-    ) {
+    ) throws DmsException {
 
         final List<Content> contents = loadFileOutPort.loadFiles(filepaths);
 

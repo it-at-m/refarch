@@ -1,6 +1,7 @@
 package de.muenchen.refarch.integration.dms.application.usecase;
 
 import de.muenchen.refarch.integration.dms.application.port.out.CreateFileOutPort;
+import de.muenchen.refarch.integration.dms.domain.exception.DmsException;
 import de.muenchen.refarch.integration.dms.domain.model.File;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +15,7 @@ class CreateFileUseCaseTest {
     private final CreateFileUseCase createFileUseCase = new CreateFileUseCase(createFileOutPort);
 
     @Test
-    void createFile() {
+    void createFile() throws DmsException {
 
         when(this.createFileOutPort.createFile(any(), any())).thenReturn("fileCOO");
 

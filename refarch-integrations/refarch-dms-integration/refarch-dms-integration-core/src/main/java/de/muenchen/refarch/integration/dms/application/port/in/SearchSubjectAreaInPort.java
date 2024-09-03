@@ -1,5 +1,7 @@
 package de.muenchen.refarch.integration.dms.application.port.in;
 
+import de.muenchen.refarch.integration.dms.domain.exception.DmsException;
+
 public interface SearchSubjectAreaInPort {
 
     /**
@@ -9,5 +11,5 @@ public interface SearchSubjectAreaInPort {
      * @param user         account name
      * @return Subject id.
      */
-    String searchSubjectArea(String searchString, String user);
+    String searchSubjectArea(String searchString, String user) throws DmsException;
 }

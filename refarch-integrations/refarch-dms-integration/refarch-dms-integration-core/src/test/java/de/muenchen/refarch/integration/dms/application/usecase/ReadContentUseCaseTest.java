@@ -2,6 +2,7 @@ package de.muenchen.refarch.integration.dms.application.usecase;
 
 import de.muenchen.refarch.integration.dms.application.port.out.ReadContentOutPort;
 import de.muenchen.refarch.integration.dms.application.port.out.TransferContentOutPort;
+import de.muenchen.refarch.integration.dms.domain.exception.DmsException;
 import de.muenchen.refarch.integration.dms.domain.model.Content;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +20,7 @@ class ReadContentUseCaseTest {
     private final ReadContentUseCase readContentUseCase = new ReadContentUseCase(transferContentOutPort, readContent);
 
     @Test
-    void readContent() {
+    void readContent() throws DmsException {
 
         Content content = new Content("extension", "name", "content".getBytes());
 

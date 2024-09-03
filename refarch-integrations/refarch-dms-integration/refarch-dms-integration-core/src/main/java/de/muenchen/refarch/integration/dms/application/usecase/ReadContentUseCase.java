@@ -3,6 +3,7 @@ package de.muenchen.refarch.integration.dms.application.usecase;
 import de.muenchen.refarch.integration.dms.application.port.in.ReadContentInPort;
 import de.muenchen.refarch.integration.dms.application.port.out.ReadContentOutPort;
 import de.muenchen.refarch.integration.dms.application.port.out.TransferContentOutPort;
+import de.muenchen.refarch.integration.dms.domain.exception.DmsException;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -21,7 +22,7 @@ public class ReadContentUseCase implements ReadContentInPort {
     public void readContent(
             final List<String> contentCoos,
             @NotBlank final String user,
-            @NotBlank final String filePath) {
+            @NotBlank final String filePath) throws DmsException {
         val content = readContentOutPort.readContent(contentCoos, user);
         transferContentOutPort.transferContent(content, filePath);
     }

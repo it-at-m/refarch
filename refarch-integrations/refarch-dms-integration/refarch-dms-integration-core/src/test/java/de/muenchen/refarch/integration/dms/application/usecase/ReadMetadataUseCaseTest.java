@@ -2,6 +2,7 @@ package de.muenchen.refarch.integration.dms.application.usecase;
 
 import de.muenchen.refarch.integration.dms.application.port.out.DmsUserOutPort;
 import de.muenchen.refarch.integration.dms.application.port.out.ReadMetadataOutPort;
+import de.muenchen.refarch.integration.dms.domain.exception.DmsException;
 import de.muenchen.refarch.integration.dms.domain.model.Metadata;
 import de.muenchen.refarch.integration.dms.domain.model.ObjectType;
 import de.muenchen.oss.digiwf.message.process.api.error.BpmnError;
@@ -19,7 +20,7 @@ class ReadMetadataUseCaseTest {
     private final ReadMetadataUseCase readMetadataUseCase = new ReadMetadataUseCase(readMetadataOutPort, dmsUserOutPort);
 
     @Test
-    void readMetadata() {
+    void readMetadata() throws DmsException {
         when(this.readMetadataOutPort.readMetadata(any(), any())).thenReturn(new Metadata("name", "Sachakte", "url"));
         when(this.dmsUserOutPort.getDmsUser()).thenReturn("user");
 
@@ -30,7 +31,7 @@ class ReadMetadataUseCaseTest {
     }
 
     @Test
-    void readContentMetadata() {
+    void readContentMetadata() throws DmsException {
         when(this.readMetadataOutPort.readContentMetadata(any(), any())).thenReturn(new Metadata("name", "type", "url"));
         when(this.dmsUserOutPort.getDmsUser()).thenReturn("user");
 
@@ -41,7 +42,7 @@ class ReadMetadataUseCaseTest {
     }
 
     @Test
-    void readMetadataThrowsBpmnError() {
+    void readMetadataThrowsBpmnError() throws DmsException {
         when(this.readMetadataOutPort.readMetadata(any(), any())).thenReturn(new Metadata("name", "Ausgang", "url"));
         when(this.dmsUserOutPort.getDmsUser()).thenReturn("user");
 

@@ -2,6 +2,7 @@ package de.muenchen.refarch.integration.dms.application.usecase;
 
 import de.muenchen.refarch.integration.dms.application.port.out.SearchFileOutPort;
 import de.muenchen.refarch.integration.dms.application.usecase.SearchFileUseCase;
+import de.muenchen.refarch.integration.dms.domain.exception.DmsException;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -16,7 +17,7 @@ class SearchFileUseCaseTest {
     private final SearchFileUseCase searchFileUseCase = new SearchFileUseCase(searchFileOutPort);
 
     @Test
-    void searchFile() {
+    void searchFile() throws DmsException {
 
         when(searchFileOutPort.searchFile(any(), any(), any(), any())).thenReturn(List.of("coo"));
 

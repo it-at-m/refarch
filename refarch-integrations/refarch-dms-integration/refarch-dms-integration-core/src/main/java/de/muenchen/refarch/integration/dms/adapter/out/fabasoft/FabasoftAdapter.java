@@ -11,6 +11,7 @@ import de.muenchen.refarch.integration.dms.application.port.out.ReadMetadataOutP
 import de.muenchen.refarch.integration.dms.application.port.out.SearchFileOutPort;
 import de.muenchen.refarch.integration.dms.application.port.out.SearchSubjectAreaOutPort;
 import de.muenchen.refarch.integration.dms.application.port.out.UpdateDocumentOutPort;
+import de.muenchen.refarch.integration.dms.domain.exception.DmsException;
 import de.muenchen.refarch.integration.dms.domain.model.Content;
 import de.muenchen.refarch.integration.dms.domain.model.Document;
 import de.muenchen.refarch.integration.dms.domain.model.DocumentType;
@@ -51,7 +52,7 @@ public class FabasoftAdapter implements
     private final DMSErrorHandler dmsErrorHandler = new DMSErrorHandler();
 
     @Override
-    public String createFile(File file, String user) {
+    public String createFile(File file, String user) throws DmsException {
         //logging for dms team
         log.info("calling CreateFileGI Userlogin: {} Apentry: {} Filesubj: {} Shortname: {} Apentrysearch: true", user, file.getApentryCOO(), file.getTitle(),
                 file.getTitle());
@@ -71,7 +72,7 @@ public class FabasoftAdapter implements
     }
 
     @Override
-    public Procedure createProcedure(Procedure procedure, String user) {
+    public Procedure createProcedure(Procedure procedure, String user) throws DmsException {
         log.info("calling CreateProcedureGI: {}", procedure.toString());
 
         final CreateProcedureGI request = new CreateProcedureGI();
@@ -100,7 +101,7 @@ public class FabasoftAdapter implements
         };
     }
 
-    private String createIncomingDocument(final Document document, final String user) {
+    private String createIncomingDocument(final Document document, final String user) throws DmsException {
         //logging for dms team
         log.info("calling CreateIncomingGI Userlogin: {} Referrednumber: {} Shortname: {} Filesubj: {}", user, document.getProcedureCOO(), document.getTitle(),
                 document.getTitle());
@@ -130,7 +131,7 @@ public class FabasoftAdapter implements
         return response.getObjid();
     }
 
-    private String createOutgoingDocument(final Document document, final String user) {
+    private String createOutgoingDocument(final Document document, final String user) throws DmsException {
         //logging for dms team
         log.info("calling CreateOutgoingGI Userlogin: {} Referrednumber: {} Shortname: {} Filesubj: {}", user, document.getProcedureCOO(), document.getTitle(),
                 document.getTitle());
@@ -161,7 +162,7 @@ public class FabasoftAdapter implements
         return response.getObjid();
     }
 
-    private String createInternalDocument(final Document document, final String user) {
+    private String createInternalDocument(final Document document, final String user) throws DmsException {
         //logging for dms team
         log.info("calling CreateInternalGI Userlogin: {} Referrednumber: {} Shortname: {} Filesubj: {}", user, document.getProcedureCOO(), document.getTitle(),
                 document.getTitle());
@@ -192,7 +193,7 @@ public class FabasoftAdapter implements
     }
 
     @Override
-    public void updateDocument(final String documentCOO, final DocumentType type, final List<Content> contents, final String user) {
+    public void updateDocument(final String documentCOO, final DocumentType type, final List<Content> contents, final String user) throws DmsException {
         switch (type) {
             case EINGEHEND:
                 this.updateIncomingDocument(documentCOO, contents, user);
@@ -208,7 +209,7 @@ public class FabasoftAdapter implements
         }
     }
 
-    private void updateIncomingDocument(final String documentCOO, final List<Content> contents, final String user) {
+    private void updateIncomingDocument(final String documentCOO, final List<Content> contents, final String user) throws DmsException {
         log.info("calling UpdateIncomingGI: {}", documentCOO);
 
         final UpdateIncomingGI request = new UpdateIncomingGI();
@@ -230,7 +231,7 @@ public class FabasoftAdapter implements
         dmsErrorHandler.handleError(response.getStatus(), response.getErrormessage());
     }
 
-    private void updateOutgoingDocument(final String documentCOO, final List<Content> contents, final String user) {
+    private void updateOutgoingDocument(final String documentCOO, final List<Content> contents, final String user) throws DmsException {
         log.info("calling UpdateOutgoingGI: {}", documentCOO);
 
         final UpdateOutgoingGI request = new UpdateOutgoingGI();
@@ -252,7 +253,7 @@ public class FabasoftAdapter implements
         dmsErrorHandler.handleError(response.getStatus(), response.getErrormessage());
     }
 
-    private void updateInternalDocument(final String documentCOO, final List<Content> contents, final String user) {
+    private void updateInternalDocument(final String documentCOO, final List<Content> contents, final String user) throws DmsException {
         log.info("calling UpdateInternalGI: {}", documentCOO);
 
         final UpdateInternalGI request = new UpdateInternalGI();
@@ -276,7 +277,7 @@ public class FabasoftAdapter implements
 
 
     @Override
-    public void depositObject(String objectCoo, String user) {
+    public void depositObject(String objectCoo, String user) throws DmsException {
         log.info("calling DepositObject: {}", objectCoo);
 
         final DepositObjectGI request = new DepositObjectGI();
@@ -298,7 +299,7 @@ public class FabasoftAdapter implements
     }
 
     @Override
-    public void cancelObject(final String objectCoo, final String user) {
+    public void cancelObject(final String objectCoo, final String user) throws DmsException {
         log.info("calling CancelObjectGI Userlogin: {} Objaddress: {}", user, objectCoo);
 
         final CancelObjectGI cancelObjectGI = new CancelObjectGI();
@@ -312,7 +313,7 @@ public class FabasoftAdapter implements
     }
 
     @Override
-    public List<String> listContentCoos(@NonNull String documentCoo, @NonNull final String user) {
+    public List<String> listContentCoos(@NonNull String documentCoo, @NonNull final String user) throws DmsException {
         ReadDocumentGIObjects request = new ReadDocumentGIObjects();
         request.setUserlogin(user);
         request.setBusinessapp(this.properties.getBusinessapp());
@@ -327,7 +328,7 @@ public class FabasoftAdapter implements
     }
 
     @Override
-    public List<Content> readContent(final List<String> coos, final String user) {
+    public List<Content> readContent(final List<String> coos, final String user) throws DmsException {
         final List<Content> files = new ArrayList<>();
 
         for (val coo : coos) {
@@ -352,21 +353,21 @@ public class FabasoftAdapter implements
     }
 
     @Override
-    public List<String> searchFile(String searchString, String user, String reference, String value) {
+    public List<String> searchFile(String searchString, String user, String reference, String value) throws DmsException {
         return this.searchObject(searchString, DMSObjectClass.Sachakte, user, reference, value).stream()
                 .map(LHMBAI151700GIObjectType::getLHMBAI151700Objaddress)
                 .toList();
     }
 
     @Override
-    public List<String> searchSubjectArea(final String searchString, final String user) {
+    public List<String> searchSubjectArea(final String searchString, final String user) throws DmsException {
         return this.searchObject(searchString, DMSObjectClass.Aktenplaneintrag, user).stream()
                 .map(LHMBAI151700GIObjectType::getLHMBAI151700Objaddress)
                 .toList();
     }
 
     @Override
-    public Metadata readMetadata(final String coo, final String username) {
+    public Metadata readMetadata(final String coo, final String username) throws DmsException {
         log.info("calling ReadMetadataObjectGI Userlogin: {} COO: {}", username, coo);
 
         val request = new ReadMetadataObjectGI();
@@ -385,7 +386,7 @@ public class FabasoftAdapter implements
     }
 
     @Override
-    public Metadata readContentMetadata(final String coo, final String username) {
+    public Metadata readContentMetadata(final String coo, final String username) throws DmsException {
         log.info("calling ReadContentObjectMetaDataGI Userlogin: {} COO: {}", username, coo);
 
         val request = new ReadContentObjectMetaDataGI();
@@ -413,7 +414,8 @@ public class FabasoftAdapter implements
      * @param username       account name
      * @return List of discovered objects
      */
-    private List<LHMBAI151700GIObjectType> searchObject(final String searchString, final DMSObjectClass dmsObjectClass, final String username) {
+    private List<LHMBAI151700GIObjectType> searchObject(final String searchString, final DMSObjectClass dmsObjectClass, final String username)
+            throws DmsException {
         return searchObject(searchString, dmsObjectClass, username, null, null);
     }
 
@@ -427,7 +429,8 @@ public class FabasoftAdapter implements
      * @param value          (optional) value of 'Fachdatum'/business case
      * @return List of discovered objects
      */
-    private List<LHMBAI151700GIObjectType> searchObject(final String searchString, final DMSObjectClass dmsObjectClass, final String username, final String reference, final String value) {
+    private List<LHMBAI151700GIObjectType> searchObject(final String searchString, final DMSObjectClass dmsObjectClass, final String username, final String reference, final String value)
+            throws DmsException {
         //logging for dms team
         log.info("calling SearchObjNameGI Userlogin: {} SearchString: {} Objclass: {} Reference: {} Value: {}", username, searchString,
                 dmsObjectClass.getName(), reference, value);

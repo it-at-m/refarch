@@ -3,6 +3,7 @@ package de.muenchen.refarch.integration.dms.application.usecase;
 import de.muenchen.refarch.integration.dms.application.port.out.ListContentOutPort;
 import de.muenchen.refarch.integration.dms.application.port.out.LoadFileOutPort;
 import de.muenchen.refarch.integration.dms.application.port.out.UpdateDocumentOutPort;
+import de.muenchen.refarch.integration.dms.domain.exception.DmsException;
 import de.muenchen.refarch.integration.dms.domain.model.Content;
 import de.muenchen.refarch.integration.dms.domain.model.DocumentResponse;
 import de.muenchen.refarch.integration.dms.domain.model.DocumentType;
@@ -24,7 +25,7 @@ class UpdateDocumentUseCaseTest {
     private final UpdateDocumentUseCase updateDocumentUseCase = new UpdateDocumentUseCase(updateDocumentOutPort, listContentOutPort, loadFileOutPort);
 
     @Test
-    void updateDocument() {
+    void updateDocument() throws DmsException {
 
         Content content = new Content("extension", "name", "content".getBytes());
 

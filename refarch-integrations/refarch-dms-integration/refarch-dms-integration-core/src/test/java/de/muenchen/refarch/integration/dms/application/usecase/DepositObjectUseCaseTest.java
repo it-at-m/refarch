@@ -2,6 +2,7 @@ package de.muenchen.refarch.integration.dms.application.usecase;
 
 import de.muenchen.refarch.integration.dms.application.port.out.DepositObjectOutPort;
 import de.muenchen.refarch.integration.dms.application.usecase.DepositObjectUseCase;
+import de.muenchen.refarch.integration.dms.domain.exception.DmsException;
 import org.junit.jupiter.api.Test;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -14,7 +15,7 @@ class DepositObjectUseCaseTest {
     private final DepositObjectUseCase depositObjectUseCase = new DepositObjectUseCase(depositObjectOutPort);
 
     @Test
-    void depositObject() {
+    void depositObject() throws DmsException {
 
         doNothing().when(depositObjectOutPort).depositObject(any(), any());
 

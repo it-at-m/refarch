@@ -2,6 +2,7 @@ package de.muenchen.refarch.integration.dms.application.usecase;
 
 import de.muenchen.refarch.integration.dms.application.port.out.CancelObjectOutPort;
 import de.muenchen.refarch.integration.dms.application.usecase.CancelObjectUseCase;
+import de.muenchen.refarch.integration.dms.domain.exception.DmsException;
 import org.junit.jupiter.api.Test;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -14,7 +15,7 @@ class CancelObjectUseCaseTest {
     private final CancelObjectUseCase cancelObjectUseCase = new CancelObjectUseCase(cancelObjectOutPort);
 
     @Test
-    void cancelObject() {
+    void cancelObject() throws DmsException {
 
         doNothing().when(cancelObjectOutPort).cancelObject(any(), any());
 

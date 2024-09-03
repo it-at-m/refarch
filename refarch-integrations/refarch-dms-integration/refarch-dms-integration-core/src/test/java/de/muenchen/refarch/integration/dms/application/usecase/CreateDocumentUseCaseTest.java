@@ -3,6 +3,7 @@ package de.muenchen.refarch.integration.dms.application.usecase;
 import de.muenchen.refarch.integration.dms.application.port.out.CreateDocumentOutPort;
 import de.muenchen.refarch.integration.dms.application.port.out.ListContentOutPort;
 import de.muenchen.refarch.integration.dms.application.port.out.LoadFileOutPort;
+import de.muenchen.refarch.integration.dms.domain.exception.DmsException;
 import de.muenchen.refarch.integration.dms.domain.model.Content;
 import de.muenchen.refarch.integration.dms.domain.model.Document;
 import de.muenchen.refarch.integration.dms.domain.model.DocumentResponse;
@@ -27,7 +28,7 @@ class CreateDocumentUseCaseTest {
     private final CreateDocumentUseCase createDocumentUseCase = new CreateDocumentUseCase(createDocumentOutPort, loadFileOutPort, listContentOutPort);
 
     @Test
-    void createDocument() {
+    void createDocument() throws DmsException {
         Content content = new Content("extension", "name", "content".getBytes());
         List<String> filepaths = List.of("path/content.pdf");
         LocalDate testDate = LocalDate.parse("2023-12-01");
