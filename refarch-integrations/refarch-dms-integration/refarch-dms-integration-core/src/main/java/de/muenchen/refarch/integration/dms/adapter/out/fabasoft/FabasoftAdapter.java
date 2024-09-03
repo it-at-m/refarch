@@ -53,13 +53,8 @@ public class FabasoftAdapter implements
     @Override
     public String createFile(File file, String user) {
         //logging for dms team
-        log.info("calling CreateFileGI"
-                + " Userlogin: " + user
-                + " Apentry: " + file.getApentryCOO()
-                + " Filesubj: " + file.getTitle()
-                + " Shortname: " + file.getTitle()
-                + " Apentrysearch: true"
-        );
+        log.info("calling CreateFileGI Userlogin: {} Apentry: {} Filesubj: {} Shortname: {} Apentrysearch: true", user, file.getApentryCOO(), file.getTitle(),
+                file.getTitle());
 
         final CreateFileGI request = new CreateFileGI();
         request.setUserlogin(user);
@@ -77,7 +72,7 @@ public class FabasoftAdapter implements
 
     @Override
     public Procedure createProcedure(Procedure procedure, String user) {
-        log.info("calling CreateProcedureGI: " + procedure.toString());
+        log.info("calling CreateProcedureGI: {}", procedure.toString());
 
         final CreateProcedureGI request = new CreateProcedureGI();
         request.setUserlogin(user);
@@ -97,27 +92,18 @@ public class FabasoftAdapter implements
     }
 
     @Override
-    public String createDocument(final Document document, final String user) {
-        switch (document.getType()) {
-            case EINGEHEND:
-                return this.createIncomingDocument(document, user);
-            case AUSGEHEND:
-                return this.createOutgoingDocument(document, user);
-            case INTERN:
-                return this.createInternalDocument(document, user);
-            default:
-                throw new AssertionError("must not happen");
-        }
+    public String createDocument(final Document document, final String user) throws DmsException {
+        return switch (document.getType()) {
+            case EINGEHEND -> this.createIncomingDocument(document, user);
+            case AUSGEHEND -> this.createOutgoingDocument(document, user);
+            case INTERN -> this.createInternalDocument(document, user);
+        };
     }
 
     private String createIncomingDocument(final Document document, final String user) {
         //logging for dms team
-        log.info("calling CreateIncomingGI"
-                + " Userlogin: " + user
-                + " Referrednumber: " + document.getProcedureCOO()
-                + " Shortname: " + document.getTitle()
-                + " Filesubj: " + document.getTitle()
-        );
+        log.info("calling CreateIncomingGI Userlogin: {} Referrednumber: {} Shortname: {} Filesubj: {}", user, document.getProcedureCOO(), document.getTitle(),
+                document.getTitle());
 
         final CreateIncomingGI request = new CreateIncomingGI();
         request.setUserlogin(user);
@@ -146,12 +132,8 @@ public class FabasoftAdapter implements
 
     private String createOutgoingDocument(final Document document, final String user) {
         //logging for dms team
-        log.info("calling CreateOutgoingGI"
-                + " Userlogin: " + user
-                + " Referrednumber: " + document.getProcedureCOO()
-                + " Shortname: " + document.getTitle()
-                + " Filesubj: " + document.getTitle()
-        );
+        log.info("calling CreateOutgoingGI Userlogin: {} Referrednumber: {} Shortname: {} Filesubj: {}", user, document.getProcedureCOO(), document.getTitle(),
+                document.getTitle());
 
         final CreateOutgoingGI request = new CreateOutgoingGI();
         request.setUserlogin(user);
@@ -181,12 +163,8 @@ public class FabasoftAdapter implements
 
     private String createInternalDocument(final Document document, final String user) {
         //logging for dms team
-        log.info("calling CreateInternalGI"
-                + " Userlogin: " + user
-                + " Referrednumber: " + document.getProcedureCOO()
-                + " Shortname: " + document.getTitle()
-                + " Filesubj: " + document.getTitle()
-        );
+        log.info("calling CreateInternalGI Userlogin: {} Referrednumber: {} Shortname: {} Filesubj: {}", user, document.getProcedureCOO(), document.getTitle(),
+                document.getTitle());
 
         final CreateInternalGI request = new CreateInternalGI();
         request.setUserlogin(user);
@@ -231,7 +209,7 @@ public class FabasoftAdapter implements
     }
 
     private void updateIncomingDocument(final String documentCOO, final List<Content> contents, final String user) {
-        log.info("calling UpdateIncomingGI: " + documentCOO);
+        log.info("calling UpdateIncomingGI: {}", documentCOO);
 
         final UpdateIncomingGI request = new UpdateIncomingGI();
         request.setUserlogin(user);
@@ -253,7 +231,7 @@ public class FabasoftAdapter implements
     }
 
     private void updateOutgoingDocument(final String documentCOO, final List<Content> contents, final String user) {
-        log.info("calling UpdateOutgoingGI: " + documentCOO);
+        log.info("calling UpdateOutgoingGI: {}", documentCOO);
 
         final UpdateOutgoingGI request = new UpdateOutgoingGI();
         request.setUserlogin(user);
@@ -275,7 +253,7 @@ public class FabasoftAdapter implements
     }
 
     private void updateInternalDocument(final String documentCOO, final List<Content> contents, final String user) {
-        log.info("calling UpdateInternalGI: " + documentCOO);
+        log.info("calling UpdateInternalGI: {}", documentCOO);
 
         final UpdateInternalGI request = new UpdateInternalGI();
         request.setUserlogin(user);
@@ -299,7 +277,7 @@ public class FabasoftAdapter implements
 
     @Override
     public void depositObject(String objectCoo, String user) {
-        log.info("calling DepositObject: " + objectCoo);
+        log.info("calling DepositObject: {}", objectCoo);
 
         final DepositObjectGI request = new DepositObjectGI();
         request.setUserlogin(user);
@@ -321,10 +299,7 @@ public class FabasoftAdapter implements
 
     @Override
     public void cancelObject(final String objectCoo, final String user) {
-        log.info("calling CancelObjectGI"
-                + " Userlogin: " + user
-                + " Objaddress: " + objectCoo
-        );
+        log.info("calling CancelObjectGI Userlogin: {} Objaddress: {}", user, objectCoo);
 
         final CancelObjectGI cancelObjectGI = new CancelObjectGI();
         cancelObjectGI.setObjaddress(objectCoo);
@@ -353,7 +328,6 @@ public class FabasoftAdapter implements
 
     @Override
     public List<Content> readContent(final List<String> coos, final String user) {
-
         final List<Content> files = new ArrayList<>();
 
         for (val coo : coos) {
@@ -393,10 +367,7 @@ public class FabasoftAdapter implements
 
     @Override
     public Metadata readMetadata(final String coo, final String username) {
-        log.info("calling ReadMetadataObjectGI"
-                + " Userlogin: " + username
-                + " COO: " + coo
-        );
+        log.info("calling ReadMetadataObjectGI Userlogin: {} COO: {}", username, coo);
 
         val request = new ReadMetadataObjectGI();
         request.setObjaddress(coo);
@@ -415,10 +386,7 @@ public class FabasoftAdapter implements
 
     @Override
     public Metadata readContentMetadata(final String coo, final String username) {
-        log.info("calling ReadContentObjectMetaDataGI"
-                + " Userlogin: " + username
-                + " COO: " + coo
-        );
+        log.info("calling ReadContentObjectMetaDataGI Userlogin: {} COO: {}", username, coo);
 
         val request = new ReadContentObjectMetaDataGI();
         request.setObjaddress(coo);
@@ -461,13 +429,8 @@ public class FabasoftAdapter implements
      */
     private List<LHMBAI151700GIObjectType> searchObject(final String searchString, final DMSObjectClass dmsObjectClass, final String username, final String reference, final String value) {
         //logging for dms team
-        log.info("calling SearchObjNameGI"
-                + " Userlogin: " + username
-                + " SearchString: " + searchString
-                + " Objclass: " + dmsObjectClass.getName()
-                + " Reference: " + reference
-                + " Value: " + value
-        );
+        log.info("calling SearchObjNameGI Userlogin: {} SearchString: {} Objclass: {} Reference: {} Value: {}", username, searchString,
+                dmsObjectClass.getName(), reference, value);
 
         final SearchObjNameGI params = new SearchObjNameGI();
         params.setUserlogin(username);
