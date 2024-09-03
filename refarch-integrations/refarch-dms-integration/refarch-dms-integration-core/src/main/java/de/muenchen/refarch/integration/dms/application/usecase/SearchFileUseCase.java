@@ -2,7 +2,6 @@ package de.muenchen.refarch.integration.dms.application.usecase;
 
 import de.muenchen.refarch.integration.dms.application.port.in.SearchFileInPort;
 import de.muenchen.refarch.integration.dms.application.port.out.SearchFileOutPort;
-import de.muenchen.oss.digiwf.message.process.api.error.BpmnError;
 import de.muenchen.refarch.integration.dms.domain.exception.DmsException;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -23,7 +22,7 @@ public class SearchFileUseCase implements SearchFileInPort {
         val files = searchFileOutPort.searchFile(searchString, user, reference, value);
 
         if (files.isEmpty()) {
-            throw new BpmnError("OBJECT_NOT_FOUND", String.format("File not found with searchString %s and user %s", searchString, user));
+            throw new DmsException("OBJECT_NOT_FOUND", String.format("File not found with searchString %s and user %s", searchString, user));
         }
 
         return files;

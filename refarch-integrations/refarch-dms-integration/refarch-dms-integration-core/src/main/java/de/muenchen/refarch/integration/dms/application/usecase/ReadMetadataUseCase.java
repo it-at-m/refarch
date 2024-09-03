@@ -6,7 +6,6 @@ import de.muenchen.refarch.integration.dms.domain.model.Metadata;
 import de.muenchen.refarch.integration.dms.domain.model.ObjectType;
 import de.muenchen.refarch.integration.dms.application.port.in.ReadMetadataInPort;
 import de.muenchen.refarch.integration.dms.application.port.out.DmsUserOutPort;
-import de.muenchen.oss.digiwf.message.process.api.error.BpmnError;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +38,7 @@ public class ReadMetadataUseCase implements ReadMetadataInPort {
                 objectclass.toString();
 
         if (!object.equals(metadata.getType())) {
-            throw new BpmnError("AUFRUF_OBJEKT_FALSCHER_FEHLERKLASSE", "Das übergebene Objekt mit der COO-Adresse " + coo + " ist ungültig, da das übergebene Objekt von der Objektklasse " + metadata.getType() + " ist und dies nicht mit der/den erwarteten Objektklasse/n " + objectclass + " übereinstimmt.");
+            throw new DmsException("WRONG_INPUT_OBJECT_CLASS", String.format("The input object with the COO address %s is invalid because it is of the object class %s and this does not match the expected object class(es) %s.", coo, metadata.getType(), objectclass));
         }
         return metadata;
 

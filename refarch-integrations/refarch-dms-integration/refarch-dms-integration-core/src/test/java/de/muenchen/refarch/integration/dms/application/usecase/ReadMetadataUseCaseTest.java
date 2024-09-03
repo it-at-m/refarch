@@ -5,7 +5,6 @@ import de.muenchen.refarch.integration.dms.application.port.out.ReadMetadataOutP
 import de.muenchen.refarch.integration.dms.domain.exception.DmsException;
 import de.muenchen.refarch.integration.dms.domain.model.Metadata;
 import de.muenchen.refarch.integration.dms.domain.model.ObjectType;
-import de.muenchen.oss.digiwf.message.process.api.error.BpmnError;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -46,14 +45,14 @@ class ReadMetadataUseCaseTest {
         when(this.readMetadataOutPort.readMetadata(any(), any())).thenReturn(new Metadata("name", "Ausgang", "url"));
         when(this.dmsUserOutPort.getDmsUser()).thenReturn("user");
 
-        BpmnError bpmnError = catchThrowableOfType(() -> readMetadataUseCase.readMetadata(ObjectType.Sachakte, "coo"), BpmnError.class);
+        DmsException dmsException = catchThrowableOfType(() -> readMetadataUseCase.readMetadata(ObjectType.Sachakte, "coo"), DmsException.class);
 
-        String expectedMessage = "Das übergebene Objekt mit der COO-Adresse " + "coo" + " ist ungültig, da das übergebene Objekt von der Objektklasse " + "Ausgang" + " ist und dies nicht mit der/den erwarteten Objektklasse/n " + "Sachakte" + " übereinstimmt.";
-        String actualMessage = bpmnError.getErrorMessage();
+        String expectedMessage = String.format("The input object with the COO address %s is invalid because it is of the object class %s and this does not match the expected object class(es) %s.", "coo", "Ausgang", "Sachakte");
+        String actualMessage = dmsException.getMessage();
 
         assertThat(actualMessage).isEqualTo(expectedMessage);
 
-        assertThat(bpmnError.getErrorCode()).isEqualTo("AUFRUF_OBJEKT_FALSCHER_FEHLERKLASSE");
+        assertThat(dmsException.getStatusCode()).isEqualTo("WRONG_INPUT_OBJECT_CLASS");
 
         verify(this.dmsUserOutPort, times(1)).getDmsUser();
         verify(this.readMetadataOutPort, times(1)).readMetadata("coo", "user");
