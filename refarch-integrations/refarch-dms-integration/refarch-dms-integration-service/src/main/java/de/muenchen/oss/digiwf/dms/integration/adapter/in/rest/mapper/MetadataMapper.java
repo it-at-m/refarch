@@ -1,6 +1,6 @@
 package de.muenchen.oss.digiwf.dms.integration.adapter.in.rest.mapper;
 
-import de.muenchen.oss.digiwf.dms.integration.domain.Metadata;
+import de.muenchen.refarch.integration.dms.domain.Metadata;
 import de.muenchen.oss.digiwf.dms.integration.application.port.in.rest.model.MetadataTO;
 
 import lombok.val;

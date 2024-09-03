@@ -1,10 +1,10 @@
 package de.muenchen.oss.digiwf.dms.integration.adapter.in.rest.impl;
 
 import de.muenchen.oss.digiwf.dms.integration.adapter.in.rest.mapper.MetadataMapper;
-import de.muenchen.oss.digiwf.dms.integration.application.port.in.ReadMetadataInPort;
+import de.muenchen.refarch.integration.dms.application.port.in.ReadMetadataInPort;
 import de.muenchen.oss.digiwf.dms.integration.application.port.in.rest.api.MetadataApiDelegate;
 import de.muenchen.oss.digiwf.dms.integration.application.port.in.rest.model.MetadataTO;
-import de.muenchen.oss.digiwf.dms.integration.domain.ObjectType;
+import de.muenchen.refarch.integration.dms.domain.ObjectType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
