@@ -243,7 +243,7 @@ class FabasoftAdapterTest {
         val expectedFile = new Content("extension", "filename", "content".getBytes());
 
         assertThat(files.size()).isEqualTo(1);
-        assertThat(files.get(0)).usingRecursiveComparison().isEqualTo(expectedFile);
+        assertThat(files.getFirst()).usingRecursiveComparison().isEqualTo(expectedFile);
     }
 
     /**
