@@ -52,7 +52,7 @@ class CosysAdapterTest {
 
         when(generationApi.generatePdfWithResponseSpec(any(), any(), any(), dataFileCaptor.capture(), any(), any(), any(), any(), any(), any(),
                 mergeFileCaptor.capture(), any(), any()))
-                .thenReturn(responseSpecMock);
+                        .thenReturn(responseSpecMock);
 
         when(configuration.getMergeOptions()).thenReturn("mergedata".getBytes());
 
@@ -74,8 +74,7 @@ class CosysAdapterTest {
                 false,
                 mergeFileCaptor.getValue(),
                 null,
-                null
-        );
+                null);
     }
 
     private GenerateDocument generateDocument() {
@@ -84,8 +83,7 @@ class CosysAdapterTest {
                     "client",
                     "role",
                     "guid",
-                    new ObjectMapper().readTree("{\"name\":\"John\", \"age\":30}")
-            );
+                    new ObjectMapper().readTree("{\"name\":\"John\", \"age\":30}"));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

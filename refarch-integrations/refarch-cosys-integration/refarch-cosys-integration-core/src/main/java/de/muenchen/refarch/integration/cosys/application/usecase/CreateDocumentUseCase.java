@@ -27,8 +27,7 @@ public class CreateDocumentUseCase implements CreateDocumentInPort {
     @Override
     public void createDocument(
             @Valid final GenerateDocument generateDocument,
-            @NotBlank final String filePath
-    ) throws CosysException, DocumentStorageException {
+            @NotBlank final String filePath) throws CosysException, DocumentStorageException {
         final byte[] data = this.generateDocumentOutPort.generateCosysDocument(generateDocument).block();
         this.saveFileToStorageOutPort.saveDocumentInStorage(filePath, data);
     }

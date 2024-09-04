@@ -24,13 +24,11 @@ public class S3Adapter implements SaveFileToStorageOutPort {
     @Override
     public void saveDocumentInStorage(
             final String filePath,
-            final byte[] data
-    ) throws DocumentStorageException {
+            final byte[] data) throws DocumentStorageException {
         try {
             validateFileSize(data);
             documentStorageFileRepository.saveFile(filePath, data, 1);
-        } catch (DocumentStorageException | DocumentStorageClientErrorException |
-                DocumentStorageServerErrorException e) {
+        } catch (DocumentStorageException | DocumentStorageClientErrorException | DocumentStorageServerErrorException e) {
             throw new DocumentStorageException("Document could not be saved.", e);
         }
     }

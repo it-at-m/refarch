@@ -10,6 +10,5 @@ public interface CreateDocumentInPort {
 
     void createDocument(
             @Valid final GenerateDocument generateDocument,
-            @NotBlank final String filePath
-    ) throws CosysException, DocumentStorageException;
+            @NotBlank final String filePath) throws CosysException, DocumentStorageException;
 }

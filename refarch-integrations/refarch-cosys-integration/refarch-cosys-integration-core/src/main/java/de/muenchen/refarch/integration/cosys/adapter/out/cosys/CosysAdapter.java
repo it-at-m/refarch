@@ -32,20 +32,19 @@ public class CosysAdapter implements GenerateDocumentOutPort {
     public Mono<byte[]> generateCosysDocument(final GenerateDocument generateDocument) throws CosysException {
         try {
             return this.generationApi.generatePdfWithResponseSpec(
-                            generateDocument.guid(),
-                            generateDocument.client(),
-                            generateDocument.role(),
-                            FileUtils.createFile(DATA_FILE_NAME, generateDocument.variables().toString().getBytes(StandardCharsets.UTF_8)),
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            false,
-                            FileUtils.createFile(MERGE_FILE_NAME, this.configuration.getMergeOptions()),
-                            null,
-                            null
-                    )
+                    generateDocument.guid(),
+                    generateDocument.client(),
+                    generateDocument.role(),
+                    FileUtils.createFile(DATA_FILE_NAME, generateDocument.variables().toString().getBytes(StandardCharsets.UTF_8)),
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    false,
+                    FileUtils.createFile(MERGE_FILE_NAME, this.configuration.getMergeOptions()),
+                    null,
+                    null)
                     .onStatus(HttpStatusCode::is5xxServerError,
                             response -> response.bodyToMono(byte[].class)
                                     .flatMap(body -> Mono.error(new CosysException("Document could not be created."))))
