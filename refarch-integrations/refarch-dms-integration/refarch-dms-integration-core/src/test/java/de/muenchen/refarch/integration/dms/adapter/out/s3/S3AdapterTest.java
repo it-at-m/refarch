@@ -51,7 +51,7 @@ class S3AdapterTest {
             throws IOException, DocumentStorageException, DocumentStorageClientErrorException, DocumentStorageServerErrorException {
 
         final String pdfPath = "files/test/test-pdf.pdf";
-        final String pngPath = "files/test/digiwf_logo.png";
+        final String pngPath = "files/test/test-png.png";
 
         final List<String> filePaths = List.of(pdfPath, pngPath);
 
@@ -65,7 +65,7 @@ class S3AdapterTest {
         final List<Content> contents = this.s3Adapter.loadFiles(filePaths);
 
         final Content pdfContent = new Content("pdf", "test-pdf", testPdf);
-        final Content pngContent = new Content("png", "digiwf_logo", testPng);
+        final Content pngContent = new Content("png", "test-png", testPng);
 
         assertTrue(contents.contains(pdfContent));
         assertTrue(contents.contains(pngContent));
@@ -76,7 +76,7 @@ class S3AdapterTest {
             throws IOException, DocumentStorageException, DocumentStorageClientErrorException, DocumentStorageServerErrorException {
 
         final String pdfPath = "files/test/test-pdf.pdf";
-        final String pngPath = "files/test/digiwf_logo.png";
+        final String pngPath = "files/test/test-png.png";
 
         final List<String> filePaths = List.of(pdfPath, pngPath);
 
@@ -90,7 +90,7 @@ class S3AdapterTest {
         final List<Content> contents = this.s3Adapter.loadFiles(filePaths);
 
         final Content pdfContent = new Content("pdf", "test-pdf", testPdf);
-        final Content pngContent = new Content("png", "digiwf_logo", testPng);
+        final Content pngContent = new Content("png", "test-png", testPng);
 
         assertTrue(contents.contains(pdfContent));
         assertTrue(contents.contains(pngContent));
@@ -103,7 +103,7 @@ class S3AdapterTest {
         final String folderPath = "test/";
 
         final String pdfPath = "files/test/test-pdf.pdf";
-        final String pngPath = "files/test/digiwf_logo.png";
+        final String pngPath = "files/test/test-png.png";
         final String fullWordPath = "files/test/test-word.docx";
 
         final List<String> paths = List.of(folderPath);
@@ -124,7 +124,7 @@ class S3AdapterTest {
         final List<Content> contents = this.s3Adapter.loadFiles(paths);
 
         final Content pdfContent = new Content("pdf", "test-pdf", testPdf);
-        final Content pngContent = new Content("png", "digiwf_logo", testPng);
+        final Content pngContent = new Content("png", "test-png", testPng);
         final Content wordContent = new Content("docx", "test-word", testWord);
 
         assertTrue(contents.contains(pdfContent));
@@ -139,7 +139,7 @@ class S3AdapterTest {
         final String folderPath = "test/";
 
         final String pdfPath = "files/test/test-pdf.pdf";
-        final String pngPath = "files/test/digiwf_logo.png";
+        final String pngPath = "files/test/test-png.png";
         final String fullWordPath = "files/test/test-word.docx";
 
         final List<String> paths = List.of(folderPath);
@@ -160,7 +160,7 @@ class S3AdapterTest {
         final List<Content> contents = this.s3Adapter.loadFiles(paths);
 
         final Content pdfContent = new Content("pdf", "test-pdf", testPdf);
-        final Content pngContent = new Content("png", "digiwf_logo", testPng);
+        final Content pngContent = new Content("png", "test-png", testPng);
         final Content wordContent = new Content("docx", "test-word", testWord);
 
         assertTrue(contents.contains(pdfContent));
