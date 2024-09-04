@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import java.util.Map;
 
 @Data
-@ConfigurationProperties(prefix = "de.muenchen.oss.digiwf.dms")
+@ConfigurationProperties(prefix = "refarch.dms")
 public class DmsProperties {
 
     /**
