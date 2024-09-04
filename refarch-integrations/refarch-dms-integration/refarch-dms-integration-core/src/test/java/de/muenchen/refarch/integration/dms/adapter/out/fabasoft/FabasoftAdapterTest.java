@@ -33,7 +33,7 @@ class FabasoftAdapterTest {
         this.properties.setUsername("user");
         this.properties.setPassword("password");
         this.properties.setBusinessapp("businessapp");
-        this.properties.setUiurl("uiurl");
+        this.properties.setUiUrl("uiurl");
         val soapClient = FabasoftClienFactory.dmsWsClient("http://localhost:" + wmRuntimeInfo.getHttpPort() + "/");
         fabasoftAdapter = new FabasoftAdapter(properties, soapClient);
     }

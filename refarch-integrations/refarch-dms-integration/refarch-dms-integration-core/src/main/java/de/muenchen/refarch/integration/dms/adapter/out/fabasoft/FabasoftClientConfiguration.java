@@ -23,10 +23,10 @@ public class FabasoftClientConfiguration {
     public LHMBAI151700GIWSDSoap dmsWsClient() {
         final LHMBAI151700GIWSD service = new LHMBAI151700GIWSD();
         final LHMBAI151700GIWSDSoap soapClient = service.getLHMBAI151700GIWSDSoap();
-        ((BindingProvider) soapClient).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, this.properties.getAddress());
+        ((BindingProvider) soapClient).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, this.properties.getUrl());
         ((BindingProvider) soapClient).getRequestContext().put(BindingProvider.USERNAME_PROPERTY, this.properties.getUsername());
         ((BindingProvider) soapClient).getRequestContext().put(BindingProvider.PASSWORD_PROPERTY, this.properties.getPassword());
-        if (properties.getEnableMTOM()) {
+        if (properties.getEnableMtom()) {
             final SOAPBinding binding = (SOAPBinding) ((BindingProvider) soapClient).getBinding();
             binding.setMTOMEnabled(true);
         }

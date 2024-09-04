@@ -13,11 +13,11 @@ import jakarta.validation.constraints.NotBlank;
 @Getter
 @Setter
 @Validated
-@ConfigurationProperties(prefix = "digiwf.integration.dms.fabasoft")
+@ConfigurationProperties(prefix = "refarch.dms.fabasoft")
 public class FabasoftProperties {
 
     @NotBlank
-    private String address;
+    private String url;
 
     @NotBlank
     private String username;
@@ -26,7 +26,7 @@ public class FabasoftProperties {
 
     private String businessapp;
 
-    private String uiurl;
+    private String uiUrl;
 
-    private Boolean enableMTOM;
+    private Boolean enableMtom;
 }

@@ -379,7 +379,7 @@ public class FabasoftAdapter implements
         return new Metadata(
                 response.getObjname(),
                 response.getObjclass(),
-                String.format(this.properties.getUiurl(), coo));
+                String.format(this.properties.getUiUrl(), coo));
     }
 
     @Override
@@ -397,7 +397,7 @@ public class FabasoftAdapter implements
         return new Metadata(
                 response.getGimetadatatype().getLHMBAI151700Filename(),
                 response.getGimetadatatype().getLHMBAI151700Objclass(),
-                String.format(this.properties.getUiurl(), coo));
+                String.format(this.properties.getUiUrl(), coo));
     }
 
     //------------------------------------- HELPER METHODS -------------------------------------------
