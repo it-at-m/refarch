@@ -1,20 +1,18 @@
 package de.muenchen.oss.digiwf.cosys.integration.adapter.out.cosys;
 
-import de.muenchen.oss.digiwf.cosys.integration.api.GenerationApi;
+import static de.muenchen.oss.digiwf.cosys.integration.adapter.out.cosys.FileUtils.createFile;
+
 import de.muenchen.oss.digiwf.cosys.integration.application.port.out.GenerateDocumentOutPort;
 import de.muenchen.oss.digiwf.cosys.integration.configuration.CosysConfiguration;
+import de.muenchen.oss.digiwf.cosys.integration.domain.exception.CosysException;
 import de.muenchen.oss.digiwf.cosys.integration.domain.model.GenerateDocument;
-import de.muenchen.oss.digiwf.message.process.api.error.BpmnError;
-import de.muenchen.oss.digiwf.message.process.api.error.IncidentError;
+import de.muenchen.refarch.integration.cosys.api.GenerationApi;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatusCode;
 import reactor.core.publisher.Mono;
-
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-
-import static de.muenchen.oss.digiwf.cosys.integration.adapter.out.cosys.FileUtils.createFile;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -26,7 +24,6 @@ public class CosysAdapter implements GenerateDocumentOutPort {
     private final CosysConfiguration configuration;
     private final GenerationApi generationApi;
 
-
     /**
      * Generate a Document in Cosys
      *
@@ -34,7 +31,7 @@ public class CosysAdapter implements GenerateDocumentOutPort {
      * @return the generated document
      */
     @Override
-    public Mono<byte[]> generateCosysDocument(final GenerateDocument generateDocument) {
+    public Mono<byte[]> generateCosysDocument(final GenerateDocument generateDocument) throws CosysException {
         try {
             return this.generationApi.generatePdfWithResponseSpec(
                             generateDocument.getGuid(),
@@ -52,16 +49,17 @@ public class CosysAdapter implements GenerateDocumentOutPort {
                             null
                     )
                     .onStatus(HttpStatusCode::is5xxServerError,
-                            response -> response.bodyToMono(byte[].class).flatMap(body -> Mono.error(new IncidentError("Document could not be created."))))
+                            response -> response.bodyToMono(byte[].class)
+                                    .flatMap(body -> Mono.error(new CosysException("Document could not be created."))))
                     .onStatus(HttpStatusCode::is4xxClientError,
-                            response -> response.bodyToMono(byte[].class).flatMap(body -> Mono.error(new BpmnError("COSYS_DOCUMENT_CREATION_FAILED", "Document could not be created."))))
+                            response -> response.bodyToMono(byte[].class)
+                                    .flatMap(body -> Mono.error(new CosysException("Document could not be created."))))
                     .bodyToMono(byte[].class);
 
         } catch (final IOException ex) {
             log.error("Document could not be created.", ex);
-            throw new BpmnError("COSYS_DOCUMENT_CREATION_FAILED", "Document could not be created.");
+            throw new CosysException("Document could not be created.");
         }
     }
-
 
 }

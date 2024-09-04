@@ -6,4 +6,7 @@ public class DocumentStorageException extends Exception {
         super(message, exception);
     }
 
+    public DocumentStorageException(final String message) {
+        super(message);
+    }
 }

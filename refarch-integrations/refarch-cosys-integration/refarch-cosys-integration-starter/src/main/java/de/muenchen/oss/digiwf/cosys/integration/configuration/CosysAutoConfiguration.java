@@ -2,29 +2,25 @@ package de.muenchen.oss.digiwf.cosys.integration.configuration;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.muenchen.oss.digiwf.cosys.integration.ApiClient;
 import de.muenchen.oss.digiwf.cosys.integration.adapter.out.cosys.CosysAdapter;
 import de.muenchen.oss.digiwf.cosys.integration.adapter.out.s3.S3Adapter;
-import de.muenchen.oss.digiwf.cosys.integration.api.GenerationApi;
 import de.muenchen.oss.digiwf.cosys.integration.application.port.in.CreateDocumentInPort;
 import de.muenchen.oss.digiwf.cosys.integration.application.port.out.GenerateDocumentOutPort;
 import de.muenchen.oss.digiwf.cosys.integration.application.port.out.SaveFileToStorageOutPort;
 import de.muenchen.oss.digiwf.cosys.integration.application.usecase.CreateDocumentUseCase;
-import de.muenchen.oss.digiwf.message.process.api.ErrorApi;
-import de.muenchen.oss.digiwf.message.process.api.ProcessApi;
-import de.muenchen.oss.digiwf.s3.integration.client.configuration.S3IntegrationClientAutoConfiguration;
-import de.muenchen.oss.digiwf.s3.integration.client.repository.DocumentStorageFileRepository;
-import de.muenchen.oss.digiwf.s3.integration.client.repository.transfer.S3FileTransferRepository;
-import de.muenchen.oss.digiwf.s3.integration.client.service.FileService;
-import de.muenchen.oss.digiwf.s3.integration.client.service.S3StorageUrlProvider;
+import de.muenchen.refarch.integration.cosys.ApiClient;
+import de.muenchen.refarch.integration.cosys.api.GenerationApi;
+import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFileRepository;
+import de.muenchen.refarch.integration.s3.client.repository.transfer.S3FileTransferRepository;
+import de.muenchen.refarch.integration.s3.client.service.FileValidationService;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.messaging.Message;
 import org.springframework.security.oauth2.client.AuthorizedClientServiceOAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -32,15 +28,10 @@ import org.springframework.security.oauth2.client.web.reactive.function.client.S
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Consumer;
-
 @Configuration
 @RequiredArgsConstructor
-@AutoConfigureAfter({S3IntegrationClientAutoConfiguration.class})
-@ComponentScan(basePackages = {"de.muenchen.oss.digiwf.cosys.integration"})
-@EnableConfigurationProperties({CosysProperties.class})
+@ComponentScan(basePackages = { "de.muenchen.refarch.integration.cosys" })
+@EnableConfigurationProperties({ CosysProperties.class })
 public class CosysAutoConfiguration {
 
     private final CosysProperties cosysProperties;
@@ -71,7 +62,7 @@ public class CosysAutoConfiguration {
 
     @Bean
     public ApiClient cosysApiClient(final ClientRegistrationRepository clientRegistrationRepository,
-                                    final OAuth2AuthorizedClientService authorizedClientService) {
+            final OAuth2AuthorizedClientService authorizedClientService) {
         final ApiClient apiClient = new ApiClient(this.webClient(clientRegistrationRepository, authorizedClientService));
         apiClient.setBasePath(this.cosysProperties.getUrl());
         return apiClient;
@@ -100,7 +91,8 @@ public class CosysAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public CreateDocumentInPort getCreateDocumentInPort(final SaveFileToStorageOutPort saveFileToStorageOutPort, final GenerateDocumentOutPort generateDocumentOutPort) {
+    public CreateDocumentInPort getCreateDocumentInPort(final SaveFileToStorageOutPort saveFileToStorageOutPort,
+            final GenerateDocumentOutPort generateDocumentOutPort) {
         return new CreateDocumentUseCase(saveFileToStorageOutPort, generateDocumentOutPort);
     }
 
@@ -109,9 +101,8 @@ public class CosysAutoConfiguration {
     public SaveFileToStorageOutPort getSaveFileToStorageOutPort(
             final S3FileTransferRepository s3FileTransferRepository,
             final DocumentStorageFileRepository documentStorageFileRepository,
-            final FileService fileService,
-            final S3StorageUrlProvider s3DomainService) {
-        return new S3Adapter(s3FileTransferRepository, documentStorageFileRepository, fileService, s3DomainService);
+            final FileValidationService fileValidationService) {
+        return new S3Adapter(s3FileTransferRepository, documentStorageFileRepository, fileValidationService);
     }
 
     @Bean

@@ -1,23 +1,27 @@
 package de.muenchen.oss.digiwf.cosys.integration.adapter.out.cosys;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import de.muenchen.oss.digiwf.cosys.integration.api.GenerationApi;
-import de.muenchen.oss.digiwf.cosys.integration.configuration.CosysConfiguration;
-import de.muenchen.oss.digiwf.cosys.integration.domain.model.GenerateDocument;
-import lombok.val;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.*;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
-
-import java.io.File;
-import java.io.IOException;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import de.muenchen.oss.digiwf.cosys.integration.configuration.CosysConfiguration;
+import de.muenchen.oss.digiwf.cosys.integration.domain.exception.CosysException;
+import de.muenchen.oss.digiwf.cosys.integration.domain.model.GenerateDocument;
+import de.muenchen.refarch.integration.cosys.api.GenerationApi;
+import java.io.File;
+import java.io.IOException;
+import lombok.val;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 class CosysAdapterTest {
 
@@ -36,7 +40,7 @@ class CosysAdapterTest {
     }
 
     @Test
-    void testGenerateCosysDocument_Success() throws IOException {
+    void testGenerateCosysDocument_Success() throws IOException, CosysException {
         // given
         val generateDocument = generateDocument();
         val response = "Response".getBytes();
@@ -46,7 +50,8 @@ class CosysAdapterTest {
         final ArgumentCaptor<File> dataFileCaptor = ArgumentCaptor.forClass(File.class);
         final ArgumentCaptor<File> mergeFileCaptor = ArgumentCaptor.forClass(File.class);
 
-        when(generationApi.generatePdfWithResponseSpec(any(), any(), any(), dataFileCaptor.capture(), any(), any(), any(), any(), any(), any(), mergeFileCaptor.capture(), any(), any()))
+        when(generationApi.generatePdfWithResponseSpec(any(), any(), any(), dataFileCaptor.capture(), any(), any(), any(), any(), any(), any(),
+                mergeFileCaptor.capture(), any(), any()))
                 .thenReturn(responseSpecMock);
 
         when(configuration.getMergeOptions()).thenReturn("mergedata".getBytes());

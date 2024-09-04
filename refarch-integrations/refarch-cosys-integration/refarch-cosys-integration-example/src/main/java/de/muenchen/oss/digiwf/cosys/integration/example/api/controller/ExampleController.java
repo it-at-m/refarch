@@ -2,18 +2,14 @@ package de.muenchen.oss.digiwf.cosys.integration.example.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.muenchen.oss.digiwf.cosys.integration.application.port.out.GenerateDocumentOutPort;
-import de.muenchen.oss.digiwf.cosys.integration.domain.model.DocumentStorageUrl;
+import de.muenchen.oss.digiwf.cosys.integration.domain.exception.CosysException;
 import de.muenchen.oss.digiwf.cosys.integration.domain.model.GenerateDocument;
-import de.muenchen.oss.digiwf.message.common.MessageConstants;
-import de.muenchen.oss.digiwf.message.core.api.MessageApi;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,27 +17,11 @@ import java.util.Map;
 public class ExampleController {
 
     private final GenerateDocumentOutPort generateDocumentOutPort;
-    private final MessageApi messageApi;
 
     @PostMapping(value = "/test/document")
-    public ResponseEntity<byte[]> testCreateCosysDocument() {
+    public ResponseEntity<byte[]> testCreateCosysDocument() throws CosysException {
         final byte[] file = this.generateDocumentOutPort.generateCosysDocument(this.generateDocument()).block();
         return ResponseEntity.ok(file);
-    }
-
-    /**
-     * Note: for this to work, you have to configure both
-     * spring.cloud.stream.bindings.sendMessage-out-0.destination and
-     * spring.cloud.stream.bindings.functionRouter-in-0.destination
-     * to the same topic.
-     */
-    @PostMapping(value = "/testEventBus")
-    public void testEventBus(final @RequestBody DocumentStorageUrl body) {
-        this.messageApi.sendMessage(body, Map.of(
-                MessageConstants.TYPE, "createDocumentFromEventBus",
-                MessageConstants.DIGIWF_PROCESS_INSTANCE_ID, "processInstanceId",
-                MessageConstants.DIGIWF_INTEGRATION_NAME, "testCosysIntegration"
-        ), "dwf-cosys-local-01");
     }
 
     private GenerateDocument generateDocument() {
