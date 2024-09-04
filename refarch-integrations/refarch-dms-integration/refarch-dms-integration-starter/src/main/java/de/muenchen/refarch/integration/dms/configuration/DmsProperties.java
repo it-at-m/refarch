@@ -1,4 +1,4 @@
-package de.muenchen.oss.digiwf.dms.integration.configuration;
+package de.muenchen.refarch.integration.dms.configuration;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

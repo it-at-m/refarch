@@ -1,4 +1,4 @@
-package de.muenchen.oss.digiwf.dms.integration.configuration;
+package de.muenchen.refarch.integration.dms.configuration;
 
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.LHMBAI151700GIWSDSoap;
 import de.muenchen.refarch.integration.dms.adapter.out.fabasoft.FabasoftAdapter;
