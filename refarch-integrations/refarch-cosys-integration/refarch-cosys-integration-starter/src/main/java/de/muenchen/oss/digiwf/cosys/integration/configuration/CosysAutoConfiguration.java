@@ -3,9 +3,6 @@ package de.muenchen.oss.digiwf.cosys.integration.configuration;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.muenchen.oss.digiwf.cosys.integration.ApiClient;
-import de.muenchen.oss.digiwf.cosys.integration.adapter.in.streaming.GenerateDocumentDTO;
-import de.muenchen.oss.digiwf.cosys.integration.adapter.in.streaming.GenerateDocumentPresignedUrlsDTO;
-import de.muenchen.oss.digiwf.cosys.integration.adapter.in.streaming.StreamingAdapter;
 import de.muenchen.oss.digiwf.cosys.integration.adapter.out.cosys.CosysAdapter;
 import de.muenchen.oss.digiwf.cosys.integration.adapter.out.s3.S3Adapter;
 import de.muenchen.oss.digiwf.cosys.integration.api.GenerationApi;
@@ -121,21 +118,5 @@ public class CosysAutoConfiguration {
     @ConditionalOnMissingBean
     public GenerateDocumentOutPort getGenerateDocumentOutPort(final CosysConfiguration cosysConfiguration, final GenerationApi generationApi) {
         return new CosysAdapter(cosysConfiguration, generationApi);
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public StreamingAdapter streamingAdapter(final CreateDocumentInPort createDocumentInPort, final ProcessApi processApi, final ErrorApi errorApi) {
-        return new StreamingAdapter(createDocumentInPort, processApi, errorApi);
-    }
-
-    @Bean
-    public Consumer<Message<GenerateDocumentPresignedUrlsDTO>> createCosysDocument(final StreamingAdapter streamingAdapter) {
-        return streamingAdapter.createCosysDocument();
-    }
-
-    @Bean
-    public Consumer<Message<GenerateDocumentDTO>> createCosysDocumentV2(final StreamingAdapter streamingAdapter) {
-        return streamingAdapter.createCosysDocumentV2();
     }
 }
