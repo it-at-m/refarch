@@ -10,7 +10,7 @@ import org.springframework.validation.annotation.Validated;
 @Getter
 @Setter
 @Validated
-@ConfigurationProperties(prefix = "io.muenchendigital.digiwf.cosys")
+@ConfigurationProperties(prefix = "refarch.cosys")
 public class CosysProperties {
 
     @NestedConfigurationProperty

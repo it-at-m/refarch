@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication()
-public class DigiwfCosysExampleApplication {
+public class CosysExampleApplication {
 
     public static void main(final String[] args) {
-        SpringApplication.run(DigiwfCosysExampleApplication.class, args);
+        SpringApplication.run(CosysExampleApplication.class, args);
     }
 
 }

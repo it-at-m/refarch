@@ -1,18 +1,11 @@
-logging:
-  level:
-    de.muenchen: info
-    org.simpleframework: info
-
-io:
-  muenchendigital:
-    digiwf:
-      cosys:
-        url: http://cosysk007.srv.muenchen.de/cosys-eai/rest
-        merge:
-          datafile: //multi
-          inputLanguage: Deutsch
-          outputLanguage: Deutsch
-          keepFields: unresolved-ref
+refarch:
+  cosys:
+    url: https://cosysk007.srv.muenchen.de/cosys-eai/rest
+    merge:
+      datafile: //multi
+      inputLanguage: Deutsch
+      outputLanguage: Deutsch
+      keepFields: unresolved-ref
 
 server:
   shutdown: graceful

@@ -1,17 +1,11 @@
-io:
-  muenchendigital:
-    digiwf:
-      cosys:
-        merge:
-          datafile: /root/multi
-          inputLanguage: Deutsch
-          outputLanguage: Deutsch
-          keepFields: unresolved-ref
-        ssoTokenClientId: digitalwf
-        #ssoTokenRequestUrl:
-        #url:
-
-digiwf:
+refarch:
   s3:
     client:
-      documentStorageUrl: http://localhost:8081
+      document-storage-url: http://localhost:8081
+  cosys:
+    merge:
+      datafile: /root/multi
+      inputLanguage: Deutsch
+      outputLanguage: Deutsch
+      keepFields: unresolved-ref
+    ssoTokenClientId: digitalwf
