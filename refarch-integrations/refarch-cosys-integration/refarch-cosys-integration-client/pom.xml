@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
-    <artifactId>digiwf-cosys-integration-client</artifactId>
-    <name>digiwf-cosys-integration-client</name>
     <modelVersion>4.0.0</modelVersion>
-
     <parent>
-        <groupId>de.muenchen.oss.digiwf</groupId>
-        <artifactId>digiwf-cosys-integration</artifactId>
-        <version>1.14.0-SNAPSHOT</version>
+        <groupId>de.muenchen.refarch</groupId>
+        <artifactId>refarch-cosys-integration</artifactId>
+        <version>1.1.0-SNAPSHOT</version>
     </parent>
+
+    <artifactId>refarch-cosys-integration-client</artifactId>
 
     <dependencies>
         <!-- Spring -->
@@ -44,14 +42,6 @@
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
-
-        <!-- testing libraries-->
-        <dependency>
-            <groupId>de.muenchen.oss.digiwf</groupId>
-            <artifactId>digiwf-e2e-test-core</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <build>
@@ -70,9 +60,9 @@
                             <library>webclient</library>
                             <generatorName>java</generatorName>
 
-                            <apiPackage>de.muenchen.oss.digiwf.cosys.integration.api</apiPackage>
-                            <modelPackage>de.muenchen.oss.digiwf.cosys.integration.model</modelPackage>
-                            <invokerPackage>de.muenchen.oss.digiwf.cosys.integration</invokerPackage>
+                            <apiPackage>de.muenchen.refarch.integration.cosys.api</apiPackage>
+                            <modelPackage>de.muenchen.refarch.integration.cosys.model</modelPackage>
+                            <invokerPackage>de.muenchen.refarch.integration.cosys</invokerPackage>
 
                             <generateApiTests>false</generateApiTests>
                             <generateModelTests>false</generateModelTests>

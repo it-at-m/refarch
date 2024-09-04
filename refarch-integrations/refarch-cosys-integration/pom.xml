@@ -1,54 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>digiwf-cosys-integration</artifactId>
-    <packaging>pom</packaging>
-    <version>1.14.0-SNAPSHOT</version>
-    <name>digiwf-cosys-integration</name>
-    <description>CoSys integration used by DigiWF</description>
-
     <parent>
-        <artifactId>digiwf-integration-parent</artifactId>
-        <groupId>de.muenchen.oss.digiwf</groupId>
-        <relativePath>../digiwf-integration-parent</relativePath>
-        <version>1.14.0-SNAPSHOT</version>
+        <groupId>de.muenchen.refarch</groupId>
+        <artifactId>refarch-integrations</artifactId>
+        <version>1.1.0-SNAPSHOT</version>
     </parent>
 
+    <artifactId>refarch-cosys-integration</artifactId>
+    <description>CoSys integration</description>
+    <packaging>pom</packaging>
+
     <modules>
-        <module>digiwf-cosys-integration-client</module>
-        <module>digiwf-cosys-integration-core</module>
-        <module>digiwf-cosys-integration-starter</module>
-        <module>digiwf-cosys-integration-example</module>
-        <module>digiwf-cosys-integration-service</module>
+        <module>refarch-cosys-integration-client</module>
+        <module>refarch-cosys-integration-core</module>
+        <module>refarch-cosys-integration-starter</module>
+        <module>refarch-cosys-integration-example</module>
     </modules>
 
-    <!--        TODO could be removed after migrate all migrations to spring 3-->
     <dependencyManagement>
         <dependencies>
-            <!-- DigiWF -->
             <dependency>
-                <groupId>de.muenchen.oss.digiwf</groupId>
-                <artifactId>digiwf-s3-integration-client-starter</artifactId>
+                <groupId>de.muenchen.refarch</groupId>
+                <artifactId>refarch-s3-integration-client-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <dependencies>
-        <dependency>
-            <groupId>de.muenchen.oss.digiwf</groupId>
-            <artifactId>digiwf-message-starter</artifactId>
-        </dependency>
-
-        <!-- Logging -->
-        <dependency>
-            <groupId>de.muenchen.oss.digiwf</groupId>
-            <artifactId>digiwf-spring-logging-and-tracing</artifactId>
-            <type>pom</type>
-        </dependency>
-    </dependencies>
 
 </project>
