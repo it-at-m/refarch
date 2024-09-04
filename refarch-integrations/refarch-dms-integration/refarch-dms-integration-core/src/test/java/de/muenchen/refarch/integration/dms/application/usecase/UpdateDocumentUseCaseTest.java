@@ -42,8 +42,8 @@ class UpdateDocumentUseCaseTest {
 
         DocumentResponse documentResponse = updateDocumentUseCase.updateDocument(docCoo, "user", DocumentType.EINGEHEND, filepaths);
 
-        assertEquals(docCoo, documentResponse.getDocumentCoo());
-        assertEquals(fileCoos, documentResponse.getContentCoos());
+        assertEquals(docCoo, documentResponse.documentCoo());
+        assertEquals(fileCoos, documentResponse.contentCoos());
         verify(this.loadFileOutPort, times(1)).loadFiles(filepaths);
         verify(this.updateDocumentOutPort, times(1)).updateDocument(docCoo, DocumentType.EINGEHEND, List.of(content), "user");
 

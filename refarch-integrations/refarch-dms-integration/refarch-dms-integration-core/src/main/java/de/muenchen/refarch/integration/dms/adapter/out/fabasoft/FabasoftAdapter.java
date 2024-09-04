@@ -54,14 +54,14 @@ public class FabasoftAdapter implements
     @Override
     public String createFile(File file, String user) throws DmsException {
         //logging for dms team
-        log.info("calling CreateFileGI Userlogin: {} Apentry: {} Filesubj: {} Shortname: {} Apentrysearch: true", user, file.getApentryCOO(), file.getTitle(),
-                file.getTitle());
+        log.info("calling CreateFileGI Userlogin: {} Apentry: {} Filesubj: {} Shortname: {} Apentrysearch: true", user, file.apentryCOO(), file.title(),
+                file.title());
 
         final CreateFileGI request = new CreateFileGI();
         request.setUserlogin(user);
         request.setBusinessapp(this.properties.getBusinessapp());
-        request.setApentry(file.getApentryCOO());
-        request.setShortname(file.getTitle());
+        request.setApentry(file.apentryCOO());
+        request.setShortname(file.title());
         request.setApentrysearch(true); // looks for free parent entry
 
         final CreateFileGIResponse response = this.wsClient.createFileGI(request);
@@ -77,11 +77,11 @@ public class FabasoftAdapter implements
 
         final CreateProcedureGI request = new CreateProcedureGI();
         request.setUserlogin(user);
-        request.setReferrednumber(procedure.getFileCOO());
+        request.setReferrednumber(procedure.fileCOO());
         request.setBusinessapp(this.properties.getBusinessapp());
-        request.setShortname(procedure.getTitle());
-        if (StringUtils.isNotBlank(procedure.getFileSubj())) {
-            request.setFilesubj(procedure.getFileSubj());
+        request.setShortname(procedure.title());
+        if (StringUtils.isNotBlank(procedure.fileSubj())) {
+            request.setFilesubj(procedure.fileSubj());
         }
         request.setFiletype("Elektronisch");
 
@@ -89,12 +89,12 @@ public class FabasoftAdapter implements
 
         dmsErrorHandler.handleError(response.getStatus(), response.getErrormessage());
 
-        return new Procedure(response.getObjid(), procedure.getFileCOO(), procedure.getFileSubj(), procedure.getTitle());
+        return new Procedure(response.getObjid(), procedure.fileCOO(), procedure.fileSubj(), procedure.title());
     }
 
     @Override
     public String createDocument(final Document document, final String user) throws DmsException {
-        return switch (document.getType()) {
+        return switch (document.type()) {
         case EINGEHEND -> this.createIncomingDocument(document, user);
         case AUSGEHEND -> this.createOutgoingDocument(document, user);
         case INTERN -> this.createInternalDocument(document, user);
@@ -103,22 +103,22 @@ public class FabasoftAdapter implements
 
     private String createIncomingDocument(final Document document, final String user) throws DmsException {
         //logging for dms team
-        log.info("calling CreateIncomingGI Userlogin: {} Referrednumber: {} Shortname: {} Filesubj: {}", user, document.getProcedureCOO(), document.getTitle(),
-                document.getTitle());
+        log.info("calling CreateIncomingGI Userlogin: {} Referrednumber: {} Shortname: {} Filesubj: {}", user, document.procedureCOO(), document.title(),
+                document.title());
 
         final CreateIncomingGI request = new CreateIncomingGI();
         request.setUserlogin(user);
-        request.setReferrednumber(document.getProcedureCOO());
+        request.setReferrednumber(document.procedureCOO());
         request.setBusinessapp(this.properties.getBusinessapp());
-        request.setShortname(document.getTitle());
-        if (document.getDate() != null) {
-            request.setDelivery(this.convertDate(document.getDate()));
+        request.setShortname(document.title());
+        if (document.date() != null) {
+            request.setDelivery(this.convertDate(document.date()));
         }
 
         final ArrayOfLHMBAI151700GIAttachmentType attachmentType = new ArrayOfLHMBAI151700GIAttachmentType();
         final List<LHMBAI151700GIAttachmentType> files = attachmentType.getLHMBAI151700GIAttachmentType();
 
-        for (final Content content : document.getContents()) {
+        for (final Content content : document.contents()) {
             files.add(this.parseContent(content));
         }
 
@@ -133,23 +133,23 @@ public class FabasoftAdapter implements
 
     private String createOutgoingDocument(final Document document, final String user) throws DmsException {
         //logging for dms team
-        log.info("calling CreateOutgoingGI Userlogin: {} Referrednumber: {} Shortname: {} Filesubj: {}", user, document.getProcedureCOO(), document.getTitle(),
-                document.getTitle());
+        log.info("calling CreateOutgoingGI Userlogin: {} Referrednumber: {} Shortname: {} Filesubj: {}", user, document.procedureCOO(), document.title(),
+                document.title());
 
         final CreateOutgoingGI request = new CreateOutgoingGI();
         request.setUserlogin(user);
-        request.setReferrednumber(document.getProcedureCOO());
+        request.setReferrednumber(document.procedureCOO());
         request.setBusinessapp(this.properties.getBusinessapp());
 
-        request.setShortname(document.getTitle());
-        if (document.getDate() != null) {
-            request.setOutgoingdate(this.convertDate(document.getDate()));
+        request.setShortname(document.title());
+        if (document.date() != null) {
+            request.setOutgoingdate(this.convertDate(document.date()));
         }
 
         final ArrayOfLHMBAI151700GIAttachmentType attachmentType = new ArrayOfLHMBAI151700GIAttachmentType();
         final List<LHMBAI151700GIAttachmentType> files = attachmentType.getLHMBAI151700GIAttachmentType();
 
-        for (final Content content : document.getContents()) {
+        for (final Content content : document.contents()) {
             files.add(this.parseContent(content));
         }
 
@@ -164,22 +164,22 @@ public class FabasoftAdapter implements
 
     private String createInternalDocument(final Document document, final String user) throws DmsException {
         //logging for dms team
-        log.info("calling CreateInternalGI Userlogin: {} Referrednumber: {} Shortname: {} Filesubj: {}", user, document.getProcedureCOO(), document.getTitle(),
-                document.getTitle());
+        log.info("calling CreateInternalGI Userlogin: {} Referrednumber: {} Shortname: {} Filesubj: {}", user, document.procedureCOO(), document.title(),
+                document.title());
 
         final CreateInternalGI request = new CreateInternalGI();
         request.setUserlogin(user);
-        request.setReferrednumber(document.getProcedureCOO());
+        request.setReferrednumber(document.procedureCOO());
         request.setBusinessapp(this.properties.getBusinessapp());
-        request.setShortname(document.getTitle());
-        if (document.getDate() != null) {
-            request.setDeliverydate(this.convertDate(document.getDate()));
+        request.setShortname(document.title());
+        if (document.date() != null) {
+            request.setDeliverydate(this.convertDate(document.date()));
         }
 
         final ArrayOfLHMBAI151700GIAttachmentType attachmentType = new ArrayOfLHMBAI151700GIAttachmentType();
         final List<LHMBAI151700GIAttachmentType> files = attachmentType.getLHMBAI151700GIAttachmentType();
 
-        for (final Content content : document.getContents()) {
+        for (final Content content : document.contents()) {
             files.add(this.parseContent(content));
         }
 
@@ -291,9 +291,9 @@ public class FabasoftAdapter implements
 
     private LHMBAI151700GIAttachmentType parseContent(final Content content) {
         final LHMBAI151700GIAttachmentType attachment = new LHMBAI151700GIAttachmentType();
-        attachment.setLHMBAI151700Filecontent(content.getContent());
-        attachment.setLHMBAI151700Fileextension(content.getExtension());
-        attachment.setLHMBAI151700Filename(content.getName());
+        attachment.setLHMBAI151700Filecontent(content.content());
+        attachment.setLHMBAI151700Fileextension(content.extension());
+        attachment.setLHMBAI151700Filename(content.name());
         return attachment;
     }
 

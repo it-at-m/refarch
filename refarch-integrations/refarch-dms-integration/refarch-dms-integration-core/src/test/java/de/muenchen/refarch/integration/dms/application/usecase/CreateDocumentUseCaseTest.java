@@ -43,8 +43,8 @@ class CreateDocumentUseCaseTest {
 
         DocumentResponse documentResponse = createDocumentUseCase.createDocument("procedureCOO", "title", testDate, "user", DocumentType.EINGEHEND, filepaths);
 
-        assertEquals(docCoo, documentResponse.getDocumentCoo());
-        assertEquals(fileCoos, documentResponse.getContentCoos());
+        assertEquals(docCoo, documentResponse.documentCoo());
+        assertEquals(fileCoos, documentResponse.contentCoos());
         verify(this.loadFileOutPort, times(1)).loadFiles(filepaths);
         verify(this.createDocumentOutPort, times(1)).createDocument(new Document("procedureCOO", "title", testDate, DocumentType.EINGEHEND, List.of(content)),
                 user);

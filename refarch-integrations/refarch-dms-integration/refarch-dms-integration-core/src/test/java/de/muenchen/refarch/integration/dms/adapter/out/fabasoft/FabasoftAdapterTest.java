@@ -69,7 +69,7 @@ class FabasoftAdapterTest {
 
         val procedureResponse = fabasoftAdapter.createProcedure(procedure, "user");
 
-        assertEquals(procedureResponse.getCoo(), "1234567890");
+        assertEquals(procedureResponse.coo(), "1234567890");
     }
 
     @Test
@@ -335,8 +335,8 @@ class FabasoftAdapterTest {
 
         val metadata = fabasoftAdapter.readMetadata("coo", "user");
 
-        assertThat(metadata.getName()).isEqualTo("name");
-        assertThat(metadata.getType()).isEqualTo("Vorgang");
+        assertThat(metadata.name()).isEqualTo("name");
+        assertThat(metadata.type()).isEqualTo("Vorgang");
     }
 
     @Test
@@ -356,8 +356,8 @@ class FabasoftAdapterTest {
 
         val metadata = fabasoftAdapter.readContentMetadata("coo", "user");
 
-        assertThat(metadata.getName()).isEqualTo("name");
-        assertThat(metadata.getType()).isEqualTo("pdf");
+        assertThat(metadata.name()).isEqualTo("name");
+        assertThat(metadata.type()).isEqualTo("pdf");
     }
 
 }

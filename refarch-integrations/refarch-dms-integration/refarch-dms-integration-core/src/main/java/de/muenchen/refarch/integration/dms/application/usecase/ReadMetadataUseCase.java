@@ -29,10 +29,10 @@ public class ReadMetadataUseCase implements ReadMetadataInPort {
 
         String object = objectclass == ObjectType.Intern ? "Internes Dokument" : objectclass.toString();
 
-        if (!object.equals(metadata.getType())) {
+        if (!object.equals(metadata.type())) {
             throw new DmsException("WRONG_INPUT_OBJECT_CLASS", String.format(
                     "The input object with the COO address %s is invalid because it is of the object class %s and this does not match the expected object class(es) %s.",
-                    coo, metadata.getType(), objectclass));
+                    coo, metadata.type(), objectclass));
         }
         return metadata;
 

@@ -1,11 +1,4 @@
 package de.muenchen.refarch.integration.dms.domain.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
-@Data
-@AllArgsConstructor
-public class File {
-    private String apentryCOO;
-    private String title;
+public record File(String apentryCOO, String title) {
 }

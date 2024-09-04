@@ -1,19 +1,8 @@
 package de.muenchen.refarch.integration.dms.domain.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
 import java.time.LocalDate;
 import java.util.List;
 
-@Data
-@AllArgsConstructor
-public class Document {
-
-    private String procedureCOO;
-    private String title;
-    private LocalDate date;
-    private DocumentType type;
-    private List<Content> contents;
+public record Document(String procedureCOO, String title, LocalDate date, DocumentType type, List<Content> contents) {
 
 }
