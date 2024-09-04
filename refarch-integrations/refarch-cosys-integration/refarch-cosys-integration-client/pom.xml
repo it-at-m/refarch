@@ -10,6 +10,12 @@
 
     <artifactId>refarch-cosys-integration-client</artifactId>
 
+    <properties>
+        <openapi-generator-maven-plugin.version>7.8.0</openapi-generator-maven-plugin.version>
+
+        <jackson-databind-nullable.version>0.2.6</jackson-databind-nullable.version>
+    </properties>
+
     <dependencies>
         <!-- Spring -->
         <dependency>
@@ -31,12 +37,9 @@
             <artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>jsr305</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.openapitools</groupId>
             <artifactId>jackson-databind-nullable</artifactId>
+            <version>${jackson-databind-nullable.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
@@ -49,6 +52,7 @@
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>${openapi-generator-maven-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>cosys-api</id>
