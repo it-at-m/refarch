@@ -6,6 +6,8 @@ Collection of different integration which can be used as is in RefArch projects.
 
 - [s3-integration](./refarch-s3-integration/README.md): For CRUD operations on a s3 storage. Also used for file handling
   in other integrations.
+- [email-integration](./refarch-email-integration/README.md): For sending text and html emails with attachments. Uses
+  s3-integration for file handling.
 
 ## Naming conventions
 
