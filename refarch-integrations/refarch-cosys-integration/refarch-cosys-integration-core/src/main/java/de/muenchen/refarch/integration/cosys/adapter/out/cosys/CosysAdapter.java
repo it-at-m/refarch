@@ -32,10 +32,10 @@ public class CosysAdapter implements GenerateDocumentOutPort {
     public Mono<byte[]> generateCosysDocument(final GenerateDocument generateDocument) throws CosysException {
         try {
             return this.generationApi.generatePdfWithResponseSpec(
-                            generateDocument.getGuid(),
-                            generateDocument.getClient(),
-                            generateDocument.getRole(),
-                            FileUtils.createFile(DATA_FILE_NAME, generateDocument.getVariables().toString().getBytes(StandardCharsets.UTF_8)),
+                            generateDocument.guid(),
+                            generateDocument.client(),
+                            generateDocument.role(),
+                            FileUtils.createFile(DATA_FILE_NAME, generateDocument.variables().toString().getBytes(StandardCharsets.UTF_8)),
                             null,
                             null,
                             null,

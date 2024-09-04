@@ -62,9 +62,9 @@ class CosysAdapterTest {
         //then
 
         verify(generationApi).generatePdfWithResponseSpec(
-                generateDocument.getGuid(),
-                generateDocument.getClient(),
-                generateDocument.getRole(),
+                generateDocument.guid(),
+                generateDocument.client(),
+                generateDocument.role(),
                 dataFileCaptor.getValue(),
                 null,
                 null,
