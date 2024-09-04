@@ -4,97 +4,151 @@ changelog:
     - title: Gateway - 🎉 New Features
       labels:
         - "Type: Feature"
-      exclude: &filter-gateway
+      exclude:
         labels:
           - "Component: Integrations"
           - "Component: CLI"
     - title: Gateway - 🐞 Bug Fixes
       labels:
         - "Type: Bug"
-      exclude: *filter-gateway
+      exclude:
+        labels:
+          - "Component: Integrations"
+          - "Component: CLI"
     - title: Gateway - 🔨 Maintenance
       labels:
         - "Type: Maintenance"
-      exclude: *filter-gateway
+      exclude:
+        labels:
+          - "Component: Integrations"
+          - "Component: CLI"
     - title: Gateway - 📔 Documentation
       labels:
         - "Type: Documentation"
-      exclude: *filter-gateway
+      exclude:
+        labels:
+          - "Component: Integrations"
+          - "Component: CLI"
     - title: Gateway - ⬆️ Dependency Upgrades
       labels:
         - "Type: Dependency"
-      exclude: *filter-gateway
+      exclude:
+        labels:
+          - "Component: Integrations"
+          - "Component: CLI"
     - title: Gateway - 🔒️ Security
       labels:
         - "Type: Security"
-      exclude: *filter-gateway
+      exclude:
+        labels:
+          - "Component: Integrations"
+          - "Component: CLI"
     - title: Gateway - 💥 Breaking Changes
       labels:
         - BREAKING
-      exclude: *filter-gateway
+      exclude:
+        labels:
+          - "Component: Integrations"
+          - "Component: CLI"
 
     # refarch-integrations
     - title: Integrations - 🎉 New Features
       labels:
         - "Type: Feature"
-      exclude: &filter-integrations
+      exclude:
         labels:
           - "Component: API-Gateway"
           - "Component: CLI"
     - title: Integrations - 🐞 Bug Fixes
       labels:
         - "Type: Bug"
-      exclude: *filter-integrations
+      exclude:
+        labels:
+          - "Component: API-Gateway"
+          - "Component: CLI"
     - title: Integrations - 🔨 Maintenance
       labels:
         - "Type: Maintenance"
-      exclude: *filter-integrations
+      exclude:
+        labels:
+          - "Component: API-Gateway"
+          - "Component: CLI"
     - title: Integrations - 📔 Documentation
       labels:
         - "Type: Documentation"
-      exclude: *filter-integrations
+      exclude:
+        labels:
+          - "Component: API-Gateway"
+          - "Component: CLI"
     - title: Integrations - ⬆️ Dependency Upgrades
       labels:
         - "Type: Dependency"
-      exclude: *filter-integrations
+      exclude:
+        labels:
+          - "Component: API-Gateway"
+          - "Component: CLI"
     - title: Integrations - 🔒️ Security
       labels:
         - "Type: Security"
-      exclude: *filter-integrations
+      exclude:
+        labels:
+          - "Component: API-Gateway"
+          - "Component: CLI"
     - title: Integrations - 💥 Breaking Changes
       labels:
         - BREAKING
-      exclude: *filter-integrations
+      exclude:
+        labels:
+          - "Component: API-Gateway"
+          - "Component: CLI"
 
     # refarch-cli
     - title: CLI - 🎉 New Features
       labels:
         - "Type: Feature"
-      exclude: &filter-cli
+      exclude:
         labels:
           - "Component: API-Gateway"
           - "Component: Integrations"
     - title: CLI - 🐞 Bug Fixes
       labels:
         - "Type: Bug"
-      exclude: *filter-cli
+      exclude:
+        labels:
+          - "Component: API-Gateway"
+          - "Component: Integrations"
     - title: CLI - 🔨 Maintenance
       labels:
         - "Type: Maintenance"
-      exclude: *filter-cli
+      exclude:
+        labels:
+          - "Component: API-Gateway"
+          - "Component: Integrations"
     - title: CLI - 📔 Documentation
       labels:
         - "Type: Documentation"
-      exclude: *filter-cli
+      exclude:
+        labels:
+          - "Component: API-Gateway"
+          - "Component: Integrations"
     - title: CLI - ⬆️ Dependency Upgrades
       labels:
         - "Type: Dependency"
-      exclude: *filter-cli
+      exclude:
+        labels:
+          - "Component: API-Gateway"
+          - "Component: Integrations"
     - title: CLI - 🔒️ Security
       labels:
         - "Type: Security"
-      exclude: *filter-cli
+      exclude:
+        labels:
+          - "Component: API-Gateway"
+          - "Component: Integrations"
     - title: CLI - 💥 Breaking Changes
       labels:
         - BREAKING
-      exclude: *filter-cli
+      exclude:
+        labels:
+          - "Component: API-Gateway"
+          - "Component: Integrations"
