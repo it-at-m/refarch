@@ -45,8 +45,7 @@ public interface AddressClientOutPort {
     /**
      * Search for addresses in Munich.
      */
-    MuenchenAdresseResponse searchAddresses(final SearchAddressesModel searchAddressesModel) throws
-            AddressServiceIntegrationException;
+    MuenchenAdresseResponse searchAddresses(final SearchAddressesModel searchAddressesModel) throws AddressServiceIntegrationException;
 
     /**
      * Search for addresses in Munich.

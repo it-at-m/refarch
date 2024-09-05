@@ -36,7 +36,7 @@ public class AddressClientOutAdapter implements AddressClientOutPort {
         try {
             return this.addressGermanyApi.searchAddresses(searchAddressesGermanyModel);
         } catch (final
-        AddressServiceIntegrationException | AddressServiceIntegrationServerErrorException | AddressServiceIntegrationClientErrorException exception) {
+                AddressServiceIntegrationException | AddressServiceIntegrationServerErrorException | AddressServiceIntegrationClientErrorException exception) {
             throw new AddressServiceIntegrationException(exception.getMessage(), exception);
         }
     }
@@ -46,7 +46,7 @@ public class AddressClientOutAdapter implements AddressClientOutPort {
         try {
             return this.addressMunichApi.checkAddress(checkAddressesModel);
         } catch (final
-        AddressServiceIntegrationException | AddressServiceIntegrationServerErrorException | AddressServiceIntegrationClientErrorException exception) {
+                AddressServiceIntegrationException | AddressServiceIntegrationServerErrorException | AddressServiceIntegrationClientErrorException exception) {
             throw new AddressServiceIntegrationException(exception.getMessage(), exception);
         }
     }
@@ -56,7 +56,7 @@ public class AddressClientOutAdapter implements AddressClientOutPort {
         try {
             return this.addressMunichApi.listAddresses(listAddressesModel);
         } catch (final
-        AddressServiceIntegrationException | AddressServiceIntegrationServerErrorException | AddressServiceIntegrationClientErrorException exception) {
+                AddressServiceIntegrationException | AddressServiceIntegrationServerErrorException | AddressServiceIntegrationClientErrorException exception) {
             throw new AddressServiceIntegrationException(exception.getMessage(), exception);
         }
     }
@@ -66,7 +66,7 @@ public class AddressClientOutAdapter implements AddressClientOutPort {
         try {
             return this.addressMunichApi.listChanges(listAddressChangesModel);
         } catch (final
-        AddressServiceIntegrationException | AddressServiceIntegrationServerErrorException | AddressServiceIntegrationClientErrorException exception) {
+                AddressServiceIntegrationException | AddressServiceIntegrationServerErrorException | AddressServiceIntegrationClientErrorException exception) {
             throw new AddressServiceIntegrationException(exception.getMessage(), exception);
         }
     }
@@ -77,7 +77,7 @@ public class AddressClientOutAdapter implements AddressClientOutPort {
         try {
             return this.addressMunichApi.searchAddresses(searchAddressesModel);
         } catch (final
-        AddressServiceIntegrationException | AddressServiceIntegrationServerErrorException | AddressServiceIntegrationClientErrorException exception) {
+                AddressServiceIntegrationException | AddressServiceIntegrationServerErrorException | AddressServiceIntegrationClientErrorException exception) {
             throw new AddressServiceIntegrationException(exception.getMessage(), exception);
         }
     }
@@ -88,7 +88,7 @@ public class AddressClientOutAdapter implements AddressClientOutPort {
         try {
             return this.addressMunichApi.searchAddressesGeo(searchAddressesGeoModel);
         } catch (final
-        AddressServiceIntegrationException | AddressServiceIntegrationServerErrorException | AddressServiceIntegrationClientErrorException exception) {
+                AddressServiceIntegrationException | AddressServiceIntegrationServerErrorException | AddressServiceIntegrationClientErrorException exception) {
             throw new AddressServiceIntegrationException(exception.getMessage(), exception);
         }
     }
@@ -98,7 +98,7 @@ public class AddressClientOutAdapter implements AddressClientOutPort {
         try {
             return this.streetsMunichApi.findStreetsById(streetId);
         } catch (final
-        AddressServiceIntegrationException | AddressServiceIntegrationServerErrorException | AddressServiceIntegrationClientErrorException exception) {
+                AddressServiceIntegrationException | AddressServiceIntegrationServerErrorException | AddressServiceIntegrationClientErrorException exception) {
             throw new AddressServiceIntegrationException(exception.getMessage(), exception);
         }
     }
@@ -108,7 +108,7 @@ public class AddressClientOutAdapter implements AddressClientOutPort {
         try {
             return this.streetsMunichApi.listStreets(listStreetsModel);
         } catch (final
-        AddressServiceIntegrationException | AddressServiceIntegrationServerErrorException | AddressServiceIntegrationClientErrorException exception) {
+                AddressServiceIntegrationException | AddressServiceIntegrationServerErrorException | AddressServiceIntegrationClientErrorException exception) {
             throw new AddressServiceIntegrationException(exception.getMessage(), exception);
         }
     }

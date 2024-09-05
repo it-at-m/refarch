@@ -103,8 +103,7 @@ public class AddressServiceIntegrationAutoConfiguration {
     public AddressClientOutPort addressClientOutPort(
             final AddressGermanyApi addressGermanyApi,
             final AddressMunichApi addressMunichApi,
-            final StreetsMunichApi streetsMunichApi
-    ) {
+            final StreetsMunichApi streetsMunichApi) {
         return new AddressClientOutAdapter(addressGermanyApi, addressMunichApi, streetsMunichApi);
     }
 
