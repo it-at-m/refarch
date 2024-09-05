@@ -36,7 +36,7 @@ public class CsrfProtectionMatcher implements ServerWebExchangeMatcher {
     }
 
     private boolean isWhitelisted(final String path) {
-        for (String whitelisted : securityProperties.getCsrfWhitelisted()) {
+        for (final String whitelisted : securityProperties.getCsrfWhitelisted()) {
             if (new AntPathMatcher().match(whitelisted, path)) {
                 return true;
             }

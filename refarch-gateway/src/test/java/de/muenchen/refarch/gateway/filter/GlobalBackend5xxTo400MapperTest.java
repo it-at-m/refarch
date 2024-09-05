@@ -44,7 +44,8 @@ class GlobalBackend5xxTo400MapperTest {
                         .withStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())
                         .withHeaders(new HttpHeaders(
                                 new HttpHeader(org.springframework.http.HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType()),
-                                new HttpHeader(org.springframework.http.HttpHeaders.WWW_AUTHENTICATE, "Bearer realm=\"Access to the staging site\", charset=\"UTF-8\""),
+                                new HttpHeader(org.springframework.http.HttpHeaders.WWW_AUTHENTICATE,
+                                        "Bearer realm=\"Access to the staging site\", charset=\"UTF-8\""),
                                 new HttpHeader(org.springframework.http.HttpHeaders.EXPIRES, "Wed, 21 Oct 2099 07:28:06 GMT")))
                         .withBody("{ \"testkey\" : \"testvalue\" }")));
 
@@ -67,7 +68,8 @@ class GlobalBackend5xxTo400MapperTest {
                         .withStatus(HttpStatus.OK.value())
                         .withHeaders(new HttpHeaders(
                                 new HttpHeader(org.springframework.http.HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType()),
-                                new HttpHeader(org.springframework.http.HttpHeaders.WWW_AUTHENTICATE, "Bearer realm=\"Access to the staging site\", charset=\"UTF-8\""),
+                                new HttpHeader(org.springframework.http.HttpHeaders.WWW_AUTHENTICATE,
+                                        "Bearer realm=\"Access to the staging site\", charset=\"UTF-8\""),
                                 new HttpHeader(org.springframework.http.HttpHeaders.EXPIRES, "Wed, 21 Oct 2099 07:28:06 GMT")))
                         .withBody("{ \"testkey\" : \"testvalue\" }")));
 

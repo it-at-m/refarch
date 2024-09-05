@@ -83,7 +83,7 @@ public class SecurityConfiguration {
                 })
                 .oauth2Login(oAuth2LoginSpec -> oAuth2LoginSpec.authenticationSuccessHandler(new RedirectServerAuthenticationSuccessHandler() {
                     @Override
-                    public Mono<Void> onAuthenticationSuccess(WebFilterExchange webFilterExchange, Authentication authentication) {
+                    public Mono<Void> onAuthenticationSuccess(final WebFilterExchange webFilterExchange, final Authentication authentication) {
                         webFilterExchange.getExchange().getSession().subscribe(
                                 webSession -> webSession.setMaxIdleTime(Duration.ofSeconds(springSessionTimeoutSeconds)));
                         return super.onAuthenticationSuccess(webFilterExchange, authentication);

@@ -48,7 +48,7 @@ public class GlobalBackend5xxTo400Mapper implements GlobalFilter, Ordered {
 
     @Override
     public Mono<Void> filter(final ServerWebExchange exchange, final GatewayFilterChain chain) {
-        final String EMPTY_JSON_OBJECT = "{}";
+        final String emptyJsonObject = "{}";
         final ServerHttpResponse response = exchange.getResponse();
         final ServerHttpRequest request = exchange.getRequest();
         final DataBufferFactory dataBufferFactory = response.bufferFactory();
@@ -81,11 +81,11 @@ public class GlobalBackend5xxTo400Mapper implements GlobalFilter, Ordered {
                                 if (map5xxTo400) {
                                     getDelegate().setStatusCode(HttpStatus.BAD_REQUEST);
                                     newDataBuffer = dataBufferFactory.wrap(
-                                            ObjectUtils.defaultIfNull(GENERIC_ERROR_400, EMPTY_JSON_OBJECT).getBytes(StandardCharsets.UTF_8));
+                                            ObjectUtils.defaultIfNull(GENERIC_ERROR_400, emptyJsonObject).getBytes(StandardCharsets.UTF_8));
                                 } else {
                                     getDelegate().setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
                                     newDataBuffer = dataBufferFactory.wrap(
-                                            ObjectUtils.defaultIfNull(GENERIC_ERROR_500, EMPTY_JSON_OBJECT).getBytes(StandardCharsets.UTF_8));
+                                            ObjectUtils.defaultIfNull(GENERIC_ERROR_500, emptyJsonObject).getBytes(StandardCharsets.UTF_8));
                                 }
 
                                 getDelegate().getHeaders().setContentLength(newDataBuffer.readableByteCount());

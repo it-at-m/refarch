@@ -75,7 +75,7 @@ public class WebSessionConfiguration {
         joinConfig.getMulticastConfig().setEnabled(false);
         joinConfig.getTcpIpConfig()
                 .setEnabled(true)
-                .addMember("127.0.0.1");
+                .addMember("localhost");
 
         return hazelcastConfig;
     }

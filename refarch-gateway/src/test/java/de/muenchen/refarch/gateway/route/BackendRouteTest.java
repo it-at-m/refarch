@@ -39,7 +39,8 @@ class BackendRouteTest {
                         .withStatus(HttpStatus.OK.value())
                         .withHeaders(new HttpHeaders(
                                 new HttpHeader(org.springframework.http.HttpHeaders.CONTENT_TYPE, "application/json"),
-                                new HttpHeader(org.springframework.http.HttpHeaders.WWW_AUTHENTICATE, "Bearer realm=\"Access to the staging site\", charset=\"UTF-8\""), // removed by route filter
+                                new HttpHeader(org.springframework.http.HttpHeaders.WWW_AUTHENTICATE,
+                                        "Bearer realm=\"Access to the staging site\", charset=\"UTF-8\""), // removed by route filter
                                 new HttpHeader(org.springframework.http.HttpHeaders.EXPIRES, "Wed, 21 Oct 2099 07:28:06 GMT") // removed by route filter
                         ))
                         .withBody("{ \"testkey\" : \"testvalue\" }")));
@@ -49,7 +50,8 @@ class BackendRouteTest {
     @WithMockUser
     void backendRouteResponse() {
         webTestClient.get().uri("/api/refarch-gateway-backend-service/remote/endpoint")
-                .header(org.springframework.http.HttpHeaders.COOKIE, "SESSION=5cfb01a3-b691-4ca9-8735-a05690e6c2ec; XSRF-TOKEN=4d82f9f1-41f6-4a09-994a-df99d30d1be9") // removed by default-filter
+                .header(org.springframework.http.HttpHeaders.COOKIE,
+                        "SESSION=5cfb01a3-b691-4ca9-8735-a05690e6c2ec; XSRF-TOKEN=4d82f9f1-41f6-4a09-994a-df99d30d1be9") // removed by default-filter
                 .header(XSRF_HEADER_NAME, "5cfb01a3-b691-4ca9-8735-a05690e6c2ec") // angular specific -> removed by default-filter
                 .header(org.springframework.http.HttpHeaders.CONTENT_TYPE, "application/hal+json")
                 .exchange()

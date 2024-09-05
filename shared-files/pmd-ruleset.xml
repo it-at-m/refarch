@@ -31,4 +31,10 @@
     <rule ref="category/java/multithreading.xml">
         <exclude name="UseConcurrentHashMap"/>
     </rule>
+    <rule ref="category/java/bestpractices.xml/JUnitTestsShouldIncludeAssert">
+        <properties>
+            <!-- From Spring WebTestClient -->
+            <property name="extraAssertMethodNames" value="expectStatus,expectHeader" />
+        </properties>
+    </rule>
 </ruleset>
