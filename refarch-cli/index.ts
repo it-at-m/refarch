@@ -107,8 +107,7 @@ function generateBackend(
   });
   const replacements = [
     {
-      files:
-        "refarch-backend-copy/src/main/java/de/muenchen/refarch/**/*.java",
+      files: "refarch-backend-copy/src/main/java/de/muenchen/refarch/**/*.java",
       from: /de.muenchen.refarch/g,
       to: `${packageName}`,
     },
@@ -128,11 +127,12 @@ function generateBackend(
   ];
   replacements.map((options) => replaceInFileSync(options));
   renameSync("refarch-backend-copy", `${artifactId}`);
-  const packageNameWithSlashes = packageName.replace(/\./g,'/')
+  const packageNameWithSlashes = packageName.replace(/\./g, "/");
 
-    renameSync(`${artifactId}/src/main/java/de/muenchen/refarch`, `${artifactId}/src/main/java/${packageNameWithSlashes}`);
-
-
+  renameSync(
+    `${artifactId}/src/main/java/de/muenchen/refarch`,
+    `${artifactId}/src/main/java/${packageNameWithSlashes}`
+  );
 }
 
 async function generateFrontendInteractiveCli() {
@@ -200,8 +200,11 @@ function generateEAI(packageName: string, groupId: string, artifactId: string) {
   ];
   replacements.map((options) => replaceInFileSync(options));
   renameSync("refarch-eai-copy", `${artifactId}`);
-  const packageNameWithSlashes = packageName.replace(/\./g,'/')
-  renameSync(`${artifactId}/src/main/java/de/muenchen/refarch`, `${artifactId}/src/main/java/${packageNameWithSlashes}`);
+  const packageNameWithSlashes = packageName.replace(/\./g, "/");
+  renameSync(
+    `${artifactId}/src/main/java/de/muenchen/refarch`,
+    `${artifactId}/src/main/java/${packageNameWithSlashes}`
+  );
 }
 
 /**
@@ -210,7 +213,7 @@ function generateEAI(packageName: string, groupId: string, artifactId: string) {
 async function generateDefaultCliForDocsAndStack() {
   keepDocs = await confirm({ message: "Want to keep the Docs folder" });
   keepStack = await confirm({ message: "Want to keep the Stack folder" });
-  cleanup()
+  cleanup();
 }
 
 /**
