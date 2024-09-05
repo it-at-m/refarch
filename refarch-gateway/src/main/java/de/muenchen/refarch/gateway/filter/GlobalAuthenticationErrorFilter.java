@@ -46,7 +46,7 @@ public class GlobalAuthenticationErrorFilter implements GlobalFilter, Ordered {
         log.debug("Check for authentication errors");
         final HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
         final String newResponseBody = GENERIC_AUTHENTICATION_ERROR;
-        final String EMPTY_JSON_OBJECT = "{}";
+        final String emptyJsonObject = "{}";
 
         final ServerHttpResponse response = exchange.getResponse();
 
@@ -63,12 +63,12 @@ public class GlobalAuthenticationErrorFilter implements GlobalFilter, Ordered {
              */
             @Override
             @NonNull
-            public Mono<Void> writeWith(@NonNull Publisher<? extends DataBuffer> body) {
+            public Mono<Void> writeWith(@NonNull final Publisher<? extends DataBuffer> body) {
                 final HttpStatusCode responseHttpStatus = getDelegate().getStatusCode();
                 if (body instanceof Flux<? extends DataBuffer> flux && responseHttpStatus.equals(httpStatus)) {
                     final DataBufferFactory dataBufferFactory = response.bufferFactory();
                     final DataBuffer newDataBuffer = dataBufferFactory.wrap(
-                            ObjectUtils.defaultIfNull(newResponseBody, EMPTY_JSON_OBJECT).getBytes(StandardCharsets.UTF_8));
+                            ObjectUtils.defaultIfNull(newResponseBody, emptyJsonObject).getBytes(StandardCharsets.UTF_8));
 
                     log.debug("Response from upstream {} get new response body: {}", httpStatus, newResponseBody);
                     getDelegate().getHeaders().setContentLength(newDataBuffer.readableByteCount());

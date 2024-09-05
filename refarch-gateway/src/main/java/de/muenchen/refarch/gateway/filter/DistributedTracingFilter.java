@@ -1,5 +1,6 @@
 package de.muenchen.refarch.gateway.filter;
 
+import io.micrometer.tracing.Span;
 import io.micrometer.tracing.Tracer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,13 +35,13 @@ public class DistributedTracingFilter implements WebFilter {
      *         complete
      */
     @Override
-    public Mono<Void> filter(ServerWebExchange serverWebExchange,
-            WebFilterChain webFilterChain) {
-        ServerHttpResponse response = serverWebExchange.getResponse();
+    public Mono<Void> filter(final ServerWebExchange serverWebExchange,
+            final WebFilterChain webFilterChain) {
+        final ServerHttpResponse response = serverWebExchange.getResponse();
         response.beforeCommit(() -> {
-            var span = tracer.currentSpan();
+            final Span span = tracer.currentSpan();
             if (span != null) {
-                HttpHeaders headers = response.getHeaders();
+                final HttpHeaders headers = response.getHeaders();
                 headers.add(TRACE_ID, span.context().traceId());
                 headers.add(SPAN_ID, span.context().spanId());
             } else {

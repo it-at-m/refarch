@@ -6,6 +6,7 @@ import static de.muenchen.refarch.gateway.TestConstants.SPRING_TEST_PROFILE;
 import com.github.tomakehurst.wiremock.http.HttpHeader;
 import com.github.tomakehurst.wiremock.http.HttpHeaders;
 import de.muenchen.refarch.gateway.ApiGatewayApplication;
+import org.apache.http.entity.ContentType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,28 +31,28 @@ import org.springframework.test.web.reactive.server.WebTestClient;
                 "config.map5xxto400=true",
         }
 )
-public class GlobalBackend5xxTo400MapperTest {
+class GlobalBackend5xxTo400MapperTest {
     @Autowired
     private WebTestClient webTestClient;
 
     @Test
     @WithMockUser
-    public void backendError500() {
+    void backendError500() {
 
         stubFor(get(urlEqualTo("/remote"))
                 .willReturn(aResponse()
                         .withStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())
                         .withHeaders(new HttpHeaders(
-                                new HttpHeader("Content-Type", "application/json"),
-                                new HttpHeader("WWW-Authenticate", "Bearer realm=\"Access to the staging site\", charset=\"UTF-8\""),
-                                new HttpHeader("Expires", "Wed, 21 Oct 2099 07:28:06 GMT")))
+                                new HttpHeader(org.springframework.http.HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType()),
+                                new HttpHeader(org.springframework.http.HttpHeaders.WWW_AUTHENTICATE, "Bearer realm=\"Access to the staging site\", charset=\"UTF-8\""),
+                                new HttpHeader(org.springframework.http.HttpHeaders.EXPIRES, "Wed, 21 Oct 2099 07:28:06 GMT")))
                         .withBody("{ \"testkey\" : \"testvalue\" }")));
 
         webTestClient.get().uri("/api/refarch-gateway-backend-service/remote").exchange()
                 .expectStatus().isEqualTo(HttpStatus.BAD_REQUEST)
-                .expectHeader().valueMatches("Content-Type", "application/json")
-                .expectHeader().doesNotExist("WWW-Authenticate")
-                .expectHeader().valueMatches("Expires", "0")
+                .expectHeader().valueMatches(org.springframework.http.HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType())
+                .expectHeader().doesNotExist(org.springframework.http.HttpHeaders.WWW_AUTHENTICATE)
+                .expectHeader().valueMatches(org.springframework.http.HttpHeaders.EXPIRES, "0")
                 .expectBody()
                 .jsonPath("$.status").isEqualTo("400")
                 .jsonPath("$.error").isEqualTo("Bad Request");
@@ -59,22 +60,22 @@ public class GlobalBackend5xxTo400MapperTest {
 
     @Test
     @WithMockUser
-    public void backendError200() {
+    void backendError200() {
 
         stubFor(get(urlEqualTo("/remote"))
                 .willReturn(aResponse()
                         .withStatus(HttpStatus.OK.value())
                         .withHeaders(new HttpHeaders(
-                                new HttpHeader("Content-Type", "application/json"),
-                                new HttpHeader("WWW-Authenticate", "Bearer realm=\"Access to the staging site\", charset=\"UTF-8\""),
-                                new HttpHeader("Expires", "Wed, 21 Oct 2099 07:28:06 GMT")))
+                                new HttpHeader(org.springframework.http.HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType()),
+                                new HttpHeader(org.springframework.http.HttpHeaders.WWW_AUTHENTICATE, "Bearer realm=\"Access to the staging site\", charset=\"UTF-8\""),
+                                new HttpHeader(org.springframework.http.HttpHeaders.EXPIRES, "Wed, 21 Oct 2099 07:28:06 GMT")))
                         .withBody("{ \"testkey\" : \"testvalue\" }")));
 
         webTestClient.get().uri("/api/refarch-gateway-backend-service/remote").exchange()
                 .expectStatus().isEqualTo(HttpStatus.OK)
-                .expectHeader().valueMatches("Content-Type", "application/json")
-                .expectHeader().doesNotExist("WWW-Authenticate")
-                .expectHeader().valueMatches("Expires", "0")
+                .expectHeader().valueMatches(org.springframework.http.HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType())
+                .expectHeader().doesNotExist(org.springframework.http.HttpHeaders.WWW_AUTHENTICATE)
+                .expectHeader().valueMatches(org.springframework.http.HttpHeaders.EXPIRES, "0")
                 .expectBody()
                 .jsonPath("$.testkey").isEqualTo("testvalue");
     }

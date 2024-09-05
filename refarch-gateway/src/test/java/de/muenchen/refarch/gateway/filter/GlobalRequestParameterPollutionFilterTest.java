@@ -31,7 +31,7 @@ class GlobalRequestParameterPollutionFilterTest {
     @WithMockUser
     void parameterPollutionAttack() {
         final StringBuilder jsonResponseBody = new StringBuilder();
-        String url = "/api/refarch-gateway-backend-service/testendpoint?parameter1=testdata_1&parameter2=testdata&parameter1=testdata_2";
+        final String url = "/api/refarch-gateway-backend-service/testendpoint?parameter1=testdata_1&parameter2=testdata&parameter1=testdata_2";
         webTestClient.get().uri(url).exchange()
                 .expectStatus()
                 .isEqualTo(HttpStatus.BAD_REQUEST)

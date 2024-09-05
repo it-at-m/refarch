@@ -33,7 +33,7 @@ public class SecurityConfiguration {
 
     @Bean
     @Order(0)
-    public SecurityWebFilterChain clientAccessFilterChain(ServerHttpSecurity http) {
+    public SecurityWebFilterChain clientAccessFilterChain(final ServerHttpSecurity http) {
         http
                 .securityMatcher(ServerWebExchangeMatchers.pathMatchers("/clients/**"))
                 .authorizeExchange(authorizeExchangeSpec -> authorizeExchangeSpec
@@ -47,7 +47,7 @@ public class SecurityConfiguration {
 
     @Bean
     @Order(1)
-    public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
+    public SecurityWebFilterChain springSecurityFilterChain(final ServerHttpSecurity http) {
         http
                 .logout(ServerHttpSecurity.LogoutSpec::disable)
                 .authorizeExchange(authorizeExchangeSpec -> {

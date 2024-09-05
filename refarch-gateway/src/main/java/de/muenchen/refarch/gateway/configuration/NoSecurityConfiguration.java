@@ -11,7 +11,7 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 public class NoSecurityConfiguration {
 
     @Bean
-    public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
+    public SecurityWebFilterChain springSecurityFilterChain(final ServerHttpSecurity http) {
         return http
                 .authorizeExchange(authorizeExchangeSpec -> authorizeExchangeSpec.anyExchange().permitAll())
                 .cors(corsSpec -> {
