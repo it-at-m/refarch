@@ -3,14 +3,14 @@ spring:
     oauth2:
       client:
         provider:
-          keycloak:
-            issuer-uri: ${SSO_ISSUER_URL}
-            user-info-uri: ${SSO_ISSUER_URL}/protocol/openid-connect/userinfo
-            jwk-set-uri: ${SSO_ISSUER_URL}/protocol/openid-connect/certs
+          s3:
+            issuer-uri: ${SSO_S3_ISSUER_URL}
+            user-info-uri: ${SSO_S3_ISSUER_URL}/protocol/openid-connect/userinfo
+            jwk-set-uri: ${SSO_S3_ISSUER_URL}/protocol/openid-connect/certs
             user-name-attribute: user_name
         registration:
           s3:
-            provider: keycloak
+            provider: s3
             authorization-grant-type: client_credentials
             client-id: ${SSO_S3_CLIENT_ID}
             client-secret: ${SSO_S3_CLIENT_SECRET}

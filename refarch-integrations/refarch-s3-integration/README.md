@@ -65,6 +65,6 @@ All properties of [s3-integration-java-client-starter](#s3-integration-rest-clie
 |------------------------------------------|----------------------------------------------------------------------------|-----------------------------------------------|
 | `refarch.s3.client.document-storage-url` | Url to the RefArch S3 integration service.                                 | `http://s3-integration-service:8080`          |
 | `refarch.s3.client.enable-security`      | Switch to enable or disable oAuth2 authentication against s3 service.      | `true`                                        |
-| `SSO_ISSUER_URL`                         | Issuer url of oAuth2 service to use for authentication against s3 service. | `https://sso.example.com/auth/realms/refarch` |
+| `SSO_S3_ISSUER_URL`                      | Issuer url of oAuth2 service to use for authentication against s3 service. | `https://sso.example.com/auth/realms/refarch` |
 | `SSO_S3_CLIENT_ID`                       | Client id to be used for authentication.                                   | `refarch_client`                              |
 | `SSO_S3_CLIENT_SECRET`                   | Client secret to be used for gathering client service account token.       |                                               |

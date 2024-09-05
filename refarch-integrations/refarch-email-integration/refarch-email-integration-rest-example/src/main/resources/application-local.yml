@@ -14,6 +14,6 @@ refarch:
     client:
       document-storage-url: http://localhost:8086
       enable-security: true
-SSO_ISSUER_URL: http://keycloak:8100/auth/realms/local_realm
+SSO_S3_ISSUER_URL: http://keycloak:8100/auth/realms/local_realm
 SSO_S3_CLIENT_ID: local
 SSO_S3_CLIENT_SECRET: client_secret
