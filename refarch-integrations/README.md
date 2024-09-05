@@ -8,6 +8,7 @@ Collection of different integration which can be used as is in RefArch projects.
   in other integrations.
 - [email-integration](./refarch-email-integration/README.md): For sending text and html emails with attachments. Uses
   s3-integration for file handling.
+- [address-integration](./refarch-email-integration/README.md): For reading, searching and validating addresses.
 
 ## Naming conventions
 
