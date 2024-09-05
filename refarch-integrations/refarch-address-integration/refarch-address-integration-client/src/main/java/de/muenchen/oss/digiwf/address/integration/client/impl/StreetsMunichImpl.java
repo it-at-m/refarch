@@ -4,10 +4,10 @@ import de.muenchen.oss.digiwf.address.integration.client.api.StreetsMunichApi;
 import de.muenchen.oss.digiwf.address.integration.client.exception.AddressServiceIntegrationClientErrorException;
 import de.muenchen.oss.digiwf.address.integration.client.exception.AddressServiceIntegrationException;
 import de.muenchen.oss.digiwf.address.integration.client.exception.AddressServiceIntegrationServerErrorException;
-import de.muenchen.oss.digiwf.address.integration.client.gen.api.StraenMnchenApi;
-import de.muenchen.oss.digiwf.address.integration.client.gen.model.Strasse;
-import de.muenchen.oss.digiwf.address.integration.client.gen.model.StrasseResponse;
 import de.muenchen.oss.digiwf.address.integration.client.model.request.ListStreetsModel;
+import de.muenchen.refarch.integration.address.client.gen.api.StraenMnchenApi;
+import de.muenchen.refarch.integration.address.client.gen.model.Strasse;
+import de.muenchen.refarch.integration.address.client.gen.model.StrasseResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.client.HttpClientErrorException;
@@ -21,7 +21,8 @@ public class StreetsMunichImpl implements StreetsMunichApi {
     private final StraenMnchenApi straessenMuenchenApi;
 
     @Override
-    public Strasse findStreetsById(final long streetId) throws AddressServiceIntegrationServerErrorException, AddressServiceIntegrationException, AddressServiceIntegrationClientErrorException {
+    public Strasse findStreetsById(final long streetId)
+            throws AddressServiceIntegrationServerErrorException, AddressServiceIntegrationException, AddressServiceIntegrationClientErrorException {
         try {
             return this.straessenMuenchenApi.findStrasseByNummer(streetId).block();
         } catch (final HttpClientErrorException exception) {
@@ -40,7 +41,8 @@ public class StreetsMunichImpl implements StreetsMunichApi {
     }
 
     @Override
-    public StrasseResponse listStreets(final ListStreetsModel listStreetsModel) throws AddressServiceIntegrationServerErrorException, AddressServiceIntegrationException, AddressServiceIntegrationClientErrorException {
+    public StrasseResponse listStreets(final ListStreetsModel listStreetsModel)
+            throws AddressServiceIntegrationServerErrorException, AddressServiceIntegrationException, AddressServiceIntegrationClientErrorException {
         try {
             return this.straessenMuenchenApi.listStrassen(
                     listStreetsModel.getCityDistrictNames(),

@@ -1,12 +1,23 @@
 package de.muenchen.oss.digiwf.address.integration.client.impl;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.when;
+
 import de.muenchen.oss.digiwf.address.integration.client.api.StreetsMunichApi;
 import de.muenchen.oss.digiwf.address.integration.client.exception.AddressServiceIntegrationClientErrorException;
 import de.muenchen.oss.digiwf.address.integration.client.exception.AddressServiceIntegrationException;
 import de.muenchen.oss.digiwf.address.integration.client.exception.AddressServiceIntegrationServerErrorException;
-import de.muenchen.oss.digiwf.address.integration.client.gen.api.StraenMnchenApi;
-import de.muenchen.oss.digiwf.address.integration.client.gen.model.*;
 import de.muenchen.oss.digiwf.address.integration.client.model.request.ListStreetsModel;
+import de.muenchen.refarch.integration.address.client.gen.api.StraenMnchenApi;
+import de.muenchen.refarch.integration.address.client.gen.model.AddressServicePage;
+import de.muenchen.refarch.integration.address.client.gen.model.Stadtbezirk;
+import de.muenchen.refarch.integration.address.client.gen.model.Strasse;
+import de.muenchen.refarch.integration.address.client.gen.model.StrasseGeozuordnungen;
+import de.muenchen.refarch.integration.address.client.gen.model.StrasseResponse;
+import de.muenchen.refarch.integration.address.client.gen.model.StrasseResponseItem;
+import de.muenchen.refarch.integration.address.client.gen.model.StrasseVerwaltungszuteilung;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -15,12 +26,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestClientException;
 import reactor.core.publisher.Mono;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.when;
 
 class StreetsMunichImplTest {
 
@@ -53,7 +58,8 @@ class StreetsMunichImplTest {
     }
 
     @Test
-    void testFindStreetsById_Success() throws AddressServiceIntegrationServerErrorException, AddressServiceIntegrationException, AddressServiceIntegrationClientErrorException {
+    void testFindStreetsById_Success()
+            throws AddressServiceIntegrationServerErrorException, AddressServiceIntegrationException, AddressServiceIntegrationClientErrorException {
         final Strasse expectedStrasse = this.strasse;
         expectedStrasse.setStrasseId(this.streetId);
         when(straessenMuenchenApi.findStrasseByNummer(streetId)).thenReturn(Mono.just(strasse));
@@ -80,7 +86,8 @@ class StreetsMunichImplTest {
     }
 
     @Test
-    void testListStreets_Success() throws AddressServiceIntegrationServerErrorException, AddressServiceIntegrationException, AddressServiceIntegrationClientErrorException {
+    void testListStreets_Success()
+            throws AddressServiceIntegrationServerErrorException, AddressServiceIntegrationException, AddressServiceIntegrationClientErrorException {
         final ListStreetsModel listStreetsModel = ListStreetsModel.builder()
                 .streetName("streetName")
                 .build();

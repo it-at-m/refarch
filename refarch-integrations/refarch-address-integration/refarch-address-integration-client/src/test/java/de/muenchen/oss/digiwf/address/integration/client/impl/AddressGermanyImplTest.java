@@ -1,15 +1,20 @@
 package de.muenchen.oss.digiwf.address.integration.client.impl;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.when;
+
 import de.muenchen.oss.digiwf.address.integration.client.api.AddressGermanyApi;
 import de.muenchen.oss.digiwf.address.integration.client.exception.AddressServiceIntegrationClientErrorException;
 import de.muenchen.oss.digiwf.address.integration.client.exception.AddressServiceIntegrationException;
 import de.muenchen.oss.digiwf.address.integration.client.exception.AddressServiceIntegrationServerErrorException;
-import de.muenchen.oss.digiwf.address.integration.client.gen.api.AdressenBundesweitApi;
-import de.muenchen.oss.digiwf.address.integration.client.gen.model.AddressServicePage;
-import de.muenchen.oss.digiwf.address.integration.client.gen.model.BundesweiteAdresse;
-import de.muenchen.oss.digiwf.address.integration.client.gen.model.BundesweiteAdresseResponse;
-import de.muenchen.oss.digiwf.address.integration.client.gen.model.BundesweiteAdresseResponseItem;
 import de.muenchen.oss.digiwf.address.integration.client.model.request.SearchAddressesGermanyModel;
+import de.muenchen.refarch.integration.address.client.gen.api.AdressenBundesweitApi;
+import de.muenchen.refarch.integration.address.client.gen.model.AddressServicePage;
+import de.muenchen.refarch.integration.address.client.gen.model.BundesweiteAdresse;
+import de.muenchen.refarch.integration.address.client.gen.model.BundesweiteAdresseResponse;
+import de.muenchen.refarch.integration.address.client.gen.model.BundesweiteAdresseResponseItem;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -18,12 +23,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestClientException;
 import reactor.core.publisher.Mono;
-
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.when;
 
 class AddressGermanyImplTest {
 
@@ -57,7 +56,8 @@ class AddressGermanyImplTest {
     }
 
     @Test
-    void testFindStreetsById_Success() throws AddressServiceIntegrationServerErrorException, AddressServiceIntegrationException, AddressServiceIntegrationClientErrorException {
+    void testFindStreetsById_Success()
+            throws AddressServiceIntegrationServerErrorException, AddressServiceIntegrationException, AddressServiceIntegrationClientErrorException {
         when(this.adressenBundesweitApi.searchAdressen(
                 "Sample Query",
                 "12345",

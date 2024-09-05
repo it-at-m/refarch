@@ -1,13 +1,30 @@
 package de.muenchen.oss.digiwf.address.integration.client.impl;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
 import de.muenchen.oss.digiwf.address.integration.client.api.AddressMunichApi;
 import de.muenchen.oss.digiwf.address.integration.client.exception.AddressServiceIntegrationClientErrorException;
 import de.muenchen.oss.digiwf.address.integration.client.exception.AddressServiceIntegrationException;
 import de.muenchen.oss.digiwf.address.integration.client.exception.AddressServiceIntegrationServerErrorException;
-import de.muenchen.oss.digiwf.address.integration.client.gen.api.AdressenMnchenApi;
-import de.muenchen.oss.digiwf.address.integration.client.gen.model.*;
-import de.muenchen.oss.digiwf.address.integration.client.model.request.*;
+import de.muenchen.oss.digiwf.address.integration.client.model.request.CheckAddressesModel;
+import de.muenchen.oss.digiwf.address.integration.client.model.request.ListAddressChangesModel;
+import de.muenchen.oss.digiwf.address.integration.client.model.request.ListAddressesModel;
+import de.muenchen.oss.digiwf.address.integration.client.model.request.SearchAddressesGeoModel;
+import de.muenchen.oss.digiwf.address.integration.client.model.request.SearchAddressesModel;
 import de.muenchen.oss.digiwf.address.integration.client.model.response.AddressDistancesModel;
+import de.muenchen.refarch.integration.address.client.gen.api.AdressenMnchenApi;
+import de.muenchen.refarch.integration.address.client.gen.model.AddressServicePage;
+import de.muenchen.refarch.integration.address.client.gen.model.AdresseDistanz;
+import de.muenchen.refarch.integration.address.client.gen.model.AenderungResponse;
+import de.muenchen.refarch.integration.address.client.gen.model.AenderungsResponseItem;
+import de.muenchen.refarch.integration.address.client.gen.model.MuenchenAdresse;
+import de.muenchen.refarch.integration.address.client.gen.model.MuenchenAdresseResponse;
+import de.muenchen.refarch.integration.address.client.gen.model.MuenchenAdresseResponseItem;
+import java.util.Collections;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -18,19 +35,10 @@ import org.springframework.web.client.RestClientException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.Collections;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-
 class AddressMunichImplTest {
 
     private final AdressenMnchenApi adressenMuenchenApi = Mockito.mock(AdressenMnchenApi.class);
     private final AddressMunichApi addressMunich = new AddressesMunichImpl(adressenMuenchenApi);
-
 
     private final CheckAddressesModel checkAddressesModel = this.createCheckAddressesModel();
 
@@ -73,7 +81,9 @@ class AddressMunichImplTest {
     }
 
     @Test
-    void testCheckAddress_Success() throws AddressServiceIntegrationServerErrorException, AddressServiceIntegrationException, AddressServiceIntegrationClientErrorException, AddressServiceIntegrationServerErrorException, AddressServiceIntegrationException, AddressServiceIntegrationClientErrorException {
+    void testCheckAddress_Success()
+            throws
+            AddressServiceIntegrationServerErrorException, AddressServiceIntegrationException, AddressServiceIntegrationClientErrorException {
         when(adressenMuenchenApi.checkAdresse(any(), any(), any(), any(), any(), any(), any(), any())).thenReturn(Mono.just(muenchenAdresse));
         final MuenchenAdresse result = addressMunich.checkAddress(checkAddressesModel);
         assertThat(result).isEqualTo(muenchenAdresse);
@@ -89,7 +99,8 @@ class AddressMunichImplTest {
 
     @Test
     void testCheckAddress_ServerErrorException() {
-        when(adressenMuenchenApi.checkAdresse(any(), any(), any(), any(), any(), any(), any(), any())).thenThrow(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "message"));
+        when(adressenMuenchenApi.checkAdresse(any(), any(), any(), any(), any(), any(), any(), any())).thenThrow(
+                new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "message"));
         assertThatThrownBy(() -> addressMunich.checkAddress(checkAddressesModel))
                 .isInstanceOf(AddressServiceIntegrationServerErrorException.class);
     }
@@ -102,8 +113,10 @@ class AddressMunichImplTest {
     }
 
     @Test
-    void testListAddresses_Success() throws AddressServiceIntegrationServerErrorException, AddressServiceIntegrationException, AddressServiceIntegrationClientErrorException {
-        when(adressenMuenchenApi.listAdressen(any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any()))
+    void testListAddresses_Success()
+            throws AddressServiceIntegrationServerErrorException, AddressServiceIntegrationException, AddressServiceIntegrationClientErrorException {
+        when(adressenMuenchenApi.listAdressen(any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(),
+                any(), any(), any()))
                 .thenReturn(Mono.just(muenchenAdresseResponse));
         final MuenchenAdresseResponse result = addressMunich.listAddresses(listAddressesModel);
         assertThat(result).isEqualTo(muenchenAdresseResponse);
@@ -111,7 +124,8 @@ class AddressMunichImplTest {
 
     @Test
     void testListAddresses_ClientErrorException() {
-        when(adressenMuenchenApi.listAdressen(any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any()))
+        when(adressenMuenchenApi.listAdressen(any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(),
+                any(), any(), any()))
                 .thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Bad Request"));
         assertThatThrownBy(() -> addressMunich.listAddresses(listAddressesModel))
                 .isInstanceOf(AddressServiceIntegrationClientErrorException.class);
@@ -119,7 +133,8 @@ class AddressMunichImplTest {
 
     @Test
     void testListAddresses_ServerErrorException() {
-        when(adressenMuenchenApi.listAdressen(any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any()))
+        when(adressenMuenchenApi.listAdressen(any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(),
+                any(), any(), any()))
                 .thenThrow(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error"));
         assertThatThrownBy(() -> addressMunich.listAddresses(listAddressesModel))
                 .isInstanceOf(AddressServiceIntegrationServerErrorException.class);
@@ -127,7 +142,8 @@ class AddressMunichImplTest {
 
     @Test
     void testListAddresses_RestClientException() {
-        when(adressenMuenchenApi.listAdressen(any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any()))
+        when(adressenMuenchenApi.listAdressen(any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(),
+                any(), any(), any()))
                 .thenThrow(new RestClientException("REST exception"));
         assertThatThrownBy(() -> addressMunich.listAddresses(listAddressesModel))
                 .isInstanceOf(AddressServiceIntegrationException.class);
@@ -196,7 +212,6 @@ class AddressMunichImplTest {
         assertThatThrownBy(() -> addressMunich.searchAddresses(searchAddressesModel))
                 .isInstanceOf(AddressServiceIntegrationException.class);
     }
-
 
     @Test
     void testSearchAddressesGeo_Success() throws Exception {

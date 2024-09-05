@@ -4,9 +4,9 @@ import de.muenchen.oss.digiwf.address.integration.client.api.AddressGermanyApi;
 import de.muenchen.oss.digiwf.address.integration.client.exception.AddressServiceIntegrationClientErrorException;
 import de.muenchen.oss.digiwf.address.integration.client.exception.AddressServiceIntegrationException;
 import de.muenchen.oss.digiwf.address.integration.client.exception.AddressServiceIntegrationServerErrorException;
-import de.muenchen.oss.digiwf.address.integration.client.gen.api.AdressenBundesweitApi;
-import de.muenchen.oss.digiwf.address.integration.client.gen.model.BundesweiteAdresseResponse;
 import de.muenchen.oss.digiwf.address.integration.client.model.request.SearchAddressesGermanyModel;
+import de.muenchen.refarch.integration.address.client.gen.api.AdressenBundesweitApi;
+import de.muenchen.refarch.integration.address.client.gen.model.BundesweiteAdresseResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.client.HttpClientErrorException;
@@ -20,7 +20,8 @@ public class AddressGermanyImpl implements AddressGermanyApi {
     private final AdressenBundesweitApi adressenBundesweitApi;
 
     @Override
-    public BundesweiteAdresseResponse searchAddresses(final SearchAddressesGermanyModel searchAddressesGermanyModel) throws AddressServiceIntegrationClientErrorException, AddressServiceIntegrationServerErrorException, AddressServiceIntegrationException {
+    public BundesweiteAdresseResponse searchAddresses(final SearchAddressesGermanyModel searchAddressesGermanyModel)
+            throws AddressServiceIntegrationClientErrorException, AddressServiceIntegrationServerErrorException, AddressServiceIntegrationException {
         try {
             return this.adressenBundesweitApi.searchAdressen(
                     searchAddressesGermanyModel.getQuery(),
@@ -43,7 +44,7 @@ public class AddressGermanyImpl implements AddressGermanyApi {
             log.debug(message);
             throw new AddressServiceIntegrationServerErrorException(message, exception);
         } catch (final RestClientException exception) {
-            final String message = String.format("The request to get address bundesweit failed.");
+            final String message = "The request to get address bundesweit failed.";
             log.debug(message);
             throw new AddressServiceIntegrationException(message, exception);
         }
