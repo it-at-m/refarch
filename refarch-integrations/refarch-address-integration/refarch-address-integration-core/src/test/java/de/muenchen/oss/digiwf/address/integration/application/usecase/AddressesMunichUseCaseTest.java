@@ -1,19 +1,24 @@
 package de.muenchen.oss.digiwf.address.integration.application.usecase;
 
-import de.muenchen.oss.digiwf.address.integration.application.port.in.AddressMunichInPort;
-import de.muenchen.oss.digiwf.address.integration.application.port.out.AddressClientOutPort;
-import de.muenchen.oss.digiwf.address.integration.client.gen.model.AenderungResponse;
-import de.muenchen.oss.digiwf.address.integration.client.gen.model.MuenchenAdresse;
-import de.muenchen.oss.digiwf.address.integration.client.gen.model.MuenchenAdresseResponse;
-import de.muenchen.oss.digiwf.address.integration.client.model.request.*;
-import de.muenchen.oss.digiwf.address.integration.client.model.response.AddressDistancesModel;
-import de.muenchen.oss.digiwf.message.process.api.error.BpmnError;
-import de.muenchen.oss.digiwf.message.process.api.error.IncidentError;
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import de.muenchen.oss.digiwf.address.integration.application.port.in.AddressMunichInPort;
+import de.muenchen.oss.digiwf.address.integration.application.port.out.AddressClientOutPort;
+import de.muenchen.oss.digiwf.address.integration.client.exception.AddressServiceIntegrationException;
+import de.muenchen.oss.digiwf.address.integration.client.model.request.CheckAddressesModel;
+import de.muenchen.oss.digiwf.address.integration.client.model.request.ListAddressChangesModel;
+import de.muenchen.oss.digiwf.address.integration.client.model.request.ListAddressesModel;
+import de.muenchen.oss.digiwf.address.integration.client.model.request.SearchAddressesGeoModel;
+import de.muenchen.oss.digiwf.address.integration.client.model.request.SearchAddressesModel;
+import de.muenchen.oss.digiwf.address.integration.client.model.response.AddressDistancesModel;
+import de.muenchen.refarch.integration.address.client.gen.model.AenderungResponse;
+import de.muenchen.refarch.integration.address.client.gen.model.MuenchenAdresse;
+import de.muenchen.refarch.integration.address.client.gen.model.MuenchenAdresseResponse;
+import org.junit.jupiter.api.Test;
 
 class AddressesMunichUseCaseTest {
 
@@ -22,7 +27,7 @@ class AddressesMunichUseCaseTest {
     private final AddressMunichInPort addressesMunichUseCase = new AddressesMunichUseCase(addressClientOutPort);
 
     @Test
-    void testCheckAddress_returnsMuenchenAdresse() {
+    void testCheckAddress_returnsMuenchenAdresse() throws AddressServiceIntegrationException {
         final CheckAddressesModel checkAddressesModel = CheckAddressesModel.builder().build();
         final MuenchenAdresse expectedResponse = new MuenchenAdresse();
 
@@ -35,31 +40,19 @@ class AddressesMunichUseCaseTest {
     }
 
     @Test
-    void testCheckAddress_throwsBPMNError() {
+    void testCheckAddress_throwsAddressServiceIntegrationException() throws AddressServiceIntegrationException {
         final CheckAddressesModel checkAddressesModel = CheckAddressesModel.builder().build();
-        final BpmnError expectedError = new BpmnError("400", "SomeError");
+        final AddressServiceIntegrationException expectedError = new AddressServiceIntegrationException("400", new Exception("SomeError"));
 
         when(addressClientOutPort.checkAddress(checkAddressesModel)).thenThrow(expectedError);
 
         assertThatThrownBy(() -> addressesMunichUseCase.checkAddress(checkAddressesModel))
-                .isInstanceOf(BpmnError.class)
+                .isInstanceOf(AddressServiceIntegrationException.class)
                 .isEqualTo(expectedError);
     }
 
     @Test
-    void testCheckAddress_throwsIncidentError() {
-        final CheckAddressesModel checkAddressesModel = CheckAddressesModel.builder().build();
-        final IncidentError expectedError = new IncidentError("SomeError");
-
-        when(addressClientOutPort.checkAddress(checkAddressesModel)).thenThrow(expectedError);
-
-        assertThatThrownBy(() -> addressesMunichUseCase.checkAddress(checkAddressesModel))
-                .isInstanceOf(IncidentError.class)
-                .isEqualTo(expectedError);
-    }
-
-    @Test
-    void testListAddresses_returnsMuenchenAdresseResponse() throws BpmnError, IncidentError {
+    void testListAddresses_returnsMuenchenAdresseResponse() throws AddressServiceIntegrationException {
         final ListAddressesModel listAddressesModel = ListAddressesModel.builder().build();
         final MuenchenAdresseResponse expectedResponse = new MuenchenAdresseResponse();
 
@@ -72,31 +65,19 @@ class AddressesMunichUseCaseTest {
     }
 
     @Test
-    void testListAddresses_throwsBpmnError() throws BpmnError, IncidentError {
+    void testListAddresses_throwsAddressServiceIntegrationException() throws AddressServiceIntegrationException {
         final ListAddressesModel listAddressesModel = ListAddressesModel.builder().build();
-        final BpmnError expectedError = new BpmnError("400", "SomeError");
+        final AddressServiceIntegrationException expectedError = new AddressServiceIntegrationException("400", new Exception("SomeError"));
 
         when(addressClientOutPort.listAddresses(listAddressesModel)).thenThrow(expectedError);
 
         assertThatThrownBy(() -> addressesMunichUseCase.listAddresses(listAddressesModel))
-                .isInstanceOf(BpmnError.class)
+                .isInstanceOf(AddressServiceIntegrationException.class)
                 .isEqualTo(expectedError);
     }
 
     @Test
-    void testListAddresses_throwsIncidentError() throws BpmnError, IncidentError {
-        final ListAddressesModel listAddressesModel = ListAddressesModel.builder().build();
-        final IncidentError expectedError = new IncidentError("SomeError");
-
-        when(addressClientOutPort.listAddresses(listAddressesModel)).thenThrow(expectedError);
-
-        assertThatThrownBy(() -> addressesMunichUseCase.listAddresses(listAddressesModel))
-                .isInstanceOf(IncidentError.class)
-                .isEqualTo(expectedError);
-    }
-
-    @Test
-    void testListChanges_returnsAenderungResponse() throws BpmnError, IncidentError {
+    void testListChanges_returnsAenderungResponse() throws AddressServiceIntegrationException {
         final ListAddressChangesModel listAddressChangesModel = ListAddressChangesModel.builder().build();
         final AenderungResponse expectedResponse = new AenderungResponse();
 
@@ -109,31 +90,19 @@ class AddressesMunichUseCaseTest {
     }
 
     @Test
-    void testListChanges_throwsBpmnError() throws BpmnError, IncidentError {
+    void testListChanges_throwsAddressServiceIntegrationException() throws AddressServiceIntegrationException {
         final ListAddressChangesModel listAddressChangesModel = ListAddressChangesModel.builder().build();
-        final BpmnError expectedError = new BpmnError("400", "SomeError");
+        final AddressServiceIntegrationException expectedError = new AddressServiceIntegrationException("400", new Exception("SomeError"));
 
         when(addressClientOutPort.listChanges(listAddressChangesModel)).thenThrow(expectedError);
 
         assertThatThrownBy(() -> addressesMunichUseCase.listChanges(listAddressChangesModel))
-                .isInstanceOf(BpmnError.class)
+                .isInstanceOf(AddressServiceIntegrationException.class)
                 .isEqualTo(expectedError);
     }
 
     @Test
-    void testListChanges_throwsIncidentError() throws BpmnError, IncidentError {
-        final ListAddressChangesModel listAddressChangesModel = ListAddressChangesModel.builder().build();
-        final IncidentError expectedError = new IncidentError("SomeError");
-
-        when(addressClientOutPort.listChanges(listAddressChangesModel)).thenThrow(expectedError);
-
-        assertThatThrownBy(() -> addressesMunichUseCase.listChanges(listAddressChangesModel))
-                .isInstanceOf(IncidentError.class)
-                .isEqualTo(expectedError);
-    }
-
-    @Test
-    void testSearchAddresses_returnsMuenchenAdresseResponse() throws BpmnError, IncidentError {
+    void testSearchAddresses_returnsMuenchenAdresseResponse() throws AddressServiceIntegrationException {
         final SearchAddressesModel searchAddressesModel = SearchAddressesModel.builder().build();
         final MuenchenAdresseResponse expectedResponse = new MuenchenAdresseResponse();
 
@@ -146,31 +115,19 @@ class AddressesMunichUseCaseTest {
     }
 
     @Test
-    void testSearchAddresses_throwsBpmnError() throws BpmnError, IncidentError {
+    void testSearchAddresses_throwsAddressServiceIntegrationException() throws AddressServiceIntegrationException {
         final SearchAddressesModel searchAddressesModel = SearchAddressesModel.builder().build();
-        final BpmnError expectedError = new BpmnError("400", "SomeError");
+        final AddressServiceIntegrationException expectedError = new AddressServiceIntegrationException("400", new Exception("SomeError"));
 
         when(addressClientOutPort.searchAddresses(searchAddressesModel)).thenThrow(expectedError);
 
         assertThatThrownBy(() -> addressesMunichUseCase.searchAddresses(searchAddressesModel))
-                .isInstanceOf(BpmnError.class)
+                .isInstanceOf(AddressServiceIntegrationException.class)
                 .isEqualTo(expectedError);
     }
 
     @Test
-    void testSearchAddresses_throwsIncidentError() throws BpmnError, IncidentError {
-        final SearchAddressesModel searchAddressesModel = SearchAddressesModel.builder().build();
-        final IncidentError expectedError = new IncidentError("SomeError");
-
-        when(addressClientOutPort.searchAddresses(searchAddressesModel)).thenThrow(expectedError);
-
-        assertThatThrownBy(() -> addressesMunichUseCase.searchAddresses(searchAddressesModel))
-                .isInstanceOf(IncidentError.class)
-                .isEqualTo(expectedError);
-    }
-
-    @Test
-    void testSearchAddressesGeo_returnsAddressDistancesModel() throws BpmnError, IncidentError {
+    void testSearchAddressesGeo_returnsAddressDistancesModel() throws AddressServiceIntegrationException {
         final SearchAddressesGeoModel searchAddressesGeoModel = SearchAddressesGeoModel.builder().build();
         final AddressDistancesModel expectedResponse = AddressDistancesModel.builder().build();
 
@@ -183,26 +140,14 @@ class AddressesMunichUseCaseTest {
     }
 
     @Test
-    void testSearchAddressesGeo_throwsBpmnError() throws BpmnError, IncidentError {
+    void testSearchAddressesGeo_throwsAddressServiceIntegrationException() throws AddressServiceIntegrationException {
         final SearchAddressesGeoModel searchAddressesGeoModel = SearchAddressesGeoModel.builder().build();
-        final BpmnError expectedError = new BpmnError("400", "SomeError");
+        final AddressServiceIntegrationException expectedError = new AddressServiceIntegrationException("400", new Exception("SomeError"));
 
         when(addressClientOutPort.searchAddressesGeo(searchAddressesGeoModel)).thenThrow(expectedError);
 
         assertThatThrownBy(() -> addressesMunichUseCase.searchAddressesGeo(searchAddressesGeoModel))
-                .isInstanceOf(BpmnError.class)
-                .isEqualTo(expectedError);
-    }
-
-    @Test
-    void testSearchAddressesGeo_throwsIncidentError() throws BpmnError, IncidentError {
-        final SearchAddressesGeoModel searchAddressesGeoModel = SearchAddressesGeoModel.builder().build();
-        final IncidentError expectedError = new IncidentError("SomeError");
-
-        when(addressClientOutPort.searchAddressesGeo(searchAddressesGeoModel)).thenThrow(expectedError);
-
-        assertThatThrownBy(() -> addressesMunichUseCase.searchAddressesGeo(searchAddressesGeoModel))
-                .isInstanceOf(IncidentError.class)
+                .isInstanceOf(AddressServiceIntegrationException.class)
                 .isEqualTo(expectedError);
     }
 

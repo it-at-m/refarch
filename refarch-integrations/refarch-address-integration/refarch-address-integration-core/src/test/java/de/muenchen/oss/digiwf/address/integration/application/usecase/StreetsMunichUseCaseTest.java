@@ -1,17 +1,18 @@
 package de.muenchen.oss.digiwf.address.integration.application.usecase;
 
-import de.muenchen.oss.digiwf.address.integration.application.port.in.StreetsMunichInPort;
-import de.muenchen.oss.digiwf.address.integration.application.port.out.AddressClientOutPort;
-import de.muenchen.oss.digiwf.address.integration.client.gen.model.Strasse;
-import de.muenchen.oss.digiwf.address.integration.client.gen.model.StrasseResponse;
-import de.muenchen.oss.digiwf.address.integration.client.model.request.ListStreetsModel;
-import de.muenchen.oss.digiwf.message.process.api.error.BpmnError;
-import de.muenchen.oss.digiwf.message.process.api.error.IncidentError;
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import de.muenchen.oss.digiwf.address.integration.application.port.in.StreetsMunichInPort;
+import de.muenchen.oss.digiwf.address.integration.application.port.out.AddressClientOutPort;
+import de.muenchen.oss.digiwf.address.integration.client.exception.AddressServiceIntegrationException;
+import de.muenchen.oss.digiwf.address.integration.client.model.request.ListStreetsModel;
+import de.muenchen.refarch.integration.address.client.gen.model.Strasse;
+import de.muenchen.refarch.integration.address.client.gen.model.StrasseResponse;
+import org.junit.jupiter.api.Test;
 
 class StreetsMunichUseCaseTest {
 
@@ -20,7 +21,7 @@ class StreetsMunichUseCaseTest {
     private final StreetsMunichInPort streetsMunichUseCase = new StreetsMunichUseCase(addressClientOutPort);
 
     @Test
-    void testFindStreetsById_returnsStrasse() throws BpmnError, IncidentError {
+    void testFindStreetsById_returnsStrasse() throws AddressServiceIntegrationException {
         long streetId = 0L;
         final Strasse expectedResponse = new Strasse();
 
@@ -33,31 +34,19 @@ class StreetsMunichUseCaseTest {
     }
 
     @Test
-    void testFindStreetsById_throwsBpmnError() throws BpmnError, IncidentError {
+    void testFindStreetsById_throwsAddressServiceIntegrationException() throws AddressServiceIntegrationException {
         final long streetId = 0L;
-        final BpmnError expectedError = new BpmnError("400", "SomeError");
+        final AddressServiceIntegrationException expectedError = new AddressServiceIntegrationException("400", new Exception("SomeError"));
 
         when(addressClientOutPort.findStreetsById(streetId)).thenThrow(expectedError);
 
         assertThatThrownBy(() -> streetsMunichUseCase.findStreetsById(streetId))
-                .isInstanceOf(BpmnError.class)
+                .isInstanceOf(AddressServiceIntegrationException.class)
                 .isEqualTo(expectedError);
     }
 
     @Test
-    void testFindStreetsById_throwsIncidentError() throws BpmnError, IncidentError {
-        final long streetId = 0L;
-        final IncidentError expectedError = new IncidentError("SomeError");
-
-        when(addressClientOutPort.findStreetsById(streetId)).thenThrow(expectedError);
-
-        assertThatThrownBy(() -> streetsMunichUseCase.findStreetsById(streetId))
-                .isInstanceOf(IncidentError.class)
-                .isEqualTo(expectedError);
-    }
-
-    @Test
-    void testListStreets_returnsStrasseResponse() throws BpmnError, IncidentError {
+    void testListStreets_returnsStrasseResponse() throws AddressServiceIntegrationException {
         final ListStreetsModel listStreetsModel = ListStreetsModel.builder().build();
         final StrasseResponse expectedResponse = new StrasseResponse();
 
@@ -70,26 +59,14 @@ class StreetsMunichUseCaseTest {
     }
 
     @Test
-    void testListStreets_throwsBpmnError() throws BpmnError, IncidentError {
+    void testListStreets_throwsAddressServiceIntegrationException() throws AddressServiceIntegrationException {
         final ListStreetsModel listStreetsModel = ListStreetsModel.builder().build();
-        final BpmnError expectedError = new BpmnError("400", "SomeError");
+        final AddressServiceIntegrationException expectedError = new AddressServiceIntegrationException("400", new Exception("SomeError"));
 
         when(addressClientOutPort.listStreets(listStreetsModel)).thenThrow(expectedError);
 
         assertThatThrownBy(() -> streetsMunichUseCase.listStreets(listStreetsModel))
-                .isInstanceOf(BpmnError.class)
-                .isEqualTo(expectedError);
-    }
-
-    @Test
-    void testListStreets_throwsIncidentError() throws BpmnError, IncidentError {
-        final ListStreetsModel listStreetsModel = ListStreetsModel.builder().build();
-        final IncidentError expectedError = new IncidentError("SomeError");
-
-        when(addressClientOutPort.listStreets(listStreetsModel)).thenThrow(expectedError);
-
-        assertThatThrownBy(() -> streetsMunichUseCase.listStreets(listStreetsModel))
-                .isInstanceOf(IncidentError.class)
+                .isInstanceOf(AddressServiceIntegrationException.class)
                 .isEqualTo(expectedError);
     }
 
