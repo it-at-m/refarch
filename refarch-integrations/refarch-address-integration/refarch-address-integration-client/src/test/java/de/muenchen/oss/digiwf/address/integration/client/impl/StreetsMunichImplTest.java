@@ -105,8 +105,7 @@ class StreetsMunichImplTest {
                 listStreetsModel.getStreetName(),
                 listStreetsModel.getSortdir(),
                 listStreetsModel.getPage(),
-                listStreetsModel.getPagesize()
-        )).thenReturn(Mono.just(expectedResponse));
+                listStreetsModel.getPagesize())).thenReturn(Mono.just(expectedResponse));
 
         final StrasseResponse result = streetsMunich.listStreets(listStreetsModel);
 
@@ -122,8 +121,7 @@ class StreetsMunichImplTest {
                 listStreetsModel.getStreetName(),
                 listStreetsModel.getSortdir(),
                 listStreetsModel.getPage(),
-                listStreetsModel.getPagesize()
-        )).thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST, "message"));
+                listStreetsModel.getPagesize())).thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST, "message"));
 
         assertThatThrownBy(() -> streetsMunich.listStreets(listStreetsModel)).isInstanceOf(AddressServiceIntegrationClientErrorException.class);
     }
@@ -137,8 +135,7 @@ class StreetsMunichImplTest {
                 listStreetsModel.getStreetName(),
                 listStreetsModel.getSortdir(),
                 listStreetsModel.getPage(),
-                listStreetsModel.getPagesize()
-        )).thenThrow(new HttpServerErrorException(HttpStatus.BAD_REQUEST, "message"));
+                listStreetsModel.getPagesize())).thenThrow(new HttpServerErrorException(HttpStatus.BAD_REQUEST, "message"));
 
         assertThatThrownBy(() -> streetsMunich.listStreets(listStreetsModel)).isInstanceOf(AddressServiceIntegrationServerErrorException.class);
     }
@@ -152,8 +149,7 @@ class StreetsMunichImplTest {
                 listStreetsModel.getStreetName(),
                 listStreetsModel.getSortdir(),
                 listStreetsModel.getPage(),
-                listStreetsModel.getPagesize()
-        )).thenThrow(new RestClientException(""));
+                listStreetsModel.getPagesize())).thenThrow(new RestClientException(""));
 
         assertThatThrownBy(() -> streetsMunich.listStreets(listStreetsModel)).isInstanceOf(AddressServiceIntegrationException.class);
     }

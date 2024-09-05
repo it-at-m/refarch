@@ -82,8 +82,7 @@ class AddressMunichImplTest {
 
     @Test
     void testCheckAddress_Success()
-            throws
-            AddressServiceIntegrationServerErrorException, AddressServiceIntegrationException, AddressServiceIntegrationClientErrorException {
+            throws AddressServiceIntegrationServerErrorException, AddressServiceIntegrationException, AddressServiceIntegrationClientErrorException {
         when(adressenMuenchenApi.checkAdresse(any(), any(), any(), any(), any(), any(), any(), any())).thenReturn(Mono.just(muenchenAdresse));
         final MuenchenAdresse result = addressMunich.checkAddress(checkAddressesModel);
         assertThat(result).isEqualTo(muenchenAdresse);
@@ -117,7 +116,7 @@ class AddressMunichImplTest {
             throws AddressServiceIntegrationServerErrorException, AddressServiceIntegrationException, AddressServiceIntegrationClientErrorException {
         when(adressenMuenchenApi.listAdressen(any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(),
                 any(), any(), any()))
-                .thenReturn(Mono.just(muenchenAdresseResponse));
+                        .thenReturn(Mono.just(muenchenAdresseResponse));
         final MuenchenAdresseResponse result = addressMunich.listAddresses(listAddressesModel);
         assertThat(result).isEqualTo(muenchenAdresseResponse);
     }
@@ -126,7 +125,7 @@ class AddressMunichImplTest {
     void testListAddresses_ClientErrorException() {
         when(adressenMuenchenApi.listAdressen(any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(),
                 any(), any(), any()))
-                .thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Bad Request"));
+                        .thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Bad Request"));
         assertThatThrownBy(() -> addressMunich.listAddresses(listAddressesModel))
                 .isInstanceOf(AddressServiceIntegrationClientErrorException.class);
     }
@@ -135,7 +134,7 @@ class AddressMunichImplTest {
     void testListAddresses_ServerErrorException() {
         when(adressenMuenchenApi.listAdressen(any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(),
                 any(), any(), any()))
-                .thenThrow(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error"));
+                        .thenThrow(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error"));
         assertThatThrownBy(() -> addressMunich.listAddresses(listAddressesModel))
                 .isInstanceOf(AddressServiceIntegrationServerErrorException.class);
     }
@@ -144,7 +143,7 @@ class AddressMunichImplTest {
     void testListAddresses_RestClientException() {
         when(adressenMuenchenApi.listAdressen(any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(),
                 any(), any(), any()))
-                .thenThrow(new RestClientException("REST exception"));
+                        .thenThrow(new RestClientException("REST exception"));
         assertThatThrownBy(() -> addressMunich.listAddresses(listAddressesModel))
                 .isInstanceOf(AddressServiceIntegrationException.class);
     }

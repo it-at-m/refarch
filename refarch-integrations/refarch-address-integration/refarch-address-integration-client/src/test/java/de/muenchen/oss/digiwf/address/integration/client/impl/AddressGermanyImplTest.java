@@ -68,8 +68,7 @@ class AddressGermanyImplTest {
                 "name",
                 "asc",
                 1,
-                10
-        )).thenReturn(Mono.just(bundesweiteAdresseResponse));
+                10)).thenReturn(Mono.just(bundesweiteAdresseResponse));
         final BundesweiteAdresseResponse result = addressGermany.searchAddresses(this.searchAddressesModel);
         assertThat(result).isEqualTo(bundesweiteAdresseResponse);
     }
@@ -86,8 +85,7 @@ class AddressGermanyImplTest {
                 "name",
                 "asc",
                 1,
-                10
-        )).thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST, "message"));
+                10)).thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST, "message"));
         assertThatThrownBy(() -> addressGermany.searchAddresses(this.searchAddressesModel))
                 .isInstanceOf(AddressServiceIntegrationClientErrorException.class);
     }
@@ -104,8 +102,7 @@ class AddressGermanyImplTest {
                 "name",
                 "asc",
                 1,
-                10
-        )).thenThrow(new HttpServerErrorException(HttpStatus.BAD_REQUEST, "message"));
+                10)).thenThrow(new HttpServerErrorException(HttpStatus.BAD_REQUEST, "message"));
         assertThatThrownBy(() -> addressGermany.searchAddresses(this.searchAddressesModel))
                 .isInstanceOf(AddressServiceIntegrationServerErrorException.class);
     }
@@ -122,8 +119,7 @@ class AddressGermanyImplTest {
                 "name",
                 "asc",
                 1,
-                10
-        )).thenThrow(new RestClientException(""));
+                10)).thenThrow(new RestClientException(""));
         assertThatThrownBy(() -> addressGermany.searchAddresses(this.searchAddressesModel))
                 .isInstanceOf(AddressServiceIntegrationException.class);
     }

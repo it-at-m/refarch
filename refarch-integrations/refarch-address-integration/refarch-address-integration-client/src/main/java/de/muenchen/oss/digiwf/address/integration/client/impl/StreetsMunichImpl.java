@@ -50,8 +50,7 @@ public class StreetsMunichImpl implements StreetsMunichApi {
                     listStreetsModel.getStreetName(),
                     listStreetsModel.getSortdir(),
                     listStreetsModel.getPage(),
-                    listStreetsModel.getPagesize()
-            ).block();
+                    listStreetsModel.getPagesize()).block();
         } catch (final HttpClientErrorException exception) {
             final String message = String.format("The request to get street failed with %s. %s", exception.getStatusCode(), exception.getMessage());
             log.debug(message);

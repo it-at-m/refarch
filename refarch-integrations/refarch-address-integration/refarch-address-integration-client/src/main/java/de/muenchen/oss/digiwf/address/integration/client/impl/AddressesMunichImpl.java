@@ -40,8 +40,7 @@ public class AddressesMunichImpl implements AddressMunichApi {
                     checkAddressesModel.getAdditionalInfo(),
                     checkAddressesModel.getZip(),
                     checkAddressesModel.getCityName(),
-                    checkAddressesModel.getGemeindeschluessel()
-            ).block();
+                    checkAddressesModel.getGemeindeschluessel()).block();
         } catch (final HttpClientErrorException exception) {
             final String message = String.format("The request to get address failed with %s. %s", exception.getStatusCode(), exception.getMessage());
             log.debug(message);
@@ -80,8 +79,7 @@ public class AddressesMunichImpl implements AddressMunichApi {
                     listAddressesModel.getSort(),
                     listAddressesModel.getSortdir(),
                     listAddressesModel.getPage(),
-                    listAddressesModel.getPagesize()
-            ).block();
+                    listAddressesModel.getPagesize()).block();
         } catch (final HttpClientErrorException exception) {
             final String message = String.format("The request to get address failed with %s. %s", exception.getStatusCode(), exception.getMessage());
             log.debug(message);
@@ -111,8 +109,7 @@ public class AddressesMunichImpl implements AddressMunichApi {
                     listAddressChangesModel.getSorting(),
                     listAddressChangesModel.getSortingDir(),
                     listAddressChangesModel.getPageNumber(),
-                    listAddressChangesModel.getPageSize()
-            ).block();
+                    listAddressChangesModel.getPageSize()).block();
         } catch (final HttpClientErrorException exception) {
             final String message = String.format("The request to get address failed with %s. %s", exception.getStatusCode(), exception.getMessage());
             log.debug(message);
@@ -141,8 +138,7 @@ public class AddressesMunichImpl implements AddressMunichApi {
                     searchAddressesModel.getSort(),
                     searchAddressesModel.getSortdir(),
                     searchAddressesModel.getPage(),
-                    searchAddressesModel.getPagesize()
-            ).block();
+                    searchAddressesModel.getPagesize()).block();
         } catch (final HttpClientErrorException exception) {
             final String message = String.format("The request to get address failed with %s. %s", exception.getStatusCode(), exception.getMessage());
             log.debug(message);
@@ -171,8 +167,7 @@ public class AddressesMunichImpl implements AddressMunichApi {
                     searchAddressesGeoModel.getTopleftlng(),
                     searchAddressesGeoModel.getBottomrightlat(),
                     searchAddressesGeoModel.getBottomrightlng(),
-                    searchAddressesGeoModel.getFormat()
-            ).toStream().toList();
+                    searchAddressesGeoModel.getFormat()).toStream().toList();
             return AddressDistancesModel.builder()
                     .addressDistances(addressDistances)
                     .build();
