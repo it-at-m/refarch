@@ -13,6 +13,12 @@
     <artifactId>refarch-address-integration-client</artifactId>
     <name>refarch-address-integration-client</name>
 
+    <properties>
+        <openapi-generator-maven-plugin.version>7.8.0</openapi-generator-maven-plugin.version>
+
+        <jackson-databind-nullable.version>0.2.6</jackson-databind-nullable.version>
+    </properties>
+
     <dependencies>
         <!-- Spring -->
         <dependency>
@@ -46,10 +52,7 @@
         <dependency>
             <groupId>org.openapitools</groupId>
             <artifactId>jackson-databind-nullable</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>jsr305</artifactId>
+            <version>${jackson-databind-nullable.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -69,6 +72,7 @@
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>${openapi-generator-maven-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>address-integration</id>

@@ -12,6 +12,10 @@
     <artifactId>refarch-address-integration-starter</artifactId>
     <name>refarch-address-integration-starter</name>
 
+    <properties>
+        <httpclient.version>4.5.14</httpclient.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
