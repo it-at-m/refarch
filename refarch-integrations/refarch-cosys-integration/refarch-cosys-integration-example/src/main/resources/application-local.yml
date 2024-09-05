@@ -1,4 +1,8 @@
 refarch:
+  s3:
+    client:
+      document-storage-url: http://localhost:8086
+      enable-security: true
   cosys:
     url: https://cosysk007.srv.muenchen.de/cosys-eai/rest
     merge:
@@ -7,6 +11,13 @@ refarch:
       outputLanguage: Deutsch
       keepFields: unresolved-ref
 
+SSO_S3_ISSUER_URL: http://keycloak:8100/auth/realms/local_realm
+SSO_S3_CLIENT_ID: local
+SSO_S3_CLIENT_SECRET: client_secret
+
+SSO_COSYS_ISSUER_URL: http://keycloak:8100/auth/realms/local_realm
+SSO_COSYS_CLIENT_ID: local
+SSO_COSYS_CLIENT_SECRET: client_secret
+
 server:
-  shutdown: graceful
-  port: ${COSYS_INTEGRATION_SERVER_PORT:8093}
+  port: 8093

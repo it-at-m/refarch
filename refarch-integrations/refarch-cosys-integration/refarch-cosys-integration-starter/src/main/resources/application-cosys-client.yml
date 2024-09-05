@@ -1,0 +1,17 @@
+spring:
+  security:
+    oauth2:
+      client:
+        provider:
+          cosys:
+            issuer-uri: ${SSO_COSYS_ISSUER_URL}
+            user-info-uri: ${SSO_COSYS_ISSUER_URL}/protocol/openid-connect/userinfo
+            jwk-set-uri: ${SSO_COSYS_ISSUER_URL}/protocol/openid-connect/certs
+            user-name-attribute: user_name
+        registration:
+          cosys:
+            provider: cosys
+            authorization-grant-type: client_credentials
+            client-id: ${SSO_COSYS_CLIENT_ID}
+            client-secret: ${SSO_COSYS_CLIENT_SECRET}
+            scope: email, profile, openid  # needed for userInfo endpoint
