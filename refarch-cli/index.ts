@@ -20,7 +20,7 @@ let hasJavaApplicationBeenGenerated = false;
  */
 async function projectConfiguration() {
   await select({
-    message: "Select Project/s you want to generate with space",
+    message: "Select Project you want to generate with enter",
     choices: [
       { name: applications.FRONTEND, value: applications.FRONTEND },
       { name: applications.BACKEND, value: applications.BACKEND },
@@ -66,6 +66,10 @@ async function generateJavaInteractiveCli(application: string) {
   const artifactId = await input({
     message: "Define value for property artifactId:",
     required: true,
+    validate(value: string) {
+      const pass = value.match(/([a-z\-])+/g);
+      return pass ? true : "Package name not valid";
+    },
   });
   const packageName = await input({
     message: "Define value for property package:",
@@ -105,8 +109,8 @@ function generateBackend(
     {
       files:
         "refarch-backend-copy/src/main/java/de/muenchen/refarch/**/*.java",
-      from: [/de.muenchen.refarch/g],
-      to: [`${packageName}`],
+      from: /de.muenchen.refarch/g,
+      to: `${packageName}`,
     },
     {
       files: "refarch-backend-copy/pom.xml",
@@ -124,6 +128,11 @@ function generateBackend(
   ];
   replacements.map((options) => replaceInFileSync(options));
   renameSync("refarch-backend-copy", `${artifactId}`);
+  const packageNameWithSlashes = packageName.replace(/\./g,'/')
+
+    renameSync(`${artifactId}/src/main/java/de/muenchen/refarch`, `${artifactId}/src/main/java/${packageNameWithSlashes}`);
+
+
 }
 
 async function generateFrontendInteractiveCli() {
@@ -151,7 +160,7 @@ function generateFrontend(name: string) {
       "refarch-frontend-copy/package-lock.json",
     ],
     from: /refarch-frontend/g,
-    to: `package ${name}`,
+    to: `${name}`,
   };
   replaceInFileSync(replacements);
   renameSync("refarch-frontend-copy", `${name}`);
@@ -191,6 +200,8 @@ function generateEAI(packageName: string, groupId: string, artifactId: string) {
   ];
   replacements.map((options) => replaceInFileSync(options));
   renameSync("refarch-eai-copy", `${artifactId}`);
+  const packageNameWithSlashes = packageName.replace(/\./g,'/')
+  renameSync(`${artifactId}/src/main/java/de/muenchen/refarch`, `${artifactId}/src/main/java/${packageNameWithSlashes}`);
 }
 
 /**
