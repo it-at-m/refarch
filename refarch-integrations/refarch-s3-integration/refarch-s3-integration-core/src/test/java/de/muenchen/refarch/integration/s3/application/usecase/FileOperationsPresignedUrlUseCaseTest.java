@@ -26,34 +26,35 @@ import org.mockito.quality.Strictness;
 @MockitoSettings(strictness = Strictness.LENIENT)
 class FileOperationsPresignedUrlUseCaseTest {
 
+    public static final String TEST_TXT_PATH = "folder/test.txt";
+    public static final String EXAMPLE_PRESIGNED_URL = "some-presigned-url";
+    public static final String PATH_TO_FOLDER = "folder";
     @Mock
     private S3Adapter s3Adapter;
 
     private FileOperationsPresignedUrlInPort fileOperations;
 
     @BeforeEach
-    public void beforeEach() {
+    void beforeEach() {
         this.fileOperations = new FileOperationsPresignedUrlUseCase(this.s3Adapter);
         Mockito.reset(this.s3Adapter);
     }
 
     @Test
-    void getPresignedUrl() {
-        final String pathToFile = "folder/test.txt";
+    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    void testGetPresignedUrl() {
         final int expiresInMinutes = 5;
         final List<Method> actions = List.of(Method.GET, Method.POST, Method.PUT, Method.DELETE);
 
-        final String examplePresignedUrl = "some-presigned-url";
-
         actions.forEach(action -> {
             try {
-                Mockito.when(this.s3Adapter.getPresignedUrl(pathToFile, action, expiresInMinutes)).thenReturn(examplePresignedUrl);
+                Mockito.when(this.s3Adapter.getPresignedUrl(TEST_TXT_PATH, action, expiresInMinutes)).thenReturn(EXAMPLE_PRESIGNED_URL);
 
-                final PresignedUrl presignedUrl = fileOperations.getPresignedUrl(pathToFile, action, expiresInMinutes);
+                final PresignedUrl presignedUrl = fileOperations.getPresignedUrl(TEST_TXT_PATH, action, expiresInMinutes);
 
-                Assertions.assertEquals(examplePresignedUrl, presignedUrl.url());
+                Assertions.assertEquals(EXAMPLE_PRESIGNED_URL, presignedUrl.url());
                 Assertions.assertEquals(action.toString(), presignedUrl.action());
-                Assertions.assertEquals(pathToFile, presignedUrl.path());
+                Assertions.assertEquals(TEST_TXT_PATH, presignedUrl.path());
             } catch (final FileSystemAccessException e) {
                 Assertions.fail(e.getMessage());
             }
@@ -62,27 +63,24 @@ class FileOperationsPresignedUrlUseCaseTest {
     }
 
     @Test
-    void getPresignedUrlForFile() throws FileSystemAccessException, FileExistenceException {
-        final String pathToFile = "folder/test.txt";
+    void testGetPresignedUrlForFile() throws FileSystemAccessException {
         final int expiresInMinutes = 5;
         final List<Method> actions = List.of(Method.GET, Method.PUT, Method.DELETE);
-
-        final String examplePresignedUrl = "some-presigned-url";
 
         // GET, PUT, DELETE
         actions.forEach(action -> {
             try {
-                Mockito.when(this.s3Adapter.fileExists(pathToFile)).thenReturn(true);
-                Mockito.when(this.s3Adapter.getFilePathsFromFolder(pathToFile)).thenReturn(Set.of(pathToFile));
-                Mockito.when(this.s3Adapter.getPresignedUrl(pathToFile, action, expiresInMinutes)).thenReturn(examplePresignedUrl);
+                Mockito.when(this.s3Adapter.fileExists(TEST_TXT_PATH)).thenReturn(true);
+                Mockito.when(this.s3Adapter.getFilePathsFromFolder(TEST_TXT_PATH)).thenReturn(Set.of(TEST_TXT_PATH));
+                Mockito.when(this.s3Adapter.getPresignedUrl(TEST_TXT_PATH, action, expiresInMinutes)).thenReturn(EXAMPLE_PRESIGNED_URL);
 
-                final List<PresignedUrl> presignedUrls = this.fileOperations.getPresignedUrls(List.of(pathToFile), action, expiresInMinutes);
+                final List<PresignedUrl> presignedUrls = this.fileOperations.getPresignedUrls(List.of(TEST_TXT_PATH), action, expiresInMinutes);
 
                 Assertions.assertEquals(1, presignedUrls.size());
                 presignedUrls.forEach(presignedUrl -> {
-                    Assertions.assertEquals(presignedUrl.url(), examplePresignedUrl);
+                    Assertions.assertEquals(presignedUrl.url(), EXAMPLE_PRESIGNED_URL);
                     Assertions.assertEquals(presignedUrl.action(), action.toString());
-                    Assertions.assertEquals(presignedUrl.path(), pathToFile);
+                    Assertions.assertEquals(presignedUrl.path(), TEST_TXT_PATH);
                 });
                 Mockito.reset();
             } catch (final FileExistenceException | FileSystemAccessException e) {
@@ -92,40 +90,38 @@ class FileOperationsPresignedUrlUseCaseTest {
 
         // POST
         // special case POST is converted to PUT
-        Mockito.when(this.s3Adapter.getPresignedUrl(pathToFile, Method.PUT, expiresInMinutes)).thenReturn(examplePresignedUrl);
+        Mockito.when(this.s3Adapter.getPresignedUrl(TEST_TXT_PATH, Method.PUT, expiresInMinutes)).thenReturn(EXAMPLE_PRESIGNED_URL);
 
-        final List<PresignedUrl> presignedUrls = this.fileOperations.getPresignedUrls(List.of(pathToFile), Method.POST, expiresInMinutes);
+        final List<PresignedUrl> presignedUrls = this.fileOperations.getPresignedUrls(List.of(TEST_TXT_PATH), Method.POST, expiresInMinutes);
 
         Assertions.assertEquals(1, presignedUrls.size());
         presignedUrls.forEach(presignedUrl -> {
-            Assertions.assertEquals(presignedUrl.url(), examplePresignedUrl);
+            Assertions.assertEquals(presignedUrl.url(), EXAMPLE_PRESIGNED_URL);
             Assertions.assertEquals(presignedUrl.action(), Method.PUT.toString());
-            Assertions.assertEquals(presignedUrl.path(), pathToFile);
+            Assertions.assertEquals(presignedUrl.path(), TEST_TXT_PATH);
         });
     }
 
     @Test
-    void getPresignedUrlsForDirectory() throws FileSystemAccessException, FileExistenceException {
+    void testGetPresignedUrlsForDirectory() throws FileSystemAccessException {
         final String pathToDirectory = "folder/";
-        final Set<String> files = Set.of("folder/test.txt", "folder/test1.txt");
+        final Set<String> files = Set.of(TEST_TXT_PATH, "folder/test1.txt");
         final int expiresInMinutes = 5;
         final List<Method> actions = List.of(Method.GET, Method.PUT, Method.DELETE);
-
-        final String examplePresignedUrl = "some-presigned-url";
 
         // GET, PUT, DELETE
         actions.forEach(action -> {
             try {
                 Mockito.when(this.s3Adapter.getFilePathsFromFolder(pathToDirectory)).thenReturn(files);
                 for (final String file : files) {
-                    Mockito.when(this.s3Adapter.getPresignedUrl(file, action, expiresInMinutes)).thenReturn(examplePresignedUrl);
+                    Mockito.when(this.s3Adapter.getPresignedUrl(file, action, expiresInMinutes)).thenReturn(EXAMPLE_PRESIGNED_URL);
                 }
 
                 final List<PresignedUrl> presignedUrls = this.fileOperations.getPresignedUrls(List.of(pathToDirectory), action, expiresInMinutes);
 
                 Assertions.assertEquals(2, presignedUrls.size());
                 presignedUrls.forEach(presignedUrl -> {
-                    Assertions.assertEquals(presignedUrl.url(), examplePresignedUrl);
+                    Assertions.assertEquals(presignedUrl.url(), EXAMPLE_PRESIGNED_URL);
                     Assertions.assertEquals(presignedUrl.action(), action.toString());
                     Assertions.assertTrue(files.stream().anyMatch(file -> file.equals(presignedUrl.path())));
                 });
@@ -137,39 +133,37 @@ class FileOperationsPresignedUrlUseCaseTest {
 
         // POST
         // special case POST is converted to PUT
-        Mockito.when(this.s3Adapter.getPresignedUrl(pathToDirectory, Method.PUT, expiresInMinutes)).thenReturn(examplePresignedUrl);
+        Mockito.when(this.s3Adapter.getPresignedUrl(pathToDirectory, Method.PUT, expiresInMinutes)).thenReturn(EXAMPLE_PRESIGNED_URL);
 
         final List<PresignedUrl> presignedUrls = this.fileOperations.getPresignedUrls(List.of(pathToDirectory), Method.POST, expiresInMinutes);
 
         Assertions.assertEquals(1, presignedUrls.size());
         presignedUrls.forEach(presignedUrl -> {
-            Assertions.assertEquals(presignedUrl.url(), examplePresignedUrl);
+            Assertions.assertEquals(presignedUrl.url(), EXAMPLE_PRESIGNED_URL);
             Assertions.assertEquals(presignedUrl.action(), Method.PUT.toString());
             Assertions.assertEquals(presignedUrl.path(), pathToDirectory);
         });
     }
 
     @Test
-    void getPresignedUrlsForMultipleFiles() throws FileSystemAccessException, FileExistenceException {
+    void testGetPresignedUrlsForMultipleFiles() throws FileSystemAccessException {
         final List<String> pathToFiles = List.of("folder/first.txt", "folder/second.txt", "folder/third.txt");
         final int expiresInMinutes = 5;
         final List<Method> actions = List.of(Method.GET, Method.PUT, Method.DELETE);
 
-        final String examplePresignedUrl = "some-presigned-url";
-
         // GET, PUT, DELETE
         actions.forEach(action -> {
             try {
-                for (String file : pathToFiles) {
+                for (final String file : pathToFiles) {
                     Mockito.when(this.s3Adapter.getFilePathsFromFolder(file)).thenReturn(Set.of(file));
-                    Mockito.when(this.s3Adapter.getPresignedUrl(file, action, expiresInMinutes)).thenReturn(examplePresignedUrl);
+                    Mockito.when(this.s3Adapter.getPresignedUrl(file, action, expiresInMinutes)).thenReturn(EXAMPLE_PRESIGNED_URL);
                 }
 
                 final List<PresignedUrl> presignedUrls = this.fileOperations.getPresignedUrls(pathToFiles, action, expiresInMinutes);
 
                 Assertions.assertEquals(3, presignedUrls.size());
                 presignedUrls.forEach(presignedUrl -> {
-                    Assertions.assertEquals(presignedUrl.url(), examplePresignedUrl);
+                    Assertions.assertEquals(presignedUrl.url(), EXAMPLE_PRESIGNED_URL);
                     Assertions.assertEquals(presignedUrl.action(), action.toString());
                 });
                 Mockito.reset();
@@ -180,103 +174,90 @@ class FileOperationsPresignedUrlUseCaseTest {
 
         // POST
         // special case POST is converted to PUT
-        for (String file : pathToFiles) {
-            Mockito.when(this.s3Adapter.getPresignedUrl(file, Method.PUT, expiresInMinutes)).thenReturn(examplePresignedUrl);
+        for (final String file : pathToFiles) {
+            Mockito.when(this.s3Adapter.getPresignedUrl(file, Method.PUT, expiresInMinutes)).thenReturn(EXAMPLE_PRESIGNED_URL);
         }
 
         final List<PresignedUrl> presignedUrls = this.fileOperations.getPresignedUrls(pathToFiles, Method.POST, expiresInMinutes);
 
         Assertions.assertEquals(3, presignedUrls.size());
         presignedUrls.forEach(presignedUrl -> {
-            Assertions.assertEquals(presignedUrl.url(), examplePresignedUrl);
+            Assertions.assertEquals(presignedUrl.url(), EXAMPLE_PRESIGNED_URL);
             Assertions.assertEquals(presignedUrl.action(), Method.PUT.toString());
             Assertions.assertTrue(pathToFiles.stream().anyMatch(file -> file.equals(presignedUrl.path())));
         });
     }
 
     @Test
-    void getFileException() throws Exception {
-        final String pathToFile = "folder/test.txt";
-        final String pathToFolder = "folder";
+    void testGetFileException() throws Exception {
         final int expiresInMinutes = 5;
-        Mockito.when(this.s3Adapter.getFilePathsFromFolder(pathToFolder)).thenReturn(new HashSet<>());
-        Assertions.assertThrows(FileExistenceException.class, () -> this.fileOperations.getFile(pathToFile, expiresInMinutes));
+        Mockito.when(this.s3Adapter.getFilePathsFromFolder(PATH_TO_FOLDER)).thenReturn(new HashSet<>());
+        Assertions.assertThrows(FileExistenceException.class, () -> this.fileOperations.getFile(TEST_TXT_PATH, expiresInMinutes));
     }
 
     @Test
-    void getFile() throws FileSystemAccessException, FileExistenceException {
-        final String pathToFile = "folder/test.txt";
-        final String pathToFolder = "folder";
+    void testGetFile() throws FileSystemAccessException {
         final int expiresInMinutes = 5;
         final String presignedUrl = "THE_PRESIGNED_URL";
 
-        Mockito.when(this.s3Adapter.fileExists(pathToFile)).thenReturn(true);
-        Mockito.when(this.s3Adapter.getFilePathsFromFolder(pathToFolder)).thenReturn(new HashSet<>(List.of(pathToFile)));
-        Mockito.when(this.s3Adapter.getPresignedUrl(pathToFile, Method.GET, expiresInMinutes)).thenReturn(presignedUrl);
+        Mockito.when(this.s3Adapter.fileExists(TEST_TXT_PATH)).thenReturn(true);
+        Mockito.when(this.s3Adapter.getFilePathsFromFolder(PATH_TO_FOLDER)).thenReturn(new HashSet<>(List.of(TEST_TXT_PATH)));
+        Mockito.when(this.s3Adapter.getPresignedUrl(TEST_TXT_PATH, Method.GET, expiresInMinutes)).thenReturn(presignedUrl);
 
-        final PresignedUrl result = this.fileOperations.getFile(pathToFile, expiresInMinutes);
+        final PresignedUrl result = this.fileOperations.getFile(TEST_TXT_PATH, expiresInMinutes);
 
-        final PresignedUrl expected = new PresignedUrl(presignedUrl, pathToFile, "GET");
+        final PresignedUrl expected = new PresignedUrl(presignedUrl, TEST_TXT_PATH, "GET");
 
         assertThat(result).isEqualTo(expected);
     }
 
     @Test
     void saveFile() throws FileSystemAccessException {
-        final String pathToFile = "folder/test.txt";
-        final String pathToFolder = "folder";
+        final FileData fileData = new FileData(TEST_TXT_PATH, 5);
 
-        final FileData fileData = new FileData(pathToFile, 5);
-
-        Mockito.when(this.s3Adapter.fileExists(pathToFile)).thenReturn(true);
-        Mockito.when(this.s3Adapter.getFilePathsFromFolder(pathToFolder)).thenReturn(new HashSet<>(List.of(pathToFile)));
+        Mockito.when(this.s3Adapter.fileExists(TEST_TXT_PATH)).thenReturn(true);
+        Mockito.when(this.s3Adapter.getFilePathsFromFolder(PATH_TO_FOLDER)).thenReturn(new HashSet<>(List.of(TEST_TXT_PATH)));
         Assertions.assertThrows(FileExistenceException.class, () -> this.fileOperations.saveFile(fileData));
         // happy path is tested in updateFile
     }
 
     @Test
     void updateFile() throws FileSystemAccessException {
-        final String pathToFile = "folder/test.txt";
-
-        final FileData fileData = new FileData(pathToFile, 5);
+        final FileData fileData = new FileData(TEST_TXT_PATH, 5);
 
         // File not in Database
         this.fileOperations.updateFile(fileData);
-        Mockito.verify(this.s3Adapter, Mockito.times(1)).getPresignedUrl(pathToFile, Method.PUT, fileData.expiresInMinutes());
+        Mockito.verify(this.s3Adapter, Mockito.times(1)).getPresignedUrl(TEST_TXT_PATH, Method.PUT, fileData.expiresInMinutes());
 
         // File already in Database with older end of life
         Mockito.reset(this.s3Adapter);
         this.fileOperations.updateFile(fileData);
-        Mockito.verify(this.s3Adapter, Mockito.times(1)).getPresignedUrl(pathToFile, Method.PUT, fileData.expiresInMinutes());
+        Mockito.verify(this.s3Adapter, Mockito.times(1)).getPresignedUrl(TEST_TXT_PATH, Method.PUT, fileData.expiresInMinutes());
 
         // File already in Database with older and of life
         Mockito.reset(this.s3Adapter);
         this.fileOperations.updateFile(fileData);
-        Mockito.verify(this.s3Adapter, Mockito.times(1)).getPresignedUrl(pathToFile, Method.PUT, fileData.expiresInMinutes());
+        Mockito.verify(this.s3Adapter, Mockito.times(1)).getPresignedUrl(TEST_TXT_PATH, Method.PUT, fileData.expiresInMinutes());
     }
 
     @Test
     void deleteFileException() throws FileSystemAccessException {
-        final String pathToFile = "folder/test.txt";
-        final String pathToFolder = "folder";
         final int expiresInMinutes = 5;
 
         Mockito.reset(this.s3Adapter);
-        Mockito.when(this.s3Adapter.getFilePathsFromFolder(pathToFolder)).thenReturn(new HashSet<>());
-        Assertions.assertThrows(FileExistenceException.class, () -> this.fileOperations.deleteFile(pathToFile, expiresInMinutes));
+        Mockito.when(this.s3Adapter.getFilePathsFromFolder(PATH_TO_FOLDER)).thenReturn(new HashSet<>());
+        Assertions.assertThrows(FileExistenceException.class, () -> this.fileOperations.deleteFile(TEST_TXT_PATH, expiresInMinutes));
     }
 
     @Test
-    void deleteFile() throws FileSystemAccessException, FileExistenceException {
-        final String pathToFile = "folder/test.txt";
-        final String pathToFolder = "folder";
+    void deleteFile() throws FileSystemAccessException {
         final int expiresInMinutes = 5;
 
         Mockito.reset(this.s3Adapter);
-        Mockito.when(this.s3Adapter.fileExists(pathToFile)).thenReturn(true);
-        this.fileOperations.deleteFile(pathToFile, expiresInMinutes);
-        Mockito.verify(this.s3Adapter, Mockito.times(1)).getPresignedUrl(pathToFile, Method.DELETE, expiresInMinutes);
-        Mockito.verify(this.s3Adapter, Mockito.times(1)).fileExists(pathToFile);
+        Mockito.when(this.s3Adapter.fileExists(TEST_TXT_PATH)).thenReturn(true);
+        this.fileOperations.deleteFile(TEST_TXT_PATH, expiresInMinutes);
+        Mockito.verify(this.s3Adapter, Mockito.times(1)).getPresignedUrl(TEST_TXT_PATH, Method.DELETE, expiresInMinutes);
+        Mockito.verify(this.s3Adapter, Mockito.times(1)).fileExists(TEST_TXT_PATH);
     }
 
     @Test

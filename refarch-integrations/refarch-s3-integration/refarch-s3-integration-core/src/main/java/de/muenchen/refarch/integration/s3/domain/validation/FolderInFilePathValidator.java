@@ -15,6 +15,7 @@ public class FolderInFilePathValidator implements ConstraintValidator<FolderInFi
      * @param context context in which the constraint is evaluated
      * @return false if the filepath contains no folder, <code>true</code> otherwise.
      */
+    @Override
     public boolean isValid(final String pathToFile, final ConstraintValidatorContext context) {
         final String pathToFolder = StringUtils.substringBeforeLast(pathToFile, SEPARATOR);
         return StringUtils.contains(pathToFile, SEPARATOR) && StringUtils.isNotEmpty(pathToFolder);
