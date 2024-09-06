@@ -32,6 +32,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.MediaType;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
@@ -41,30 +42,30 @@ class EmailApiImplTest {
     private final ResourceLoader resourceLoader = mock(ResourceLoader.class);
     private final FreeMarkerConfigurer freeMarkerConfigurer = mock(FreeMarkerConfigurer.class);
     // test data
-    private final String receiver = "mailReceiver1@muenchen.de,mailReceiver2@muenchen.de";
-    private final String receiverCC = "receiverCC@muenchen.de";
-    private final String receiverBCC = "receiverBCC@muenchen.de";
-    private final String subject = "Test Mail";
-    private final String body = "This is a test mail";
-    private final String replyTo = "test@muenchen.de";
-    private final String defaultReplyTo = "noreply@muenchen.de";
-    private final String sender = "some-custom-sender@muenchen.de";
+    private static final String RECEIVER = "mailReceiver1@muenchen.de,mailReceiver2@muenchen.de";
+    private static final String RECEIVER_CC = "receiverCC@muenchen.de";
+    private static final String RECEIVER_BCC = "receiverBCC@muenchen.de";
+    private static final String SUBJECT = "Test Mail";
+    private static final String BODY = "This is a test mail";
+    private static final String REPLY_TO = "test@muenchen.de";
+    private static final String DEFAULT_REPLY_TO = "noreply@muenchen.de";
+    private static final String SENDER = "some-custom-sender@muenchen.de";
     private EmailApi emailApi;
 
     @BeforeEach
     void setUp() {
         when(this.javaMailSender.createMimeMessage()).thenReturn(new MimeMessage((Session) null));
-        this.emailApi = new EmailApiImpl(this.javaMailSender, this.resourceLoader, freeMarkerConfigurer, "test@muenchen.de", defaultReplyTo);
+        this.emailApi = new EmailApiImpl(this.javaMailSender, this.resourceLoader, freeMarkerConfigurer, "test@muenchen.de", DEFAULT_REPLY_TO);
     }
 
     @Test
     void testSendMail() throws MessagingException, IOException {
         final Mail mail = new Mail(
-                this.receiver,
+                RECEIVER,
                 null,
                 null,
-                this.subject,
-                this.body,
+                SUBJECT,
+                BODY,
                 false,
                 null,
                 null,
@@ -75,23 +76,23 @@ class EmailApiImplTest {
         verify(this.javaMailSender).send(messageArgumentCaptor.capture());
 
         assertThat(messageArgumentCaptor.getValue().getAllRecipients()).hasSize(2);
-        assertThat(messageArgumentCaptor.getValue().getSubject()).isEqualTo(this.subject);
+        assertThat(messageArgumentCaptor.getValue().getSubject()).isEqualTo(SUBJECT);
         assertThat(messageArgumentCaptor.getValue().getReplyTo()).hasSize(1);
-        assertThat(messageArgumentCaptor.getValue().getReplyTo()).contains(new InternetAddress(this.defaultReplyTo));
+        assertThat(messageArgumentCaptor.getValue().getReplyTo()).contains(new InternetAddress(DEFAULT_REPLY_TO));
         final MimeMultipart content = (MimeMultipart) messageArgumentCaptor.getValue().getContent();
-        assertThat(content.getContentType()).contains("multipart/mixed");
+        assertThat(content.getContentType()).contains(MediaType.MULTIPART_MIXED.getType());
     }
 
     @Test
     void testSendMailNoDefaultReplyTo() throws MessagingException, IOException {
-        var customAddress = new InternetAddress("custom.test@muenchen.de");
+        final InternetAddress customAddress = new InternetAddress("custom.test@muenchen.de");
 
         final Mail mail = new Mail(
-                this.receiver,
+                RECEIVER,
                 null,
                 null,
-                this.subject,
-                this.body,
+                SUBJECT,
+                BODY,
                 false,
                 null,
                 null,
@@ -102,24 +103,24 @@ class EmailApiImplTest {
         verify(this.javaMailSender).send(messageArgumentCaptor.capture());
 
         assertThat(messageArgumentCaptor.getValue().getAllRecipients()).hasSize(2);
-        assertThat(messageArgumentCaptor.getValue().getSubject()).isEqualTo(this.subject);
+        assertThat(messageArgumentCaptor.getValue().getSubject()).isEqualTo(SUBJECT);
         assertThat(messageArgumentCaptor.getValue().getReplyTo()).hasSize(1);
         assertThat(messageArgumentCaptor.getValue().getReplyTo()).contains(new InternetAddress(customAddress.getAddress()));
         final MimeMultipart content = (MimeMultipart) messageArgumentCaptor.getValue().getContent();
-        assertThat(content.getContentType()).contains("multipart/mixed");
+        assertThat(content.getContentType()).contains(MediaType.MULTIPART_MIXED.getType());
     }
 
     @Test
     void testSendMailWithOptions() throws MessagingException, IOException {
         final Mail mail = new Mail(
-                this.receiver,
-                this.receiverCC,
-                this.receiverBCC,
-                this.subject,
-                this.body,
+                RECEIVER,
+                RECEIVER_CC,
+                RECEIVER_BCC,
+                SUBJECT,
+                BODY,
                 false,
-                this.sender,
-                this.replyTo,
+                SENDER,
+                REPLY_TO,
                 null);
         this.emailApi.sendMail(mail);
 
@@ -129,23 +130,23 @@ class EmailApiImplTest {
         assertThat(messageArgumentCaptor.getValue().getAllRecipients()).hasSize(4);
         assertThat(messageArgumentCaptor.getValue().getAllRecipients()).containsAll(
                 List.of(new InternetAddress("mailReceiver1@muenchen.de"), new InternetAddress("mailReceiver2@muenchen.de"),
-                        new InternetAddress(this.receiverCC), new InternetAddress(this.receiverBCC)));
-        assertThat(messageArgumentCaptor.getValue().getSubject()).isEqualTo(this.subject);
+                        new InternetAddress(RECEIVER_CC), new InternetAddress(RECEIVER_BCC)));
+        assertThat(messageArgumentCaptor.getValue().getSubject()).isEqualTo(SUBJECT);
         assertThat(messageArgumentCaptor.getValue().getReplyTo()).hasSize(1);
-        assertThat(messageArgumentCaptor.getValue().getReplyTo()).contains(new InternetAddress(this.replyTo));
-        assertThat(messageArgumentCaptor.getValue().getFrom()).contains(new InternetAddress(this.sender));
+        assertThat(messageArgumentCaptor.getValue().getReplyTo()).contains(new InternetAddress(REPLY_TO));
+        assertThat(messageArgumentCaptor.getValue().getFrom()).contains(new InternetAddress(SENDER));
         final MimeMultipart content = (MimeMultipart) messageArgumentCaptor.getValue().getContent();
-        assertThat(content.getContentType()).contains("multipart/mixed");
+        assertThat(content.getContentType()).contains(MediaType.MULTIPART_MIXED.getType());
     }
 
     @Test
     void sendMailWithAttachments() throws MessagingException, IOException {
         final Mail mail = new Mail(
-                this.receiver,
+                RECEIVER,
                 null,
                 null,
-                this.subject,
-                this.body,
+                SUBJECT,
+                BODY,
                 false,
                 null,
                 null,
@@ -159,22 +160,22 @@ class EmailApiImplTest {
         verify(this.javaMailSender).send(messageArgumentCaptor.capture());
 
         assertThat(messageArgumentCaptor.getValue().getAllRecipients()).hasSize(2);
-        assertThat(messageArgumentCaptor.getValue().getSubject()).isEqualTo(this.subject);
+        assertThat(messageArgumentCaptor.getValue().getSubject()).isEqualTo(SUBJECT);
         final MimeMultipart content = (MimeMultipart) messageArgumentCaptor.getValue().getContent();
-        assertThat(content.getContentType()).contains("multipart/mixed");
+        assertThat(content.getContentType()).contains(MediaType.MULTIPART_MIXED.getType());
     }
 
     @Test
     void sendMailWithMultipleReplyToAddresses() throws MessagingException, IOException {
-        var reply1 = new InternetAddress("address1@muenchen.de");
-        var reply2 = new InternetAddress("address2@muenchen.de");
+        final InternetAddress reply1 = new InternetAddress("address1@muenchen.de");
+        final InternetAddress reply2 = new InternetAddress("address2@muenchen.de");
 
         final Mail mail = new Mail(
-                this.receiver,
+                RECEIVER,
                 null,
                 null,
-                this.subject,
-                this.body,
+                this.SUBJECT,
+                this.BODY,
                 false,
                 null,
                 reply1.getAddress() + "," + reply2.getAddress(),
@@ -185,11 +186,11 @@ class EmailApiImplTest {
         verify(this.javaMailSender).send(messageArgumentCaptor.capture());
 
         assertThat(messageArgumentCaptor.getValue().getAllRecipients()).hasSize(2);
-        assertThat(messageArgumentCaptor.getValue().getSubject()).isEqualTo(this.subject);
+        assertThat(messageArgumentCaptor.getValue().getSubject()).isEqualTo(this.SUBJECT);
         assertThat(messageArgumentCaptor.getValue().getReplyTo()).hasSize(2);
         assertThat(messageArgumentCaptor.getValue().getReplyTo()).containsAll(List.of(reply1, reply2));
         final MimeMultipart content = (MimeMultipart) messageArgumentCaptor.getValue().getContent();
-        assertThat(content.getContentType()).contains("multipart/mixed");
+        assertThat(content.getContentType()).contains(MediaType.MULTIPART_MIXED.getType());
     }
 
     @Test
@@ -197,11 +198,11 @@ class EmailApiImplTest {
         when(this.resourceLoader.getResource(anyString())).thenReturn(this.getResourceForText("Default Logo", true));
 
         final Mail mail = new Mail(
-                this.receiver,
+                this.RECEIVER,
                 null,
                 null,
-                this.subject,
-                this.body,
+                this.SUBJECT,
+                this.BODY,
                 false,
                 null,
                 null,
@@ -213,9 +214,9 @@ class EmailApiImplTest {
         verify(this.resourceLoader).getResource("classpath:bausteine/mail/email-logo.png");
 
         assertThat(messageArgumentCaptor.getValue().getAllRecipients()).hasSize(2);
-        assertThat(messageArgumentCaptor.getValue().getSubject()).isEqualTo(this.subject);
+        assertThat(messageArgumentCaptor.getValue().getSubject()).isEqualTo(this.SUBJECT);
         final MimeMultipart content = (MimeMultipart) messageArgumentCaptor.getValue().getContent();
-        assertThat(content.getContentType()).contains("multipart/mixed");
+        assertThat(content.getContentType()).contains(MediaType.MULTIPART_MIXED.getType());
     }
 
     @Test
@@ -223,11 +224,11 @@ class EmailApiImplTest {
         when(this.resourceLoader.getResource(anyString())).thenReturn(this.getResourceForText("Custom Logo", true));
 
         final Mail mail = new Mail(
-                this.receiver,
+                this.RECEIVER,
                 null,
                 null,
-                this.subject,
-                this.body,
+                this.SUBJECT,
+                this.BODY,
                 false,
                 null,
                 null,
@@ -239,16 +240,16 @@ class EmailApiImplTest {
         verify(this.resourceLoader).getResource("classpath:some/random/path/on/classpath");
 
         assertThat(messageArgumentCaptor.getValue().getAllRecipients()).hasSize(2);
-        assertThat(messageArgumentCaptor.getValue().getSubject()).isEqualTo(this.subject);
+        assertThat(messageArgumentCaptor.getValue().getSubject()).isEqualTo(this.SUBJECT);
         final MimeMultipart content = (MimeMultipart) messageArgumentCaptor.getValue().getContent();
-        assertThat(content.getContentType()).contains("multipart/mixed");
+        assertThat(content.getContentType()).contains(MediaType.MULTIPART_MIXED.getType());
     }
 
     @Test
     void testGetBodyFromFreemarkerTemplate() throws IOException, TemplateException {
         final String templateName = "test-template.ftl";
-        Map<String, Object> content = Map.of("data", "test");
-        Configuration configuration = new Configuration(Configuration.VERSION_2_3_30);
+        final Map<String, Object> content = Map.of("data", "test");
+        final Configuration configuration = new Configuration(Configuration.VERSION_2_3_30);
         configuration.setClassForTemplateLoading(this.getClass(), "/templates/");
         when(this.freeMarkerConfigurer.getConfiguration()).thenReturn(configuration);
 

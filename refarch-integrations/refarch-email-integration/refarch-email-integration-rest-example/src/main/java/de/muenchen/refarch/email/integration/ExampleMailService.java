@@ -13,13 +13,13 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class TestService {
+public class ExampleMailService {
     private final SendMailInPort sendMailInPort;
     private final DocumentStorageFileRepository documentStorageFileRepository;
 
-    void testSendMail() {
+    public void testSendMail() {
         this.uploadTestFile();
-        TextMail mail = new TextMail(
+        final TextMail mail = new TextMail(
                 "test.receiver@muenchen.de",
                 null,
                 null,
@@ -32,8 +32,8 @@ public class TestService {
     }
 
     @SneakyThrows
-    void uploadTestFile() {
-        ClassPathResource resource = new ClassPathResource("/files/test-pdf.pdf");
+    private void uploadTestFile() {
+        final ClassPathResource resource = new ClassPathResource("/files/test-pdf.pdf");
         documentStorageFileRepository.updateFile("/test/test-pdf.pdf", resource.getContentAsByteArray(), 1);
         log.info("Test file uploaded");
     }

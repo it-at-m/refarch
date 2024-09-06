@@ -15,12 +15,12 @@ public class MailAdapter implements MailOutPort {
     private final EmailApi emailApi;
 
     @Override
-    public void sendMail(Mail mail, String logoPath) throws MessagingException {
+    public void sendMail(final Mail mail, final String logoPath) throws MessagingException {
         this.emailApi.sendMail(mail, logoPath);
     }
 
     @Override
-    public String getBodyFromTemplate(String templateName, Map<String, Object> content) throws TemplateException, IOException {
+    public String getBodyFromTemplate(final String templateName, final Map<String, Object> content) throws TemplateException, IOException {
         return this.emailApi.getBodyFromTemplate(templateName, content);
     }
 }

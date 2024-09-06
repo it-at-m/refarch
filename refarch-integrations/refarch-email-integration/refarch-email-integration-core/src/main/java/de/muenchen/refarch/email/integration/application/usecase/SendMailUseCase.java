@@ -36,7 +36,7 @@ public class SendMailUseCase implements SendMailInPort {
      */
     @Override
     public void sendMailWithText(@Valid final TextMail mail) {
-        Mail mailModel = createMail(mail, mail.getBody(), false);
+        final Mail mailModel = createMail(mail, mail.getBody(), false);
 
         this.sendMail(mailModel, null);
     }
@@ -45,23 +45,23 @@ public class SendMailUseCase implements SendMailInPort {
     public void sendMailWithTemplate(@Valid final TemplateMail mail) throws TemplateError {
         // get body from template
         try {
-            Map<String, Object> content = new HashMap<>(mail.getContent());
-            String body = this.mailOutPort.getBodyFromTemplate(mail.getTemplate(), content);
+            final Map<String, Object> content = new HashMap<>(mail.getContent());
+            final String body = this.mailOutPort.getBodyFromTemplate(mail.getTemplate(), content);
 
-            Mail mailModel = createMail(mail, body, true);
+            final Mail mailModel = createMail(mail, body, true);
 
             this.sendMail(mailModel, "templates/email-logo.png");
 
         } catch (IOException ioException) {
-            throw new TemplateError("The template " + mail.getTemplate() + " could not be loaded");
+            throw new TemplateError("The template " + mail.getTemplate() + " could not be loaded", ioException);
         } catch (TemplateException templateException) {
-            throw new TemplateError(templateException.getMessage());
+            throw new TemplateError(templateException.getMessage(), templateException);
         }
     }
 
     private Mail createMail(final BasicMail mail, final String body, final boolean htmlBody) {
         // load Attachments
-        List<FileAttachment> attachments = loadAttachmentOutPort.loadAttachments(mail.getFilePaths());
+        final List<FileAttachment> attachments = loadAttachmentOutPort.loadAttachments(mail.getFilePaths());
 
         // send mail
         return new Mail(
@@ -76,12 +76,12 @@ public class SendMailUseCase implements SendMailInPort {
                 attachments);
     }
 
-    private void sendMail(Mail mailModel, String logoPath) throws MailSendException {
+    private void sendMail(final Mail mailModel, final String logoPath) {
         try {
             this.mailOutPort.sendMail(mailModel, logoPath);
         } catch (final MessagingException ex) {
             log.error("Sending mail failed with exception: {}", ex.getMessage());
-            throw new MailSendException(ex.getMessage());
+            throw new MailSendException(ex.getMessage(), ex);
         }
     }
 
