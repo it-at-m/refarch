@@ -36,9 +36,6 @@ public class NfcRequest extends HttpServletRequestWrapper implements HttpServlet
 
     public NfcRequest(final HttpServletRequest request, final Set<String> contentTypes) {
         super(request);
-        this.params = null;
-        this.cookies = null;
-        this.headers = null;
         this.contentTypes = contentTypes;
     }
 
@@ -54,7 +51,7 @@ public class NfcRequest extends HttpServletRequestWrapper implements HttpServlet
     @Override
     public Cookie[] getCookies() {
         convert();
-        return this.cookies;
+        return Arrays.copyOf(cookies, cookies.length);
     }
 
     @Override
@@ -131,7 +128,7 @@ public class NfcRequest extends HttpServletRequestWrapper implements HttpServlet
      * Only the username is converted to nfc. Password won't be touched!
      */
     @Override
-    public void login(String username, String password) throws ServletException {
+    public void login(final String username, final String password) throws ServletException {
         getOriginalRequest().login(NfcHelper.nfcConverter(username), password);
     }
 
@@ -188,8 +185,8 @@ public class NfcRequest extends HttpServletRequestWrapper implements HttpServlet
 
         final String encoding = getOriginalRequest().getCharacterEncoding();
 
-        String content;
-        try (final InputStream is = getOriginalRequest().getInputStream()) {
+        final String content;
+        try (InputStream is = getOriginalRequest().getInputStream()) {
             content = new String(IOUtils.toByteArray(is), encoding);
         }
 

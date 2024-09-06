@@ -28,7 +28,6 @@ import org.springframework.security.oauth2.client.AuthorizedClientServiceOAuth2A
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
@@ -72,7 +71,7 @@ public class S3IntegrationClientAutoConfiguration {
     private WebClient authenticatedWebClient(
             final ClientRegistrationRepository clientRegistrationRepository,
             final OAuth2AuthorizedClientService authorizedClientService) {
-        final var oauth = new ServletOAuth2AuthorizedClientExchangeFilterFunction(
+        final ServletOAuth2AuthorizedClientExchangeFilterFunction oauth = new ServletOAuth2AuthorizedClientExchangeFilterFunction(
                 new AuthorizedClientServiceOAuth2AuthorizedClientManager(
                         clientRegistrationRepository, authorizedClientService));
         oauth.setDefaultClientRegistrationId("s3");
@@ -90,6 +89,7 @@ public class S3IntegrationClientAutoConfiguration {
      */
     @Bean
     @ConditionalOnBean(SupportedFileExtensions.class)
+    @SuppressWarnings("PMD.LooseCoupling")
     public FileValidationService fileService(final SupportedFileExtensions supportedFileExtensions) {
         return new FileValidationService(supportedFileExtensions, this.s3IntegrationClientProperties.getMaxFileSize(),
                 this.s3IntegrationClientProperties.getMaxBatchSize());

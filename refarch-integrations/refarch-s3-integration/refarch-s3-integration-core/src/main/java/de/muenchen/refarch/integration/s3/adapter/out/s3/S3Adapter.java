@@ -18,6 +18,7 @@ import io.minio.errors.ServerException;
 import io.minio.errors.XmlParserException;
 import io.minio.http.Method;
 import io.minio.messages.Item;
+import jakarta.annotation.PreDestroy;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -52,6 +53,13 @@ public class S3Adapter implements S3OutPort {
             final MinioClient client) {
         this.bucketName = bucketName;
         this.client = client;
+    }
+
+    @PreDestroy
+    public void cleanup() throws Exception {
+        if (client != null) {
+            client.close();
+        }
     }
 
     /**

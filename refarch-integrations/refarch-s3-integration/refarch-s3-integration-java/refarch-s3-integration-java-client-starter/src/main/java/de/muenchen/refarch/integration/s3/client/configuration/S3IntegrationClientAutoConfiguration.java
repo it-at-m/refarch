@@ -44,6 +44,7 @@ public class S3IntegrationClientAutoConfiguration {
      */
     @Bean
     @ConditionalOnBean(SupportedFileExtensions.class)
+    @SuppressWarnings("PMD.LooseCoupling")
     public FileValidationService fileService(final SupportedFileExtensions supportedFileExtensions) {
         return new FileValidationService(supportedFileExtensions, this.s3IntegrationClientProperties.getMaxFileSize(),
                 this.s3IntegrationClientProperties.getMaxBatchSize());

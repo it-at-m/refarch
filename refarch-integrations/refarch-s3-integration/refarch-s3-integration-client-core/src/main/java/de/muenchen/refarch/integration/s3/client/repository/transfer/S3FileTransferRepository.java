@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -17,6 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestClientException;
@@ -44,7 +44,7 @@ public class S3FileTransferRepository {
      */
     public byte[] getFile(final String presignedUrl) throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
         try {
-            val headers = new HttpHeaders();
+            final MultiValueMap<String, String> headers = new HttpHeaders();
             final HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
             /*
              * Using the RestTemplate without any authorization.
@@ -81,7 +81,7 @@ public class S3FileTransferRepository {
      */
     public InputStream getFileInputStream(final String presignedUrl) throws DocumentStorageException {
         try {
-            val urlResource = new UrlResource(presignedUrl);
+            final UrlResource urlResource = new UrlResource(presignedUrl);
             return urlResource.getInputStream();
         } catch (final IOException exception) {
             final String message = REQUEST_FAILED;
@@ -103,7 +103,7 @@ public class S3FileTransferRepository {
     public void saveFile(final String presignedUrl, final byte[] file)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
         try {
-            val headers = new HttpHeaders();
+            final MultiValueMap<String, String> headers = new HttpHeaders();
             final HttpEntity<byte[]> fileHttpEntity = new HttpEntity<>(file, headers);
             /*
              * Using the RestTemplate without any authorization.
@@ -142,7 +142,7 @@ public class S3FileTransferRepository {
     public void saveFileInputStream(final String presignedUrl, final InputStream file)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
         try {
-            val headers = new HttpHeaders();
+            final MultiValueMap<String, String> headers = new HttpHeaders();
             final HttpEntity<Resource> fileHttpEntity = new HttpEntity<>(new InputStreamResource(file), headers);
             /*
              * Using the RestTemplate without any authorization.
@@ -210,7 +210,7 @@ public class S3FileTransferRepository {
     public void deleteFile(final String presignedUrl)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
         try {
-            val headers = new HttpHeaders();
+            final MultiValueMap<String, String> headers = new HttpHeaders();
             final HttpEntity<Void> fileHttpEntity = new HttpEntity<>(headers);
             /*
              * Using the RestTemplate without any authorization.
