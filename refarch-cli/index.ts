@@ -67,8 +67,10 @@ async function generateJavaInteractiveCli(application: string) {
     message: "Define value for property artifactId:",
     required: true,
     validate(value: string) {
-      const pass = value.match(/([a-z\-])+/g);
-      return pass ? true : "Package name not valid";
+      const pass = value.match(/([a-z-])+/g);
+      return pass
+        ? true
+        : "ArtifactId name not valid (should match expression '^de\\.muenchen\\.[a-z0-9]+(\\.[a-z0-9]+)*$'): ";
     },
   });
   const packageName = await input({
@@ -139,6 +141,10 @@ async function generateFrontendInteractiveCli() {
   const name = await input({
     message: "Define value for property name:",
     required: true,
+    validate(value: string) {
+      const pass = value.match(/([a-z-])+/g);
+      return pass ? true : "Name not valid";
+    },
   });
   generateFrontend(name);
 }

@@ -12,25 +12,26 @@
   },
   "description": "",
   "dependencies": {
-    "@inquirer/prompts": "5.4.0",
+    "@inquirer/prompts": "5.5.0",
     "core-js": "3.38.1",
     "replace-in-file": "8.1.0"
   },
   "devDependencies": {
     "@microsoft/tsdoc": "0.15.0",
-    "@rollup/plugin-typescript": "11.1.6",
-    "@rollup/plugin-node-resolve": "15.2.3",
+    "@muenchen/prettier-codeformat": "1.0.2",
     "@rollup/plugin-commonjs": "26.0.1",
     "@rollup/plugin-json": "6.1.0",
-    "@muenchen/prettier-codeformat": "1.0.2",
+    "@rollup/plugin-node-resolve": "15.2.3",
+    "@rollup/plugin-typescript": "11.1.6",
     "@types/core-js": "2.5.8",
-    "@types/node": "22.2.0",
-    "@typescript-eslint/eslint-plugin": "^8.4.0",
-    "eslint": "8.57.0",
+    "@types/node": "22.5.4",
+    "@eslint/js": "9.10.0",
+    "typescript-eslint": "8.4.0",
+    "eslint": "9.10.0",
     "eslint-plugin-tsdoc": "^0.3.0",
     "prettier": "3.3.3",
-    "typescript": "5.5.4",
     "rollup": "4.21.2",
-    "tslib": "2.7.0"
+    "tslib": "2.7.0",
+    "typescript": "5.5.4"
   }
 }
