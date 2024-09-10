@@ -11,6 +11,10 @@
 
     <artifactId>refarch-cosys-integration-core</artifactId>
 
+    <properties>
+        <httpmime.version>4.5.14</httpmime.version>
+    </properties>
+
     <dependencies>
         <!-- Spring -->
         <dependency>
@@ -30,12 +34,12 @@
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.11.0</version>
+            <version>${gson.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpmime</artifactId>
-            <version>4.5.14</version>
+            <version>${httpmime.version}</version>
         </dependency>
 
         <dependency>
