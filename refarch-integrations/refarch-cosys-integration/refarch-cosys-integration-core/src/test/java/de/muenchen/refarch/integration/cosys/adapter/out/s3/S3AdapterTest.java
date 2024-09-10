@@ -50,7 +50,6 @@ class S3AdapterTest {
     @Test
     void saveDocumentInStorageWithThrowsDocumentStorageException()
             throws DocumentStorageException, DocumentStorageClientErrorException, DocumentStorageServerErrorException {
-        // v2
         doThrow(new DocumentStorageException("DocumentStorageClientErrorException", new Exception())).when(documentStorageFileRepository)
                 .saveFile(anyString(), any(), eq(1));
         DocumentStorageException documentStorageException = assertThrows(DocumentStorageException.class,
