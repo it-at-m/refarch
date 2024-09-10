@@ -22,7 +22,6 @@ public class SearchSubjectAreaUseCase implements SearchSubjectAreaInPort {
             throw new DmsException("OBJECT_NOT_FOUND", String.format("Subject Area not found with searchString %s and user %s", searchString, user));
         }
 
-        // return first result
         return subjectAreas.getFirst();
     }
 }

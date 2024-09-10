@@ -1,7 +1,3 @@
-/*
- * Copyright (c): it@M - Dienstleister für Informations- und Telekommunikationstechnik der Landeshauptstadt München, 2020
- */
-
 package de.muenchen.refarch.integration.dms.fabasoft.mock;
 
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.LHMBAI151700GIWSD;
@@ -11,8 +7,6 @@ import jakarta.xml.ws.BindingProvider;
 
 /**
  * Configuration of the Webservice Client.
- *
- * @author externer.dl.horn
  */
 public class FabasoftClienFactory {
 

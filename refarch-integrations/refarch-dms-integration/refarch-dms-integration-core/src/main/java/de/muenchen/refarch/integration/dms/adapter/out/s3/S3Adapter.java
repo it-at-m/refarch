@@ -124,7 +124,6 @@ public class S3Adapter implements LoadFileOutPort, TransferContentOutPort {
             final String mimeType = fileService.detectFileType(bytes);
             final String filename = FilenameUtils.getBaseName(filePath);
 
-            // check if mimeType exists
             if (!fileService.isSupported(mimeType))
                 throw new FileTypeValidationException("The type of this file is not supported: " + filePath);
 
