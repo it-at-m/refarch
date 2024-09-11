@@ -56,15 +56,21 @@ public class S3IntegrationClientAutoConfiguration {
     @ConditionalOnProperty(prefix = "refarch.s3.client", name = "enable-security", havingValue = "true")
     public ApiClient securedApiClient(final ClientRegistrationRepository clientRegistrationRepository,
             final OAuth2AuthorizedClientService authorizedClientService) {
-        return new ApiClient(
-                this.authenticatedWebClient(clientRegistrationRepository, authorizedClientService));
+        final var apiClient = new ApiClient(
+                this.authenticatedWebClient(clientRegistrationRepository, authorizedClientService)
+        );
+        apiClient.setBasePath(s3IntegrationClientProperties.getDocumentStorageUrl());
+        return apiClient;
     }
 
     @Bean
     @ConditionalOnProperty(prefix = "refarch.s3.client", name = "enable-security", havingValue = "false", matchIfMissing = true)
     public ApiClient apiClient() {
-        return new ApiClient(
-                WebClient.builder().build());
+        final var apiClient = new ApiClient(
+                WebClient.builder().build()
+        );
+        apiClient.setBasePath(s3IntegrationClientProperties.getDocumentStorageUrl());
+        return apiClient;
     }
 
     private WebClient authenticatedWebClient(
