@@ -57,9 +57,8 @@ public class S3IntegrationClientAutoConfiguration {
     public ApiClient securedApiClient(final ClientRegistrationRepository clientRegistrationRepository,
             final OAuth2AuthorizedClientService authorizedClientService) {
         final var apiClient = new ApiClient(
-                this.authenticatedWebClient(clientRegistrationRepository, authorizedClientService)
-        );
-        apiClient.setBasePath(s3IntegrationClientProperties.getDocumentStorageUrl());
+                this.authenticatedWebClient(clientRegistrationRepository, authorizedClientService));
+        apiClient.setBasePath(this.s3IntegrationClientProperties.getDocumentStorageUrl());
         return apiClient;
     }
 
@@ -67,9 +66,8 @@ public class S3IntegrationClientAutoConfiguration {
     @ConditionalOnProperty(prefix = "refarch.s3.client", name = "enable-security", havingValue = "false", matchIfMissing = true)
     public ApiClient apiClient() {
         final var apiClient = new ApiClient(
-                WebClient.builder().build()
-        );
-        apiClient.setBasePath(s3IntegrationClientProperties.getDocumentStorageUrl());
+                WebClient.builder().build());
+        apiClient.setBasePath(this.s3IntegrationClientProperties.getDocumentStorageUrl());
         return apiClient;
     }
 
