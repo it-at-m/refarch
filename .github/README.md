@@ -5,7 +5,7 @@
 
 Collection of different ready to use reference architecture (RefArch) components developed by it@M.
 
-For a new RefArch gitrepository use the [refarch-templates](https://github.com/it-at-m/refarch-templates).
+For creating a new RefArch project use the [refarch-templates](https://github.com/it-at-m/refarch-templates).
 
 ## Usage
 
