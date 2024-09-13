@@ -43,7 +43,7 @@ Beside the default behaviour there are some special route prefixes which are han
 
 | Var                                                      | Description                                        | Example                                                                 |
 |----------------------------------------------------------|----------------------------------------------------|-------------------------------------------------------------------------|
-| `SPRING_PROFILES_ACTIV`                                  | See profiles                                       | `local,hazelcast-local`                                                 |
+| `SPRING_PROFILES_ACTIVE`                                 | See profiles                                       | `local,hazelcast-local`                                                 |
 | `SSO_ISSUER_URL`                                         | Url of the oAuth2 server used for authentication.  | `https://sso.muenchen.de/auth/realms/muenchen.de`                       |
 | `SSO_CLIENT_ID`                                          | OAuth2 client id used for authentication.          |                                                                         |
 | `SSO_CLIENT_SECRET`                                      | OAuth2 client secret used for authentication.      |                                                                         |
