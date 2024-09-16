@@ -40,7 +40,7 @@ services:
   # mail
   mailpit:
     container_name: mailpit
-    image: axllent/mailpit:v1.20.2@sha256:e6520318d3e6164b5f4213e9906ab01b17bf8eb01923d1d3458ea76ce2039254
+    image: axllent/mailpit:v1.20.4@sha256:ff82a613c735f4e8a3ddfdf7ee4e18cb934c721e72a340ecbbb7ec0ca7fbd057
     ports:
       - '1025:1025' # smtp server
       - '8025:8025' # ui
