@@ -11,13 +11,18 @@ import de.muenchen.refarch.integration.s3.client.exception.FileTypeValidationExc
 import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFileRepository;
 import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFolderRepository;
 import de.muenchen.refarch.integration.s3.client.service.FileValidationService;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.util.unit.DataSize;
 
-import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j

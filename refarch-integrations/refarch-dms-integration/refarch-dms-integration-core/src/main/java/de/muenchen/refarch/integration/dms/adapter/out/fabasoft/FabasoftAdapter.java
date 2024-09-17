@@ -1,6 +1,37 @@
 package de.muenchen.refarch.integration.dms.adapter.out.fabasoft;
 
-import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.*;
+import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.ArrayOfLHMBAI151700GIAttachmentType;
+import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.CancelObjectGI;
+import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.CancelObjectGIResponse;
+import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.CreateFileGI;
+import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.CreateFileGIResponse;
+import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.CreateIncomingGI;
+import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.CreateIncomingGIResponse;
+import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.CreateInternalGI;
+import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.CreateInternalGIResponse;
+import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.CreateOutgoingGI;
+import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.CreateOutgoingGIResponse;
+import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.CreateProcedureGI;
+import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.CreateProcedureGIResponse;
+import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.DepositObjectGI;
+import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.DepositObjectGIResponse;
+import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.LHMBAI151700GIAttachmentType;
+import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.LHMBAI151700GIObjectType;
+import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.LHMBAI151700GIWSDSoap;
+import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.ReadContentObjectGI;
+import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.ReadContentObjectGIResponse;
+import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.ReadContentObjectMetaDataGI;
+import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.ReadDocumentGIObjects;
+import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.ReadDocumentGIObjectsResponse;
+import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.ReadMetadataObjectGI;
+import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.SearchObjNameGI;
+import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.SearchObjNameGIResponse;
+import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.UpdateIncomingGI;
+import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.UpdateIncomingGIResponse;
+import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.UpdateInternalGI;
+import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.UpdateInternalGIResponse;
+import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.UpdateOutgoingGI;
+import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.UpdateOutgoingGIResponse;
 import de.muenchen.refarch.integration.dms.application.port.out.CancelObjectOutPort;
 import de.muenchen.refarch.integration.dms.application.port.out.CreateDocumentOutPort;
 import de.muenchen.refarch.integration.dms.application.port.out.CreateProcedureOutPort;
@@ -19,6 +50,11 @@ import de.muenchen.refarch.integration.dms.domain.model.File;
 import de.muenchen.refarch.integration.dms.domain.model.Metadata;
 import de.muenchen.refarch.integration.dms.domain.model.Procedure;
 import de.muenchen.refarch.integration.dms.application.port.out.CreateFileOutPort;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -29,7 +65,6 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.*;
 
 @Slf4j
 @RequiredArgsConstructor
