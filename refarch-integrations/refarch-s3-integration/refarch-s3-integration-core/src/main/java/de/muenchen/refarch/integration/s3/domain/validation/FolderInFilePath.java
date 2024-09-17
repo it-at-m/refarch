@@ -1,6 +1,5 @@
 package de.muenchen.refarch.integration.s3.domain.validation;
 
-
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.CONSTRUCTOR;
 import static java.lang.annotation.ElementType.FIELD;
