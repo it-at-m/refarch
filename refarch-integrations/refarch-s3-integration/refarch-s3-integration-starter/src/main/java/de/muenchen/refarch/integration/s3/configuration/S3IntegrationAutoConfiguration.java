@@ -17,11 +17,13 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @RequiredArgsConstructor
 @EnableConfigurationProperties(S3IntegrationProperties.class)
+@ComponentScan(basePackages = "de.muenchen.refarch.integration.s3")
 public class S3IntegrationAutoConfiguration {
 
     public final S3IntegrationProperties s3IntegrationProperties;
