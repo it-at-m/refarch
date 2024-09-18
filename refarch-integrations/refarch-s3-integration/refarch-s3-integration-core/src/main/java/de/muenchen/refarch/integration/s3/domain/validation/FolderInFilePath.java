@@ -1,6 +1,11 @@
 package de.muenchen.refarch.integration.s3.domain.validation;
 
-import static java.lang.annotation.ElementType.*;
+import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
+import static java.lang.annotation.ElementType.CONSTRUCTOR;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.ElementType.TYPE_USE;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
