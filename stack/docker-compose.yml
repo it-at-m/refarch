@@ -1,7 +1,71 @@
-name: refarch-extended-stack
+name: refarch-development-stack
 
 services:
-  # s3
+  # === Keycloak ===
+  keycloak:
+    container_name: keycloak
+    image: quay.io/keycloak/keycloak:20.0.5@sha256:054ef67eb7dae0129bbb9eb0e0797fd2392cd6d135094a6063ae7ff7773ef81f
+    command:
+      - start-dev --http-relative-path /auth
+    depends_on:
+      - db-postgres-keycloak
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KC_HOSTNAME_STRICT=false
+      - KC_HEALTH_ENABLED=true
+      - KC_HTTP_PORT=8100
+      - DB=postgres
+      - DB_URL=jdbc:postgresql://db-postgres-keycloak:5432/keycloak
+      - DB_USERNAME=keycloak-user
+      - DB_PASSWORD=keycloak-secret
+    ports:
+      - "8100:8100"
+    networks:
+      - keycloak
+    restart: &restart-policy on-failure:3
+    healthcheck: &healthcheck
+      test: ["CMD-SHELL",  "curl http://localhost:8100/auth/health/live"]
+      interval: 30s
+      timeout: 60s
+      retries: 3
+      start_period: 60s
+    security_opt: &security_settings
+      - no-new-privileges:true
+
+  db-postgres-keycloak:
+    container_name: db-postgres-keycloak
+    image: postgres:16.4-alpine3.20@sha256:d898b0b78a2627cb4ee63464a14efc9d296884f1b28c841b0ab7d7c42f1fffdf
+    environment:
+      - POSTGRES_DB=keycloak
+      - POSTGRES_USER=keycloak-user
+      - POSTGRES_PASSWORD=keycloak-secret
+    networks:
+      - keycloak
+    restart: *restart-policy
+    healthcheck:
+      <<: *healthcheck
+      test: [ "CMD-SHELL", "pg_isready -d keycloak -U keycloak-user" ]
+    security_opt: *security_settings
+
+  init-keycloak:
+    container_name: init-keycloak
+    image: klg71/keycloakmigration:0.2.67@sha256:ca5659d0f2907e77f50f2ccda4f0848f7fbd038c8d59024c0659f5256861d244
+    depends_on:
+      - keycloak
+    environment:
+      ADMIN_USER: admin
+      ADMIN_PASSWORD: admin
+      BASEURL: http://keycloak:8100/auth
+      WAIT_FOR_KEYCLOAK: 'true'
+      KEYCLOAK_CHANGELOG: /migration/keycloak-changelog.yml
+    volumes:
+      - './keycloak/migration:/migration'
+    networks:
+      - keycloak
+    security_opt: *security_settings
+
+  # === S3 ===
   minio:
     container_name: minio
     image: quay.io/minio/minio:RELEASE.2024-08-17T01-24-54Z@sha256:6f23072e3e222e64fe6f86b31a7f7aca971e5129e55cbccef649b109b8e651a1
@@ -16,11 +80,11 @@ services:
       - ./minio:/data
     networks:
       - internal
-    restart: &restart-policy on-failure:3
+    restart: *restart-policy
     healthcheck:
+      <<: *healthcheck
       test: [ "CMD-SHELL",  "curl http://localhost:9000/minio/health/live" ]
-    security_opt: &security_settings
-      - no-new-privileges:true
+    security_opt: *security_settings
 
   init-minio:
     container_name: init-minio
@@ -37,32 +101,15 @@ services:
       - internal
     security_opt: *security_settings
 
-  # mail
+  # === Mail ===
   mailpit:
     container_name: mailpit
     image: axllent/mailpit:v1.20.4@sha256:ff82a613c735f4e8a3ddfdf7ee4e18cb934c721e72a340ecbbb7ec0ca7fbd057
     ports:
-      - '1025:1025' # smtp server
-      - '8025:8025' # ui
+      - '1025:1025' # SMTP Server
+      - '8025:8025' # UI
     restart: *restart-policy
-    # has own healthcheck
     security_opt: *security_settings
-
-  # keycloak
-  keycloak:
-    extends:
-      file: docker-compose-refarch-base.yml
-      service: keycloak
-
-  db-postgres-keycloak:
-    extends:
-      file: docker-compose-refarch-base.yml
-      service: db-postgres-keycloak
-
-  init-keycloak:
-    extends:
-      file: docker-compose-refarch-base.yml
-      service: init-keycloak
 
 networks:
   keycloak:
