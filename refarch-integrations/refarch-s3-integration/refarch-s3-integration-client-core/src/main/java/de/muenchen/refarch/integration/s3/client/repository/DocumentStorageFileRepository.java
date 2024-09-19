@@ -42,7 +42,7 @@ public abstract class DocumentStorageFileRepository {
      * @throws DocumentStorageException if the problem cannot be assigned to either the client or the S3
      *             storage or the document storage.
      */
-    abstract Long getFileSize(String pathToFile)
+    public abstract Long getFileSize(String pathToFile)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException;
 
     /**
