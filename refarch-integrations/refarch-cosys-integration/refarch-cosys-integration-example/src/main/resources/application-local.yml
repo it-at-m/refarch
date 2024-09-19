@@ -10,14 +10,26 @@ refarch:
       inputLanguage: Deutsch
       outputLanguage: Deutsch
       keepFields: unresolved-ref
-
-SSO_S3_ISSUER_URL: http://keycloak:8100/auth/realms/local_realm
-SSO_S3_CLIENT_ID: local
-SSO_S3_CLIENT_SECRET: client_secret
-
-SSO_COSYS_ISSUER_URL: http://keycloak:8100/auth/realms/local_realm
-SSO_COSYS_CLIENT_ID: local
-SSO_COSYS_CLIENT_SECRET: client_secret
+spring:
+  security:
+    oauth2:
+      client:
+        provider:
+          sso:
+            issuer-uri: https://sso.example.com/auth/realms/refarch
+            user-info-uri: ${spring.security.oauth2.client.provider.sso.issuer-uri}/protocol/openid-connect/userinfo
+            jwk-set-uri: ${spring.security.oauth2.client.provider.sso.issuer-uri}/protocol/openid-connect/certs
+        registration:
+          cosys:
+            provider: sso
+            authorization-grant-type: client_credentials
+            client-id: local
+            client-secret: client_secret
+          s3:
+            provider: sso
+            authorization-grant-type: client_credentials
+            client-id: local
+            client-secret: client_secret
 
 server:
   port: 8093
