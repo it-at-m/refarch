@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>de.muenchen.refarch</groupId>
+        <artifactId>refarch-dms-integration-fabasoft</artifactId>
+        <version>1.2.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>refarch-dms-integration-fabasoft-mock</artifactId>
+
+    <properties>
+        <wiremock-standalone.version>3.9.1</wiremock-standalone.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>de.muenchen.refarch</groupId>
+            <artifactId>refarch-dms-integration-fabasoft-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- Testing -->
+        <dependency>
+            <groupId>org.wiremock</groupId>
+            <artifactId>wiremock-standalone</artifactId>
+            <version>${wiremock-standalone.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
+        </dependency>
+    </dependencies>
+
+</project>

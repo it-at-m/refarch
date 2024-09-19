@@ -1,7 +1,3 @@
-/*
- * Copyright (c): it@M - Dienstleister für Informations- und Telekommunikationstechnik
- * der Landeshauptstadt München, 2022
- */
 package de.muenchen.refarch.integration.s3.configuration.nfcconverter;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;

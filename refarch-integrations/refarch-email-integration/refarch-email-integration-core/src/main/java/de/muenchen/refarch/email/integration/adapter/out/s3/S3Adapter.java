@@ -61,7 +61,6 @@ public class S3Adapter implements LoadMailAttachmentOutPort {
             final String filename = FilenameUtils.getName(filePath);
             final ByteArrayDataSource file = new ByteArrayDataSource(bytes, mimeType);
 
-            // check if mimeType exists
             if (!fileValidationService.isSupported(mimeType))
                 throw new LoadAttachmentError("The type of this file is not supported: " + filePath);
 
