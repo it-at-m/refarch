@@ -92,8 +92,8 @@ spring:
         provider:
           keycloak:
             issuer-uri: https://sso.example.com/auth/realms/refarch
-            user-info-uri: https://sso.example.com/auth/realms/refarch/protocol/openid-connect/userinfo
-            jwk-set-uri: https://sso.example.com/auth/realms/refarch/protocol/openid-connect/certs
+            user-info-uri: ${spring.security.oauth2.client.provider.keycloak.issuer-uri}/protocol/openid-connect/userinfo
+            jwk-set-uri: ${spring.security.oauth2.client.provider.keycloak.issuer-uri}/protocol/openid-connect/certs
             # used for RequestResponseLoggingFilter in s3-rest-service
             user-name-attribute: user_name
         registration:
@@ -101,7 +101,7 @@ spring:
             provider: keycloak
             authorization-grant-type: client_credentials
             client-id: refarch_client
-            client-secret: ${SSO_S3_CLIENT_SECRET}
+            client-secret: client_secret_123
             # profile required for username used in s3-rest-service RequestResponseLoggingFilter
             # openid required for user info endpoint used in s3-rest-service JwtUserInfoAuthenticationConverter
             scope: profile, openid
