@@ -10,21 +10,16 @@ spring:
     oauth2:
       client:
         provider:
-          keycloak:
+          sso:
             issuer-uri: http://keycloak:8100/auth/realms/local_realm
             user-info-uri: ${spring.security.oauth2.client.provider.keycloak.issuer-uri}/protocol/openid-connect/userinfo
             jwk-set-uri: ${spring.security.oauth2.client.provider.keycloak.issuer-uri}/protocol/openid-connect/certs
-            # used for RequestResponseLoggingFilter in s3-rest-service
-            user-name-attribute: user_name
         registration:
           s3:
-            provider: keycloak
+            provider: sso
             authorization-grant-type: client_credentials
             client-id: local
             client-secret: client_secret
-            # profile required for username used in s3-rest-service RequestResponseLoggingFilter
-            # openid required for user info endpoint used in s3-rest-service JwtUserInfoAuthenticationConverter
-            scope: profile, openid
 refarch:
   mail:
     from-address: test@muenchen.de
