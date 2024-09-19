@@ -92,8 +92,8 @@ spring:
         provider:
           sso:
             issuer-uri: https://sso.example.com/auth/realms/refarch
-            user-info-uri: ${spring.security.oauth2.client.provider.keycloak.issuer-uri}/protocol/openid-connect/userinfo
-            jwk-set-uri: ${spring.security.oauth2.client.provider.keycloak.issuer-uri}/protocol/openid-connect/certs
+            user-info-uri: ${spring.security.oauth2.client.provider.sso.issuer-uri}/protocol/openid-connect/userinfo
+            jwk-set-uri: ${spring.security.oauth2.client.provider.sso.issuer-uri}/protocol/openid-connect/certs
             # used for RequestResponseLoggingFilter in s3-rest-service
             # only required if filter is explicitly enabled
             user-name-attribute: user_name
