@@ -10,7 +10,6 @@ import de.muenchen.refarch.integration.cosys.application.port.in.CreateDocumentI
 import de.muenchen.refarch.integration.cosys.application.port.out.GenerateDocumentOutPort;
 import de.muenchen.refarch.integration.cosys.application.port.out.SaveFileToStorageOutPort;
 import de.muenchen.refarch.integration.cosys.application.usecase.CreateDocumentUseCase;
-import de.muenchen.refarch.integration.cosys.factory.YamlPropertySourceFactory;
 import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFileRepository;
 import de.muenchen.refarch.integration.s3.client.repository.transfer.S3FileTransferRepository;
 import de.muenchen.refarch.integration.s3.client.service.FileValidationService;
@@ -22,7 +21,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.oauth2.client.AuthorizedClientServiceOAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
