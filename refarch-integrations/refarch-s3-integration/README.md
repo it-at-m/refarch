@@ -61,7 +61,7 @@ spring:
 security:
   oauth2:
     resource:
-      user-info-uri: https://sso.example.com/auth/realms/refarch/protocol/openid-connect/userinfo
+      user-info-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/userinfo
 ```
 
 ### s3-integration-java-client-starter
