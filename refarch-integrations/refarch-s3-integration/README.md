@@ -90,19 +90,21 @@ spring:
     oauth2:
       client:
         provider:
-          keycloak:
+          sso:
             issuer-uri: https://sso.example.com/auth/realms/refarch
             user-info-uri: ${spring.security.oauth2.client.provider.keycloak.issuer-uri}/protocol/openid-connect/userinfo
             jwk-set-uri: ${spring.security.oauth2.client.provider.keycloak.issuer-uri}/protocol/openid-connect/certs
             # used for RequestResponseLoggingFilter in s3-rest-service
+            # only required if filter is explicitly enabled
             user-name-attribute: user_name
         registration:
           s3:
-            provider: keycloak
+            provider: sso
             authorization-grant-type: client_credentials
             client-id: refarch_client
             client-secret: client_secret_123
             # profile required for username used in s3-rest-service RequestResponseLoggingFilter
             # openid required for user info endpoint used in s3-rest-service JwtUserInfoAuthenticationConverter
+            # both scopes are only required if the according functions are explicitly used
             scope: profile, openid
 ```
