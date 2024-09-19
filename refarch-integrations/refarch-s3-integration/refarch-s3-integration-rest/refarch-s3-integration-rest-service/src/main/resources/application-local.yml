@@ -1,4 +1,13 @@
-SSO_ISSUER_URL: http://keycloak:8100/auth/realms/local_realm
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://keycloak:8100/auth/realms/local_realm
+security:
+  oauth2:
+    resource:
+      user-info-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/userinfo
 refarch:
   s3:
     bucket-name: test-bucket

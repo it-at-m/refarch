@@ -6,6 +6,20 @@ spring:
     port: 1025
     username: test@muenchen.de
     password: secret
+  security:
+    oauth2:
+      client:
+        provider:
+          sso:
+            issuer-uri: http://keycloak:8100/auth/realms/local_realm
+            user-info-uri: ${spring.security.oauth2.client.provider.sso.issuer-uri}/protocol/openid-connect/userinfo
+            jwk-set-uri: ${spring.security.oauth2.client.provider.sso.issuer-uri}/protocol/openid-connect/certs
+        registration:
+          s3:
+            provider: sso
+            authorization-grant-type: client_credentials
+            client-id: local
+            client-secret: client_secret
 refarch:
   mail:
     from-address: test@muenchen.de
@@ -14,6 +28,3 @@ refarch:
     client:
       document-storage-url: http://localhost:8086
       enable-security: true
-SSO_S3_ISSUER_URL: http://keycloak:8100/auth/realms/local_realm
-SSO_S3_CLIENT_ID: local
-SSO_S3_CLIENT_SECRET: client_secret

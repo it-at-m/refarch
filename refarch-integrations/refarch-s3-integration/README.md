@@ -47,7 +47,22 @@ Whether a property is an alias can be checked in the corresponding `application.
 | `refarch.s3.bucket-name` | Name of the bucket to connect to.                              | `refarch-bucket`                              |
 | `refarch.s3.access-key`  | Access key to use for connection.                              |                                               |
 | `refarch.s3.secret-key`  | Secret key to use for connection.                              |                                               |
-| `SSO_ISSUER_URL`         | Issuer url of oAuth2 service used for securing rest endpoints. | `https://sso.example.com/auth/realms/refarch` |
+
+For authenticating the different endpoints oAuth2 authentication needs to be configured.
+See below example or the [according Spring documentation](https://docs.spring.io/spring-security/reference/servlet/oauth2/index.html#oauth2-resource-server).
+
+```yml
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://sso.example.com/auth/realms/refarch
+security:
+  oauth2:
+    resource:
+      user-info-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/userinfo
+```
 
 ### s3-integration-java-client-starter
 
@@ -65,6 +80,31 @@ All properties of [s3-integration-java-client-starter](#s3-integration-rest-clie
 |------------------------------------------|----------------------------------------------------------------------------|-----------------------------------------------|
 | `refarch.s3.client.document-storage-url` | Url to the RefArch S3 integration service.                                 | `http://s3-integration-service:8080`          |
 | `refarch.s3.client.enable-security`      | Switch to enable or disable oAuth2 authentication against s3 service.      | `true`                                        |
-| `SSO_S3_ISSUER_URL`                      | Issuer url of oAuth2 service to use for authentication against s3 service. | `https://sso.example.com/auth/realms/refarch` |
-| `SSO_S3_CLIENT_ID`                       | Client id to be used for authentication.                                   | `refarch_client`                              |
-| `SSO_S3_CLIENT_SECRET`                   | Client secret to be used for gathering client service account token.       |                                               |
+
+For authentication against the s3-service a OAuth2 registration with the name `s3` needs to be provided.
+See following example or the [according Spring documentation](https://docs.spring.io/spring-security/reference/servlet/oauth2/index.html#oauth2-client).
+
+```yml
+spring:
+  security:
+    oauth2:
+      client:
+        provider:
+          sso:
+            issuer-uri: https://sso.example.com/auth/realms/refarch
+            user-info-uri: ${spring.security.oauth2.client.provider.sso.issuer-uri}/protocol/openid-connect/userinfo
+            jwk-set-uri: ${spring.security.oauth2.client.provider.sso.issuer-uri}/protocol/openid-connect/certs
+            # used for RequestResponseLoggingFilter in s3-rest-service
+            # only required if filter is explicitly enabled
+            user-name-attribute: user_name
+        registration:
+          s3:
+            provider: sso
+            authorization-grant-type: client_credentials
+            client-id: refarch_client
+            client-secret: client_secret_123
+            # profile required for username used in s3-rest-service RequestResponseLoggingFilter
+            # openid required for user info endpoint used in s3-rest-service JwtUserInfoAuthenticationConverter
+            # both scopes are only required if the according functions are explicitly used
+            scope: profile, openid
+```
