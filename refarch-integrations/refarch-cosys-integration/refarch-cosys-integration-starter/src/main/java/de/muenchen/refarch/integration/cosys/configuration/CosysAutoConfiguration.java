@@ -34,7 +34,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 @RequiredArgsConstructor
 @ComponentScan(basePackages = { "de.muenchen.refarch.integration.cosys" })
 @EnableConfigurationProperties({ CosysProperties.class })
-@PropertySource(value = "classpath:application-cosys-client.yml", factory = YamlPropertySourceFactory.class)
 public class CosysAutoConfiguration {
 
     private final CosysProperties cosysProperties;
