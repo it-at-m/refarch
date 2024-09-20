@@ -23,9 +23,10 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class CsrfTokenAppendingHelperFilter implements WebFilter {
 
-    public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
+    @Override
+    public Mono<Void> filter(final ServerWebExchange exchange, final WebFilterChain chain) {
         log.debug("Trigger to append CSRF token to response");
-        Mono<CsrfToken> csrfToken = exchange.getAttributeOrDefault(CsrfToken.class.getName(), Mono.empty());
+        final Mono<CsrfToken> csrfToken = exchange.getAttributeOrDefault(CsrfToken.class.getName(), Mono.empty());
         return csrfToken.doOnSuccess(token -> {
             // do nothing -> CSRF-Token is added as cookie in class CookieServerCsrfTokenRepository#saveToken
         }).then(chain.filter(exchange));
