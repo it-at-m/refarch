@@ -42,7 +42,7 @@ public class RequestResponseLoggingFilter implements Filter {
      */
     @Override
     public void init(final FilterConfig filterConfig) {
-        log.debug("Initializing filter: {}", this);
+        log.debug("Initializing RequestResponseLoggingFilter with mode '{}'", this.requestLoggingMode);
     }
 
     /**
@@ -71,7 +71,7 @@ public class RequestResponseLoggingFilter implements Filter {
      */
     @Override
     public void destroy() {
-        log.debug("Destructing filter: {}", this);
+        log.debug("Destructing RequestResponseLoggingFilter");
     }
 
     /**
