@@ -2,7 +2,9 @@ package de.muenchen.refarch.gateway.configuration;
 
 import com.hazelcast.config.Config;
 import com.hazelcast.config.EvictionPolicy;
+import com.hazelcast.config.JoinConfig;
 import com.hazelcast.config.MapConfig;
+import com.hazelcast.config.NetworkConfig;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.map.IMap;
@@ -46,7 +48,7 @@ public class WebSessionConfiguration {
     }
 
     @Bean
-    public ReactiveSessionRepository<MapSession> reactiveSessionRepository(@Autowired HazelcastInstance hazelcastInstance) {
+    public ReactiveSessionRepository<MapSession> reactiveSessionRepository(@Autowired final HazelcastInstance hazelcastInstance) {
         final IMap<String, Session> map = hazelcastInstance.getMap(HazelcastIndexedSessionRepository.DEFAULT_SESSION_MAP_NAME);
         return new ReactiveMapSessionRepository(map);
     }
@@ -60,28 +62,28 @@ public class WebSessionConfiguration {
     @Profile({ "hazelcast-local" })
     public Config localConfig(@Value(
         "${spring.session.timeout}"
-    ) int timeout) {
-        final var hazelcastConfig = new Config();
+    ) final int timeout) {
+        final Config hazelcastConfig = new Config();
         hazelcastConfig.setInstanceName(hazelcastInstanceName);
         hazelcastConfig.setClusterName(groupConfigName);
 
         addSessionTimeoutToHazelcastConfig(hazelcastConfig, timeout);
 
-        final var networkConfig = hazelcastConfig.getNetworkConfig();
+        final NetworkConfig networkConfig = hazelcastConfig.getNetworkConfig();
 
-        final var joinConfig = networkConfig.getJoin();
+        final JoinConfig joinConfig = networkConfig.getJoin();
         joinConfig.getMulticastConfig().setEnabled(false);
         joinConfig.getTcpIpConfig()
                 .setEnabled(true)
-                .addMember("127.0.0.1");
+                .addMember("localhost");
 
         return hazelcastConfig;
     }
 
     @Bean
     @Profile({ "hazelcast-k8s" })
-    public Config config(@Value("${spring.session.timeout}") int timeout) {
-        final var hazelcastConfig = new Config();
+    public Config config(@Value("${spring.session.timeout}") final int timeout) {
+        final Config hazelcastConfig = new Config();
         hazelcastConfig.setInstanceName(hazelcastInstanceName);
         hazelcastConfig.setClusterName(groupConfigName);
 
@@ -107,7 +109,7 @@ public class WebSessionConfiguration {
      * @param sessionTimeout for security session.
      */
     private void addSessionTimeoutToHazelcastConfig(final Config hazelcastConfig, final int sessionTimeout) {
-        final var sessionConfig = new MapConfig();
+        final MapConfig sessionConfig = new MapConfig();
         sessionConfig.setName(HazelcastIndexedSessionRepository.DEFAULT_SESSION_MAP_NAME);
         sessionConfig.setTimeToLiveSeconds(sessionTimeout);
         sessionConfig.getEvictionConfig().setEvictionPolicy(EvictionPolicy.LRU);

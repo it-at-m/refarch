@@ -33,13 +33,13 @@ import reactor.core.publisher.Mono;
 public class GlobalBackend5xxTo400Mapper implements GlobalFilter, Ordered {
 
     public static final int ORDER_GLOBAL_FILTER = -3;
-    static final String GENERIC_ERROR_400 = "{ \"status\":400, \"error\":\"Bad Request\" }";
-    static final String GENERIC_ERROR_500 = "{ \"status\":500, \"error\":\"Internal Server Error\" }";
+    private static final String GENERIC_ERROR_400 = "{ \"status\":400, \"error\":\"Bad Request\" }";
+    private static final String GENERIC_ERROR_500 = "{ \"status\":500, \"error\":\"Internal Server Error\" }";
     /**
      * Variable entscheidet, ob alle 5xx Fehler auf 400 gemappt werden sollen.
      **/
     @Value("${config.map5xxto400: true}")
-    private boolean MAP_5xx_TO_400;
+    private boolean map5xxTo400;
 
     @Override
     public int getOrder() {
@@ -48,7 +48,7 @@ public class GlobalBackend5xxTo400Mapper implements GlobalFilter, Ordered {
 
     @Override
     public Mono<Void> filter(final ServerWebExchange exchange, final GatewayFilterChain chain) {
-        final String EMPTY_JSON_OBJECT = "{}";
+        final String emptyJsonObject = "{}";
         final ServerHttpResponse response = exchange.getResponse();
         final ServerHttpRequest request = exchange.getRequest();
         final DataBufferFactory dataBufferFactory = response.bufferFactory();
@@ -57,7 +57,7 @@ public class GlobalBackend5xxTo400Mapper implements GlobalFilter, Ordered {
 
             @Override
             @NonNull
-            public Mono<Void> writeWith(@NonNull Publisher<? extends DataBuffer> body) {
+            public Mono<Void> writeWith(@NonNull final Publisher<? extends DataBuffer> body) {
                 final HttpStatusCode responseHttpStatus = getDelegate().getStatusCode();
 
                 final Flux<? extends DataBuffer> flux = (Flux<? extends DataBuffer>) body;
@@ -69,23 +69,23 @@ public class GlobalBackend5xxTo400Mapper implements GlobalFilter, Ordered {
 
                             dataBuffer -> {
                                 // Log-Ausgabe
-                                DefaultDataBuffer joinedBuffers = new DefaultDataBufferFactory().join(dataBuffer);
-                                byte[] content = new byte[joinedBuffers.readableByteCount()];
+                                final DefaultDataBuffer joinedBuffers = new DefaultDataBufferFactory().join(dataBuffer);
+                                final byte[] content = new byte[joinedBuffers.readableByteCount()];
                                 joinedBuffers.read(content);
-                                String responseBody = new String(content, StandardCharsets.UTF_8);
+                                final String responseBody = new String(content, StandardCharsets.UTF_8);
                                 log.error("Error: 5xx vom Backend:  requestId: {}, method: {}, url: {}, \nresponse body :{}, statusCode: {}", request.getId(),
                                         request.getMethod(), request.getURI(), responseBody, responseHttpStatus);
 
                                 // Response manipulieren
                                 final DataBuffer newDataBuffer;
-                                if (MAP_5xx_TO_400) {
+                                if (map5xxTo400) {
                                     getDelegate().setStatusCode(HttpStatus.BAD_REQUEST);
                                     newDataBuffer = dataBufferFactory.wrap(
-                                            ObjectUtils.defaultIfNull(GENERIC_ERROR_400, EMPTY_JSON_OBJECT).getBytes(StandardCharsets.UTF_8));
+                                            ObjectUtils.defaultIfNull(GENERIC_ERROR_400, emptyJsonObject).getBytes(StandardCharsets.UTF_8));
                                 } else {
                                     getDelegate().setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
                                     newDataBuffer = dataBufferFactory.wrap(
-                                            ObjectUtils.defaultIfNull(GENERIC_ERROR_500, EMPTY_JSON_OBJECT).getBytes(StandardCharsets.UTF_8));
+                                            ObjectUtils.defaultIfNull(GENERIC_ERROR_500, emptyJsonObject).getBytes(StandardCharsets.UTF_8));
                                 }
 
                                 getDelegate().getHeaders().setContentLength(newDataBuffer.readableByteCount());

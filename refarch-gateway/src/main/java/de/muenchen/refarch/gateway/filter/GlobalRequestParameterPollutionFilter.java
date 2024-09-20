@@ -42,14 +42,14 @@ public class GlobalRequestParameterPollutionFilter implements GlobalFilter, Orde
      *             {@link HttpStatus#BAD_REQUEST}.
      */
     @Override
-    public Mono<Void> filter(final ServerWebExchange exchange, final GatewayFilterChain chain) throws ParameterPollutionException {
+    public Mono<Void> filter(final ServerWebExchange exchange, final GatewayFilterChain chain) {
         log.debug("Check for parameter pollution attack.");
-        ServerHttpRequest request = exchange.getRequest();
+        final ServerHttpRequest request = exchange.getRequest();
         if (!CollectionUtils.isEmpty(request.getQueryParams())) {
-            MultiValueMap<String, String> parameterMap = request.getQueryParams();
-            for (Map.Entry<String, List<String>> entry : parameterMap.entrySet()) {
-                String key = entry.getKey();
-                List<String> value = entry.getValue();
+            final MultiValueMap<String, String> parameterMap = request.getQueryParams();
+            for (final Map.Entry<String, List<String>> entry : parameterMap.entrySet()) {
+                final String key = entry.getKey();
+                final List<String> value = entry.getValue();
                 if (!CollectionUtils.isEmpty(value) && value.size() > 1) {
                     log.warn("Possible parameter pollution attack detected: Parameter \"{}\" detected more than once in the request!", key);
                     throw new ParameterPollutionException();

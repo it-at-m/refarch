@@ -17,13 +17,13 @@ import org.springframework.test.web.reactive.server.WebTestClient;
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
 @ActiveProfiles(SPRING_TEST_PROFILE)
-public class ActuatorInfoEndpointTest {
+class ActuatorInfoEndpointTest {
 
     @Autowired
     private WebTestClient webTestClient;
 
     @Test
-    public void actuatorInfoProvidesAppswitcherUrl() {
+    void actuatorInfoProvidesAppswitcherUrl() {
         webTestClient.get().uri("/actuator/info").exchange()
                 .expectStatus().isOk()
                 .expectBody()
