@@ -43,7 +43,7 @@ class PresignedUrlRestRepositoryTest {
     void getPresignedUrlGetFile()
             throws DocumentStorageException, DocumentStorageClientErrorException, DocumentStorageServerErrorException {
         final String pathToFile = "folder/file.txt";
-        final Integer expireInMinutes = 10;
+        final int expireInMinutes = 10;
 
         final PresignedUrlDto expected = new PresignedUrlDto();
         expected.setUrl("the_presignedUrl");
@@ -59,7 +59,7 @@ class PresignedUrlRestRepositoryTest {
     @Test
     void getPresignedUrlGetFileException() {
         final String pathToFile = "folder/file.txt";
-        final Integer expireInMinutes = 10;
+        final int expireInMinutes = 10;
 
         Mockito.reset(this.fileApi);
         Mockito.when(this.fileApi.get(pathToFile, expireInMinutes)).thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST));
