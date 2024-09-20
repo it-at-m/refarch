@@ -269,7 +269,6 @@ class FileOperationsPresignedUrlUseCaseTest {
     @Test
     void deleteFile() throws FileSystemAccessException, FileExistenceException {
         final String pathToFile = "folder/test.txt";
-        final String pathToFolder = "folder";
         final int expiresInMinutes = 5;
 
         Mockito.reset(this.s3Adapter);
