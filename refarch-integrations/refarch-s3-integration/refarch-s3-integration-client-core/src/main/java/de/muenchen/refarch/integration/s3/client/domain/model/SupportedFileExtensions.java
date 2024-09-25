@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 public class SupportedFileExtensions extends HashMap<String, String> {
     @Serial
     private static final long serialVersionUID = 1L;
+
     public SupportedFileExtensions(final Map<String, String> map) {
         super(map);
     }
