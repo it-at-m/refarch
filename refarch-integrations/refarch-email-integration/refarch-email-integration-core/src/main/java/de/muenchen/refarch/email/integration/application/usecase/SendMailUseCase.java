@@ -42,7 +42,7 @@ public class SendMailUseCase implements SendMailInPort {
     }
 
     @Override
-    public void sendMailWithTemplate(@Valid final TemplateMail mail) throws TemplateError {
+    public void sendMailWithTemplate(@Valid final TemplateMail mail) {
         // get body from template
         try {
             final Map<String, Object> content = new HashMap<>(mail.getContent());

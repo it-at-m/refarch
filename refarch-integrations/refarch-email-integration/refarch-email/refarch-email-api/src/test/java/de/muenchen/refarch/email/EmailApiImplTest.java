@@ -72,15 +72,7 @@ class EmailApiImplTest {
                 null);
         this.emailApi.sendMail(mail);
 
-        final ArgumentCaptor<MimeMessage> messageArgumentCaptor = ArgumentCaptor.forClass(MimeMessage.class);
-        verify(this.javaMailSender).send(messageArgumentCaptor.capture());
-
-        assertThat(messageArgumentCaptor.getValue().getAllRecipients()).hasSize(2);
-        assertThat(messageArgumentCaptor.getValue().getSubject()).isEqualTo(SUBJECT);
-        assertThat(messageArgumentCaptor.getValue().getReplyTo()).hasSize(1);
-        assertThat(messageArgumentCaptor.getValue().getReplyTo()).contains(new InternetAddress(DEFAULT_REPLY_TO));
-        final MimeMultipart content = (MimeMultipart) messageArgumentCaptor.getValue().getContent();
-        assertThat(content.getContentType()).contains(MediaType.MULTIPART_MIXED.getType());
+        assertMailSend(new InternetAddress(DEFAULT_REPLY_TO));
     }
 
     @Test
@@ -99,13 +91,17 @@ class EmailApiImplTest {
                 null);
         new EmailApiImpl(this.javaMailSender, this.resourceLoader, freeMarkerConfigurer, customAddress.getAddress(), null).sendMail(mail);
 
+        assertMailSend(new InternetAddress(customAddress.getAddress()));
+    }
+
+    private void assertMailSend(final InternetAddress replyToAddress) throws MessagingException, IOException {
         final ArgumentCaptor<MimeMessage> messageArgumentCaptor = ArgumentCaptor.forClass(MimeMessage.class);
         verify(this.javaMailSender).send(messageArgumentCaptor.capture());
 
         assertThat(messageArgumentCaptor.getValue().getAllRecipients()).hasSize(2);
         assertThat(messageArgumentCaptor.getValue().getSubject()).isEqualTo(SUBJECT);
         assertThat(messageArgumentCaptor.getValue().getReplyTo()).hasSize(1);
-        assertThat(messageArgumentCaptor.getValue().getReplyTo()).contains(new InternetAddress(customAddress.getAddress()));
+        assertThat(messageArgumentCaptor.getValue().getReplyTo()).contains(replyToAddress);
         final MimeMultipart content = (MimeMultipart) messageArgumentCaptor.getValue().getContent();
         assertThat(content.getContentType()).contains(MediaType.MULTIPART_MIXED.getType());
     }
@@ -174,8 +170,8 @@ class EmailApiImplTest {
                 RECEIVER,
                 null,
                 null,
-                this.SUBJECT,
-                this.BODY,
+                SUBJECT,
+                BODY,
                 false,
                 null,
                 reply1.getAddress() + "," + reply2.getAddress(),
@@ -186,7 +182,7 @@ class EmailApiImplTest {
         verify(this.javaMailSender).send(messageArgumentCaptor.capture());
 
         assertThat(messageArgumentCaptor.getValue().getAllRecipients()).hasSize(2);
-        assertThat(messageArgumentCaptor.getValue().getSubject()).isEqualTo(this.SUBJECT);
+        assertThat(messageArgumentCaptor.getValue().getSubject()).isEqualTo(SUBJECT);
         assertThat(messageArgumentCaptor.getValue().getReplyTo()).hasSize(2);
         assertThat(messageArgumentCaptor.getValue().getReplyTo()).containsAll(List.of(reply1, reply2));
         final MimeMultipart content = (MimeMultipart) messageArgumentCaptor.getValue().getContent();
@@ -198,11 +194,11 @@ class EmailApiImplTest {
         when(this.resourceLoader.getResource(anyString())).thenReturn(this.getResourceForText("Default Logo", true));
 
         final Mail mail = new Mail(
-                this.RECEIVER,
+                RECEIVER,
                 null,
                 null,
-                this.SUBJECT,
-                this.BODY,
+                SUBJECT,
+                BODY,
                 false,
                 null,
                 null,
@@ -214,7 +210,7 @@ class EmailApiImplTest {
         verify(this.resourceLoader).getResource("classpath:bausteine/mail/email-logo.png");
 
         assertThat(messageArgumentCaptor.getValue().getAllRecipients()).hasSize(2);
-        assertThat(messageArgumentCaptor.getValue().getSubject()).isEqualTo(this.SUBJECT);
+        assertThat(messageArgumentCaptor.getValue().getSubject()).isEqualTo(SUBJECT);
         final MimeMultipart content = (MimeMultipart) messageArgumentCaptor.getValue().getContent();
         assertThat(content.getContentType()).contains(MediaType.MULTIPART_MIXED.getType());
     }
@@ -224,11 +220,11 @@ class EmailApiImplTest {
         when(this.resourceLoader.getResource(anyString())).thenReturn(this.getResourceForText("Custom Logo", true));
 
         final Mail mail = new Mail(
-                this.RECEIVER,
+                RECEIVER,
                 null,
                 null,
-                this.SUBJECT,
-                this.BODY,
+                SUBJECT,
+                BODY,
                 false,
                 null,
                 null,
@@ -240,7 +236,7 @@ class EmailApiImplTest {
         verify(this.resourceLoader).getResource("classpath:some/random/path/on/classpath");
 
         assertThat(messageArgumentCaptor.getValue().getAllRecipients()).hasSize(2);
-        assertThat(messageArgumentCaptor.getValue().getSubject()).isEqualTo(this.SUBJECT);
+        assertThat(messageArgumentCaptor.getValue().getSubject()).isEqualTo(SUBJECT);
         final MimeMultipart content = (MimeMultipart) messageArgumentCaptor.getValue().getContent();
         assertThat(content.getContentType()).contains(MediaType.MULTIPART_MIXED.getType());
     }
