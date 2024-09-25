@@ -23,7 +23,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.oauth2.client.AuthorizedClientServiceOAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -53,7 +52,7 @@ public class S3IntegrationClientAutoConfiguration {
     @ConditionalOnProperty(prefix = "refarch.s3.client", name = "enable-security", havingValue = "true")
     public ApiClient securedApiClient(final ClientRegistrationRepository clientRegistrationRepository,
             final OAuth2AuthorizedClientService authorizedClientService) {
-        final var apiClient = new ApiClient(
+        final ApiClient apiClient = new ApiClient(
                 this.authenticatedWebClient(clientRegistrationRepository, authorizedClientService));
         apiClient.setBasePath(this.s3IntegrationClientProperties.getDocumentStorageUrl());
         return apiClient;
@@ -62,7 +61,7 @@ public class S3IntegrationClientAutoConfiguration {
     @Bean
     @ConditionalOnProperty(prefix = "refarch.s3.client", name = "enable-security", havingValue = "false", matchIfMissing = true)
     public ApiClient apiClient() {
-        final var apiClient = new ApiClient(
+        final ApiClient apiClient = new ApiClient(
                 WebClient.builder().build());
         apiClient.setBasePath(this.s3IntegrationClientProperties.getDocumentStorageUrl());
         return apiClient;

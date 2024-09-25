@@ -29,6 +29,7 @@ public class S3IntegrationAutoConfiguration {
 
     @ConditionalOnMissingBean
     @Bean
+    @SuppressWarnings("PMD.CloseResource")
     public S3Adapter s3Adapter() throws FileSystemAccessException {
         final MinioClient minioClient = MinioClient.builder()
                 .endpoint(this.s3IntegrationProperties.getUrl())
