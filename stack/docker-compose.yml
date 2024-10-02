@@ -104,7 +104,7 @@ services:
   # === Mail ===
   mailpit:
     container_name: mailpit
-    image: axllent/mailpit:v1.20.4@sha256:ff82a613c735f4e8a3ddfdf7ee4e18cb934c721e72a340ecbbb7ec0ca7fbd057
+    image: axllent/mailpit:v1.20.5@sha256:cd75e91719cace4e3100eab9f848ecf2ecdd7f4db01e1573a0114769dad4ba2e
     ports:
       - '1025:1025' # SMTP Server
       - '8025:8025' # UI
