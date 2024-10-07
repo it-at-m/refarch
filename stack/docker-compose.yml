@@ -22,7 +22,6 @@ services:
       - "8100:8100"
     networks:
       - keycloak
-    restart: &restart-policy on-failure:3
     healthcheck: &healthcheck
       test: ["CMD-SHELL",  "curl http://localhost:8100/auth/health/live"]
       interval: 30s
@@ -40,7 +39,6 @@ services:
       - POSTGRES_PASSWORD=keycloak-secret
     networks:
       - keycloak
-    restart: *restart-policy
     healthcheck:
       <<: *healthcheck
       test: [ "CMD-SHELL", "pg_isready -d keycloak -U keycloak-user" ]
@@ -76,7 +74,6 @@ services:
       - ./minio:/data
     networks:
       - internal
-    restart: *restart-policy
     healthcheck:
       <<: *healthcheck
       test: [ "CMD-SHELL",  "curl http://localhost:9000/minio/health/live" ]
@@ -102,7 +99,6 @@ services:
     ports:
       - '1025:1025' # SMTP Server
       - '8025:8025' # UI
-    restart: *restart-policy
     security_opt: *security_settings
 
 networks:
