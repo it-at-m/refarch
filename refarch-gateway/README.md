@@ -51,6 +51,7 @@ Beside the default behaviour there are some special route prefixes which are han
 | `ALLOWED_ORIGINS_PUBLIC` (optional)                       | List of urls allowed as origin for public routes.  | `https://*.muenchen.de,http://localhost:*`                              |
 | `ALLOWED_ORIGINS_CLIENTS` (optional)                      | List of urls allowed as origin for clients routes. | `https://*.muenchen.de,http://localhost:*`                              |
 | `REFARCH_SECURITY_CSRFWHITELISTED_<index>` (optional)     | List of routes to disable csrf protection for.     | `/example/**`                                                           |
+| `INFO_APPSWITCHER_URL` (optional)                         | App switcher url for usage in refarch frontend.    | `https://appswitcher.muenchen.de`                                       |
 
 ### Security
 
