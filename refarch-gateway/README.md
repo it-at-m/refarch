@@ -57,9 +57,10 @@ Beside the default behaviour there are some special route prefixes which are han
 For authentication via SSO, OAuth2 needs to be configured.
 See following example or the [according Spring documentation](https://docs.spring.io/spring-security/reference/servlet/oauth2/index.html).
 
+Alternatively the `no-security` profile can be used.
+
 ```yaml
 spring:
-  # optional with profile "no-security"
   security:
     oauth2:
       resourceserver:
