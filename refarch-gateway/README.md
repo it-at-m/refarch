@@ -48,8 +48,8 @@ Beside the default behaviour there are some special route prefixes which are han
 | `SPRING_CLOUD_GATEWAY_ROUTES_<index>_URI`                 | The uri to route to if this route matches.         | `http://backend-service:8080/`                                          |
 | `SPRING_CLOUD_GATEWAY_ROUTES_<index>_PREDICATES_<index>`  | Route predicates i.e. matcher.                     | `Path=/api/backend-service/**`                                          |
 | `SPRING_CLOUD_GATEWAY_ROUTES_<index>_FILTERS_<index>`     | List of filters applied to the route.              | `RewritePath=/api/backend-service/(?<urlsegments>.*), /$\{urlsegments}` |
-| `ALLOWED_ORIGINS_PUBLIC` (optional)                       | List of urls allowed as origin for public routes.  | `https://*.muenchen.de,http://localhost:*`                              |
-| `ALLOWED_ORIGINS_CLIENTS` (optional)                      | List of urls allowed as origin for clients routes. | `https://*.muenchen.de,http://localhost:*`                              |
+| `ALLOWED_ORIGINS_PUBLIC` (optional)                       | List of urls allowed as origin for public routes.  | `https://*.example.com,http://localhost:*`                              |
+| `ALLOWED_ORIGINS_CLIENTS` (optional)                      | List of urls allowed as origin for clients routes. | `https://*.example.com,http://localhost:*`                              |
 | `REFARCH_SECURITY_CSRFWHITELISTED_<index>` (optional)     | List of routes to disable csrf protection for.     | `/example/**`                                                           |
 | `INFO_APPSWITCHER_URL` (optional)                         | App switcher url for usage in refarch frontend.    | `https://appswitcher.muenchen.de`                                       |
 
@@ -66,7 +66,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: "https://sso.muenchen.de/auth/realms/muenchen.de"
+          issuer-uri: "https://sso.example/auth/realms/example"
       client:
         provider:
           sso:
