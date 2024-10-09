@@ -83,10 +83,13 @@ spring:
 
 ### Hazelcast
 
-Beside the already mentioned properties Hazelcast also needs additional Java options.
+Beside the already mentioned properties Hazelcast also has the following requirements.
+
+#### Modular java
 See https://docs.hazelcast.com/hazelcast/5.5/getting-started/install-hazelcast#using-modular-java
 
-Following needs to be added to `JAVA_OPTS_APPEND` for the gateway image.
+Following Java options need to be set.
+For the gateway image this can be done with `JAVA_OPTS_APPEND`.
 ```
 --add-modules java.se \
   --add-exports java.base/jdk.internal.ref=ALL-UNNAMED \
@@ -97,3 +100,8 @@ Following needs to be added to `JAVA_OPTS_APPEND` for the gateway image.
   --add-opens jdk.management/com.ibm.lang.management.internal=ALL-UNNAMED \
   --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
 ```
+
+#### Kubernetes
+
+For running Hazelcast with profile `hazelcast-k8s` in Kubernetes port `5701` needs to be accessible.
+This need to be configured for the Service and Deployment.
