@@ -31,7 +31,7 @@ import reactor.core.publisher.Hooks;
  * "https://cloud.spring.io/spring-cloud-gateway/reference/html/">https://cloud.spring.io/spring-cloud-gateway/reference/html/</a>
  */
 @SpringBootApplication
-@EnableConfigurationProperties({SecurityProperties.class, HazelcastProperties.class})
+@EnableConfigurationProperties({ SecurityProperties.class, HazelcastProperties.class })
 public class ApiGatewayApplication {
 
     public static void main(final String[] args) {
