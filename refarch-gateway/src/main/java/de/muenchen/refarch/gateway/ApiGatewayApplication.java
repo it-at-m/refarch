@@ -1,5 +1,6 @@
 package de.muenchen.refarch.gateway;
 
+import de.muenchen.refarch.gateway.configuration.HazelcastProperties;
 import de.muenchen.refarch.gateway.configuration.SecurityProperties;
 import jakarta.annotation.PostConstruct;
 import org.springframework.boot.SpringApplication;
@@ -30,7 +31,7 @@ import reactor.core.publisher.Hooks;
  * "https://cloud.spring.io/spring-cloud-gateway/reference/html/">https://cloud.spring.io/spring-cloud-gateway/reference/html/</a>
  */
 @SpringBootApplication
-@EnableConfigurationProperties(SecurityProperties.class)
+@EnableConfigurationProperties({SecurityProperties.class, HazelcastProperties.class})
 public class ApiGatewayApplication {
 
     public static void main(final String[] args) {
