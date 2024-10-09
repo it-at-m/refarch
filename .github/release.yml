@@ -1,6 +1,13 @@
 changelog:
   categories:
     # refarch-gateway
+    - title: Gateway - 💥 Breaking Changes
+      labels:
+        - BREAKING
+      exclude:
+        labels:
+          - "Component: Integrations"
+          - "Component: CLI"
     - title: Gateway - 🎉 New Features
       labels:
         - "Type: Feature"
@@ -43,15 +50,15 @@ changelog:
         labels:
           - "Component: Integrations"
           - "Component: CLI"
-    - title: Gateway - 💥 Breaking Changes
+
+    # refarch-integrations
+    - title: Integrations - 💥 Breaking Changes
       labels:
         - BREAKING
       exclude:
         labels:
-          - "Component: Integrations"
+          - "Component: API-Gateway"
           - "Component: CLI"
-
-    # refarch-integrations
     - title: Integrations - 🎉 New Features
       labels:
         - "Type: Feature"
@@ -94,15 +101,15 @@ changelog:
         labels:
           - "Component: API-Gateway"
           - "Component: CLI"
-    - title: Integrations - 💥 Breaking Changes
+
+    # refarch-cli
+    - title: CLI - 💥 Breaking Changes
       labels:
         - BREAKING
       exclude:
         labels:
           - "Component: API-Gateway"
-          - "Component: CLI"
-
-    # refarch-cli
+          - "Component: Integrations"
     - title: CLI - 🎉 New Features
       labels:
         - "Type: Feature"
@@ -141,13 +148,6 @@ changelog:
     - title: CLI - 🔒️ Security
       labels:
         - "Type: Security"
-      exclude:
-        labels:
-          - "Component: API-Gateway"
-          - "Component: Integrations"
-    - title: CLI - 💥 Breaking Changes
-      labels:
-        - BREAKING
       exclude:
         labels:
           - "Component: API-Gateway"
