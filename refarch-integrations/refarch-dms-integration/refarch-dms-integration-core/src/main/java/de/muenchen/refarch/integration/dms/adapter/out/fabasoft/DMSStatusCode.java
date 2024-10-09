@@ -26,7 +26,7 @@ public enum DMSStatusCode {
     }
 
     public static DMSStatusCode byCode(final int code) {
-        for (final DMSStatusCode status : DMSStatusCode.values()) {
+        for (final DMSStatusCode status : values()) {
             if (status.statuscode == code) {
                 return status;
             }

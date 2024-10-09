@@ -3,6 +3,7 @@ package de.muenchen.refarch.integration.dms.adapter.out.fabasoft;
 /**
  * All known object classes to provide soap requests with.
  */
+@SuppressWarnings({ "PMD.ExcessivePublicCount", "PMD.FieldNamingConventions" })
 public enum DMSObjectClass {
 
     Fileplan("COOELAK@1.1001:Fileplan"),
