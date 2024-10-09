@@ -39,5 +39,3 @@ spring:
           keycloak:
             client-id: refarch-gateway
             client-secret:
-
-info.appswitcher.url: https://test-url-appswitcher.muenchen.de

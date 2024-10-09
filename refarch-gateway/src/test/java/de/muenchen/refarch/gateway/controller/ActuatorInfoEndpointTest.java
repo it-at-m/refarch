@@ -23,11 +23,9 @@ class ActuatorInfoEndpointTest {
     private WebTestClient webTestClient;
 
     @Test
-    void actuatorInfoProvidesAppswitcherUrl() {
+    void actuatorInfo() {
         webTestClient.get().uri("/actuator/info").exchange()
-                .expectStatus().isOk()
-                .expectBody()
-                .jsonPath("$.appswitcher.url").isEqualTo("https://test-url-appswitcher.muenchen.de");
+                .expectStatus().isOk();
     }
 
 }
