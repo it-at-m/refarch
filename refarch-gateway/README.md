@@ -80,3 +80,20 @@ spring:
             # needed for userInfo endpoint
             scope: profile, openid
 ```
+
+### Hazelcast
+
+Beside the already mentioned properties Hazelcast also needs additional Java options.
+See https://docs.hazelcast.com/hazelcast/5.5/getting-started/install-hazelcast#using-modular-java
+
+Following needs to be added to `JAVA_OPTS_APPEND` for the gateway image.
+```
+--add-modules java.se \
+  --add-exports java.base/jdk.internal.ref=ALL-UNNAMED \
+  --add-opens java.base/java.lang=ALL-UNNAMED \
+  --add-opens java.base/java.nio=ALL-UNNAMED \
+  --add-opens java.base/sun.nio.ch=ALL-UNNAMED \
+  --add-opens java.management/sun.management=ALL-UNNAMED \
+  --add-opens jdk.management/com.ibm.lang.management.internal=ALL-UNNAMED \
+  --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
+```
