@@ -20,11 +20,6 @@ public class HazelcastProperties {
      */
     private String instanceName = "hazl_instance";
     /**
-     * Kubernetes namespace name.
-     * Required for running hazelcast inside kubernetes.
-     */
-    private String namespaceName;
-    /**
      * Kubernetes service name.
      * Required for running hazelcast inside kubernetes.
      */

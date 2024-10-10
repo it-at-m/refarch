@@ -48,7 +48,6 @@ Beside the default behaviour there are some special route prefixes which are han
 | `SPRING_CLOUD_GATEWAY_ROUTES_<index>_URI`                | The uri to route to if this route matches.                        | `http://backend-service:8080/`                                          |
 | `SPRING_CLOUD_GATEWAY_ROUTES_<index>_PREDICATES_<index>` | Route predicates i.e. matcher.                                    | `Path=/api/backend-service/**`                                          |
 | `SPRING_CLOUD_GATEWAY_ROUTES_<index>_FILTERS_<index>`    | List of filters applied to the route.                             | `RewritePath=/api/backend-service/(?<urlsegments>.*), /$\{urlsegments}` |
-| `REFARCH_HAZELCAST_NAMESPACENAME`                        | Kubernetes namespace name for when using profile `hazelcast-k8s`. |                                                                         |
 | `REFARCH_HAZELCAST_SERVICENAME`                          | Kubernetes service name for when using profile `hazelcast-k8s`.   |                                                                         |
 | `ALLOWED_ORIGINS_PUBLIC` (optional)                      | List of urls allowed as origin for public routes.                 | `https://*.example.com,http://localhost:*`                              |
 | `ALLOWED_ORIGINS_CLIENTS` (optional)                     | List of urls allowed as origin for clients routes.                | `https://*.example.com,http://localhost:*`                              |

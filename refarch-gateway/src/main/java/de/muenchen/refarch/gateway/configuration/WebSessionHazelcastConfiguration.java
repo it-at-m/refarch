@@ -83,8 +83,6 @@ public class WebSessionHazelcastConfiguration {
 
         hazelcastConfig.getNetworkConfig().getJoin().getMulticastConfig().setEnabled(false);
         hazelcastConfig.getNetworkConfig().getJoin().getKubernetesConfig().setEnabled(true)
-                // explicitly configure namespace because default env lookup is not always correct
-                .setProperty("namespace", hazelcastProperties.getNamespaceName())
                 //If we don't set a specific name, it would call -all- services within a namespace
                 .setProperty("service-name", hazelcastProperties.getServiceName());
 
