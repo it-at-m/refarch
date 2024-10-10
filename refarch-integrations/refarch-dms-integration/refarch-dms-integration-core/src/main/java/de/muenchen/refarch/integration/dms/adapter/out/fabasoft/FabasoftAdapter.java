@@ -69,7 +69,7 @@ import java.time.ZoneId;
 
 @Slf4j
 @RequiredArgsConstructor
-@SuppressWarnings("PMD.CouplingBetweenObjects")
+@SuppressWarnings({ "PMD.CouplingBetweenObjects", "PMD.UseObjectForClearerAPI" })
 public class FabasoftAdapter implements
         CreateFileOutPort,
         CreateProcedureOutPort,
@@ -474,8 +474,12 @@ public class FabasoftAdapter implements
         params.setBusinessapp(this.properties.getBusinessapp());
         params.setObjclass(dmsObjectClass.getName());
         params.setSearchstring(searchString);
-        if (Objects.nonNull(reference)) params.setReference(reference);
-        if (Objects.nonNull(value)) params.setValue(value);
+        if (Objects.nonNull(reference)) {
+            params.setReference(reference);
+        }
+        if (Objects.nonNull(value)) {
+            params.setValue(value);
+        }
 
         final SearchObjNameGIResponse response = this.wsClient.searchObjNameGI(params);
 

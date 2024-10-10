@@ -19,7 +19,6 @@ import java.util.Objects;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.util.unit.DataSize;
 
@@ -37,7 +36,7 @@ public class S3Adapter implements LoadFileOutPort, TransferContentOutPort {
     public List<Content> loadFiles(final List<String> filePaths) throws DocumentStorageException {
         validateFileSizes(filePaths);
         final List<Content> contents = new ArrayList<>();
-        for (String path : filePaths) {
+        for (final String path : filePaths) {
             if (path.endsWith("/")) {
                 contents.addAll(getFilesFromFolder(path));
             } else {
@@ -64,15 +63,16 @@ public class S3Adapter implements LoadFileOutPort, TransferContentOutPort {
 
         // Validate total batch size
         final DataSize totalFileSize = fileService.getTotalBatchSize(fileSizesWithPaths);
-        if (!fileService.isValidBatchSize(totalFileSize))
+        if (!fileService.isValidBatchSize(totalFileSize)) {
             throw new FileSizeValidationException(String.format("Batch size of %d MB is too large. Allowed are %d MB.",
                     totalFileSize.toMegabytes(), fileService.getMaxBatchSize().toMegabytes()));
+        }
     }
 
     private Map<String, Long> getFileSizesWithPaths(final List<String> filePaths) throws DocumentStorageException {
-        Map<String, Long> map = new HashMap<>();
-        for (String path : filePaths) {
-            for (Map.Entry<String, Long> stringLongEntry : getFileSizeForPath(path).entrySet()) {
+        final Map<String, Long> map = new HashMap<>();
+        for (final String path : filePaths) {
+            for (final Map.Entry<String, Long> stringLongEntry : getFileSizeForPath(path).entrySet()) {
                 if (map.put(stringLongEntry.getKey(), stringLongEntry.getValue()) != null) {
                     throw new IllegalStateException("Duplicate key");
                 }
@@ -112,8 +112,10 @@ public class S3Adapter implements LoadFileOutPort, TransferContentOutPort {
             final List<Content> contents = new ArrayList<>();
             final Set<String> filepath;
             filepath = documentStorageFolderRepository.getAllFilesInFolderRecursively(folderPath);
-            if (Objects.isNull(filepath)) throw new DocumentStorageException("An folder could not be loaded from url: " + folderPath);
-            for (String file : filepath) {
+            if (Objects.isNull(filepath)) {
+                throw new DocumentStorageException("An folder could not be loaded from url: " + folderPath);
+            }
+            for (final String file : filepath) {
                 contents.add(getFile(file));
             }
             return contents;
@@ -129,8 +131,9 @@ public class S3Adapter implements LoadFileOutPort, TransferContentOutPort {
             final String mimeType = fileService.detectFileType(bytes);
             final String filename = FilenameUtils.getBaseName(filePath);
 
-            if (!fileService.isSupported(mimeType))
+            if (!fileService.isSupported(mimeType)) {
                 throw new FileTypeValidationException("The type of this file is not supported: " + filePath);
+            }
 
             return new Content(fileService.getFileExtension(mimeType), filename, bytes);
         } catch (final DocumentStorageException | DocumentStorageServerErrorException | DocumentStorageClientErrorException e) {
@@ -140,11 +143,11 @@ public class S3Adapter implements LoadFileOutPort, TransferContentOutPort {
 
     @Override
     public void transferContent(final List<Content> content, final String filepath) throws DocumentStorageException {
-        for (val file : content) {
+        for (final Content file : content) {
             try {
-                val fullFilePath = (filepath + "/" + file.name() + "." + file.extension()).replace("//", "/");
+                final String fullFilePath = (filepath + "/" + file.name() + "." + file.extension()).replace("//", "/");
                 this.documentStorageFileRepository.saveFile(fullFilePath, file.content(), 1);
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 throw new DocumentStorageException("An file could not be saved to path: " + filepath, e);
             }
         }

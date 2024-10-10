@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 
 public interface CreateProcedureInPort {
 
-    Procedure createProcedure(@NotBlank final String titel, @NotBlank final String fileCOO, final String fileSubj, @NotBlank final String user)
+    Procedure createProcedure(@NotBlank String titel, @NotBlank String fileCOO, String fileSubj, @NotBlank String user)
             throws DmsException;
 
 }
