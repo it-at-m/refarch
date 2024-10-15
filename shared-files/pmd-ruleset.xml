@@ -27,6 +27,7 @@
         <exclude name="SignatureDeclareThrowsException"/>
         <exclude name="TooManyMethods"/>
         <exclude name="UseObjectForClearerAPI"/>
+        <exclude name="CouplingBetweenObjects"/>
     </rule>
     <rule ref="category/java/errorprone.xml"/>
     <rule ref="category/java/security.xml"/>

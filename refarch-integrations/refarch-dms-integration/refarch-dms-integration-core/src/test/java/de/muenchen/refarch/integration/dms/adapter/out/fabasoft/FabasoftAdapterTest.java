@@ -55,7 +55,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @WireMockTest()
-@SuppressWarnings({ "PMD.JUnitTestsShouldIncludeAssert", "PMD.CouplingBetweenObjects" })
+@SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
 class FabasoftAdapterTest {
 
     public static final String USER = "user";

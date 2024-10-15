@@ -48,6 +48,8 @@ class S3AdapterTest {
     public static final String PDF_NAME = "test-pdf";
     public static final String PNG_NAME = "test-png";
     public static final String SOME_ERROR = "Some error";
+    public static final String FOLDER_PATH = "test/";
+    public static final String FULL_WORD_PATH = "files/test/test-word.docx";
 
     private final DocumentStorageFileRepository documentStorageFileRepository = mock(DocumentStorageFileRepository.class);
 
@@ -70,41 +72,13 @@ class S3AdapterTest {
     void testLoadFileFromFilePath()
             throws IOException, DocumentStorageException, DocumentStorageClientErrorException, DocumentStorageServerErrorException {
 
-        final String pdfPath = PDF_PATH;
-        final String pngPath = PNG_PATH;
+        final List<String> filePaths = List.of(PDF_PATH, PNG_PATH);
 
-        final List<String> filePaths = List.of(pdfPath, pngPath);
+        final byte[] testPdf = new ClassPathResource(PDF_PATH).getInputStream().readAllBytes();
+        final byte[] testPng = new ClassPathResource(PNG_PATH).getInputStream().readAllBytes();
 
-        final byte[] testPdf = new ClassPathResource(pdfPath).getInputStream().readAllBytes();
-        final byte[] testPng = new ClassPathResource(pngPath).getInputStream().readAllBytes();
-
-        when(documentStorageFileRepository.getFile(pdfPath, 3)).thenReturn(testPdf);
-        when(documentStorageFileRepository.getFile(pngPath, 3)).thenReturn(testPng);
-        when(documentStorageFileRepository.getFileSize(anyString())).thenReturn(1_000_000L);
-
-        final List<Content> contents = this.s3Adapter.loadFiles(filePaths);
-
-        final Content pdfContent = new Content(PDF, PDF_NAME, testPdf);
-        final Content pngContent = new Content(PNG, PNG_NAME, testPng);
-
-        assertTrue(contents.contains(pdfContent));
-        assertTrue(contents.contains(pngContent));
-    }
-
-    @Test
-    void testLoadFileFromFilePathWithStorageUrl()
-            throws IOException, DocumentStorageException, DocumentStorageClientErrorException, DocumentStorageServerErrorException {
-
-        final String pdfPath = PDF_PATH;
-        final String pngPath = PNG_PATH;
-
-        final List<String> filePaths = List.of(pdfPath, pngPath);
-
-        final byte[] testPdf = new ClassPathResource(pdfPath).getInputStream().readAllBytes();
-        final byte[] testPng = new ClassPathResource(pngPath).getInputStream().readAllBytes();
-
-        when(documentStorageFileRepository.getFile(pdfPath, 3)).thenReturn(testPdf);
-        when(documentStorageFileRepository.getFile(pngPath, 3)).thenReturn(testPng);
+        when(documentStorageFileRepository.getFile(PDF_PATH, 3)).thenReturn(testPdf);
+        when(documentStorageFileRepository.getFile(PNG_PATH, 3)).thenReturn(testPng);
         when(documentStorageFileRepository.getFileSize(anyString())).thenReturn(1_000_000L);
 
         final List<Content> contents = this.s3Adapter.loadFiles(filePaths);
@@ -120,61 +94,19 @@ class S3AdapterTest {
     void testLoadFileFromFolderPath()
             throws IOException, DocumentStorageException, DocumentStorageClientErrorException, DocumentStorageServerErrorException {
 
-        final String folderPath = "test/";
+        final List<String> paths = List.of(FOLDER_PATH);
 
-        final String pdfPath = PDF_PATH;
-        final String pngPath = PNG_PATH;
-        final String fullWordPath = "files/test/test-word.docx";
+        final Set<String> filesPaths = new HashSet<>(List.of(PDF_PATH, PNG_PATH, FULL_WORD_PATH));
 
-        final List<String> paths = List.of(folderPath);
+        final byte[] testPdf = new ClassPathResource(PDF_PATH).getInputStream().readAllBytes();
+        final byte[] testPng = new ClassPathResource(PNG_PATH).getInputStream().readAllBytes();
+        final byte[] testWord = new ClassPathResource(FULL_WORD_PATH).getInputStream().readAllBytes();
 
-        final Set<String> filesPaths = new HashSet<>(List.of(pdfPath, pngPath, fullWordPath));
+        when(documentStorageFolderRepository.getAllFilesInFolderRecursively(FOLDER_PATH)).thenReturn(filesPaths);
 
-        final byte[] testPdf = new ClassPathResource(pdfPath).getInputStream().readAllBytes();
-        final byte[] testPng = new ClassPathResource(pngPath).getInputStream().readAllBytes();
-        final byte[] testWord = new ClassPathResource(fullWordPath).getInputStream().readAllBytes();
-
-        when(documentStorageFolderRepository.getAllFilesInFolderRecursively(folderPath)).thenReturn(filesPaths);
-
-        when(documentStorageFileRepository.getFile(pdfPath, 3)).thenReturn(testPdf);
-        when(documentStorageFileRepository.getFile(pngPath, 3)).thenReturn(testPng);
-        when(documentStorageFileRepository.getFile(fullWordPath, 3)).thenReturn(testWord);
-        when(documentStorageFolderRepository.getAllFileSizesInFolderRecursively(anyString())).thenReturn(Map.of("", 1_000_000L));
-
-        final List<Content> contents = this.s3Adapter.loadFiles(paths);
-
-        final Content pdfContent = new Content(PDF, PDF_NAME, testPdf);
-        final Content pngContent = new Content(PNG, PNG_NAME, testPng);
-        final Content wordContent = new Content("docx", "test-word", testWord);
-
-        assertTrue(contents.contains(pdfContent));
-        assertTrue(contents.contains(pngContent));
-        assertTrue(contents.contains(wordContent));
-    }
-
-    @Test
-    void testLoadFileFromFolderPathWithStorageUrl()
-            throws IOException, DocumentStorageException, DocumentStorageClientErrorException, DocumentStorageServerErrorException {
-
-        final String folderPath = "test/";
-
-        final String pdfPath = PDF_PATH;
-        final String pngPath = PNG_PATH;
-        final String fullWordPath = "files/test/test-word.docx";
-
-        final List<String> paths = List.of(folderPath);
-
-        final Set<String> filesPaths = new HashSet<>(List.of(pdfPath, pngPath, fullWordPath));
-
-        final byte[] testPdf = new ClassPathResource(pdfPath).getInputStream().readAllBytes();
-        final byte[] testPng = new ClassPathResource(pngPath).getInputStream().readAllBytes();
-        final byte[] testWord = new ClassPathResource(fullWordPath).getInputStream().readAllBytes();
-
-        when(documentStorageFolderRepository.getAllFilesInFolderRecursively(folderPath)).thenReturn(filesPaths);
-
-        when(documentStorageFileRepository.getFile(pdfPath, 3)).thenReturn(testPdf);
-        when(documentStorageFileRepository.getFile(pngPath, 3)).thenReturn(testPng);
-        when(documentStorageFileRepository.getFile(fullWordPath, 3)).thenReturn(testWord);
+        when(documentStorageFileRepository.getFile(PDF_PATH, 3)).thenReturn(testPdf);
+        when(documentStorageFileRepository.getFile(PNG_PATH, 3)).thenReturn(testPng);
+        when(documentStorageFileRepository.getFile(FULL_WORD_PATH, 3)).thenReturn(testWord);
         when(documentStorageFolderRepository.getAllFileSizesInFolderRecursively(anyString())).thenReturn(Map.of("", 1_000_000L));
 
         final List<Content> contents = this.s3Adapter.loadFiles(paths);
@@ -212,7 +144,7 @@ class S3AdapterTest {
     void testLoadFileFromFolderPathThrowsDocumentStorageServerErrorException()
             throws DocumentStorageException, DocumentStorageClientErrorException, DocumentStorageServerErrorException {
 
-        final String folderPath = "test/";
+        final String folderPath = FOLDER_PATH;
 
         final List<String> filePaths = List.of(folderPath);
 

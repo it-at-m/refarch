@@ -69,7 +69,7 @@ import java.time.ZoneId;
 
 @Slf4j
 @RequiredArgsConstructor
-@SuppressWarnings({ "PMD.CouplingBetweenObjects", "PMD.UseObjectForClearerAPI" })
+@SuppressWarnings("PMD.UseObjectForClearerAPI")
 public class FabasoftAdapter implements
         CreateFileOutPort,
         CreateProcedureOutPort,
