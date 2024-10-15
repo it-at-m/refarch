@@ -5,7 +5,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Data
 @ConfigurationProperties("refarch.hazelcast")
-@SuppressWarnings("PMD.ImmutableField")
 public class HazelcastProperties {
     /**
      * Name of the hazelcast cluster.
