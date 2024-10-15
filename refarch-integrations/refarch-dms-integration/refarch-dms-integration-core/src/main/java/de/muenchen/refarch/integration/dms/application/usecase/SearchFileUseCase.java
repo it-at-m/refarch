@@ -4,7 +4,6 @@ import de.muenchen.refarch.integration.dms.application.port.in.SearchFileInPort;
 import de.muenchen.refarch.integration.dms.application.port.out.SearchFileOutPort;
 import de.muenchen.refarch.integration.dms.domain.exception.DmsException;
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;

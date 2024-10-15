@@ -107,6 +107,7 @@ public class S3Adapter implements LoadFileOutPort, TransferContentOutPort {
         }
     }
 
+    @SuppressWarnings("PMD.ExceptionAsFlowControl")
     private List<Content> getFilesFromFolder(final String folderPath) throws DocumentStorageException {
         try {
             final List<Content> contents = new ArrayList<>();

@@ -26,6 +26,7 @@
         <exclude name="LawOfDemeter"/>
         <exclude name="SignatureDeclareThrowsException"/>
         <exclude name="TooManyMethods"/>
+        <exclude name="UseObjectForClearerAPI"/>
     </rule>
     <rule ref="category/java/errorprone.xml"/>
     <rule ref="category/java/security.xml"/>

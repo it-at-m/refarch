@@ -41,13 +41,20 @@ class S3AdapterTest {
     private static final DataSize ALLOWED_FILE_SIZE = DataSize.ofMegabytes(100);
     private static final DataSize ALLOWED_BATCH_SIZE = DataSize.ofMegabytes(110);
     private static final long TOO_LARGE_FILE_SIZE = ALLOWED_FILE_SIZE.toBytes() + DataSize.ofMegabytes(1L).toBytes(); // 1 Mbyte over allowed
+    public static final String PDF = "pdf";
+    public static final String PNG = "png";
+    public static final String PDF_PATH = "files/test/test-pdf.pdf";
+    public static final String PNG_PATH = "files/test/test-png.png";
+    public static final String PDF_NAME = "test-pdf";
+    public static final String PNG_NAME = "test-png";
+    public static final String SOME_ERROR = "Some error";
 
     private final DocumentStorageFileRepository documentStorageFileRepository = mock(DocumentStorageFileRepository.class);
 
     private final DocumentStorageFolderRepository documentStorageFolderRepository = mock(DocumentStorageFolderRepository.class);
 
-    private final SupportedFileExtensions supportedExtensions = new SupportedFileExtensions(Map.of("pdf", "application/pdf",
-            "png", "image/png",
+    private final Map<String, String> supportedExtensions = new SupportedFileExtensions(Map.of(PDF, "application/pdf",
+            PNG, "image/png",
             "docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"));
 
     private final FileValidationService fileValidationService = new FileValidationService(supportedExtensions, ALLOWED_FILE_SIZE, ALLOWED_BATCH_SIZE);
@@ -63,8 +70,8 @@ class S3AdapterTest {
     void testLoadFileFromFilePath()
             throws IOException, DocumentStorageException, DocumentStorageClientErrorException, DocumentStorageServerErrorException {
 
-        final String pdfPath = "files/test/test-pdf.pdf";
-        final String pngPath = "files/test/test-png.png";
+        final String pdfPath = PDF_PATH;
+        final String pngPath = PNG_PATH;
 
         final List<String> filePaths = List.of(pdfPath, pngPath);
 
@@ -77,8 +84,8 @@ class S3AdapterTest {
 
         final List<Content> contents = this.s3Adapter.loadFiles(filePaths);
 
-        final Content pdfContent = new Content("pdf", "test-pdf", testPdf);
-        final Content pngContent = new Content("png", "test-png", testPng);
+        final Content pdfContent = new Content(PDF, PDF_NAME, testPdf);
+        final Content pngContent = new Content(PNG, PNG_NAME, testPng);
 
         assertTrue(contents.contains(pdfContent));
         assertTrue(contents.contains(pngContent));
@@ -88,8 +95,8 @@ class S3AdapterTest {
     void testLoadFileFromFilePathWithStorageUrl()
             throws IOException, DocumentStorageException, DocumentStorageClientErrorException, DocumentStorageServerErrorException {
 
-        final String pdfPath = "files/test/test-pdf.pdf";
-        final String pngPath = "files/test/test-png.png";
+        final String pdfPath = PDF_PATH;
+        final String pngPath = PNG_PATH;
 
         final List<String> filePaths = List.of(pdfPath, pngPath);
 
@@ -102,8 +109,8 @@ class S3AdapterTest {
 
         final List<Content> contents = this.s3Adapter.loadFiles(filePaths);
 
-        final Content pdfContent = new Content("pdf", "test-pdf", testPdf);
-        final Content pngContent = new Content("png", "test-png", testPng);
+        final Content pdfContent = new Content(PDF, PDF_NAME, testPdf);
+        final Content pngContent = new Content(PNG, PNG_NAME, testPng);
 
         assertTrue(contents.contains(pdfContent));
         assertTrue(contents.contains(pngContent));
@@ -115,8 +122,8 @@ class S3AdapterTest {
 
         final String folderPath = "test/";
 
-        final String pdfPath = "files/test/test-pdf.pdf";
-        final String pngPath = "files/test/test-png.png";
+        final String pdfPath = PDF_PATH;
+        final String pngPath = PNG_PATH;
         final String fullWordPath = "files/test/test-word.docx";
 
         final List<String> paths = List.of(folderPath);
@@ -136,8 +143,8 @@ class S3AdapterTest {
 
         final List<Content> contents = this.s3Adapter.loadFiles(paths);
 
-        final Content pdfContent = new Content("pdf", "test-pdf", testPdf);
-        final Content pngContent = new Content("png", "test-png", testPng);
+        final Content pdfContent = new Content(PDF, PDF_NAME, testPdf);
+        final Content pngContent = new Content(PNG, PNG_NAME, testPng);
         final Content wordContent = new Content("docx", "test-word", testWord);
 
         assertTrue(contents.contains(pdfContent));
@@ -151,13 +158,13 @@ class S3AdapterTest {
 
         final String folderPath = "test/";
 
-        final String pdfPath = "files/test/test-pdf.pdf";
-        final String pngPath = "files/test/test-png.png";
+        final String pdfPath = PDF_PATH;
+        final String pngPath = PNG_PATH;
         final String fullWordPath = "files/test/test-word.docx";
 
         final List<String> paths = List.of(folderPath);
 
-        Set<String> filesPaths = new HashSet<>(List.of(pdfPath, pngPath, fullWordPath));
+        final Set<String> filesPaths = new HashSet<>(List.of(pdfPath, pngPath, fullWordPath));
 
         final byte[] testPdf = new ClassPathResource(pdfPath).getInputStream().readAllBytes();
         final byte[] testPng = new ClassPathResource(pngPath).getInputStream().readAllBytes();
@@ -172,8 +179,8 @@ class S3AdapterTest {
 
         final List<Content> contents = this.s3Adapter.loadFiles(paths);
 
-        final Content pdfContent = new Content("pdf", "test-pdf", testPdf);
-        final Content pngContent = new Content("png", "test-png", testPng);
+        final Content pdfContent = new Content(PDF, PDF_NAME, testPdf);
+        final Content pngContent = new Content(PNG, PNG_NAME, testPng);
         final Content wordContent = new Content("docx", "test-word", testWord);
 
         assertTrue(contents.contains(pdfContent));
@@ -191,12 +198,12 @@ class S3AdapterTest {
 
         when(documentStorageFileRepository.getFileSize(anyString())).thenReturn(1_000_000L);
         when(documentStorageFileRepository.getFile(pdfPath, 3)).thenThrow(
-                new DocumentStorageException("Some error", new RuntimeException("Some error")));
+                new DocumentStorageException(SOME_ERROR, new RuntimeException(SOME_ERROR)));
 
-        DocumentStorageException documentStorageException = assertThrows(DocumentStorageException.class, () -> this.s3Adapter.loadFiles(filePaths));
+        final DocumentStorageException documentStorageException = assertThrows(DocumentStorageException.class, () -> this.s3Adapter.loadFiles(filePaths));
 
-        String expectedMessage = "An file could not be loaded from url: " + pdfPath;
-        String actualMessage = documentStorageException.getMessage();
+        final String expectedMessage = "An file could not be loaded from url: " + pdfPath;
+        final String actualMessage = documentStorageException.getMessage();
 
         assertEquals(expectedMessage, actualMessage);
     }
@@ -211,12 +218,12 @@ class S3AdapterTest {
 
         when(documentStorageFolderRepository.getAllFileSizesInFolderRecursively(anyString())).thenReturn(Map.of("", 1_000_000L));
         when(documentStorageFolderRepository.getAllFilesInFolderRecursively(folderPath)).thenThrow(
-                new DocumentStorageServerErrorException("Some error", new RuntimeException("Some error")));
+                new DocumentStorageServerErrorException(SOME_ERROR, new RuntimeException(SOME_ERROR)));
 
-        DocumentStorageException documentStorageException = assertThrows(DocumentStorageException.class, () -> this.s3Adapter.loadFiles(filePaths));
+        final DocumentStorageException documentStorageException = assertThrows(DocumentStorageException.class, () -> this.s3Adapter.loadFiles(filePaths));
 
-        String expectedMessage = "An folder could not be loaded from url: " + folderPath;
-        String actualMessage = documentStorageException.getMessage();
+        final String expectedMessage = "An folder could not be loaded from url: " + folderPath;
+        final String actualMessage = documentStorageException.getMessage();
 
         assertEquals(expectedMessage, actualMessage);
     }
@@ -234,7 +241,7 @@ class S3AdapterTest {
         when(documentStorageFileRepository.getFile(htmlPath, 3)).thenReturn(testHtml);
         when(documentStorageFileRepository.getFileSize(anyString())).thenReturn(1_000_000L);
 
-        String expectedMessage = "The type of this file is not supported: " + htmlPath;
+        final String expectedMessage = "The type of this file is not supported: " + htmlPath;
 
         assertThatThrownBy(() -> s3Adapter.loadFiles(filePaths))
                 .isInstanceOf(FileTypeValidationException.class)
@@ -244,16 +251,16 @@ class S3AdapterTest {
 
     @Test
     void testLoadFilesThrowsFileSizeValidationExceptionDueToInvalidBatchSize() throws Exception {
-        String pathLargeFile = "path/to/largeFile";
-        String pathSmallFile = "path/to/smallFile";
-        List<String> filePaths = Arrays.asList(pathLargeFile, pathSmallFile);
+        final String pathLargeFile = "path/to/largeFile";
+        final String pathSmallFile = "path/to/smallFile";
+        final List<String> filePaths = Arrays.asList(pathLargeFile, pathSmallFile);
 
         when(documentStorageFileRepository.getFileSize(eq(pathLargeFile))).thenReturn(ALLOWED_FILE_SIZE.toBytes());
         when(documentStorageFileRepository.getFileSize(eq(pathSmallFile))).thenReturn(
                 DataSize.ofMegabytes(20).toBytes());
 
-        DataSize sum = DataSize.ofBytes(ALLOWED_FILE_SIZE.toBytes() + DataSize.ofMegabytes(20).toBytes());
-        String expectedMessage = String.format("Batch size of %d MB is too large. Allowed are %d MB.", sum.toMegabytes(), ALLOWED_BATCH_SIZE.toMegabytes());
+        final DataSize sum = DataSize.ofBytes(ALLOWED_FILE_SIZE.toBytes() + DataSize.ofMegabytes(20).toBytes());
+        final String expectedMessage = String.format("Batch size of %d MB is too large. Allowed are %d MB.", sum.toMegabytes(), ALLOWED_BATCH_SIZE.toMegabytes());
 
         assertThatThrownBy(() -> s3Adapter.loadFiles(filePaths))
                 .isInstanceOf(FileSizeValidationException.class)
@@ -263,14 +270,14 @@ class S3AdapterTest {
 
     @Test
     void testLoadFilesThrowsFileSizeValidationExceptionDueToFileExceedingMaxSize() throws Exception {
-        String pathLargeFile = "path/to/largeFile";
-        String pathSmallFile = "path/to/smallFile";
-        List<String> filePaths = Arrays.asList(pathLargeFile, pathSmallFile);
+        final String pathLargeFile = "path/to/largeFile";
+        final String pathSmallFile = "path/to/smallFile";
+        final List<String> filePaths = Arrays.asList(pathLargeFile, pathSmallFile);
 
         when(documentStorageFileRepository.getFileSize(eq(pathLargeFile))).thenReturn(TOO_LARGE_FILE_SIZE);
         when(documentStorageFileRepository.getFileSize(eq(pathSmallFile))).thenReturn(10_240L);
 
-        String expectedMessage = String.format("The following files exceed the maximum size of %d MB:%n%s: %d MB", ALLOWED_FILE_SIZE.toMegabytes(),
+        final String expectedMessage = String.format("The following files exceed the maximum size of %d MB:%n%s: %d MB", ALLOWED_FILE_SIZE.toMegabytes(),
                 pathLargeFile, DataSize.ofBytes(TOO_LARGE_FILE_SIZE).toMegabytes());
 
         assertThatThrownBy(() -> s3Adapter.loadFiles(filePaths))
@@ -283,8 +290,8 @@ class S3AdapterTest {
     void testTransferContent() throws IOException, DocumentStorageException, DocumentStorageClientErrorException, DocumentStorageServerErrorException {
         final String folderPathWithSlash = "folder/";
         final String folderPathWithoutSlash = "folder";
-        final byte[] testPdf = new ClassPathResource("files/test/test-pdf.pdf").getInputStream().readAllBytes();
-        final Content pdfContent = new Content("pdf", "test-pdf", testPdf);
+        final byte[] testPdf = new ClassPathResource(PDF_PATH).getInputStream().readAllBytes();
+        final Content pdfContent = new Content(PDF, PDF_NAME, testPdf);
         final String fullPath = String.format("%s/%s", folderPathWithoutSlash, "test-pdf.pdf");
         final String fullPathWrong = String.format("%s//%s", folderPathWithoutSlash, "test-pdf.pdf");
 

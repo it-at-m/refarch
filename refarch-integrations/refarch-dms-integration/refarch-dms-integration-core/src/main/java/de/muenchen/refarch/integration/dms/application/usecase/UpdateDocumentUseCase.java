@@ -33,7 +33,7 @@ public class UpdateDocumentUseCase implements UpdateDocumentInPort {
         final List<Content> contents = loadFileOutPort.loadFiles(filepaths);
 
         updateDocumentOutPort.updateDocument(documentCOO, type, contents, user);
-        List<String> contentCoos = listContentOutPort.listContentCoos(documentCOO, user);
+        final List<String> contentCoos = listContentOutPort.listContentCoos(documentCOO, user);
         return new DocumentResponse(documentCOO, contentCoos);
     }
 
