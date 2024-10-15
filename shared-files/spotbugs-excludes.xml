@@ -1,0 +1,7 @@
+<FindBugsFilter>
+    <Match>
+        <Class name="*"/> <!-- You can specify a specific class name if needed -->
+        <Method name="*"/> <!-- You can specify a specific method name if needed -->
+        <Bug code="EI_EXPOSE_REP2"/>
+    </Match>
+</FindBugsFilter>

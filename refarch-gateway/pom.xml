@@ -275,6 +275,7 @@
                 <artifactId>spotbugs-maven-plugin</artifactId>
                 <version>${spotbugs-maven-plugin.version}</version>
                 <configuration>
+                    <excludeBugsFile>../shared-files/spotbugs-excludes.xml</excludeBugsFile>
                     <effort>Max</effort>
                     <plugins>
                         <plugin>
