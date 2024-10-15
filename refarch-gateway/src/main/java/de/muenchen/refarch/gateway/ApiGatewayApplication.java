@@ -1,12 +1,9 @@
 package de.muenchen.refarch.gateway;
 
-import de.muenchen.refarch.gateway.configuration.HazelcastProperties;
-import de.muenchen.refarch.gateway.configuration.SecurityProperties;
 import jakarta.annotation.PostConstruct;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import reactor.core.publisher.Hooks;
 
 /**
