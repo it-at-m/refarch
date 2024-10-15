@@ -19,7 +19,7 @@ public class MockInitializer {
 
     @PostConstruct
     public void init() {
-        WireMockServer server = new WireMockServer(port);
+        final WireMockServer server = new WireMockServer(port);
         server.start();
         mockCases.forEach(mock -> mock.initCase(server));
     }

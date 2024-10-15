@@ -4,7 +4,6 @@ import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.ReadMetadataObjectGI;
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.ReadMetadataObjectGIResponse;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.muenchen.refarch.integration.dms.fabasoft.mock.WiremockWsdlUtility;
-import lombok.val;
 
 import org.springframework.stereotype.Component;
 
@@ -12,9 +11,9 @@ import org.springframework.stereotype.Component;
 public class ReadMetadataObjectCase implements MockCase {
 
     @Override
-    public void initCase(WireMockServer server) {
+    public void initCase(final WireMockServer server) {
 
-        val response = new ReadMetadataObjectGIResponse();
+        final ReadMetadataObjectGIResponse response = new ReadMetadataObjectGIResponse();
         response.setStatus(0);
         response.setObjclass("Vorgang");
         response.setObjname("name");

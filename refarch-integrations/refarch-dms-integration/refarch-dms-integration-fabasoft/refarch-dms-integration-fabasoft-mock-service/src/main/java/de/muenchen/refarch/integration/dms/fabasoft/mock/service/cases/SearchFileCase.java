@@ -6,23 +6,22 @@ import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.SearchObjNameGI;
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.SearchObjNameGIResponse;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.muenchen.refarch.integration.dms.fabasoft.mock.WiremockWsdlUtility;
-import lombok.val;
 import org.springframework.stereotype.Component;
 
 @Component
 public class SearchFileCase implements MockCase {
 
     @Override
-    public void initCase(WireMockServer server) {
+    public void initCase(final WireMockServer server) {
 
-        val file = new LHMBAI151700GIObjectType();
+        final LHMBAI151700GIObjectType file = new LHMBAI151700GIObjectType();
         file.setLHMBAI151700Objaddress("fileCoo");
         file.setLHMBAI151700Objname("fileName");
 
-        val array = new ArrayOfLHMBAI151700GIObjectType();
+        final ArrayOfLHMBAI151700GIObjectType array = new ArrayOfLHMBAI151700GIObjectType();
         array.getLHMBAI151700GIObjectType().add(file);
 
-        val response = new SearchObjNameGIResponse();
+        final SearchObjNameGIResponse response = new SearchObjNameGIResponse();
         response.setStatus(0);
         response.setGiobjecttype(array);
 
