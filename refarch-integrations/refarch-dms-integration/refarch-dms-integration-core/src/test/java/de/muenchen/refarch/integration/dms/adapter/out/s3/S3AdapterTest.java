@@ -260,7 +260,8 @@ class S3AdapterTest {
                 DataSize.ofMegabytes(20).toBytes());
 
         final DataSize sum = DataSize.ofBytes(ALLOWED_FILE_SIZE.toBytes() + DataSize.ofMegabytes(20).toBytes());
-        final String expectedMessage = String.format("Batch size of %d MB is too large. Allowed are %d MB.", sum.toMegabytes(), ALLOWED_BATCH_SIZE.toMegabytes());
+        final String expectedMessage = String.format("Batch size of %d MB is too large. Allowed are %d MB.", sum.toMegabytes(),
+                ALLOWED_BATCH_SIZE.toMegabytes());
 
         assertThatThrownBy(() -> s3Adapter.loadFiles(filePaths))
                 .isInstanceOf(FileSizeValidationException.class)

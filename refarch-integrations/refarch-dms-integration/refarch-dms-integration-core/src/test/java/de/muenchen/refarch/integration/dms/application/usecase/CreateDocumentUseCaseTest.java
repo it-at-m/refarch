@@ -44,7 +44,8 @@ class CreateDocumentUseCaseTest {
         when(this.createDocumentOutPort.createDocument(any(), any())).thenReturn(docCoo);
         when(this.listContentOutPort.listContentCoos(docCoo, user)).thenReturn(fileCoos);
 
-        final DocumentResponse documentResponse = createDocumentUseCase.createDocument("procedureCOO", "title", testDate, "user", DocumentType.EINGEHEND, filepaths);
+        final DocumentResponse documentResponse = createDocumentUseCase.createDocument("procedureCOO", "title", testDate, "user", DocumentType.EINGEHEND,
+                filepaths);
 
         assertEquals(docCoo, documentResponse.documentCoo());
         assertEquals(fileCoos, documentResponse.contentCoos());
