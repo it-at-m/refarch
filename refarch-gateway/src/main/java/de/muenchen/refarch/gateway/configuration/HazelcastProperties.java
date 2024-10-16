@@ -1,15 +1,10 @@
 package de.muenchen.refarch.gateway.configuration;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@Getter
-@RequiredArgsConstructor
-@AllArgsConstructor
+@Data
 @ConfigurationProperties("refarch.hazelcast")
-@SuppressWarnings("PMD.ImmutableField")
 public class HazelcastProperties {
     /**
      * Name of the hazelcast cluster.

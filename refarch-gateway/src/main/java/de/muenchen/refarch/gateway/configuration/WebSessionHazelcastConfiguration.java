@@ -8,6 +8,7 @@ import com.hazelcast.config.NetworkConfig;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.map.IMap;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,6 +31,7 @@ import org.springframework.session.hazelcast.HazelcastIndexedSessionRepository;
 @EnableSpringWebSession
 @Profile({ "hazelcast-local", "hazelcast-k8s" })
 @RequiredArgsConstructor
+@SuppressFBWarnings("EI_EXPOSE_REP2")
 public class WebSessionHazelcastConfiguration {
 
     private final HazelcastProperties hazelcastProperties;
