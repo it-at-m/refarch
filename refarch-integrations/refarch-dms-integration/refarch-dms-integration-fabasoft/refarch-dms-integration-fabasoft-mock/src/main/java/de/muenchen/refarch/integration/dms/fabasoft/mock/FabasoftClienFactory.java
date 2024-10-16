@@ -8,9 +8,11 @@ import jakarta.xml.ws.BindingProvider;
 /**
  * Configuration of the Webservice Client.
  */
-public class FabasoftClienFactory {
+public final class FabasoftClienFactory {
+    private FabasoftClienFactory() {
+    }
 
-    public static LHMBAI151700GIWSDSoap dmsWsClient(String address) {
+    public static LHMBAI151700GIWSDSoap dmsWsClient(final String address) {
         final LHMBAI151700GIWSD service = new LHMBAI151700GIWSD();
         final LHMBAI151700GIWSDSoap soapClient = service.getLHMBAI151700GIWSDSoap();
         ((BindingProvider) soapClient).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, address);

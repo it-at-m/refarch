@@ -37,10 +37,10 @@ class MailAdapterTest {
     }
 
     @Test
-    void getBodyFromTemplate() throws TemplateException, IOException {
+    void testGetBodyFromTemplate() throws TemplateException, IOException {
         final MailAdapter mailAdapter = new MailAdapter(emailApi);
         when(emailApi.getBodyFromTemplate(anyString(), anyMap())).thenReturn("generated body");
-        String body = mailAdapter.getBodyFromTemplate("template", Map.of("key", "value"));
+        final String body = mailAdapter.getBodyFromTemplate("template", Map.of("key", "value"));
 
         assertThat(body).isEqualTo("generated body");
         verify(emailApi).getBodyFromTemplate("template", Map.of("key", "value"));

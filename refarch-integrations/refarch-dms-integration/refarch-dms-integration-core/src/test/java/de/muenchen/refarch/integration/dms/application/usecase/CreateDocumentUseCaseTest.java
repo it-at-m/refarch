@@ -33,18 +33,19 @@ class CreateDocumentUseCaseTest {
 
     @Test
     void createDocument() throws DmsException, DocumentStorageException {
-        Content content = new Content("extension", "name", "content".getBytes());
-        List<String> filepaths = List.of("path/content.pdf");
-        LocalDate testDate = LocalDate.parse("2023-12-01");
-        String docCoo = "documentCOO";
-        String user = "user";
-        List<String> fileCoos = List.of("contentCoo1", "contentCoo2");
+        final Content content = new Content("extension", "name", "content".getBytes());
+        final List<String> filepaths = List.of("path/content.pdf");
+        final LocalDate testDate = LocalDate.parse("2023-12-01");
+        final String docCoo = "documentCOO";
+        final String user = "user";
+        final List<String> fileCoos = List.of("contentCoo1", "contentCoo2");
 
         when(this.loadFileOutPort.loadFiles(any())).thenReturn(List.of(content));
         when(this.createDocumentOutPort.createDocument(any(), any())).thenReturn(docCoo);
         when(this.listContentOutPort.listContentCoos(docCoo, user)).thenReturn(fileCoos);
 
-        DocumentResponse documentResponse = createDocumentUseCase.createDocument("procedureCOO", "title", testDate, "user", DocumentType.EINGEHEND, filepaths);
+        final DocumentResponse documentResponse = createDocumentUseCase.createDocument("procedureCOO", "title", testDate, "user", DocumentType.EINGEHEND,
+                filepaths);
 
         assertEquals(docCoo, documentResponse.documentCoo());
         assertEquals(fileCoos, documentResponse.contentCoos());

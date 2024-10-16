@@ -16,6 +16,8 @@ import static org.mockito.Mockito.when;
 
 class ReadMetadataUseCaseTest {
 
+    public static final String COO = "coo";
+    public static final String USER = "user";
     private final ReadMetadataOutPort readMetadataOutPort = mock(ReadMetadataOutPort.class);
 
     private final ReadMetadataUseCase readMetadataUseCase = new ReadMetadataUseCase(readMetadataOutPort);
@@ -24,35 +26,35 @@ class ReadMetadataUseCaseTest {
     void readMetadata() throws DmsException {
         when(this.readMetadataOutPort.readMetadata(any(), any())).thenReturn(new Metadata("name", "Sachakte", "url"));
 
-        readMetadataUseCase.readMetadata(ObjectType.Sachakte, "coo", "user");
+        readMetadataUseCase.readMetadata(ObjectType.Sachakte, COO, USER);
 
-        verify(this.readMetadataOutPort, times(1)).readMetadata("coo", "user");
+        verify(this.readMetadataOutPort, times(1)).readMetadata(COO, USER);
     }
 
     @Test
     void readContentMetadata() throws DmsException {
         when(this.readMetadataOutPort.readContentMetadata(any(), any())).thenReturn(new Metadata("name", "type", "url"));
 
-        readMetadataUseCase.readMetadata(ObjectType.Schriftstueck, "coo", "user");
+        readMetadataUseCase.readMetadata(ObjectType.Schriftstueck, COO, USER);
 
-        verify(this.readMetadataOutPort, times(1)).readContentMetadata("coo", "user");
+        verify(this.readMetadataOutPort, times(1)).readContentMetadata(COO, USER);
     }
 
     @Test
     void readMetadataThrowsDmsException() throws DmsException {
         when(this.readMetadataOutPort.readMetadata(any(), any())).thenReturn(new Metadata("name", "Ausgang", "url"));
 
-        DmsException dmsException = catchThrowableOfType(() -> readMetadataUseCase.readMetadata(ObjectType.Sachakte, "coo", "user"), DmsException.class);
+        final DmsException dmsException = catchThrowableOfType(() -> readMetadataUseCase.readMetadata(ObjectType.Sachakte, COO, USER), DmsException.class);
 
-        String expectedMessage = String.format(
+        final String expectedMessage = String.format(
                 "WRONG_INPUT_OBJECT_CLASS: The input object with the COO address %s is invalid because it is of the object class %s and this does not match the expected object class(es) %s.",
-                "coo", "Ausgang", "Sachakte");
-        String actualMessage = dmsException.getMessage();
+                COO, "Ausgang", "Sachakte");
+        final String actualMessage = dmsException.getMessage();
 
         assertThat(actualMessage).isEqualTo(expectedMessage);
 
         assertThat(dmsException.getStatusCode()).isEqualTo("WRONG_INPUT_OBJECT_CLASS");
 
-        verify(this.readMetadataOutPort, times(1)).readMetadata("coo", "user");
+        verify(this.readMetadataOutPort, times(1)).readMetadata(COO, USER);
     }
 }

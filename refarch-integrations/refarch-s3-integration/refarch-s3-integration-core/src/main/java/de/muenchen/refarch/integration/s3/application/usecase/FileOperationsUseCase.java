@@ -28,7 +28,7 @@ public class FileOperationsUseCase implements FileOperationsInPort {
      * @throws FileSystemAccessException if the S3 storage cannot be accessed.
      */
     @Override
-    public FileSize getFileSize(String pathToFile) throws FileSystemAccessException {
+    public FileSize getFileSize(final String pathToFile) throws FileSystemAccessException {
         return new FileSize(s3OutPort.getFileSize(pathToFile));
     }
 }

@@ -18,8 +18,8 @@ public class TextMail extends BasicMail {
     @NotBlank(message = "No body given")
     private final String body;
 
-    public TextMail(String receivers, String receiversCc, String receiversBcc, String subject, String body, String replyTo,
-            List<String> filePaths) {
+    public TextMail(final String receivers, final String receiversCc, final String receiversBcc, final String subject, final String body, final String replyTo,
+            final List<String> filePaths) {
         super(receivers, receiversCc, receiversBcc, subject, replyTo, filePaths);
         this.body = body;
     }

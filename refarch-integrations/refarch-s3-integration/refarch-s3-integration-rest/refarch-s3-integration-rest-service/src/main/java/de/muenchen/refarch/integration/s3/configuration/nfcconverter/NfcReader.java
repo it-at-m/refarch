@@ -29,8 +29,8 @@ public class NfcReader extends Reader {
     private CharArrayReader converted;
 
     public NfcReader(final Reader original) {
+        super();
         this.original = original;
-        this.converted = null;
     }
 
     private void convert() {
@@ -58,7 +58,7 @@ public class NfcReader extends Reader {
     }
 
     @Override
-    public int read(@NotNull char[] cbuf, int off, int len) throws IOException {
+    public int read(@NotNull final char[] cbuf, final int off, final int len) throws IOException {
         convert();
         return converted.read(cbuf, off, len);
     }
@@ -69,7 +69,7 @@ public class NfcReader extends Reader {
     }
 
     @Override
-    public long skip(long n) throws IOException {
+    public long skip(final long n) throws IOException {
         convert();
         return converted.skip(n);
     }
@@ -87,7 +87,7 @@ public class NfcReader extends Reader {
     }
 
     @Override
-    public void mark(int readAheadLimit) throws IOException {
+    public void mark(final int readAheadLimit) throws IOException {
         convert();
         converted.mark(readAheadLimit);
     }

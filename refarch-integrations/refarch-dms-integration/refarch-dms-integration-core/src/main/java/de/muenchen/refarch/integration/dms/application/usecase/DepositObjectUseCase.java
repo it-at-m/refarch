@@ -14,7 +14,7 @@ public class DepositObjectUseCase implements DepositObjectInPort {
     private final DepositObjectOutPort depositObjectOutPort;
 
     @Override
-    public void depositObject(@NotBlank String objectCoo, @NotBlank String user) throws DmsException {
+    public void depositObject(@NotBlank final String objectCoo, @NotBlank final String user) throws DmsException {
         depositObjectOutPort.depositObject(objectCoo, user);
     }
 }

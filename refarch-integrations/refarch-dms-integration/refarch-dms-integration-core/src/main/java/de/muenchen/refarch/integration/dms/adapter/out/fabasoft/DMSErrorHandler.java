@@ -3,7 +3,7 @@ package de.muenchen.refarch.integration.dms.adapter.out.fabasoft;
 import de.muenchen.refarch.integration.dms.domain.exception.DmsException;
 
 public class DMSErrorHandler {
-    public void handleError(int code, String errorMessage) throws DmsException {
+    public void handleError(final int code, final String errorMessage) throws DmsException {
 
         final DMSStatusCode statusCode = DMSStatusCode.byCode(code);
 

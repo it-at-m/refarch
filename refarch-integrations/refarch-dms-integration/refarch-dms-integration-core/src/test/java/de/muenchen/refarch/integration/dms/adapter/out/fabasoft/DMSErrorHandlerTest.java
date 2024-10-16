@@ -19,13 +19,13 @@ class DMSErrorHandlerTest {
     @Test
     void handleDmsExceptionUnknown() {
 
-        int errorCode = -1;
-        String statusCode = "UNBEKANNTER_FEHLER";
-        String errorMessage = "Unbekannter Fehler";
+        final int errorCode = -1;
+        final String statusCode = "UNBEKANNTER_FEHLER";
+        final String errorMessage = "Unbekannter Fehler";
 
-        DmsException dmsException = assertThrows(DmsException.class, () -> this.dmsErrorHandler.handleError(errorCode, errorMessage));
+        final DmsException dmsException = assertThrows(DmsException.class, () -> this.dmsErrorHandler.handleError(errorCode, errorMessage));
 
-        String actualMessage = dmsException.getMessage();
+        final String actualMessage = dmsException.getMessage();
 
         assertEquals(statusCode + ": " + errorMessage, actualMessage);
 
@@ -35,13 +35,13 @@ class DMSErrorHandlerTest {
     @Test
     void handleDmsException() {
 
-        int errorCode = 2;
-        String statusCode = "FEHLENDE_BERECHTIGUNG";
-        String errorMessage = "Fehlende Berechtigung";
+        final int errorCode = 2;
+        final String statusCode = "FEHLENDE_BERECHTIGUNG";
+        final String errorMessage = "Fehlende Berechtigung";
 
-        DmsException dmsException = assertThrows(DmsException.class, () -> this.dmsErrorHandler.handleError(errorCode, errorMessage));
+        final DmsException dmsException = assertThrows(DmsException.class, () -> this.dmsErrorHandler.handleError(errorCode, errorMessage));
 
-        String actualMessage = dmsException.getMessage();
+        final String actualMessage = dmsException.getMessage();
 
         assertEquals(statusCode + ": " + errorMessage, actualMessage);
 
@@ -50,9 +50,10 @@ class DMSErrorHandlerTest {
     }
 
     @Test
+    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     void uebertragungErfolgreich() throws DmsException {
 
-        int code = 0;
+        final int code = 0;
 
         this.dmsErrorHandler.handleError(code, null);
     }

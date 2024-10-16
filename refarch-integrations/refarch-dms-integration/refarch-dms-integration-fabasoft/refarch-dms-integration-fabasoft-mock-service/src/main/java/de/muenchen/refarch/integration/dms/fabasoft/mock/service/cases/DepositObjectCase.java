@@ -4,16 +4,15 @@ import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.CreateProcedureGI;
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.DepositObjectGIResponse;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.muenchen.refarch.integration.dms.fabasoft.mock.WiremockWsdlUtility;
-import lombok.val;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DepositObjectCase implements MockCase {
 
     @Override
-    public void initCase(WireMockServer server) {
+    public void initCase(final WireMockServer server) {
 
-        val depositObjectGIResponse = new DepositObjectGIResponse();
+        final DepositObjectGIResponse depositObjectGIResponse = new DepositObjectGIResponse();
         depositObjectGIResponse.setObjid("1234567890");
 
         WiremockWsdlUtility.stubOperation(

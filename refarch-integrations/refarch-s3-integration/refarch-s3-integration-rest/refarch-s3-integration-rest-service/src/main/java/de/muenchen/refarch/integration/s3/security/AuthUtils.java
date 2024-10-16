@@ -8,7 +8,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 /**
  * Utilities for authentication data.
  */
-public class AuthUtils {
+public final class AuthUtils {
 
     public static final String NAME_UNAUTHENTICATED_USER = "unauthenticated";
 
@@ -24,7 +24,7 @@ public class AuthUtils {
      * @return the username or "unauthenticated", if no {@link Authentication} exists
      */
     public static String getUsername() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof JwtAuthenticationToken jwtAuth) {
             return (String) jwtAuth.getTokenAttributes().getOrDefault(TOKEN_USER_NAME, null);
         } else if (authentication instanceof UsernamePasswordAuthenticationToken usernameAuth) {

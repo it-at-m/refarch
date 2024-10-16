@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface ReadContentOutPort {
 
-    List<Content> readContent(final List<String> coos, final String user) throws DmsException;
+    List<Content> readContent(List<String> coos, String user) throws DmsException;
 
 }

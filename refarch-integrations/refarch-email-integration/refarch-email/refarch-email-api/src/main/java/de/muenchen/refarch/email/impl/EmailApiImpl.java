@@ -1,6 +1,7 @@
 package de.muenchen.refarch.email.impl;
 
 import de.muenchen.refarch.email.api.EmailApi;
+import de.muenchen.refarch.email.model.FileAttachment;
 import de.muenchen.refarch.email.model.Mail;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -14,7 +15,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.owasp.html.PolicyFactory;
 import org.owasp.html.Sanitizers;
 import org.springframework.core.io.Resource;
@@ -41,17 +41,17 @@ public class EmailApiImpl implements EmailApi {
             .and(Sanitizers.TABLES);
 
     @Override
-    public void sendMail(@Valid Mail mail) throws MessagingException {
+    public void sendMail(@Valid final Mail mail) throws MessagingException {
         this.sendMail(mail, null);
     }
 
     @Override
-    public void sendMailWithDefaultLogo(@Valid Mail mail) throws MessagingException {
+    public void sendMailWithDefaultLogo(@Valid final Mail mail) throws MessagingException {
         this.sendMail(mail, "bausteine/mail/email-logo.png");
     }
 
     @Override
-    public void sendMail(@Valid Mail mail, String logoPath) throws MessagingException {
+    public void sendMail(@Valid final Mail mail, final String logoPath) throws MessagingException {
         final MimeMessage mimeMessage = this.mailSender.createMimeMessage();
 
         mimeMessage.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mail.receivers()));
@@ -69,7 +69,7 @@ public class EmailApiImpl implements EmailApi {
             mimeMessage.setReplyTo(InternetAddress.parse(defaultReplyToAddress));
         }
 
-        final var helper = new MimeMessageHelper(mimeMessage, true, StandardCharsets.UTF_8.name());
+        final MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, StandardCharsets.UTF_8.name());
 
         helper.setSubject(mail.subject());
         helper.setText(mail.body(), mail.htmlBody());
@@ -78,7 +78,7 @@ public class EmailApiImpl implements EmailApi {
 
         // mail attachments
         if (mail.hasAttachment()) {
-            for (val attachment : mail.attachments()) {
+            for (final FileAttachment attachment : mail.attachments()) {
                 helper.addAttachment(attachment.fileName(), attachment.file());
             }
         }
@@ -94,15 +94,15 @@ public class EmailApiImpl implements EmailApi {
     }
 
     @Override
-    public String getBodyFromTemplate(String templateName, Map<String, Object> content) throws IOException, TemplateException {
-        Template template = freeMarkerConfigurer.getConfiguration().getTemplate(templateName);
+    public String getBodyFromTemplate(final String templateName, final Map<String, Object> content) throws IOException, TemplateException {
+        final Template template = freeMarkerConfigurer.getConfiguration().getTemplate(templateName);
         return FreeMarkerTemplateUtils.processTemplateIntoString(template, content);
     }
 
     @Override
-    public String getEmailBodyFromTemplate(String templatePath, Map<String, String> content) {
+    public String getEmailBodyFromTemplate(final String templatePath, final Map<String, String> content) {
         String mailTemplate = this.getTemplate(templatePath);
-        for (val entry : content.entrySet()) {
+        for (final Map.Entry<String, String> entry : content.entrySet()) {
             // make sure inputs are sanitized to prevent XSS
             final String value = policy.sanitize(entry.getValue());
             // Make sure new lines are converted to <br> tags
@@ -111,7 +111,7 @@ public class EmailApiImpl implements EmailApi {
         return mailTemplate;
     }
 
-    private String getTemplate(String templatePath) {
+    private String getTemplate(final String templatePath) {
         final Resource resource = this.getRessourceFromClassPath(templatePath);
         if (!resource.exists()) {
             log.error("Email Template not found: {}", templatePath);
@@ -119,7 +119,7 @@ public class EmailApiImpl implements EmailApi {
         }
 
         try {
-            byte[] byteArray = FileCopyUtils.copyToByteArray(resource.getInputStream());
+            final byte[] byteArray = FileCopyUtils.copyToByteArray(resource.getInputStream());
             return new String(byteArray, StandardCharsets.UTF_8);
         } catch (Exception e) {
             log.warn("Failed to load file: {}", templatePath);
@@ -127,7 +127,7 @@ public class EmailApiImpl implements EmailApi {
         }
     }
 
-    private Resource getRessourceFromClassPath(String path) {
+    private Resource getRessourceFromClassPath(final String path) {
         return resourceLoader.getResource("classpath:" + path);
     }
 }

@@ -83,6 +83,7 @@ public class DmsAutoConfiguration {
      * @return {@link SupportedFileExtensions} object representing the supported file extensions.
      */
     @Bean
+    @SuppressWarnings("PMD.LooseCoupling")
     public SupportedFileExtensions supportedFileExtensions(final DmsProperties dmsProperties) {
         final SupportedFileExtensions supportedFileExtensions = new SupportedFileExtensions();
         supportedFileExtensions.putAll(dmsProperties.getSupportedFileExtensions());
@@ -121,37 +122,37 @@ public class DmsAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public DepositObjectInPort depositObjectInPort(DepositObjectOutPort depositObjectOutPort) {
+    public DepositObjectInPort depositObjectInPort(final DepositObjectOutPort depositObjectOutPort) {
         return new DepositObjectUseCase(depositObjectOutPort);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public CancelObjectInPort cancelObjectInPort(CancelObjectOutPort cancelObjectOutPort) {
+    public CancelObjectInPort cancelObjectInPort(final CancelObjectOutPort cancelObjectOutPort) {
         return new CancelObjectUseCase(cancelObjectOutPort);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public ReadContentInPort readContentInPort(ReadContentOutPort readContentOutPort, TransferContentOutPort transferContentOutPort) {
+    public ReadContentInPort readContentInPort(final ReadContentOutPort readContentOutPort, final TransferContentOutPort transferContentOutPort) {
         return new ReadContentUseCase(transferContentOutPort, readContentOutPort);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public SearchFileInPort searchFileInPort(SearchFileOutPort searchFileOutPort) {
+    public SearchFileInPort searchFileInPort(final SearchFileOutPort searchFileOutPort) {
         return new SearchFileUseCase(searchFileOutPort);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public SearchSubjectAreaInPort searchSubjectAreaInPort(SearchSubjectAreaOutPort searchSubjectAreaOutPort) {
+    public SearchSubjectAreaInPort searchSubjectAreaInPort(final SearchSubjectAreaOutPort searchSubjectAreaOutPort) {
         return new SearchSubjectAreaUseCase(searchSubjectAreaOutPort);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public ReadMetadataInPort readMetadataInPort(ReadMetadataOutPort readMetadataOutPort) {
+    public ReadMetadataInPort readMetadataInPort(final ReadMetadataOutPort readMetadataOutPort) {
         return new ReadMetadataUseCase(readMetadataOutPort);
     }
 }

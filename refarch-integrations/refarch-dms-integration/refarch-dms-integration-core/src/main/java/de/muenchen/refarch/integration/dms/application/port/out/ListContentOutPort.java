@@ -12,5 +12,5 @@ public interface ListContentOutPort {
      * @param documentCoo The document coo to list the content for.
      * @return The list of content coos contained in the document.
      */
-    List<String> listContentCoos(@NonNull final String documentCoo, @NonNull final String user) throws DmsException;
+    List<String> listContentCoos(@NonNull String documentCoo, @NonNull String user) throws DmsException;
 }

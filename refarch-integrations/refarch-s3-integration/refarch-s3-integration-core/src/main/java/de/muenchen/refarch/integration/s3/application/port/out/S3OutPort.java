@@ -6,15 +6,15 @@ import java.util.Map;
 import java.util.Set;
 
 public interface S3OutPort {
-    boolean fileExists(final String path) throws FileSystemAccessException;
+    boolean fileExists(String path) throws FileSystemAccessException;
 
-    Set<String> getFilePathsFromFolder(final String folder) throws FileSystemAccessException;
+    Set<String> getFilePathsFromFolder(String folder) throws FileSystemAccessException;
 
-    void deleteFile(final String pathToFile) throws FileSystemAccessException;
+    void deleteFile(String pathToFile) throws FileSystemAccessException;
 
-    String getPresignedUrl(final String pathToFile, final Method action, final int expiresInMinutes) throws FileSystemAccessException;
+    String getPresignedUrl(String pathToFile, Method action, int expiresInMinutes) throws FileSystemAccessException;
 
-    Map<String, Long> getFileSizesFromFolder(final String folder) throws FileSystemAccessException;
+    Map<String, Long> getFileSizesFromFolder(String folder) throws FileSystemAccessException;
 
-    long getFileSize(final String pathToFile) throws FileSystemAccessException;
+    long getFileSize(String pathToFile) throws FileSystemAccessException;
 }

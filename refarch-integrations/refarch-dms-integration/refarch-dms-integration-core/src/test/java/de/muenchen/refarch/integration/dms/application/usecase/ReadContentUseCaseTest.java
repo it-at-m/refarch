@@ -25,9 +25,9 @@ class ReadContentUseCaseTest {
     private final ReadContentUseCase readContentUseCase = new ReadContentUseCase(transferContentOutPort, readContent);
 
     @Test
-    void readContent() throws DmsException, DocumentStorageException {
+    void testReadContent() throws DmsException, DocumentStorageException {
 
-        Content content = new Content("extension", "name", "content".getBytes());
+        final Content content = new Content("extension", "name", "content".getBytes());
 
         when(this.readContent.readContent(any(), any())).thenReturn(List.of(content));
 

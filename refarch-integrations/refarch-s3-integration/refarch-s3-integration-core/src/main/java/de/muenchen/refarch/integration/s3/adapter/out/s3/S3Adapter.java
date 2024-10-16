@@ -18,6 +18,7 @@ import io.minio.errors.ServerException;
 import io.minio.errors.XmlParserException;
 import io.minio.http.Method;
 import io.minio.messages.Item;
+import jakarta.annotation.PreDestroy;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -46,17 +47,18 @@ public class S3Adapter implements S3OutPort {
      *
      * @param bucketName to which this Repository should connect.
      * @param client to communicate with the s3 storage.
-     * @param s3InitialConnectionTest to enable initial connection test to the s3 storage when true.
-     * @throws FileSystemAccessException if the initial connection test fails.
      */
     public S3Adapter(
             final String bucketName,
-            final MinioClient client,
-            final boolean s3InitialConnectionTest) throws FileSystemAccessException {
+            final MinioClient client) {
         this.bucketName = bucketName;
         this.client = client;
-        if (s3InitialConnectionTest) {
-            this.initialConnectionTest(bucketName, client);
+    }
+
+    @PreDestroy
+    public void cleanup() throws Exception {
+        if (client != null) {
+            client.close();
         }
     }
 
@@ -73,9 +75,11 @@ public class S3Adapter implements S3OutPort {
             client.statObject(StatObjectArgs.builder()
                     .bucket(bucketName).object(path).build());
         } catch (final ErrorResponseException errorResponseException) {
-            if (RESPONSE_CODE_NO_SUCH_KEY.equals(errorResponseException.errorResponse().code())) return false;
-            else
+            if (RESPONSE_CODE_NO_SUCH_KEY.equals(errorResponseException.errorResponse().code())) {
+                return false;
+            } else {
                 throw new FileSystemAccessException(errorResponseException.errorResponse().code(), errorResponseException);
+            }
         } catch (InsufficientDataException | InternalException | InvalidKeyException | InvalidResponseException | IOException | NoSuchAlgorithmException
                 | ServerException | XmlParserException exception) {
             final String message = String.format("Failed to request metadata for file %s.", path);
@@ -231,11 +235,9 @@ public class S3Adapter implements S3OutPort {
     /**
      * Performs an initial connection test against the S3 storage.
      *
-     * @param bucketName to which this Repository should connect.
-     * @param client to communicate with the s3 storage.
      * @throws FileSystemAccessException if the initial connection test fails.
      */
-    private void initialConnectionTest(final String bucketName, final MinioClient client) throws FileSystemAccessException {
+    public void testConnection() throws FileSystemAccessException {
         try {
             final boolean bucketExists = client.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
             if (!bucketExists) {

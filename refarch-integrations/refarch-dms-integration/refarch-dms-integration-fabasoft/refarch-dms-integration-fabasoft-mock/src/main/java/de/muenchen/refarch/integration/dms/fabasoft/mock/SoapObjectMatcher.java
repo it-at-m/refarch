@@ -15,14 +15,14 @@ public class SoapObjectMatcher<T> extends RequestMatcherExtension {
     private final Predicate<T> predicate;
 
     @Override
-    public MatchResult match(Request request, Parameters parameters) {
+    public MatchResult match(final Request request, final Parameters parameters) {
 
         if (!request.getHeader("SOAPAction").equals("\"http://schemas.fabasoft.com/object/LHMBAI_15_1700_" + operation + "\"")) {
             return MatchResult.noMatch();
         }
 
-        T object = WiremockWsdlUtility.deserializeSoapRequest(request.getBodyAsString(), clazz);
-        boolean erg = predicate.test(object);
+        final T object = WiremockWsdlUtility.deserializeSoapRequest(request.getBodyAsString(), clazz);
+        final boolean erg = predicate.test(object);
         return erg ? MatchResult.exactMatch() : MatchResult.noMatch();
     }
 }

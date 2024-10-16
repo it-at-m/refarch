@@ -9,8 +9,8 @@ import org.mapstruct.Mapper;
 @Mapper(config = MapstructConfiguration.class)
 public interface PresignedUrlMapper {
 
-    PresignedUrlDto model2Dto(final PresignedUrl fileResponse);
+    PresignedUrlDto model2Dto(PresignedUrl fileResponse);
 
-    List<PresignedUrlDto> models2Dtos(final List<PresignedUrl> presignedUrls);
+    List<PresignedUrlDto> models2Dtos(List<PresignedUrl> presignedUrls);
 
 }

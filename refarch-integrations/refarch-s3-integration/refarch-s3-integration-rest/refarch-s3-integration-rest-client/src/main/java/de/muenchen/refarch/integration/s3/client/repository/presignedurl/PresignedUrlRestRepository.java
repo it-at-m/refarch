@@ -44,7 +44,7 @@ public class PresignedUrlRestRepository implements PresignedUrlRepository {
     public String getPresignedUrlSaveFile(final String pathToFile, final int expireInMinutes)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
         try {
-            final var fileDataDto = new FileDataDto();
+            final FileDataDto fileDataDto = new FileDataDto();
             fileDataDto.setPathToFile(pathToFile);
             fileDataDto.setExpiresInMinutes(expireInMinutes);
             final Mono<PresignedUrlDto> presignedUrlDto = fileApi.save(fileDataDto);
@@ -68,7 +68,7 @@ public class PresignedUrlRestRepository implements PresignedUrlRepository {
     public String getPresignedUrlUpdateFile(final String pathToFile, final int expireInMinutes)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
         try {
-            final var fileDataDto = new FileDataDto();
+            final FileDataDto fileDataDto = new FileDataDto();
             fileDataDto.setPathToFile(pathToFile);
             fileDataDto.setExpiresInMinutes(expireInMinutes);
             final Mono<PresignedUrlDto> presignedUrlDto = fileApi.update(fileDataDto);

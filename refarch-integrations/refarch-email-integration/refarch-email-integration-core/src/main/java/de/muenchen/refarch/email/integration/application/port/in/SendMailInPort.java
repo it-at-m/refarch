@@ -6,8 +6,8 @@ import jakarta.validation.Valid;
 
 public interface SendMailInPort {
 
-    void sendMailWithText(@Valid final TextMail mail);
+    void sendMailWithText(@Valid TextMail mail);
 
-    void sendMailWithTemplate(@Valid final TemplateMail mail);
+    void sendMailWithTemplate(@Valid TemplateMail mail);
 
 }

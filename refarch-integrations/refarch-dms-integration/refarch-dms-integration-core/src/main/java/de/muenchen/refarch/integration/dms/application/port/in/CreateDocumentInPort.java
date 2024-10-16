@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface CreateDocumentInPort {
 
-    DocumentResponse createDocument(final String procedureCOO, final String title, final LocalDate date, final String user, DocumentType type,
-            final List<String> filepaths) throws DmsException, DocumentStorageException;
+    DocumentResponse createDocument(String procedureCOO, String title, LocalDate date, String user, DocumentType type,
+            List<String> filepaths) throws DmsException, DocumentStorageException;
 
 }

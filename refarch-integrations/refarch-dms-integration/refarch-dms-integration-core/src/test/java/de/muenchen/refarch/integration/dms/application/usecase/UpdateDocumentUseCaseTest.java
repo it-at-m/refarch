@@ -32,19 +32,19 @@ class UpdateDocumentUseCaseTest {
     @Test
     void updateDocument() throws DmsException, DocumentStorageException {
 
-        Content content = new Content("extension", "name", "content".getBytes());
+        final Content content = new Content("extension", "name", "content".getBytes());
 
-        List<String> filepaths = List.of("path/content.pdf");
-        String docCoo = "documentCOO";
-        String user = "user";
-        List<String> fileCoos = List.of("contentCoo1", "contentCoo2");
+        final List<String> filepaths = List.of("path/content.pdf");
+        final String docCoo = "documentCOO";
+        final String user = "user";
+        final List<String> fileCoos = List.of("contentCoo1", "contentCoo2");
 
         when(this.loadFileOutPort.loadFiles(any())).thenReturn(List.of(content));
         when(this.listContentOutPort.listContentCoos(docCoo, user)).thenReturn(fileCoos);
 
         doNothing().when(updateDocumentOutPort).updateDocument(any(), any(), any(), any());
 
-        DocumentResponse documentResponse = updateDocumentUseCase.updateDocument(docCoo, "user", DocumentType.EINGEHEND, filepaths);
+        final DocumentResponse documentResponse = updateDocumentUseCase.updateDocument(docCoo, "user", DocumentType.EINGEHEND, filepaths);
 
         assertEquals(docCoo, documentResponse.documentCoo());
         assertEquals(fileCoos, documentResponse.contentCoos());

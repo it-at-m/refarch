@@ -118,23 +118,23 @@ class SendMailUseCaseTest {
     @Test
     void sendMailWithTemplateThrowsIOException() throws TemplateException, IOException {
         doThrow(new IOException("IO Exception")).when(mailOutPort).getBodyFromTemplate(anyString(), anyMap());
-        TemplateError error = catchThrowableOfType(() -> sendMailInPort.sendMailWithTemplate(templateMail), TemplateError.class);
+        final TemplateError error = catchThrowableOfType(() -> sendMailInPort.sendMailWithTemplate(templateMail), TemplateError.class);
 
-        String expectedMessage = "The template " + templateMail.getTemplate() + " could not be loaded";
-        String actualMessage = error.getMessage();
+        final String expectedMessage = "The template " + templateMail.getTemplate() + " could not be loaded";
+        final String actualMessage = error.getMessage();
 
         assertThat(actualMessage).isEqualTo(expectedMessage);
     }
 
     @Test
     void sendMailWithTemplateThrowsTemplateException() throws TemplateException, IOException {
-        TemplateException templateException = mock(TemplateException.class);
+        final TemplateException templateException = mock(TemplateException.class);
         when(templateException.getMessage()).thenReturn("Template Exception Message");
         doThrow(templateException).when(mailOutPort).getBodyFromTemplate(anyString(), anyMap());
-        TemplateError error = catchThrowableOfType(() -> sendMailInPort.sendMailWithTemplate(templateMail), TemplateError.class);
+        final TemplateError error = catchThrowableOfType(() -> sendMailInPort.sendMailWithTemplate(templateMail), TemplateError.class);
 
-        String expectedMessage = "Template Exception Message";
-        String actualMessage = error.getMessage();
+        final String expectedMessage = "Template Exception Message";
+        final String actualMessage = error.getMessage();
 
         assertThat(actualMessage).isEqualTo(expectedMessage);
     }

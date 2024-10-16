@@ -38,8 +38,8 @@ public class CreateDocumentUseCase implements CreateDocumentInPort {
 
         final Document document = new Document(procedureCOO, title, date, type, contents);
 
-        String documentCoo = createDocumentOutPort.createDocument(document, user);
-        List<String> contentCoos = listContentOutPort.listContentCoos(documentCoo, user);
+        final String documentCoo = createDocumentOutPort.createDocument(document, user);
+        final List<String> contentCoos = listContentOutPort.listContentCoos(documentCoo, user);
 
         return new DocumentResponse(documentCoo, contentCoos);
     }

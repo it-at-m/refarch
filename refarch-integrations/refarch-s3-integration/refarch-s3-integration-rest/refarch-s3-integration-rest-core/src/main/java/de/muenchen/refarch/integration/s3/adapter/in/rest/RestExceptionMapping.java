@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class RestExceptionMapping {
 
     @ExceptionHandler
-    public ResponseEntity<String> handleFileExistenceException(FileExistenceException exception) {
+    public ResponseEntity<String> handleFileExistenceException(final FileExistenceException exception) {
         return ResponseEntity.badRequest().body(exception.getMessage());
     }
 

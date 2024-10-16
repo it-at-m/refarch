@@ -47,13 +47,12 @@ public class FileOperationsPresignedUrlUseCase implements FileOperationsPresigne
      * @param expiresInMinutes presigned url expiration time
      * @return list of pre-signed urls.
      * @throws FileSystemAccessException on S3 access errors.
-     * @throws FileExistenceException if file doesn't exist.
      */
     @Override
     public List<PresignedUrl> getPresignedUrls(final List<String> paths, final Method action, final int expiresInMinutes)
-            throws FileSystemAccessException, FileExistenceException {
+            throws FileSystemAccessException {
         final List<PresignedUrl> presignedUrls = new ArrayList<>();
-        for (String p : paths) {
+        for (final String p : paths) {
             presignedUrls.addAll(this.getPresignedUrls(p, action, expiresInMinutes));
         }
         return presignedUrls;
@@ -78,11 +77,10 @@ public class FileOperationsPresignedUrlUseCase implements FileOperationsPresigne
      *
      * @param pathToFile identifies the path to file.
      * @param expiresInMinutes to define the validity period of the presigned URL.
-     * @throws FileExistenceException if the file does not exist in the folder.
      * @throws FileSystemAccessException if the S3 storage cannot be accessed.
      */
     @Override
-    public PresignedUrl getFile(final String pathToFile, final int expiresInMinutes) throws FileExistenceException, FileSystemAccessException {
+    public PresignedUrl getFile(final String pathToFile, final int expiresInMinutes) throws FileSystemAccessException {
         if (!this.fileExists(pathToFile)) {
             final String message = String.format("The file %s does not exists.", pathToFile);
             log.error(message);
@@ -96,12 +94,11 @@ public class FileOperationsPresignedUrlUseCase implements FileOperationsPresigne
      * file must not exist yet.
      *
      * @param fileData with the file metadata to save.
-     * @throws FileExistenceException if the file already exists.
      * @throws FileSystemAccessException if the S3 storage cannot be accessed.
      */
 
     @Override
-    public PresignedUrl saveFile(final FileData fileData) throws FileSystemAccessException, FileExistenceException {
+    public PresignedUrl saveFile(final FileData fileData) throws FileSystemAccessException {
         if (this.fileExists(fileData.pathToFile())) {
             final String message = String.format("The file %s does exists.", fileData.pathToFile());
             log.error(message);
@@ -128,11 +125,10 @@ public class FileOperationsPresignedUrlUseCase implements FileOperationsPresigne
      *
      * @param pathToFile identifies the path to file.
      * @param expiresInMinutes to define the validity period of the presigned URL.
-     * @throws FileExistenceException if the file does not exist in the folder.
      * @throws FileSystemAccessException if the S3 storage cannot be accessed.
      */
     @Override
-    public PresignedUrl deleteFile(final String pathToFile, final int expiresInMinutes) throws FileExistenceException, FileSystemAccessException {
+    public PresignedUrl deleteFile(final String pathToFile, final int expiresInMinutes) throws FileSystemAccessException {
         if (!this.fileExists(pathToFile)) {
             final String message = String.format("The file %s does not exists.", pathToFile);
             log.error(message);
@@ -154,10 +150,9 @@ public class FileOperationsPresignedUrlUseCase implements FileOperationsPresigne
      * @param expiresInMinutes presigned url expiration time
      * @return list of pre-signed urls.
      * @throws FileSystemAccessException on S3 access errors.
-     * @throws FileExistenceException if file doesn't exist.
      */
     private List<PresignedUrl> getPresignedUrls(final String path, final Method action, final int expiresInMinutes)
-            throws FileSystemAccessException, FileExistenceException {
+            throws FileSystemAccessException {
         // special case file creation (POST)
         // Use method PUT and return a single presignedUrl for the file the user wants to create
         if (action.equals(Method.POST)) {

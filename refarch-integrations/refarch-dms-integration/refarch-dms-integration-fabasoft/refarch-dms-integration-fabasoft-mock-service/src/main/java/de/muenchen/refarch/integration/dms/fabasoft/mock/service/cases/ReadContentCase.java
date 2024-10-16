@@ -5,7 +5,6 @@ import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.LHMBAI151700GIAttachment
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.ReadContentObjectGIResponse;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.muenchen.refarch.integration.dms.fabasoft.mock.WiremockWsdlUtility;
-import lombok.val;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
@@ -16,21 +15,21 @@ import java.io.IOException;
 public class ReadContentCase implements MockCase {
 
     @Override
-    public void initCase(WireMockServer server) {
+    public void initCase(final WireMockServer server) {
 
-        val content = new LHMBAI151700GIAttachmentType();
+        final LHMBAI151700GIAttachmentType content = new LHMBAI151700GIAttachmentType();
         content.setLHMBAI151700Filename("test");
         content.setLHMBAI151700Fileextension("pdf");
 
         try {
-            Resource resource = new ClassPathResource("data/test.pdf");
-            byte[] data = resource.getInputStream().readAllBytes();
+            final Resource resource = new ClassPathResource("data/test.pdf");
+            final byte[] data = resource.getInputStream().readAllBytes();
             content.setLHMBAI151700Filecontent(data);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new RuntimeException(e);
         }
 
-        val response = new ReadContentObjectGIResponse();
+        final ReadContentObjectGIResponse response = new ReadContentObjectGIResponse();
         response.setStatus(0);
         response.setGiattachmenttype(content);
 

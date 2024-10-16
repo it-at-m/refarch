@@ -23,8 +23,9 @@ public class TemplateMail extends BasicMail {
     @NotEmpty(message = "No content given")
     private final Map<String, Object> content;
 
-    public TemplateMail(String receivers, String receiversCc, String receiversBcc, String subject, String replyTo, List<String> filePaths,
-            String template, Map<String, Object> content) {
+    public TemplateMail(final String receivers, final String receiversCc, final String receiversBcc, final String subject, final String replyTo,
+            final List<String> filePaths,
+            final String template, final Map<String, Object> content) {
         super(receivers, receiversCc, receiversBcc, subject, replyTo, filePaths);
         this.template = template;
         this.content = content;

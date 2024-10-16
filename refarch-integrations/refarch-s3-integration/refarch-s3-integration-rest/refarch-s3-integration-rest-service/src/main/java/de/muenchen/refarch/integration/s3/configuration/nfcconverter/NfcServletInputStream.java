@@ -13,6 +13,7 @@ public class NfcServletInputStream extends ServletInputStream {
     private final ByteArrayInputStream buffer;
 
     public NfcServletInputStream(final ByteArrayInputStream buffer) {
+        super();
         this.buffer = buffer;
     }
 

@@ -5,6 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 
 public interface CreateFileInPort {
 
-    String createFile(@NotBlank final String titel, @NotBlank final String apentryCOO, @NotBlank final String user) throws DmsException;
+    String createFile(@NotBlank String titel, @NotBlank String apentryCOO, @NotBlank String user) throws DmsException;
 
 }

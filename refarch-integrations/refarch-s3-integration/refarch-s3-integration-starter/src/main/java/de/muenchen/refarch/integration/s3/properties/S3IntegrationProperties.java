@@ -26,5 +26,5 @@ public class S3IntegrationProperties {
 
     private Boolean initialConnectionTest;
 
-    private int presignedUrlExpiresInMinutes = 10080; // 7 days
+    private int presignedUrlExpiresInMinutes = 7 * 24 * 60; // 7 days
 }

@@ -8,6 +8,6 @@ import jakarta.validation.constraints.NotNull;
 
 public interface ReadMetadataInPort {
 
-    Metadata readMetadata(@NotNull final ObjectType objectclass, @NotBlank final String coo, @NotBlank final String user) throws DmsException;
+    Metadata readMetadata(@NotNull ObjectType objectclass, @NotBlank String coo, @NotBlank String user) throws DmsException;
 
 }

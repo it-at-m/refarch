@@ -16,12 +16,12 @@ public class JwtUserInfoAuthenticationConverter implements Converter<Jwt, Abstra
 
     private final UserInfoAuthoritiesService userInfoService;
 
-    public JwtUserInfoAuthenticationConverter(UserInfoAuthoritiesService userInfoService) {
+    public JwtUserInfoAuthenticationConverter(final UserInfoAuthoritiesService userInfoService) {
         this.userInfoService = userInfoService;
     }
 
     @Override
-    public AbstractAuthenticationToken convert(@NotNull Jwt source) {
+    public AbstractAuthenticationToken convert(@NotNull final Jwt source) {
         return new JwtAuthenticationToken(source, this.userInfoService.loadAuthorities(source));
     }
 
