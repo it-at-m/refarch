@@ -1,10 +1,9 @@
 package de.muenchen.refarch.gateway;
 
-import de.muenchen.refarch.gateway.configuration.SecurityProperties;
 import jakarta.annotation.PostConstruct;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import reactor.core.publisher.Hooks;
 
 /**
@@ -30,7 +29,7 @@ import reactor.core.publisher.Hooks;
  * "https://cloud.spring.io/spring-cloud-gateway/reference/html/">https://cloud.spring.io/spring-cloud-gateway/reference/html/</a>
  */
 @SpringBootApplication
-@EnableConfigurationProperties(SecurityProperties.class)
+@ConfigurationPropertiesScan
 public class ApiGatewayApplication {
 
     public static void main(final String[] args) {
