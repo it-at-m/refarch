@@ -142,6 +142,13 @@
             <artifactId>spring-cloud-starter-contract-stub-runner</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!-- Other -->
+        <dependency>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs-annotations</artifactId>
+            <version>${spotbugs-annotations.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -275,7 +282,6 @@
                 <artifactId>spotbugs-maven-plugin</artifactId>
                 <version>${spotbugs-maven-plugin.version}</version>
                 <configuration>
-                    <excludeBugsFile>../shared-files/spotbugs-excludes.xml</excludeBugsFile>
                     <effort>Max</effort>
                     <plugins>
                         <plugin>
