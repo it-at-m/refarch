@@ -25,6 +25,7 @@
 
         <!-- Core Frameworks -->
         <spring-cloud.version>2023.0.3</spring-cloud.version>
+        <refarch-libs.version>1.0.0-SNAPSHOT</refarch-libs.version>
 
         <!-- Logging -->
         <logstash-logback-encoder.version>8.0</logstash-logback-encoder.version>
@@ -265,7 +266,7 @@
                         <excludeRoot>target/generated-test-sources</excludeRoot>
                     </excludeRoots>
                     <rulesets>
-                        <ruleset>../shared-files/pmd-ruleset.xml</ruleset>
+                        <ruleset>refarch-pmd-ruleset.xml</ruleset>
                     </rulesets>
                 </configuration>
                 <executions>
@@ -276,6 +277,13 @@
                         </goals>
                     </execution>
                 </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>de.muenchen.refarch</groupId>
+                        <artifactId>refarch-pmd</artifactId>
+                        <version>${refarch-libs.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
