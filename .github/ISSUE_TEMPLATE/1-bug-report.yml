@@ -58,6 +58,7 @@ body:
       options:
         - refarch-gateway
         - refarch-integrations
+        - refarch-libs
         - refarch-cli
     validations:
       required: false
