@@ -1,0 +1,32 @@
+name: retag-image
+
+on:
+  workflow_dispatch:
+    inputs:
+      image-name:
+        description: 'Image name'
+        type: string
+        required: true
+      existing-tag:
+        description: 'Existing tag'
+        type: string
+        required: true
+      new-tag:
+        description: 'New tag'
+        type: string
+        default: "latest"
+
+jobs:
+  tag_image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Retag image
+        uses: ./.github/actions/retag-image
+        with:
+          registry-username: ${{ github.actor }}
+          registry-password: ${{ secrets.GITHUB_TOKEN }}
+          image-name: ${{ inputs.image-name }}
+          existing-tag: ${{ inputs.existing-tag }}
+          new-tag: ${{ inputs.new-tag }}

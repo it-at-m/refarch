@@ -1,0 +1,43 @@
+name: retag-image
+description: "Retaggs an existing docker image"
+
+inputs:
+  registry:
+    description: "Image registry to push image to"
+    required: true
+    default: ghcr.io
+  registry-username:
+    description: "Username to authenticate against image registry"
+    required: true
+  registry-password:
+    description: "Password to authenticate against image registry"
+    required: true
+  image-name:
+    description: "Name of the image"
+    required: true
+  existing-tag:
+    description: 'Existing tag'
+    required: true
+  new-tag:
+    description: 'New tag'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Login to Registry
+      uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
+      with:
+        registry: ${{ inputs.registry }}
+        username: ${{ inputs.registry-username }}
+        password: ${{ inputs.registry-password }}
+    - name: Pull image
+      run: |
+        docker pull ${{ inputs.registry }}/${{ github.repository }}/${{ inputs.image-name }}:${{ inputs.existing-tag }}
+    - name: Tag image
+      run: |
+        docker tag ${{ inputs.registry }}/${{ github.repository }}/${{ inputs.image-name }}:${{ inputs.existing-tag }} \
+        ${{ inputs.registry }}/${{ github.repository }}/${{ inputs.image-name }}:${{ inputs.new-tag }}
+    - name: Push image
+      run: |
+        docker push ${{ inputs.registry }}/${{ github.repository }}/${{ inputs.image-name }}:${{ inputs.new-tag }}
