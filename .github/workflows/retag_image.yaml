@@ -1,0 +1,38 @@
+name: retag_image
+
+on:
+  workflow_dispatch:
+    inputs:
+      image-name:
+        description: 'Image name'
+        type: string
+        required: true
+      existing-tag:
+        description: 'Existing tag'
+        type: string
+        required: true
+      new-tag:
+        description: 'New tag'
+        type: string
+        default: "latest"
+
+jobs:
+  tag_image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to Registry
+        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
+        with:
+          registry: "ghcr.io"
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Pull image
+        run: |
+          docker pull ${{ inputs.registry }}/${{ github.repository }}/${{ inputs.image-name }}:${{ inputs.existing-tag }}
+      - name: Tag image
+        run: |
+          docker tag ${{ inputs.registry }}/${{ github.repository }}/${{ inputs.image-name }}:${{ inputs.existing-tag }} \
+          ${{ inputs.registry }}/${{ github.repository }}/${{ inputs.image-name }}:${{ inputs.new-tag }}
+      - name: Push image
+        run: |
+          docker push ${{ inputs.registry }}/${{ github.repository }}/${{ inputs.image-name }}:${{ inputs.new-tag }}
