@@ -14,10 +14,11 @@ on:
       new-tag:
         description: 'New tag'
         type: string
+        required: true
         default: "latest"
 
 jobs:
-  tag_image:
+  retag-image:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
