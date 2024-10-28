@@ -1,4 +1,4 @@
-name: retag_image
+name: retag-image
 
 on:
   workflow_dispatch:
