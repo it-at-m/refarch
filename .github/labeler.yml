@@ -18,6 +18,9 @@
 "Component: Integrations":
   - changed-files:
       - any-glob-to-any-file: [ 'refarch-integrations/**' ]
+"Component: Libs":
+  - changed-files:
+      - any-glob-to-any-file: [ 'refarch-libs/**' ]
 "Component: CLI":
   - changed-files:
       - any-glob-to-any-file: [ 'refarch-cli/**' ]

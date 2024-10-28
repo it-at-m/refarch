@@ -7,6 +7,7 @@ changelog:
       exclude:
         labels:
           - "Component: Integrations"
+          - "Component: Libs"
           - "Component: CLI"
     - title: Gateway - 🎉 New Features
       labels:
@@ -14,6 +15,7 @@ changelog:
       exclude:
         labels:
           - "Component: Integrations"
+          - "Component: Libs"
           - "Component: CLI"
     - title: Gateway - 🐞 Bug Fixes
       labels:
@@ -21,6 +23,7 @@ changelog:
       exclude:
         labels:
           - "Component: Integrations"
+          - "Component: Libs"
           - "Component: CLI"
     - title: Gateway - 🔨 Maintenance
       labels:
@@ -28,6 +31,7 @@ changelog:
       exclude:
         labels:
           - "Component: Integrations"
+          - "Component: Libs"
           - "Component: CLI"
     - title: Gateway - 📔 Documentation
       labels:
@@ -35,6 +39,7 @@ changelog:
       exclude:
         labels:
           - "Component: Integrations"
+          - "Component: Libs"
           - "Component: CLI"
     - title: Gateway - ⬆️ Dependency Upgrades
       labels:
@@ -42,6 +47,7 @@ changelog:
       exclude:
         labels:
           - "Component: Integrations"
+          - "Component: Libs"
           - "Component: CLI"
     - title: Gateway - 🔒️ Security
       labels:
@@ -49,6 +55,7 @@ changelog:
       exclude:
         labels:
           - "Component: Integrations"
+          - "Component: Libs"
           - "Component: CLI"
 
     # refarch-integrations
@@ -58,6 +65,7 @@ changelog:
       exclude:
         labels:
           - "Component: API-Gateway"
+          - "Component: Libs"
           - "Component: CLI"
     - title: Integrations - 🎉 New Features
       labels:
@@ -65,6 +73,7 @@ changelog:
       exclude:
         labels:
           - "Component: API-Gateway"
+          - "Component: Libs"
           - "Component: CLI"
     - title: Integrations - 🐞 Bug Fixes
       labels:
@@ -72,6 +81,7 @@ changelog:
       exclude:
         labels:
           - "Component: API-Gateway"
+          - "Component: Libs"
           - "Component: CLI"
     - title: Integrations - 🔨 Maintenance
       labels:
@@ -79,6 +89,7 @@ changelog:
       exclude:
         labels:
           - "Component: API-Gateway"
+          - "Component: Libs"
           - "Component: CLI"
     - title: Integrations - 📔 Documentation
       labels:
@@ -86,6 +97,7 @@ changelog:
       exclude:
         labels:
           - "Component: API-Gateway"
+          - "Component: Libs"
           - "Component: CLI"
     - title: Integrations - ⬆️ Dependency Upgrades
       labels:
@@ -93,6 +105,7 @@ changelog:
       exclude:
         labels:
           - "Component: API-Gateway"
+          - "Component: Libs"
           - "Component: CLI"
     - title: Integrations - 🔒️ Security
       labels:
@@ -100,6 +113,65 @@ changelog:
       exclude:
         labels:
           - "Component: API-Gateway"
+          - "Component: Libs"
+          - "Component: CLI"
+
+    # refarch-libs
+    - title: Libs - 💥 Breaking Changes
+      labels:
+        - BREAKING
+      exclude:
+        labels:
+          - "Component: API-Gateway"
+          - "Component: Integrations"
+          - "Component: CLI"
+    - title: Libs - 🎉 New Features
+      labels:
+        - "Type: Feature"
+      exclude:
+        labels:
+          - "Component: API-Gateway"
+          - "Component: Integrations"
+          - "Component: CLI"
+    - title: Libs - 🐞 Bug Fixes
+      labels:
+        - "Type: Bug"
+      exclude:
+        labels:
+          - "Component: API-Gateway"
+          - "Component: Integrations"
+          - "Component: CLI"
+    - title: Libs - 🔨 Maintenance
+      labels:
+        - "Type: Maintenance"
+      exclude:
+        labels:
+          - "Component: API-Gateway"
+          - "Component: Integrations"
+          - "Component: CLI"
+    - title: Libs - 📔 Documentation
+      labels:
+        - "Type: Documentation"
+      exclude:
+        labels:
+          - "Component: API-Gateway"
+          - "Component: Integrations"
+          - "Component: CLI"
+    - title: Libs - ⬆️ Dependency Upgrades
+      labels:
+        - "Type: Dependency"
+      exclude:
+        labels:
+          - "Component: API-Gateway"
+          - "Component: Integrations"
+          - "Component: CLI"
+    - title: Libs - 🔒️ Security
+      labels:
+        - "Type: Security"
+      exclude:
+        labels:
+          - "Component: API-Gateway"
+          - "Component: Integrations"
           - "Component: CLI"
 
     # refarch-cli
@@ -110,6 +182,7 @@ changelog:
         labels:
           - "Component: API-Gateway"
           - "Component: Integrations"
+          - "Component: Libs"
     - title: CLI - 🎉 New Features
       labels:
         - "Type: Feature"
@@ -117,6 +190,7 @@ changelog:
         labels:
           - "Component: API-Gateway"
           - "Component: Integrations"
+          - "Component: Libs"
     - title: CLI - 🐞 Bug Fixes
       labels:
         - "Type: Bug"
@@ -124,6 +198,7 @@ changelog:
         labels:
           - "Component: API-Gateway"
           - "Component: Integrations"
+          - "Component: Libs"
     - title: CLI - 🔨 Maintenance
       labels:
         - "Type: Maintenance"
@@ -131,6 +206,7 @@ changelog:
         labels:
           - "Component: API-Gateway"
           - "Component: Integrations"
+          - "Component: Libs"
     - title: CLI - 📔 Documentation
       labels:
         - "Type: Documentation"
@@ -138,6 +214,7 @@ changelog:
         labels:
           - "Component: API-Gateway"
           - "Component: Integrations"
+          - "Component: Libs"
     - title: CLI - ⬆️ Dependency Upgrades
       labels:
         - "Type: Dependency"
@@ -145,6 +222,7 @@ changelog:
         labels:
           - "Component: API-Gateway"
           - "Component: Integrations"
+          - "Component: Libs"
     - title: CLI - 🔒️ Security
       labels:
         - "Type: Security"
@@ -152,3 +230,4 @@ changelog:
         labels:
           - "Component: API-Gateway"
           - "Component: Integrations"
+          - "Component: Libs"

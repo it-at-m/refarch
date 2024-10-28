@@ -10,6 +10,7 @@ on:
         options:
           - refarch-gateway
           - refarch-integrations
+          - refarch-libs
       release:
         description: 'Release?'
         type: boolean
