@@ -12,7 +12,7 @@
     <artifactId>refarch-dms-integration-fabasoft-mock</artifactId>
 
     <properties>
-        <wiremock-standalone.version>3.9.1</wiremock-standalone.version>
+        <wiremock-standalone.version>3.9.2</wiremock-standalone.version>
     </properties>
 
     <dependencies>
