@@ -20,19 +20,13 @@ jobs:
   tag_image:
     runs-on: ubuntu-latest
     steps:
-      - name: Login to Registry
-        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
+      - name: Checkout code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Retag image
+        uses: ./.github/actions/retag-image
         with:
-          registry: "ghcr.io"
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Pull image
-        run: |
-          docker pull ${{ inputs.registry }}/${{ github.repository }}/${{ inputs.image-name }}:${{ inputs.existing-tag }}
-      - name: Tag image
-        run: |
-          docker tag ${{ inputs.registry }}/${{ github.repository }}/${{ inputs.image-name }}:${{ inputs.existing-tag }} \
-          ${{ inputs.registry }}/${{ github.repository }}/${{ inputs.image-name }}:${{ inputs.new-tag }}
-      - name: Push image
-        run: |
-          docker push ${{ inputs.registry }}/${{ github.repository }}/${{ inputs.image-name }}:${{ inputs.new-tag }}
+          registry-username: ${{ github.actor }}
+          registry-password: ${{ secrets.GITHUB_TOKEN }}
+          image-name: ${{ inputs.image-name }}
+          existing-tag: ${{ inputs.existing-tag }}
+          new-tag: ${{ inputs.new-tag }}
