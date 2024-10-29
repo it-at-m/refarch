@@ -31,16 +31,8 @@ runs:
         registry: ${{ inputs.registry }}
         username: ${{ inputs.registry-username }}
         password: ${{ inputs.registry-password }}
-    - name: Pull image
-      shell: bash
-      run: |
-        docker pull ${{ inputs.registry }}/${{ github.repository }}/${{ inputs.image-name }}:${{ inputs.existing-tag }}
     - name: Tag image
       shell: bash
       run: |
-        docker tag ${{ inputs.registry }}/${{ github.repository }}/${{ inputs.image-name }}:${{ inputs.existing-tag }} \
-        ${{ inputs.registry }}/${{ github.repository }}/${{ inputs.image-name }}:${{ inputs.new-tag }}
-    - name: Push image
-      shell: bash
-      run: |
-        docker push ${{ inputs.registry }}/${{ github.repository }}/${{ inputs.image-name }}:${{ inputs.new-tag }}
+        skopeo copy docker://${{ inputs.registry }}/${{ github.repository }}/${{ inputs.image-name }}:${{ inputs.existing-tag }} \
+        docker://${{ inputs.registry }}/${{ github.repository }}/${{ inputs.image-name }}:${{ inputs.new-tag }}
