@@ -1,4 +1,4 @@
-name: build-libs
+name: build-tools
 
 on:
   pull_request:
@@ -15,4 +15,4 @@ jobs:
       - name: Maven build
         uses: ./.github/actions/build-maven
         with:
-          module: refarch-libs
+          module: refarch-tools
