@@ -31,6 +31,7 @@
 
         <!-- Core Frameworks -->
         <spring-cloud.version>2023.0.3</spring-cloud.version>
+        <refarch-tools.version>1.0.0</refarch-tools.version>
 
         <!-- Logging -->
         <logstash-logback-encoder.version>8.0</logstash-logback-encoder.version>
@@ -38,7 +39,7 @@
         <!-- Linting & Formatting -->
         <spotless-maven-plugin.version>2.34.0</spotless-maven-plugin.version>
         <itm-java-codeformat.version>1.0.10</itm-java-codeformat.version>
-        <pmd-maven-plugin.version>3.25.0</pmd-maven-plugin.version>
+        <pmd-maven-plugin.version>3.26.0</pmd-maven-plugin.version>
 
         <!-- Release -->
         <central-publishing-maven-plugin.version>0.5.0</central-publishing-maven-plugin.version>
@@ -264,7 +265,7 @@
                         <excludeRoot>target/generated-test-sources</excludeRoot>
                     </excludeRoots>
                     <rulesets>
-                        <ruleset>../shared-files/pmd-ruleset.xml</ruleset>
+                        <ruleset>refarch-pmd-ruleset.xml</ruleset>
                     </rulesets>
                 </configuration>
                 <executions>
@@ -275,6 +276,13 @@
                         </goals>
                     </execution>
                 </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>de.muenchen.refarch.tools</groupId>
+                        <artifactId>refarch-pmd</artifactId>
+                        <version>${refarch-tools.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
