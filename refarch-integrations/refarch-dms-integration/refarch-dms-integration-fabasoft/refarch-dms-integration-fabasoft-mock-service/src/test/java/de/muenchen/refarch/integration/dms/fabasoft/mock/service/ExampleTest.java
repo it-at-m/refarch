@@ -27,7 +27,7 @@ class ExampleTest {
     }
 
     @Test
-    @SuppressWarnings({ "PMD.JUnitTestsShouldIncludeAssert", "PMD.UnusedLocalVariable" })
+    @SuppressWarnings({ "PMD.UnitTestShouldIncludeAssert", "PMD.UnusedLocalVariable" })
     void executeCreateProcedureRequest() {
         final CreateProcedureGI request = new CreateProcedureGI();
         request.setUserlogin("user");

@@ -41,7 +41,7 @@ class FileOperationsPresignedUrlUseCaseTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testGetPresignedUrl() {
         final int expiresInMinutes = 5;
         final List<Method> actions = List.of(Method.GET, Method.POST, Method.PUT, Method.DELETE);

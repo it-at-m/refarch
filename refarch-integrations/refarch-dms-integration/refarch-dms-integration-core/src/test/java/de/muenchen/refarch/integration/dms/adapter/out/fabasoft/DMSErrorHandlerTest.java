@@ -50,7 +50,7 @@ class DMSErrorHandlerTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void uebertragungErfolgreich() throws DmsException {
 
         final int code = 0;
