@@ -16,6 +16,7 @@
         <exclude name="LongVariable"/>
         <exclude name="OnlyOneReturn"/>
         <exclude name="ShortVariable"/>
+        <exclude name="TooManyStaticImports"/>
     </rule>
     <rule ref="category/java/design.xml">
         <exclude name="AvoidCatchingGenericException"/>
@@ -25,6 +26,7 @@
         <exclude name="LawOfDemeter"/>
         <exclude name="SignatureDeclareThrowsException"/>
         <exclude name="TooManyMethods"/>
+        <exclude name="CouplingBetweenObjects"/>
     </rule>
     <rule ref="category/java/errorprone.xml"/>
     <rule ref="category/java/security.xml"/>
