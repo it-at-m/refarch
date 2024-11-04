@@ -4,12 +4,12 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
     <description>
-        Custom Ruleset
+        RefArch PMD Ruleset
     </description>
     <rule ref="category/java/bestpractices.xml">
         <exclude name="GuardLogStatement"/>
-        <exclude name="JUnitAssertionsShouldIncludeMessage"/>
-        <exclude name="JUnitTestContainsTooManyAsserts"/>
+        <exclude name="UnitTestContainsTooManyAsserts"/>
+        <exclude name="UnitTestAssertionsShouldIncludeMessage"/>
     </rule>
     <rule ref="category/java/codestyle.xml">
         <exclude name="AtLeastOneConstructor"/>
@@ -34,7 +34,7 @@
     <rule ref="category/java/multithreading.xml">
         <exclude name="UseConcurrentHashMap"/>
     </rule>
-    <rule ref="category/java/bestpractices.xml/JUnitTestsShouldIncludeAssert">
+    <rule ref="category/java/bestpractices.xml/UnitTestShouldIncludeAssert">
         <properties>
             <!-- From Spring WebTestClient -->
             <property name="extraAssertMethodNames" value="expectStatus,expectHeader" />

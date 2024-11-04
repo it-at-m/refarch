@@ -21,6 +21,7 @@ body:
       options:
         - refarch-gateway
         - refarch-integrations
+        - refarch-tools
         - refarch-cli
         - Other
     validations:

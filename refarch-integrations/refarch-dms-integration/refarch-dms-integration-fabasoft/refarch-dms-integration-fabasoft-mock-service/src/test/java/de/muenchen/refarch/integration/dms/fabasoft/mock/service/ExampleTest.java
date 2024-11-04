@@ -1,5 +1,7 @@
 package de.muenchen.refarch.integration.dms.fabasoft.mock.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.CreateProcedureGI;
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.CreateProcedureGIResponse;
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.LHMBAI151700GIWSDSoap;
@@ -36,7 +38,7 @@ class ExampleTest {
         request.setFiletype("Elektronisch");
 
         final CreateProcedureGIResponse response = this.soapClient.createProcedureGI(request);
-
+        assertEquals("1234567890", response.getObjid());
     }
 
 }
