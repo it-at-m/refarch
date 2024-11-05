@@ -53,6 +53,7 @@ import org.springframework.context.annotation.Import;
 @RequiredArgsConstructor
 @Import(FabasoftClientConfiguration.class)
 @EnableConfigurationProperties({ FabasoftProperties.class, DmsProperties.class })
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 public class DmsAutoConfiguration {
 
     @Bean

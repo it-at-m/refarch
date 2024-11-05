@@ -4,6 +4,7 @@ import de.muenchen.refarch.integration.dms.domain.exception.DmsException;
 import de.muenchen.refarch.integration.dms.domain.model.Procedure;
 import jakarta.validation.constraints.NotBlank;
 
+@SuppressWarnings("PMD.UseObjectForClearerAPI")
 public interface CreateProcedureInPort {
 
     Procedure createProcedure(@NotBlank String titel, @NotBlank String fileCOO, String fileSubj, @NotBlank String user)

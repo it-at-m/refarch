@@ -10,6 +10,7 @@ import java.util.List;
 
 @Validated
 @RequiredArgsConstructor
+@SuppressWarnings("PMD.UseObjectForClearerAPI")
 public class SearchFileUseCase implements SearchFileInPort {
 
     private final SearchFileOutPort searchFileOutPort;
