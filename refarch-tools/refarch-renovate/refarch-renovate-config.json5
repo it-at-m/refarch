@@ -1,6 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "description": "Renovate config for projects based on refarch-templates",
+  "description": "Renovate config for projects based on the reference architecture of it@M",
   "assigneesFromCodeOwners": true,
   "additionalBranchPrefix": "{{parentDir}}-",
   "extends": [
