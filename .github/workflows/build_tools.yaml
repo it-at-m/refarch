@@ -15,4 +15,4 @@ jobs:
       - name: Maven build
         uses: ./.github/actions/build-maven
         with:
-          module: refarch-tools
+          module: refarch-tools/refarch-java-tools
