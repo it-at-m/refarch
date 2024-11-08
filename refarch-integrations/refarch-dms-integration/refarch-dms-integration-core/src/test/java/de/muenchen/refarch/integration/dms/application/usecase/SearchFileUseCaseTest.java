@@ -1,7 +1,6 @@
 package de.muenchen.refarch.integration.dms.application.usecase;
 
 import de.muenchen.refarch.integration.dms.application.port.out.SearchFileOutPort;
-import de.muenchen.refarch.integration.dms.application.usecase.SearchFileUseCase;
 import de.muenchen.refarch.integration.dms.domain.exception.DmsException;
 import org.junit.jupiter.api.Test;
 

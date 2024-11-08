@@ -22,28 +22,30 @@ import javax.xml.stream.XMLStreamReader;
 import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Document;
 
-public class WiremockWsdlUtility {
+public final class WiremockWsdlUtility {
+    private WiremockWsdlUtility() {
+    }
 
     /**
      * Accepts a WebService response object (as defined in the WSDL) and marshals
      * to a SOAP envelope String.
      */
-    static <T> String serializeObject(T object) {
-        ByteArrayOutputStream byteArrayOutputStream;
-        Class clazz = object.getClass();
-        String responseRootTag = StringUtils.uncapitalize(clazz.getSimpleName());
-        QName payloadName = new QName("your_namespace_URI", responseRootTag, "namespace_prefix");
+    public static <T> String serializeObject(final T object) {
+        final ByteArrayOutputStream byteArrayOutputStream;
+        final Class clazz = object.getClass();
+        final String responseRootTag = StringUtils.uncapitalize(clazz.getSimpleName());
+        final QName payloadName = new QName("your_namespace_URI", responseRootTag, "namespace_prefix");
 
         try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
-            Marshaller objectMarshaller = jaxbContext.createMarshaller();
+            final JAXBContext jaxbContext = JAXBContext.newInstance(clazz);
+            final Marshaller objectMarshaller = jaxbContext.createMarshaller();
 
-            JAXBElement<T> jaxbElement = new JAXBElement<>(payloadName, clazz, null, object);
-            Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+            final JAXBElement<T> jaxbElement = new JAXBElement<>(payloadName, clazz, null, object);
+            final Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
             objectMarshaller.marshal(jaxbElement, document);
 
-            SOAPMessage soapMessage = MessageFactory.newInstance().createMessage();
-            SOAPBody body = soapMessage.getSOAPPart().getEnvelope().getBody();
+            final SOAPMessage soapMessage = MessageFactory.newInstance().createMessage();
+            final SOAPBody body = soapMessage.getSOAPPart().getEnvelope().getBody();
             body.addDocument(document);
 
             byteArrayOutputStream = new ByteArrayOutputStream();
@@ -60,21 +62,21 @@ public class WiremockWsdlUtility {
      * Accepts a WebService request object (as defined in the WSDL) and unmarshals
      * to the supplied type.
      */
-    static <T> T deserializeSoapRequest(String soapRequest, Class<T> clazz) {
+    public static <T> T deserializeSoapRequest(final String soapRequest, final Class<T> clazz) {
 
-        XMLInputFactory xif = XMLInputFactory.newFactory();
-        JAXBElement<T> jb;
+        final XMLInputFactory xif = XMLInputFactory.newFactory();
+        final JAXBElement<T> jb;
         try {
-            XMLStreamReader xsr = xif.createXMLStreamReader(new StringReader(soapRequest));
+            final XMLStreamReader xsr = xif.createXMLStreamReader(new StringReader(soapRequest));
 
             // Advance the tag iterator to the tag after Body, eg the start of the SOAP payload object
             do {
                 xsr.nextTag();
-            } while (!xsr.getLocalName().equals("Body"));
+            } while (!"Body".equals(xsr.getLocalName()));
             xsr.nextTag();
 
-            JAXBContext jc = JAXBContext.newInstance(clazz);
-            Unmarshaller unmarshaller = jc.createUnmarshaller();
+            final JAXBContext jc = JAXBContext.newInstance(clazz);
+            final Unmarshaller unmarshaller = jc.createUnmarshaller();
             jb = unmarshaller.unmarshal(xsr, clazz);
             xsr.close();
         } catch (Exception e) {
@@ -84,14 +86,15 @@ public class WiremockWsdlUtility {
         return jb.getValue();
     }
 
-    public static <T> void stubOperation(String operation, Class<T> clazz, Predicate<T> predicate, Object response) {
+    public static <T> void stubOperation(final String operation, final Class<T> clazz, final Predicate<T> predicate, final Object response) {
         stubFor(requestMatching(new SoapObjectMatcher<>(clazz, operation, predicate))
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "text/xml")
                         .withBody(serializeObject(response))));
     }
 
-    public static <T> void stubOperation(WireMockServer server, String operation, Class<T> clazz, Predicate<T> predicate, Object response) {
+    public static <T> void stubOperation(final WireMockServer server, final String operation, final Class<T> clazz, final Predicate<T> predicate,
+            final Object response) {
         server.stubFor(requestMatching(new SoapObjectMatcher<>(clazz, operation, predicate))
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "text/xml")

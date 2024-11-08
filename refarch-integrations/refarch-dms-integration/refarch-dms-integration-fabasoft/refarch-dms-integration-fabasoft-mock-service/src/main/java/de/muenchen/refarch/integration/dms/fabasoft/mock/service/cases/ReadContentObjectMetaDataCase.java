@@ -5,20 +5,19 @@ import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.ReadContentObjectMetaDat
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.ReadContentObjectMetaDataGIResponse;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.muenchen.refarch.integration.dms.fabasoft.mock.WiremockWsdlUtility;
-import lombok.val;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ReadContentObjectMetaDataCase implements MockCase {
 
     @Override
-    public void initCase(WireMockServer server) {
+    public void initCase(final WireMockServer server) {
 
-        val content = new LHMBAI151700GIMetadataType();
+        final LHMBAI151700GIMetadataType content = new LHMBAI151700GIMetadataType();
         content.setLHMBAI151700Filename("name");
         content.setLHMBAI151700Objclass("pdf");
 
-        val response = new ReadContentObjectMetaDataGIResponse();
+        final ReadContentObjectMetaDataGIResponse response = new ReadContentObjectMetaDataGIResponse();
         response.setStatus(0);
         response.setGimetadatatype(content);
 

@@ -25,7 +25,6 @@
 
         <!-- Core Frameworks -->
         <spring-cloud.version>2023.0.3</spring-cloud.version>
-        <refarch-tools.version>1.0.0</refarch-tools.version>
 
         <!-- Logging -->
         <logstash-logback-encoder.version>8.0</logstash-logback-encoder.version>
@@ -46,6 +45,7 @@
 
         <!-- Utility -->
         <apache-commons-lang.version>3.17.0</apache-commons-lang.version>
+        <refarch-tools.version>1.0.0</refarch-tools.version>
 
         <!-- Additional required dependencies -->
         <hazelcast.version>5.5.0</hazelcast.version>

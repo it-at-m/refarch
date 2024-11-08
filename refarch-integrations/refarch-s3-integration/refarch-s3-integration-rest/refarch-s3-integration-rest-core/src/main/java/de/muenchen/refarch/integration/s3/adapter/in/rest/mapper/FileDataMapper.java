@@ -8,6 +8,6 @@ import org.mapstruct.Mapper;
 @Mapper(config = MapstructConfiguration.class)
 public interface FileDataMapper {
 
-    FileData dto2Model(final FileDataDto fileDataDto);
+    FileData dto2Model(FileDataDto fileDataDto);
 
 }

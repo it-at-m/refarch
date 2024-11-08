@@ -40,7 +40,7 @@ public class FolderController {
             folderOperations.deleteFolder(pathToFolder);
             return ResponseEntity.noContent().build();
         } catch (final Exception exception) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, exception.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, exception.getMessage(), exception);
         }
     }
 
@@ -53,7 +53,7 @@ public class FolderController {
             final FilesInFolderDto filesInFolderDto = this.filesInFolderMapper.model2Dto(filesInFolder);
             return ResponseEntity.ok(filesInFolderDto);
         } catch (final Exception exception) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage(), exception);
         }
     }
 
@@ -66,7 +66,7 @@ public class FolderController {
             final FileSizesInFolderDto filesizesInFolderDto = this.fileSizesInFolderMapper.model2Dto(fileSizesInFolder);
             return ResponseEntity.ok(filesizesInFolderDto);
         } catch (final Exception exception) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage(), exception);
         }
     }
 

@@ -19,6 +19,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.util.MultiValueMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.client.RestTemplate;
 
@@ -38,7 +39,7 @@ public class UserInfoAuthoritiesService {
     private final RestTemplate restTemplate;
     private final Cache cache;
 
-    public UserInfoAuthoritiesService(String userInfoUri, RestTemplateBuilder restTemplateBuilder) {
+    public UserInfoAuthoritiesService(final String userInfoUri, final RestTemplateBuilder restTemplateBuilder) {
         this.userInfoUri = userInfoUri;
         this.restTemplate = restTemplateBuilder.build();
         this.cache = new CaffeineCache(NAME_AUTHENTICATION_CACHE,
@@ -48,14 +49,15 @@ public class UserInfoAuthoritiesService {
                         .build());
     }
 
-    private static List<SimpleGrantedAuthority> asAuthorities(Object object) {
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+    private static List<SimpleGrantedAuthority> asAuthorities(final Object object) {
+        final List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        Object internalObject = object;
         if (object instanceof Collection<?> collection) {
-            object = collection.toArray(new Object[0]);
+            internalObject = collection.toArray(new Object[0]);
         }
-        if (ObjectUtils.isArray(object)) {
+        if (ObjectUtils.isArray(internalObject)) {
             authorities.addAll(
-                    Stream.of(((Object[]) object))
+                    Stream.of((Object[]) internalObject)
                             .map(Object::toString)
                             .map(SimpleGrantedAuthority::new)
                             .toList());
@@ -70,25 +72,25 @@ public class UserInfoAuthoritiesService {
      * @return the {@link GrantedAuthority}s according to the "authorities" claim of the /userinfo
      *         endpoint
      */
-    public Collection<SimpleGrantedAuthority> loadAuthorities(Jwt jwt) {
-        ValueWrapper valueWrapper = this.cache.get(jwt.getSubject());
+    public Collection<SimpleGrantedAuthority> loadAuthorities(final Jwt jwt) {
+        final ValueWrapper valueWrapper = this.cache.get(jwt.getSubject());
         if (valueWrapper != null) {
             // value present in cache
             @SuppressWarnings("unchecked")
-            Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>) valueWrapper.get();
+            final Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>) valueWrapper.get();
             log.debug("Resolved authorities (from cache): {}", authorities);
             return authorities;
         }
 
         log.debug("Fetching user-info for token subject: {}", jwt.getSubject());
-        final HttpHeaders headers = new HttpHeaders();
+        final MultiValueMap<String, String> headers = new HttpHeaders();
         headers.set(HttpHeaders.AUTHORIZATION, "Bearer " + jwt.getTokenValue());
         final HttpEntity<String> entity = new HttpEntity<>(headers);
 
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         try {
             @SuppressWarnings("unchecked")
-            Map<String, Object> map = restTemplate.exchange(this.userInfoUri, HttpMethod.GET, entity,
+            final Map<String, Object> map = restTemplate.exchange(this.userInfoUri, HttpMethod.GET, entity,
                     Map.class).getBody();
 
             log.debug("Response from user-info Endpoint: {}", map);

@@ -5,6 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 
 public interface DepositObjectInPort {
 
-    void depositObject(@NotBlank final String objectCoo, @NotBlank final String user) throws DmsException;
+    void depositObject(@NotBlank String objectCoo, @NotBlank String user) throws DmsException;
 
 }

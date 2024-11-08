@@ -4,16 +4,15 @@ import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.CancelObjectGI;
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.CancelObjectGIResponse;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.muenchen.refarch.integration.dms.fabasoft.mock.WiremockWsdlUtility;
-import lombok.val;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CancelObjectCase implements MockCase {
 
     @Override
-    public void initCase(WireMockServer server) {
+    public void initCase(final WireMockServer server) {
 
-        val cancelObjectGIResponse = new CancelObjectGIResponse();
+        final CancelObjectGIResponse cancelObjectGIResponse = new CancelObjectGIResponse();
         cancelObjectGIResponse.setStatus(0);
 
         WiremockWsdlUtility.stubOperation(

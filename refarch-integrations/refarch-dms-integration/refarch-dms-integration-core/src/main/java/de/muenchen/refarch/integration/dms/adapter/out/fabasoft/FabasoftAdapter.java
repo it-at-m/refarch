@@ -21,9 +21,11 @@ import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.LHMBAI151700GIWSDSoap;
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.ReadContentObjectGI;
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.ReadContentObjectGIResponse;
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.ReadContentObjectMetaDataGI;
+import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.ReadContentObjectMetaDataGIResponse;
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.ReadDocumentGIObjects;
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.ReadDocumentGIObjectsResponse;
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.ReadMetadataObjectGI;
+import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.ReadMetadataObjectGIResponse;
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.SearchObjNameGI;
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.SearchObjNameGIResponse;
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.UpdateIncomingGI;
@@ -57,7 +59,6 @@ import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.lang.NonNull;
 
@@ -68,6 +69,7 @@ import java.time.ZoneId;
 
 @Slf4j
 @RequiredArgsConstructor
+@SuppressWarnings({ "PMD.UseObjectForClearerAPI", "PMD.CouplingBetweenObjects" })
 public class FabasoftAdapter implements
         CreateFileOutPort,
         CreateProcedureOutPort,
@@ -87,7 +89,7 @@ public class FabasoftAdapter implements
     private final DMSErrorHandler dmsErrorHandler = new DMSErrorHandler();
 
     @Override
-    public String createFile(File file, String user) throws DmsException {
+    public String createFile(final File file, final String user) throws DmsException {
         //logging for dms team
         log.info("calling CreateFileGI Userlogin: {} Apentry: {} Filesubj: {} Shortname: {} Apentrysearch: true", user, file.apentryCOO(), file.title(),
                 file.title());
@@ -107,7 +109,7 @@ public class FabasoftAdapter implements
     }
 
     @Override
-    public Procedure createProcedure(Procedure procedure, String user) throws DmsException {
+    public Procedure createProcedure(final Procedure procedure, final String user) throws DmsException {
         log.info("calling CreateProcedureGI: {}", procedure.toString());
 
         final CreateProcedureGI request = new CreateProcedureGI();
@@ -311,7 +313,7 @@ public class FabasoftAdapter implements
     }
 
     @Override
-    public void depositObject(String objectCoo, String user) throws DmsException {
+    public void depositObject(final String objectCoo, final String user) throws DmsException {
         log.info("calling DepositObject: {}", objectCoo);
 
         final DepositObjectGI request = new DepositObjectGI();
@@ -347,13 +349,13 @@ public class FabasoftAdapter implements
     }
 
     @Override
-    public List<String> listContentCoos(@NonNull String documentCoo, @NonNull final String user) throws DmsException {
-        ReadDocumentGIObjects request = new ReadDocumentGIObjects();
+    public List<String> listContentCoos(@NonNull final String documentCoo, @NonNull final String user) throws DmsException {
+        final ReadDocumentGIObjects request = new ReadDocumentGIObjects();
         request.setUserlogin(user);
         request.setBusinessapp(this.properties.getBusinessapp());
         request.setObjaddress(documentCoo);
 
-        ReadDocumentGIObjectsResponse response = this.wsClient.readDocumentGIObjects(request);
+        final ReadDocumentGIObjectsResponse response = this.wsClient.readDocumentGIObjects(request);
         dmsErrorHandler.handleError(response.getStatus(), response.getErrormessage());
 
         return response.getGiobjecttype().getLHMBAI151700GIObjectType().stream()
@@ -365,12 +367,12 @@ public class FabasoftAdapter implements
     public List<Content> readContent(final List<String> coos, final String user) throws DmsException {
         final List<Content> files = new ArrayList<>();
 
-        for (val coo : coos) {
-            val request = new ReadContentObjectGI();
+        for (final String coo : coos) {
+            final ReadContentObjectGI request = new ReadContentObjectGI();
             request.setUserlogin(user);
             request.setBusinessapp(this.properties.getBusinessapp());
             request.setObjaddress(coo);
-            val response = this.wsClient.readContentObjectGI(request);
+            final ReadContentObjectGIResponse response = this.wsClient.readContentObjectGI(request);
             dmsErrorHandler.handleError(response.getStatus(), response.getErrormessage());
             files.add(this.map(response));
         }
@@ -378,7 +380,7 @@ public class FabasoftAdapter implements
         return files;
     }
 
-    private Content map(ReadContentObjectGIResponse response) {
+    private Content map(final ReadContentObjectGIResponse response) {
         return new Content(
                 response.getGiattachmenttype().getLHMBAI151700Fileextension(),
                 response.getGiattachmenttype().getLHMBAI151700Filename(),
@@ -386,7 +388,7 @@ public class FabasoftAdapter implements
     }
 
     @Override
-    public List<String> searchFile(String searchString, String user, String reference, String value) throws DmsException {
+    public List<String> searchFile(final String searchString, final String user, final String reference, final String value) throws DmsException {
         return this.searchObject(searchString, DMSObjectClass.Sachakte, user, reference, value).stream()
                 .map(LHMBAI151700GIObjectType::getLHMBAI151700Objaddress)
                 .toList();
@@ -403,11 +405,11 @@ public class FabasoftAdapter implements
     public Metadata readMetadata(final String coo, final String username) throws DmsException {
         log.info("calling ReadMetadataObjectGI Userlogin: {} COO: {}", username, coo);
 
-        val request = new ReadMetadataObjectGI();
+        final ReadMetadataObjectGI request = new ReadMetadataObjectGI();
         request.setObjaddress(coo);
         request.setBusinessapp(this.properties.getBusinessapp());
         request.setUserlogin(username);
-        val response = this.wsClient.readMetadataObjectGI(request);
+        final ReadMetadataObjectGIResponse response = this.wsClient.readMetadataObjectGI(request);
 
         dmsErrorHandler.handleError(response.getStatus(), response.getErrormessage());
 
@@ -421,11 +423,11 @@ public class FabasoftAdapter implements
     public Metadata readContentMetadata(final String coo, final String username) throws DmsException {
         log.info("calling ReadContentObjectMetaDataGI Userlogin: {} COO: {}", username, coo);
 
-        val request = new ReadContentObjectMetaDataGI();
+        final ReadContentObjectMetaDataGI request = new ReadContentObjectMetaDataGI();
         request.setObjaddress(coo);
         request.setBusinessapp(this.properties.getBusinessapp());
         request.setUserlogin(username);
-        val response = this.wsClient.readContentObjectMetaDataGI(request);
+        final ReadContentObjectMetaDataGIResponse response = this.wsClient.readContentObjectMetaDataGI(request);
 
         dmsErrorHandler.handleError(response.getStatus(), response.getErrormessage());
 
@@ -472,8 +474,12 @@ public class FabasoftAdapter implements
         params.setBusinessapp(this.properties.getBusinessapp());
         params.setObjclass(dmsObjectClass.getName());
         params.setSearchstring(searchString);
-        if (Objects.nonNull(reference)) params.setReference(reference);
-        if (Objects.nonNull(value)) params.setValue(value);
+        if (Objects.nonNull(reference)) {
+            params.setReference(reference);
+        }
+        if (Objects.nonNull(value)) {
+            params.setValue(value);
+        }
 
         final SearchObjNameGIResponse response = this.wsClient.searchObjNameGI(params);
 

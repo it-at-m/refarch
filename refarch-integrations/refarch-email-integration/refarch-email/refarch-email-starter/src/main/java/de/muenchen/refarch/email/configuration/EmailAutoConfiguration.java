@@ -55,7 +55,7 @@ public class EmailAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public FreeMarkerConfigurer freemarkerConfig() {
-        FreeMarkerConfigurer freeMarkerConfigurer = new FreeMarkerConfigurer();
+        final FreeMarkerConfigurer freeMarkerConfigurer = new FreeMarkerConfigurer();
         freeMarkerConfigurer.setTemplateLoaderPath("classpath:templates/");
         return freeMarkerConfigurer;
     }

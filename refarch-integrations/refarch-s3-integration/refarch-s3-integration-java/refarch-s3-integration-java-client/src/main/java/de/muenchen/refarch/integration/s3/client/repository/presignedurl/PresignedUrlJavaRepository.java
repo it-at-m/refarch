@@ -13,7 +13,7 @@ public class PresignedUrlJavaRepository implements PresignedUrlRepository {
     private final FileOperationsPresignedUrlInPort fileOperationsPresignedUrlInPort;
 
     @Override
-    public String getPresignedUrlGetFile(String pathToFile, int expireInMinutes)
+    public String getPresignedUrlGetFile(final String pathToFile, final int expireInMinutes)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
         try {
             return fileOperationsPresignedUrlInPort.getFile(pathToFile, expireInMinutes).url();
@@ -23,7 +23,7 @@ public class PresignedUrlJavaRepository implements PresignedUrlRepository {
     }
 
     @Override
-    public String getPresignedUrlSaveFile(String pathToFile, int expireInMinutes)
+    public String getPresignedUrlSaveFile(final String pathToFile, final int expireInMinutes)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
         try {
             return fileOperationsPresignedUrlInPort.saveFile(new FileData(pathToFile, expireInMinutes)).url();
@@ -33,7 +33,7 @@ public class PresignedUrlJavaRepository implements PresignedUrlRepository {
     }
 
     @Override
-    public String getPresignedUrlUpdateFile(String pathToFile, int expireInMinutes)
+    public String getPresignedUrlUpdateFile(final String pathToFile, final int expireInMinutes)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
         try {
             return fileOperationsPresignedUrlInPort.updateFile(new FileData(pathToFile, expireInMinutes)).url();
@@ -43,7 +43,7 @@ public class PresignedUrlJavaRepository implements PresignedUrlRepository {
     }
 
     @Override
-    public String getPresignedUrlDeleteFile(String pathToFile, int expireInMinutes)
+    public String getPresignedUrlDeleteFile(final String pathToFile, final int expireInMinutes)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
         try {
             return fileOperationsPresignedUrlInPort.deleteFile(pathToFile, expireInMinutes).url();

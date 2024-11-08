@@ -25,9 +25,9 @@ public class ReadMetadataUseCase implements ReadMetadataInPort {
             return readMetadataOutPort.readContentMetadata(coo, user);
         }
 
-        Metadata metadata = readMetadataOutPort.readMetadata(coo, user);
+        final Metadata metadata = readMetadataOutPort.readMetadata(coo, user);
 
-        String object = objectclass == ObjectType.Intern ? "Internes Dokument" : objectclass.toString();
+        final String object = objectclass == ObjectType.Intern ? "Internes Dokument" : objectclass.toString();
 
         if (!object.equals(metadata.type())) {
             throw new DmsException("WRONG_INPUT_OBJECT_CLASS", String.format(
