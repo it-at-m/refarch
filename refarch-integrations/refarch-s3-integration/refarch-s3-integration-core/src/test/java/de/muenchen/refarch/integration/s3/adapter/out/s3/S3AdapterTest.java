@@ -1,5 +1,7 @@
 package de.muenchen.refarch.integration.s3.adapter.out.s3;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import de.muenchen.refarch.integration.s3.domain.exception.FileSystemAccessException;
 import io.minio.GetPresignedObjectUrlArgs;
 import io.minio.MinioClient;
@@ -14,7 +16,6 @@ import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -51,7 +52,7 @@ class S3AdapterTest {
         Mockito.when(this.client.getPresignedObjectUrl(Mockito.any(GetPresignedObjectUrlArgs.class))).thenReturn(this.S3_URL + "/some-url/...");
         for (final Method action : this.ACTIONS) {
             final String presignedUrl = this.s3Adapter.getPresignedUrl(this.FILE_PATH, action, this.EXPIRES_IN_MINUTES);
-            Assertions.assertTrue(presignedUrl.contains(this.S3_URL));
+            assertTrue(presignedUrl.contains(this.S3_URL));
         }
     }
 }

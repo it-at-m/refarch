@@ -2,6 +2,7 @@ package de.muenchen.refarch.integration.s3.client.repository.transfer;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
@@ -9,7 +10,6 @@ import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageClientErrorException;
 import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageException;
 import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageServerErrorException;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -39,12 +39,12 @@ class S3FileTransferRepositoryTest {
         assertThat(result, is(file));
 
         WireMock.stubFor(WireMock.get(PRESIGNED_URL).willReturn(WireMock.aResponse().withStatus(400)));
-        Assertions.assertThrows(DocumentStorageClientErrorException.class, () -> this.s3FileTransferRepository.getFile(presignedUrl));
+        assertThrows(DocumentStorageClientErrorException.class, () -> this.s3FileTransferRepository.getFile(presignedUrl));
 
         WireMock.stubFor(WireMock.get(PRESIGNED_URL).willReturn(WireMock.aResponse().withStatus(500)));
-        Assertions.assertThrows(DocumentStorageServerErrorException.class, () -> this.s3FileTransferRepository.getFile(presignedUrl));
+        assertThrows(DocumentStorageServerErrorException.class, () -> this.s3FileTransferRepository.getFile(presignedUrl));
 
-        Assertions.assertThrows(DocumentStorageException.class,
+        assertThrows(DocumentStorageException.class,
                 () -> this.s3FileTransferRepository.getFile(LOCALHOST_PREFIX + (wmRuntimeInfo.getHttpPort() + 1) + INVALID_URL_PATH));
     }
 
@@ -59,12 +59,12 @@ class S3FileTransferRepositoryTest {
         this.s3FileTransferRepository.saveFile(presignedUrl, file);
 
         WireMock.stubFor(WireMock.put(PRESIGNED_URL).willReturn(WireMock.aResponse().withStatus(400)));
-        Assertions.assertThrows(DocumentStorageClientErrorException.class, () -> this.s3FileTransferRepository.saveFile(presignedUrl, file));
+        assertThrows(DocumentStorageClientErrorException.class, () -> this.s3FileTransferRepository.saveFile(presignedUrl, file));
 
         WireMock.stubFor(WireMock.put(PRESIGNED_URL).willReturn(WireMock.aResponse().withStatus(500)));
-        Assertions.assertThrows(DocumentStorageServerErrorException.class, () -> this.s3FileTransferRepository.saveFile(presignedUrl, file));
+        assertThrows(DocumentStorageServerErrorException.class, () -> this.s3FileTransferRepository.saveFile(presignedUrl, file));
 
-        Assertions.assertThrows(DocumentStorageException.class,
+        assertThrows(DocumentStorageException.class,
                 () -> this.s3FileTransferRepository.saveFile(LOCALHOST_PREFIX + (wmRuntimeInfo.getHttpPort() + 1) + INVALID_URL_PATH, file));
     }
 
@@ -79,12 +79,12 @@ class S3FileTransferRepositoryTest {
         this.s3FileTransferRepository.updateFile(presignedUrl, file);
 
         WireMock.stubFor(WireMock.put(PRESIGNED_URL).willReturn(WireMock.aResponse().withStatus(400)));
-        Assertions.assertThrows(DocumentStorageClientErrorException.class, () -> this.s3FileTransferRepository.updateFile(presignedUrl, file));
+        assertThrows(DocumentStorageClientErrorException.class, () -> this.s3FileTransferRepository.updateFile(presignedUrl, file));
 
         WireMock.stubFor(WireMock.put(PRESIGNED_URL).willReturn(WireMock.aResponse().withStatus(500)));
-        Assertions.assertThrows(DocumentStorageServerErrorException.class, () -> this.s3FileTransferRepository.updateFile(presignedUrl, file));
+        assertThrows(DocumentStorageServerErrorException.class, () -> this.s3FileTransferRepository.updateFile(presignedUrl, file));
 
-        Assertions.assertThrows(DocumentStorageException.class,
+        assertThrows(DocumentStorageException.class,
                 () -> this.s3FileTransferRepository.updateFile(LOCALHOST_PREFIX + (wmRuntimeInfo.getHttpPort() + 1) + INVALID_URL_PATH, file));
     }
 
@@ -98,12 +98,12 @@ class S3FileTransferRepositoryTest {
         this.s3FileTransferRepository.deleteFile(presignedUrl);
 
         WireMock.stubFor(WireMock.delete(PRESIGNED_URL).willReturn(WireMock.aResponse().withStatus(400)));
-        Assertions.assertThrows(DocumentStorageClientErrorException.class, () -> this.s3FileTransferRepository.deleteFile(presignedUrl));
+        assertThrows(DocumentStorageClientErrorException.class, () -> this.s3FileTransferRepository.deleteFile(presignedUrl));
 
         WireMock.stubFor(WireMock.delete(PRESIGNED_URL).willReturn(WireMock.aResponse().withStatus(500)));
-        Assertions.assertThrows(DocumentStorageServerErrorException.class, () -> this.s3FileTransferRepository.deleteFile(presignedUrl));
+        assertThrows(DocumentStorageServerErrorException.class, () -> this.s3FileTransferRepository.deleteFile(presignedUrl));
 
-        Assertions.assertThrows(DocumentStorageException.class,
+        assertThrows(DocumentStorageException.class,
                 () -> this.s3FileTransferRepository.deleteFile(LOCALHOST_PREFIX + (wmRuntimeInfo.getHttpPort() + 1) + INVALID_URL_PATH));
 
     }
