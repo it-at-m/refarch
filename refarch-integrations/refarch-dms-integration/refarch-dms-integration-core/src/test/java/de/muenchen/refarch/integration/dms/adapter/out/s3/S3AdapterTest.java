@@ -134,10 +134,7 @@ class S3AdapterTest {
 
         final DocumentStorageException documentStorageException = assertThrows(DocumentStorageException.class, () -> this.s3Adapter.loadFiles(filePaths));
 
-        final String expectedMessage = "An file could not be loaded from url: " + pdfPath;
-        final String actualMessage = documentStorageException.getMessage();
-
-        assertEquals(expectedMessage, actualMessage);
+        assertEquals(SOME_ERROR, documentStorageException.getMessage());
     }
 
     @Test
