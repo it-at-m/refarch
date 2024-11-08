@@ -41,12 +41,11 @@ class FileOperationsPresignedUrlUseCaseTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
     void testGetPresignedUrl() {
         final int expiresInMinutes = 5;
         final List<Method> actions = List.of(Method.GET, Method.POST, Method.PUT, Method.DELETE);
 
-        actions.forEach(action -> {
+        for (final Method action : actions) {
             try {
                 Mockito.when(this.s3Adapter.getPresignedUrl(TEST_TXT_PATH, action, expiresInMinutes)).thenReturn(EXAMPLE_PRESIGNED_URL);
 
@@ -58,7 +57,7 @@ class FileOperationsPresignedUrlUseCaseTest {
             } catch (final FileSystemAccessException e) {
                 Assertions.fail(e.getMessage());
             }
-        });
+        }
 
     }
 
