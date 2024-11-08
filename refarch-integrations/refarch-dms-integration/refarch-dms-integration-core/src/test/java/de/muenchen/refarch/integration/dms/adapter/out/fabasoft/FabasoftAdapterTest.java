@@ -235,7 +235,7 @@ class FabasoftAdapterTest {
                 CancelObjectGI.class, (u) -> true,
                 response);
 
-        assertDoesNotThrow(() ->  fabasoftAdapter.cancelObject("objectCoo", USER));
+        assertDoesNotThrow(() -> fabasoftAdapter.cancelObject("objectCoo", USER));
     }
 
     @Test
