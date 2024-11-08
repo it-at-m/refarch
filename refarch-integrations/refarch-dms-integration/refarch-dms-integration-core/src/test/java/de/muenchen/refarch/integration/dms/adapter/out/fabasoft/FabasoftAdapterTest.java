@@ -52,6 +52,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @WireMockTest()
@@ -113,7 +114,7 @@ class FabasoftAdapterTest {
     }
 
     @Test
-    void executeDepositObjectRequest() throws DmsException {
+    void executeDepositObjectRequest() {
         final DepositObjectGIResponse response = new DepositObjectGIResponse();
         response.setObjid("objectCoo");
 
@@ -122,7 +123,7 @@ class FabasoftAdapterTest {
                 DepositObjectGI.class, (u) -> true,
                 response);
 
-        fabasoftAdapter.depositObject("objectCoo", USER);
+        assertDoesNotThrow(() -> fabasoftAdapter.depositObject("objectCoo", USER));
     }
 
     @Test
@@ -180,7 +181,7 @@ class FabasoftAdapterTest {
     }
 
     @Test
-    void executeUpdateIncomingDocumentRequest() throws DmsException {
+    void executeUpdateIncomingDocumentRequest() {
         final Content content = new Content(EXTENSION, NAME, CONTENT);
 
         final UpdateIncomingGIResponse response = new UpdateIncomingGIResponse();
@@ -191,11 +192,11 @@ class FabasoftAdapterTest {
                 UpdateIncomingGI.class, (u) -> true,
                 response);
 
-        fabasoftAdapter.updateDocument(DOCUMENT_COO, DocumentType.EINGEHEND, List.of(content), USER);
+        assertDoesNotThrow(() -> fabasoftAdapter.updateDocument(DOCUMENT_COO, DocumentType.EINGEHEND, List.of(content), USER));
     }
 
     @Test
-    void executeUpdateOutgoingDocumentRequest() throws DmsException {
+    void executeUpdateOutgoingDocumentRequest() {
         final Content content = new Content(EXTENSION, NAME, CONTENT);
 
         final UpdateOutgoingGIResponse response = new UpdateOutgoingGIResponse();
@@ -206,11 +207,11 @@ class FabasoftAdapterTest {
                 UpdateOutgoingGI.class, (u) -> true,
                 response);
 
-        fabasoftAdapter.updateDocument(DOCUMENT_COO, DocumentType.AUSGEHEND, List.of(content), USER);
+        assertDoesNotThrow(() -> fabasoftAdapter.updateDocument(DOCUMENT_COO, DocumentType.AUSGEHEND, List.of(content), USER));
     }
 
     @Test
-    void executeUpdateInternalDocumentRequest() throws DmsException {
+    void executeUpdateInternalDocumentRequest() {
         final Content content = new Content(EXTENSION, NAME, CONTENT);
 
         final UpdateInternalGIResponse response = new UpdateInternalGIResponse();
@@ -221,7 +222,7 @@ class FabasoftAdapterTest {
                 UpdateInternalGI.class, (u) -> true,
                 response);
 
-        fabasoftAdapter.updateDocument(DOCUMENT_COO, DocumentType.INTERN, List.of(content), USER);
+        assertDoesNotThrow(() -> fabasoftAdapter.updateDocument(DOCUMENT_COO, DocumentType.INTERN, List.of(content), USER));
     }
 
     @Test
@@ -234,7 +235,7 @@ class FabasoftAdapterTest {
                 CancelObjectGI.class, (u) -> true,
                 response);
 
-        fabasoftAdapter.cancelObject("objectCoo", USER);
+        assertDoesNotThrow(() ->  fabasoftAdapter.cancelObject("objectCoo", USER));
     }
 
     @Test
@@ -290,8 +291,8 @@ class FabasoftAdapterTest {
      * Tests a file search.
      */
     @Test
-    void executeSearchFileRequest() throws DmsException {
-        internalSearchFileCallTest(DMSObjectClass.Sachakte, "searchString", USER, null, null);
+    void executeSearchFileRequest() {
+        assertDoesNotThrow(() -> internalSearchFileCallTest(DMSObjectClass.Sachakte, "searchString", USER, null, null));
     }
 
     /**
@@ -299,7 +300,7 @@ class FabasoftAdapterTest {
      */
     @Test
     void executeSearchFileRequestBusinessData() throws DmsException {
-        internalSearchFileCallTest(DMSObjectClass.Sachakte, "searchString", USER, "reference", "value");
+        assertDoesNotThrow(() -> internalSearchFileCallTest(DMSObjectClass.Sachakte, "searchString", USER, "reference", "value"));
     }
 
     /**
