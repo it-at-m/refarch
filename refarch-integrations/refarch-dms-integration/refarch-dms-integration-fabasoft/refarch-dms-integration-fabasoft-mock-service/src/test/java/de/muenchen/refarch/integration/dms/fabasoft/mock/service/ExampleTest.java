@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.CreateProcedureGI;
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.CreateProcedureGIResponse;
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.LHMBAI151700GIWSDSoap;
-import de.muenchen.refarch.integration.dms.fabasoft.mock.FabasoftClienFactory;
+import de.muenchen.refarch.integration.dms.fabasoft.mock.FabasoftClientFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,7 +23,7 @@ class ExampleTest {
 
     @BeforeEach
     void setUp() {
-        this.soapClient = FabasoftClienFactory.dmsWsClient("http://localhost:" + port + "/");
+        this.soapClient = FabasoftClientFactory.dmsWsClient("http://localhost:" + port + "/");
     }
 
     @Test

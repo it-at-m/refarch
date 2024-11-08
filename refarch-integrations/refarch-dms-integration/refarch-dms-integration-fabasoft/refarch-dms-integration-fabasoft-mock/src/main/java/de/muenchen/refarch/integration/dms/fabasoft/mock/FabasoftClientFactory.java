@@ -8,8 +8,8 @@ import jakarta.xml.ws.BindingProvider;
 /**
  * Configuration of the Webservice Client.
  */
-public final class FabasoftClienFactory {
-    private FabasoftClienFactory() {
+public final class FabasoftClientFactory {
+    private FabasoftClientFactory() {
     }
 
     public static LHMBAI151700GIWSDSoap dmsWsClient(final String address) {

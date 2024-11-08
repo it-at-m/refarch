@@ -42,7 +42,7 @@ import de.muenchen.refarch.integration.dms.domain.model.DocumentType;
 import de.muenchen.refarch.integration.dms.domain.model.File;
 import de.muenchen.refarch.integration.dms.domain.model.Metadata;
 import de.muenchen.refarch.integration.dms.domain.model.Procedure;
-import de.muenchen.refarch.integration.dms.fabasoft.mock.FabasoftClienFactory;
+import de.muenchen.refarch.integration.dms.fabasoft.mock.FabasoftClientFactory;
 import de.muenchen.refarch.integration.dms.fabasoft.mock.WiremockWsdlUtility;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -75,7 +75,7 @@ class FabasoftAdapterTest {
         this.properties.setPassword("password");
         this.properties.setBusinessapp("businessapp");
         this.properties.setUiUrl("uiurl");
-        final LHMBAI151700GIWSDSoap soapClient = FabasoftClienFactory.dmsWsClient("http://localhost:" + wmRuntimeInfo.getHttpPort() + "/");
+        final LHMBAI151700GIWSDSoap soapClient = FabasoftClientFactory.dmsWsClient("http://localhost:" + wmRuntimeInfo.getHttpPort() + "/");
         fabasoftAdapter = new FabasoftAdapter(properties, soapClient);
     }
 

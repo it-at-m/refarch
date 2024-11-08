@@ -17,7 +17,7 @@ class ExampleTest {
 
     @BeforeEach
     public void setUp(final WireMockRuntimeInfo wmRuntimeInfo) {
-        soapClient = FabasoftClienFactory.dmsWsClient("http://localhost:" + wmRuntimeInfo.getHttpPort() + "/");
+        soapClient = FabasoftClientFactory.dmsWsClient("http://localhost:" + wmRuntimeInfo.getHttpPort() + "/");
     }
 
     @Test
