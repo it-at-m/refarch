@@ -93,7 +93,7 @@ public class S3Adapter implements LoadFileOutPort, TransferContentOutPort {
         try {
             return Objects.requireNonNull(documentStorageFolderRepository
                     .getAllFileSizesInFolderRecursively(folderPath));
-        } catch (final DocumentStorageException | DocumentStorageServerErrorException | DocumentStorageClientErrorException e) {
+        } catch (final DocumentStorageServerErrorException | DocumentStorageClientErrorException e) {
             throw new DocumentStorageException("Metadata of a folder could not be loaded from url: " + folderPath, e);
         }
     }
@@ -102,12 +102,11 @@ public class S3Adapter implements LoadFileOutPort, TransferContentOutPort {
         try {
             return Objects.requireNonNull(documentStorageFileRepository
                     .getFileSize(filePath));
-        } catch (final DocumentStorageException | DocumentStorageServerErrorException | DocumentStorageClientErrorException e) {
+        } catch (final DocumentStorageServerErrorException | DocumentStorageClientErrorException e) {
             throw new DocumentStorageException("Metadata of a folder could not be loaded from url: " + filePath, e);
         }
     }
 
-    @SuppressWarnings("PMD.ExceptionAsFlowControl")
     private List<Content> getFilesFromFolder(final String folderPath) throws DocumentStorageException {
         try {
             final List<Content> contents = new ArrayList<>();
@@ -120,7 +119,7 @@ public class S3Adapter implements LoadFileOutPort, TransferContentOutPort {
                 contents.add(getFile(file));
             }
             return contents;
-        } catch (final DocumentStorageException | DocumentStorageServerErrorException | DocumentStorageClientErrorException e) {
+        } catch (final DocumentStorageServerErrorException | DocumentStorageClientErrorException e) {
             throw new DocumentStorageException("An folder could not be loaded from url: " + folderPath, e);
         }
     }
@@ -137,7 +136,7 @@ public class S3Adapter implements LoadFileOutPort, TransferContentOutPort {
             }
 
             return new Content(fileService.getFileExtension(mimeType), filename, bytes);
-        } catch (final DocumentStorageException | DocumentStorageServerErrorException | DocumentStorageClientErrorException e) {
+        } catch (final DocumentStorageServerErrorException | DocumentStorageClientErrorException e) {
             throw new DocumentStorageException("An file could not be loaded from url: " + filePath, e);
         }
     }
