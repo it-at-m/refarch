@@ -4,6 +4,7 @@ import de.muenchen.refarch.integration.dms.domain.exception.DmsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -50,11 +51,10 @@ class DMSErrorHandlerTest {
     }
 
     @Test
-    @SuppressWarnings("PMD.UnitTestShouldIncludeAssert")
-    void uebertragungErfolgreich() throws DmsException {
+    void handleNoError() {
 
         final int code = 0;
 
-        this.dmsErrorHandler.handleError(code, null);
+        assertDoesNotThrow(() -> this.dmsErrorHandler.handleError(code, null));
     }
 }
