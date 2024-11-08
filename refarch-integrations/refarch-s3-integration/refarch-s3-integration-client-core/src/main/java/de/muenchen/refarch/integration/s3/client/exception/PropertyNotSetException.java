@@ -1,11 +1,7 @@
 package de.muenchen.refarch.integration.s3.client.exception;
 
-import java.io.Serial;
-
+@SuppressWarnings("PMD.MissingSerialVersionUID")
 public class PropertyNotSetException extends Exception {
-    @Serial
-    private static final long serialVersionUID = 1L;
-
     public PropertyNotSetException(final String message) {
         super(message);
     }
