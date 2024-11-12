@@ -13,11 +13,11 @@ public interface StreetsMunichInPort {
     /**
      * List streets in Munich.
      */
-    Strasse findStreetsById(final long streetId) throws AddressServiceIntegrationException;
+    Strasse findStreetsById(long streetId) throws AddressServiceIntegrationException;
 
     /**
      * List streets in Munich.
      */
-    StrasseResponse listStreets(final ListStreetsModel listStreetsModel) throws AddressServiceIntegrationException;
+    StrasseResponse listStreets(ListStreetsModel listStreetsModel) throws AddressServiceIntegrationException;
 
 }

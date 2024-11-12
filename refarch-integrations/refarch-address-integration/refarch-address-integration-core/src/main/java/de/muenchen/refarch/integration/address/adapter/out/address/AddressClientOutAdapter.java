@@ -31,7 +31,7 @@ public class AddressClientOutAdapter implements AddressClientOutPort {
     private final StreetsMunichApi streetsMunichApi;
 
     @Override
-    public BundesweiteAdresseResponse searchAddresses(SearchAddressesGermanyModel searchAddressesGermanyModel)
+    public BundesweiteAdresseResponse searchAddresses(final SearchAddressesGermanyModel searchAddressesGermanyModel)
             throws AddressServiceIntegrationException {
         try {
             return this.addressGermanyApi.searchAddresses(searchAddressesGermanyModel);
@@ -42,7 +42,7 @@ public class AddressClientOutAdapter implements AddressClientOutPort {
     }
 
     @Override
-    public MuenchenAdresse checkAddress(CheckAddressesModel checkAddressesModel) throws AddressServiceIntegrationException {
+    public MuenchenAdresse checkAddress(final CheckAddressesModel checkAddressesModel) throws AddressServiceIntegrationException {
         try {
             return this.addressMunichApi.checkAddress(checkAddressesModel);
         } catch (final
@@ -52,7 +52,7 @@ public class AddressClientOutAdapter implements AddressClientOutPort {
     }
 
     @Override
-    public MuenchenAdresseResponse listAddresses(ListAddressesModel listAddressesModel) throws AddressServiceIntegrationException {
+    public MuenchenAdresseResponse listAddresses(final ListAddressesModel listAddressesModel) throws AddressServiceIntegrationException {
         try {
             return this.addressMunichApi.listAddresses(listAddressesModel);
         } catch (final
@@ -62,7 +62,7 @@ public class AddressClientOutAdapter implements AddressClientOutPort {
     }
 
     @Override
-    public AenderungResponse listChanges(ListAddressChangesModel listAddressChangesModel) throws AddressServiceIntegrationException {
+    public AenderungResponse listChanges(final ListAddressChangesModel listAddressChangesModel) throws AddressServiceIntegrationException {
         try {
             return this.addressMunichApi.listChanges(listAddressChangesModel);
         } catch (final
@@ -72,7 +72,7 @@ public class AddressClientOutAdapter implements AddressClientOutPort {
     }
 
     @Override
-    public MuenchenAdresseResponse searchAddresses(SearchAddressesModel searchAddressesModel)
+    public MuenchenAdresseResponse searchAddresses(final SearchAddressesModel searchAddressesModel)
             throws AddressServiceIntegrationException {
         try {
             return this.addressMunichApi.searchAddresses(searchAddressesModel);
@@ -83,7 +83,7 @@ public class AddressClientOutAdapter implements AddressClientOutPort {
     }
 
     @Override
-    public AddressDistancesModel searchAddressesGeo(SearchAddressesGeoModel searchAddressesGeoModel)
+    public AddressDistancesModel searchAddressesGeo(final SearchAddressesGeoModel searchAddressesGeoModel)
             throws AddressServiceIntegrationException {
         try {
             return this.addressMunichApi.searchAddressesGeo(searchAddressesGeoModel);
@@ -94,7 +94,7 @@ public class AddressClientOutAdapter implements AddressClientOutPort {
     }
 
     @Override
-    public Strasse findStreetsById(long streetId) throws AddressServiceIntegrationException {
+    public Strasse findStreetsById(final long streetId) throws AddressServiceIntegrationException {
         try {
             return this.streetsMunichApi.findStreetsById(streetId);
         } catch (final
@@ -104,7 +104,7 @@ public class AddressClientOutAdapter implements AddressClientOutPort {
     }
 
     @Override
-    public StrasseResponse listStreets(ListStreetsModel listStreetsModel) throws AddressServiceIntegrationException {
+    public StrasseResponse listStreets(final ListStreetsModel listStreetsModel) throws AddressServiceIntegrationException {
         try {
             return this.streetsMunichApi.listStreets(listStreetsModel);
         } catch (final

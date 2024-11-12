@@ -12,18 +12,19 @@ import de.muenchen.refarch.integration.address.client.exception.AddressServiceIn
 import de.muenchen.refarch.integration.address.client.model.request.ListStreetsModel;
 import de.muenchen.refarch.integration.address.client.gen.model.Strasse;
 import de.muenchen.refarch.integration.address.client.gen.model.StrasseResponse;
-import de.muenchen.refarch.integration.address.application.usecase.StreetsMunichUseCase;
 import org.junit.jupiter.api.Test;
 
 class StreetsMunichUseCaseTest {
 
+    public static final String SOME_ERROR = "SomeError";
+    public static final String MESSAGE_400 = "400";
     private final AddressClientOutPort addressClientOutPort = mock(AddressClientOutPort.class);
 
     private final StreetsMunichInPort streetsMunichUseCase = new StreetsMunichUseCase(addressClientOutPort);
 
     @Test
-    void testFindStreetsById_returnsStrasse() throws AddressServiceIntegrationException {
-        long streetId = 0L;
+    void testFindStreetsByIdReturnsStrasse() throws AddressServiceIntegrationException {
+        final long streetId = 0L;
         final Strasse expectedResponse = new Strasse();
 
         when(addressClientOutPort.findStreetsById(streetId)).thenReturn(expectedResponse);
@@ -35,9 +36,9 @@ class StreetsMunichUseCaseTest {
     }
 
     @Test
-    void testFindStreetsById_throwsAddressServiceIntegrationException() throws AddressServiceIntegrationException {
+    void testFindStreetsByIdThrowsAddressServiceIntegrationException() throws AddressServiceIntegrationException {
         final long streetId = 0L;
-        final AddressServiceIntegrationException expectedError = new AddressServiceIntegrationException("400", new Exception("SomeError"));
+        final AddressServiceIntegrationException expectedError = new AddressServiceIntegrationException(MESSAGE_400, new Exception(SOME_ERROR));
 
         when(addressClientOutPort.findStreetsById(streetId)).thenThrow(expectedError);
 
@@ -47,7 +48,7 @@ class StreetsMunichUseCaseTest {
     }
 
     @Test
-    void testListStreets_returnsStrasseResponse() throws AddressServiceIntegrationException {
+    void testListStreetsReturnsStrasseResponse() throws AddressServiceIntegrationException {
         final ListStreetsModel listStreetsModel = ListStreetsModel.builder().build();
         final StrasseResponse expectedResponse = new StrasseResponse();
 
@@ -60,9 +61,9 @@ class StreetsMunichUseCaseTest {
     }
 
     @Test
-    void testListStreets_throwsAddressServiceIntegrationException() throws AddressServiceIntegrationException {
+    void testListStreetsThrowsAddressServiceIntegrationException() throws AddressServiceIntegrationException {
         final ListStreetsModel listStreetsModel = ListStreetsModel.builder().build();
-        final AddressServiceIntegrationException expectedError = new AddressServiceIntegrationException("400", new Exception("SomeError"));
+        final AddressServiceIntegrationException expectedError = new AddressServiceIntegrationException(MESSAGE_400, new Exception(SOME_ERROR));
 
         when(addressClientOutPort.listStreets(listStreetsModel)).thenThrow(expectedError);
 

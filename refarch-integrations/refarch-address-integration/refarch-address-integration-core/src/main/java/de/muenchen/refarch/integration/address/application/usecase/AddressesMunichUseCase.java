@@ -20,27 +20,27 @@ public class AddressesMunichUseCase implements AddressMunichInPort {
     private final AddressClientOutPort addressClientOutPort;
 
     @Override
-    public MuenchenAdresse checkAddress(CheckAddressesModel checkAddressesModel) throws AddressServiceIntegrationException {
+    public MuenchenAdresse checkAddress(final CheckAddressesModel checkAddressesModel) throws AddressServiceIntegrationException {
         return this.addressClientOutPort.checkAddress(checkAddressesModel);
     }
 
     @Override
-    public MuenchenAdresseResponse listAddresses(ListAddressesModel listAddressesModel) throws AddressServiceIntegrationException {
+    public MuenchenAdresseResponse listAddresses(final ListAddressesModel listAddressesModel) throws AddressServiceIntegrationException {
         return this.addressClientOutPort.listAddresses(listAddressesModel);
     }
 
     @Override
-    public AenderungResponse listChanges(ListAddressChangesModel listAddressChangesModel) throws AddressServiceIntegrationException {
+    public AenderungResponse listChanges(final ListAddressChangesModel listAddressChangesModel) throws AddressServiceIntegrationException {
         return this.addressClientOutPort.listChanges(listAddressChangesModel);
     }
 
     @Override
-    public MuenchenAdresseResponse searchAddresses(SearchAddressesModel searchAddressesModel) throws AddressServiceIntegrationException {
+    public MuenchenAdresseResponse searchAddresses(final SearchAddressesModel searchAddressesModel) throws AddressServiceIntegrationException {
         return this.addressClientOutPort.searchAddresses(searchAddressesModel);
     }
 
     @Override
-    public AddressDistancesModel searchAddressesGeo(SearchAddressesGeoModel searchAddressesGeoModel) throws AddressServiceIntegrationException {
+    public AddressDistancesModel searchAddressesGeo(final SearchAddressesGeoModel searchAddressesGeoModel) throws AddressServiceIntegrationException {
         return this.addressClientOutPort.searchAddressesGeo(searchAddressesGeoModel);
     }
 

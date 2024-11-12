@@ -14,12 +14,12 @@ public class StreetsMunichUseCase implements StreetsMunichInPort {
     private final AddressClientOutPort addressClientOutPort;
 
     @Override
-    public Strasse findStreetsById(long streetId) throws AddressServiceIntegrationException {
+    public Strasse findStreetsById(final long streetId) throws AddressServiceIntegrationException {
         return this.addressClientOutPort.findStreetsById(streetId);
     }
 
     @Override
-    public StrasseResponse listStreets(ListStreetsModel listStreetsModel) throws AddressServiceIntegrationException {
+    public StrasseResponse listStreets(final ListStreetsModel listStreetsModel) throws AddressServiceIntegrationException {
         return this.addressClientOutPort.listStreets(listStreetsModel);
     }
 }

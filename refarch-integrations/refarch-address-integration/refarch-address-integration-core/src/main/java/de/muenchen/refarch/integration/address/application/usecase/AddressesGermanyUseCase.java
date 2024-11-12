@@ -13,7 +13,7 @@ public class AddressesGermanyUseCase implements AddressGermanyInPort {
     private final AddressClientOutPort addressClientOutPort;
 
     @Override
-    public BundesweiteAdresseResponse searchAddresses(SearchAddressesGermanyModel searchAddressesGermanyModel)
+    public BundesweiteAdresseResponse searchAddresses(final SearchAddressesGermanyModel searchAddressesGermanyModel)
             throws AddressServiceIntegrationException {
         return addressClientOutPort.searchAddresses(searchAddressesGermanyModel);
     }

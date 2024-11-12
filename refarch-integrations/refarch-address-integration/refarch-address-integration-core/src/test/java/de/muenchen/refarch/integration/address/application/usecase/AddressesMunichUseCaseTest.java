@@ -18,17 +18,18 @@ import de.muenchen.refarch.integration.address.client.model.response.AddressDist
 import de.muenchen.refarch.integration.address.client.gen.model.AenderungResponse;
 import de.muenchen.refarch.integration.address.client.gen.model.MuenchenAdresse;
 import de.muenchen.refarch.integration.address.client.gen.model.MuenchenAdresseResponse;
-import de.muenchen.refarch.integration.address.application.usecase.AddressesMunichUseCase;
 import org.junit.jupiter.api.Test;
 
 class AddressesMunichUseCaseTest {
 
+    public static final String SOME_ERROR = "SomeError";
+    public static final String MESSAGE = "400";
     private final AddressClientOutPort addressClientOutPort = mock(AddressClientOutPort.class);
 
     private final AddressMunichInPort addressesMunichUseCase = new AddressesMunichUseCase(addressClientOutPort);
 
     @Test
-    void testCheckAddress_returnsMuenchenAdresse() throws AddressServiceIntegrationException {
+    void testCheckAddressReturnsMuenchenAdresse() throws AddressServiceIntegrationException {
         final CheckAddressesModel checkAddressesModel = CheckAddressesModel.builder().build();
         final MuenchenAdresse expectedResponse = new MuenchenAdresse();
 
@@ -41,9 +42,9 @@ class AddressesMunichUseCaseTest {
     }
 
     @Test
-    void testCheckAddress_throwsAddressServiceIntegrationException() throws AddressServiceIntegrationException {
+    void testCheckAddressThrowsAddressServiceIntegrationException() throws AddressServiceIntegrationException {
         final CheckAddressesModel checkAddressesModel = CheckAddressesModel.builder().build();
-        final AddressServiceIntegrationException expectedError = new AddressServiceIntegrationException("400", new Exception("SomeError"));
+        final AddressServiceIntegrationException expectedError = new AddressServiceIntegrationException(MESSAGE, new Exception(SOME_ERROR));
 
         when(addressClientOutPort.checkAddress(checkAddressesModel)).thenThrow(expectedError);
 
@@ -53,7 +54,7 @@ class AddressesMunichUseCaseTest {
     }
 
     @Test
-    void testListAddresses_returnsMuenchenAdresseResponse() throws AddressServiceIntegrationException {
+    void testListAddressesReturnsMuenchenAdresseResponse() throws AddressServiceIntegrationException {
         final ListAddressesModel listAddressesModel = ListAddressesModel.builder().build();
         final MuenchenAdresseResponse expectedResponse = new MuenchenAdresseResponse();
 
@@ -66,9 +67,9 @@ class AddressesMunichUseCaseTest {
     }
 
     @Test
-    void testListAddresses_throwsAddressServiceIntegrationException() throws AddressServiceIntegrationException {
+    void testListAddressesThrowsAddressServiceIntegrationException() throws AddressServiceIntegrationException {
         final ListAddressesModel listAddressesModel = ListAddressesModel.builder().build();
-        final AddressServiceIntegrationException expectedError = new AddressServiceIntegrationException("400", new Exception("SomeError"));
+        final AddressServiceIntegrationException expectedError = new AddressServiceIntegrationException(MESSAGE, new Exception(SOME_ERROR));
 
         when(addressClientOutPort.listAddresses(listAddressesModel)).thenThrow(expectedError);
 
@@ -78,7 +79,7 @@ class AddressesMunichUseCaseTest {
     }
 
     @Test
-    void testListChanges_returnsAenderungResponse() throws AddressServiceIntegrationException {
+    void testListChangesReturnsAenderungResponse() throws AddressServiceIntegrationException {
         final ListAddressChangesModel listAddressChangesModel = ListAddressChangesModel.builder().build();
         final AenderungResponse expectedResponse = new AenderungResponse();
 
@@ -91,9 +92,9 @@ class AddressesMunichUseCaseTest {
     }
 
     @Test
-    void testListChanges_throwsAddressServiceIntegrationException() throws AddressServiceIntegrationException {
+    void testListChangesThrowsAddressServiceIntegrationException() throws AddressServiceIntegrationException {
         final ListAddressChangesModel listAddressChangesModel = ListAddressChangesModel.builder().build();
-        final AddressServiceIntegrationException expectedError = new AddressServiceIntegrationException("400", new Exception("SomeError"));
+        final AddressServiceIntegrationException expectedError = new AddressServiceIntegrationException(MESSAGE, new Exception(SOME_ERROR));
 
         when(addressClientOutPort.listChanges(listAddressChangesModel)).thenThrow(expectedError);
 
@@ -103,7 +104,7 @@ class AddressesMunichUseCaseTest {
     }
 
     @Test
-    void testSearchAddresses_returnsMuenchenAdresseResponse() throws AddressServiceIntegrationException {
+    void testSearchAddressesReturnsMuenchenAdresseResponse() throws AddressServiceIntegrationException {
         final SearchAddressesModel searchAddressesModel = SearchAddressesModel.builder().build();
         final MuenchenAdresseResponse expectedResponse = new MuenchenAdresseResponse();
 
@@ -116,9 +117,9 @@ class AddressesMunichUseCaseTest {
     }
 
     @Test
-    void testSearchAddresses_throwsAddressServiceIntegrationException() throws AddressServiceIntegrationException {
+    void testSearchAddressesThrowsAddressServiceIntegrationException() throws AddressServiceIntegrationException {
         final SearchAddressesModel searchAddressesModel = SearchAddressesModel.builder().build();
-        final AddressServiceIntegrationException expectedError = new AddressServiceIntegrationException("400", new Exception("SomeError"));
+        final AddressServiceIntegrationException expectedError = new AddressServiceIntegrationException(MESSAGE, new Exception(SOME_ERROR));
 
         when(addressClientOutPort.searchAddresses(searchAddressesModel)).thenThrow(expectedError);
 
@@ -128,7 +129,7 @@ class AddressesMunichUseCaseTest {
     }
 
     @Test
-    void testSearchAddressesGeo_returnsAddressDistancesModel() throws AddressServiceIntegrationException {
+    void testSearchAddressesGeoReturnsAddressDistancesModel() throws AddressServiceIntegrationException {
         final SearchAddressesGeoModel searchAddressesGeoModel = SearchAddressesGeoModel.builder().build();
         final AddressDistancesModel expectedResponse = AddressDistancesModel.builder().build();
 
@@ -141,9 +142,9 @@ class AddressesMunichUseCaseTest {
     }
 
     @Test
-    void testSearchAddressesGeo_throwsAddressServiceIntegrationException() throws AddressServiceIntegrationException {
+    void testSearchAddressesGeoThrowsAddressServiceIntegrationException() throws AddressServiceIntegrationException {
         final SearchAddressesGeoModel searchAddressesGeoModel = SearchAddressesGeoModel.builder().build();
-        final AddressServiceIntegrationException expectedError = new AddressServiceIntegrationException("400", new Exception("SomeError"));
+        final AddressServiceIntegrationException expectedError = new AddressServiceIntegrationException(MESSAGE, new Exception(SOME_ERROR));
 
         when(addressClientOutPort.searchAddressesGeo(searchAddressesGeoModel)).thenThrow(expectedError);
 

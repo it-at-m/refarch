@@ -10,7 +10,6 @@ import de.muenchen.refarch.integration.address.application.port.out.AddressClien
 import de.muenchen.refarch.integration.address.client.exception.AddressServiceIntegrationException;
 import de.muenchen.refarch.integration.address.client.model.request.SearchAddressesGermanyModel;
 import de.muenchen.refarch.integration.address.client.gen.model.BundesweiteAdresseResponse;
-import de.muenchen.refarch.integration.address.application.usecase.AddressesGermanyUseCase;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -21,20 +20,20 @@ class AddressesGermanyUseCaseTest {
     private final AddressGermanyInPort addressesGermanyUseCase = new AddressesGermanyUseCase(addressClientOutPort);
 
     @Test
-    void testSearchAddresses_returnsBundesweiteAdresseResponse() throws AddressServiceIntegrationException {
-        SearchAddressesGermanyModel model = SearchAddressesGermanyModel.builder().build();
-        BundesweiteAdresseResponse expectedResponse = new BundesweiteAdresseResponse();
+    void testSearchAddressesReturnsBundesweiteAdresseResponse() throws AddressServiceIntegrationException {
+        final SearchAddressesGermanyModel model = SearchAddressesGermanyModel.builder().build();
+        final BundesweiteAdresseResponse expectedResponse = new BundesweiteAdresseResponse();
 
         when(addressClientOutPort.searchAddresses(model)).thenReturn(expectedResponse);
 
-        BundesweiteAdresseResponse actualResponse = addressesGermanyUseCase.searchAddresses(model);
+        final BundesweiteAdresseResponse actualResponse = addressesGermanyUseCase.searchAddresses(model);
 
         assertThat(actualResponse).isEqualTo(expectedResponse);
         verify(addressClientOutPort).searchAddresses(model);
     }
 
     @Test
-    void testSearchAddresses_throwsAddressServiceIntegrationException() throws AddressServiceIntegrationException {
+    void testSearchAddressesThrowsAddressServiceIntegrationException() throws AddressServiceIntegrationException {
         final SearchAddressesGermanyModel model = SearchAddressesGermanyModel.builder().build();
         final AddressServiceIntegrationException expectedError = new AddressServiceIntegrationException("SomeError", new Exception("SomeError"));
 

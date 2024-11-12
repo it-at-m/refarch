@@ -43,7 +43,7 @@ public class AddressServiceIntegrationAutoConfiguration {
      * @return a configured {@link ApiClient}.
      */
     public ApiClient addressServiceApiClient() {
-        ApiClient client = new ApiClient(WebClient.create(addressServiceIntegrationProperties.getUrl()));
+        final ApiClient client = new ApiClient(WebClient.create(addressServiceIntegrationProperties.getUrl()));
         client.setBasePath(addressServiceIntegrationProperties.getUrl());
         return client;
     }

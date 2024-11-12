@@ -12,7 +12,7 @@ public interface AddressGermanyInPort {
     /**
      * Search for addresses in Germany.
      */
-    BundesweiteAdresseResponse searchAddresses(final SearchAddressesGermanyModel searchAddressesGermanyModel)
+    BundesweiteAdresseResponse searchAddresses(SearchAddressesGermanyModel searchAddressesGermanyModel)
             throws AddressServiceIntegrationException;
 
 }
