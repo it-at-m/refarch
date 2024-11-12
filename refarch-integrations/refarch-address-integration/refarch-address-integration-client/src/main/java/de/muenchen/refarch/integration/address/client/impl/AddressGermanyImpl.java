@@ -9,9 +9,6 @@ import de.muenchen.refarch.integration.address.client.gen.api.AdressenBundesweit
 import de.muenchen.refarch.integration.address.client.gen.model.BundesweiteAdresseResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.client.RestClientException;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -22,31 +19,17 @@ public class AddressGermanyImpl implements AddressGermanyApi {
     @Override
     public BundesweiteAdresseResponse searchAddresses(final SearchAddressesGermanyModel searchAddressesGermanyModel)
             throws AddressServiceIntegrationClientErrorException, AddressServiceIntegrationServerErrorException, AddressServiceIntegrationException {
-        try {
-            return this.adressenBundesweitApi.searchAdressen(
-                    searchAddressesGermanyModel.getQuery(),
-                    searchAddressesGermanyModel.getZip(),
-                    searchAddressesGermanyModel.getCityName(),
-                    searchAddressesGermanyModel.getGemeindeschluessel(),
-                    searchAddressesGermanyModel.getHouseNumberFilter(),
-                    searchAddressesGermanyModel.getLetterFilter(),
-                    searchAddressesGermanyModel.getSort(),
-                    searchAddressesGermanyModel.getSortdir(),
-                    searchAddressesGermanyModel.getPage(),
-                    searchAddressesGermanyModel.getPagesize()).block();
-        } catch (final HttpClientErrorException exception) {
-            final String message = String.format("The request to get address bundesweit failed with %s.", exception.getStatusCode());
-            log.debug(message);
-            throw new AddressServiceIntegrationClientErrorException(message, exception);
-        } catch (final HttpServerErrorException exception) {
-            final String message = String.format("The request to get address bundesweit failed with %s.", exception.getStatusCode());
-            log.debug(message);
-            throw new AddressServiceIntegrationServerErrorException(message, exception);
-        } catch (final RestClientException exception) {
-            final String message = "The request to get address bundesweit failed.";
-            log.debug(message);
-            throw new AddressServiceIntegrationException(message, exception);
-        }
+        return ExceptionHandler.executeWithErrorHandling(() -> this.adressenBundesweitApi.searchAdressen(
+                searchAddressesGermanyModel.getQuery(),
+                searchAddressesGermanyModel.getZip(),
+                searchAddressesGermanyModel.getCityName(),
+                searchAddressesGermanyModel.getGemeindeschluessel(),
+                searchAddressesGermanyModel.getHouseNumberFilter(),
+                searchAddressesGermanyModel.getLetterFilter(),
+                searchAddressesGermanyModel.getSort(),
+                searchAddressesGermanyModel.getSortdir(),
+                searchAddressesGermanyModel.getPage(),
+                searchAddressesGermanyModel.getPagesize()).block(), "address bundesweit");
     }
 
 }
