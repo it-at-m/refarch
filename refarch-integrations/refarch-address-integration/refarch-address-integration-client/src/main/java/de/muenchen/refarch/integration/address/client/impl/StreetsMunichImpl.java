@@ -18,6 +18,7 @@ import org.springframework.web.client.RestClientException;
 @Slf4j
 public class StreetsMunichImpl implements StreetsMunichApi {
 
+    public static final String REQUEST_EXCEPTION_MESSAGE = "The request to get street failed with %s. %s";
     private final StraenMnchenApi straessenMuenchenApi;
 
     @Override
@@ -26,11 +27,11 @@ public class StreetsMunichImpl implements StreetsMunichApi {
         try {
             return this.straessenMuenchenApi.findStrasseByNummer(streetId).block();
         } catch (final HttpClientErrorException exception) {
-            final String message = String.format("The request to get street failed with %s. %s", exception.getStatusCode(), exception.getMessage());
+            final String message = String.format(REQUEST_EXCEPTION_MESSAGE, exception.getStatusCode(), exception.getMessage());
             log.debug(message);
             throw new AddressServiceIntegrationClientErrorException(message, exception);
         } catch (final HttpServerErrorException exception) {
-            final String message = String.format("The request to get street failed with %s. %s", exception.getStatusCode(), exception.getMessage());
+            final String message = String.format(REQUEST_EXCEPTION_MESSAGE, exception.getStatusCode(), exception.getMessage());
             log.debug(message);
             throw new AddressServiceIntegrationServerErrorException(message, exception);
         } catch (final RestClientException exception) {
@@ -52,11 +53,11 @@ public class StreetsMunichImpl implements StreetsMunichApi {
                     listStreetsModel.getPage(),
                     listStreetsModel.getPagesize()).block();
         } catch (final HttpClientErrorException exception) {
-            final String message = String.format("The request to get street failed with %s. %s", exception.getStatusCode(), exception.getMessage());
+            final String message = String.format(REQUEST_EXCEPTION_MESSAGE, exception.getStatusCode(), exception.getMessage());
             log.debug(message);
             throw new AddressServiceIntegrationClientErrorException(message, exception);
         } catch (final HttpServerErrorException exception) {
-            final String message = String.format("The request to get street failed with %s. %s", exception.getStatusCode(), exception.getMessage());
+            final String message = String.format(REQUEST_EXCEPTION_MESSAGE, exception.getStatusCode(), exception.getMessage());
             log.debug(message);
             throw new AddressServiceIntegrationServerErrorException(message, exception);
         } catch (final RestClientException exception) {

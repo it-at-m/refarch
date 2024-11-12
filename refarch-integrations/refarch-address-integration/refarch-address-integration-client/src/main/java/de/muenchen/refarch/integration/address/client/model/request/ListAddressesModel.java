@@ -11,6 +11,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@SuppressWarnings("PMD.TooManyFields")
 public class ListAddressesModel {
 
     private List<String> baublock;

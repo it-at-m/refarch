@@ -9,6 +9,6 @@ import lombok.Data;
 @Data
 public class AddressDistancesModel {
 
-    List<AdresseDistanz> addressDistances;
+    protected List<AdresseDistanz> addressDistances;
 
 }

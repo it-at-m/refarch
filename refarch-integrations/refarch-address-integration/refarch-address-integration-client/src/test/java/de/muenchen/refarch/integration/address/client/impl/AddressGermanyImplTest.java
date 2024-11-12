@@ -8,7 +8,6 @@ import de.muenchen.refarch.integration.address.client.api.AddressGermanyApi;
 import de.muenchen.refarch.integration.address.client.exception.AddressServiceIntegrationClientErrorException;
 import de.muenchen.refarch.integration.address.client.exception.AddressServiceIntegrationException;
 import de.muenchen.refarch.integration.address.client.exception.AddressServiceIntegrationServerErrorException;
-import de.muenchen.refarch.integration.address.client.impl.AddressGermanyImpl;
 import de.muenchen.refarch.integration.address.client.model.request.SearchAddressesGermanyModel;
 import de.muenchen.refarch.integration.address.client.gen.api.AdressenBundesweitApi;
 import de.muenchen.refarch.integration.address.client.gen.model.AddressServicePage;
@@ -27,6 +26,12 @@ import reactor.core.publisher.Mono;
 
 class AddressGermanyImplTest {
 
+    public static final String QUERY = "Sample Query";
+    public static final String ZIP = "12345";
+    public static final String CITY = "Sample City";
+    public static final String GEMEINDESCHLUESSEL = "456789";
+    public static final String SORT = "name";
+    public static final String SORTDIR = "asc";
     private final AdressenBundesweitApi adressenBundesweitApi = Mockito.mock(AdressenBundesweitApi.class);
     private final AddressGermanyApi addressGermany = new AddressGermanyImpl(adressenBundesweitApi);
 
@@ -35,14 +40,14 @@ class AddressGermanyImplTest {
 
     @BeforeEach
     void setup() {
-        this.searchAddressesModel.setQuery("Sample Query");
-        this.searchAddressesModel.setZip("12345");
-        this.searchAddressesModel.setCityName("Sample City");
-        this.searchAddressesModel.setGemeindeschluessel("456789");
+        this.searchAddressesModel.setQuery(QUERY);
+        this.searchAddressesModel.setZip(ZIP);
+        this.searchAddressesModel.setCityName(CITY);
+        this.searchAddressesModel.setGemeindeschluessel(GEMEINDESCHLUESSEL);
         this.searchAddressesModel.setHouseNumberFilter(List.of(1L, 2L, 3L));
         this.searchAddressesModel.setLetterFilter(List.of("A", "B", "C"));
-        this.searchAddressesModel.setSort("name");
-        this.searchAddressesModel.setSortdir("asc");
+        this.searchAddressesModel.setSort(SORT);
+        this.searchAddressesModel.setSortdir(SORTDIR);
         this.searchAddressesModel.setPage(1);
         this.searchAddressesModel.setPagesize(10);
 
@@ -57,17 +62,17 @@ class AddressGermanyImplTest {
     }
 
     @Test
-    void testFindStreetsById_Success()
+    void testFindStreetsByIdSuccess()
             throws AddressServiceIntegrationServerErrorException, AddressServiceIntegrationException, AddressServiceIntegrationClientErrorException {
         when(this.adressenBundesweitApi.searchAdressen(
-                "Sample Query",
-                "12345",
-                "Sample City",
-                "456789",
+                QUERY,
+                ZIP,
+                CITY,
+                GEMEINDESCHLUESSEL,
                 List.of(1L, 2L, 3L),
                 List.of("A", "B", "C"),
-                "name",
-                "asc",
+                SORT,
+                SORTDIR,
                 1,
                 10)).thenReturn(Mono.just(bundesweiteAdresseResponse));
         final BundesweiteAdresseResponse result = addressGermany.searchAddresses(this.searchAddressesModel);
@@ -75,16 +80,16 @@ class AddressGermanyImplTest {
     }
 
     @Test
-    void testFindStreetsById_ClientErrorException() {
+    void testFindStreetsByIdClientErrorException() {
         when(this.adressenBundesweitApi.searchAdressen(
-                "Sample Query",
-                "12345",
-                "Sample City",
-                "456789",
+                QUERY,
+                ZIP,
+                CITY,
+                GEMEINDESCHLUESSEL,
                 List.of(1L, 2L, 3L),
                 List.of("A", "B", "C"),
-                "name",
-                "asc",
+                SORT,
+                SORTDIR,
                 1,
                 10)).thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST, "message"));
         assertThatThrownBy(() -> addressGermany.searchAddresses(this.searchAddressesModel))
@@ -92,16 +97,16 @@ class AddressGermanyImplTest {
     }
 
     @Test
-    void testFindStreetsById_ServerErrorException() {
+    void testFindStreetsByIdServerErrorException() {
         when(this.adressenBundesweitApi.searchAdressen(
-                "Sample Query",
-                "12345",
-                "Sample City",
-                "456789",
+                QUERY,
+                ZIP,
+                CITY,
+                GEMEINDESCHLUESSEL,
                 List.of(1L, 2L, 3L),
                 List.of("A", "B", "C"),
-                "name",
-                "asc",
+                SORT,
+                SORTDIR,
                 1,
                 10)).thenThrow(new HttpServerErrorException(HttpStatus.BAD_REQUEST, "message"));
         assertThatThrownBy(() -> addressGermany.searchAddresses(this.searchAddressesModel))
@@ -109,16 +114,16 @@ class AddressGermanyImplTest {
     }
 
     @Test
-    void testFindStreetsById_RestClientException() {
+    void testFindStreetsByIdRestClientException() {
         when(this.adressenBundesweitApi.searchAdressen(
-                "Sample Query",
-                "12345",
-                "Sample City",
-                "456789",
+                QUERY,
+                ZIP,
+                CITY,
+                GEMEINDESCHLUESSEL,
                 List.of(1L, 2L, 3L),
                 List.of("A", "B", "C"),
-                "name",
-                "asc",
+                SORT,
+                SORTDIR,
                 1,
                 10)).thenThrow(new RestClientException(""));
         assertThatThrownBy(() -> addressGermany.searchAddresses(this.searchAddressesModel))

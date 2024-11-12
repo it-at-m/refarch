@@ -20,7 +20,7 @@ public interface AddressGermanyApi {
      * @throws AddressServiceIntegrationServerErrorException
      * @throws AddressServiceIntegrationException
      */
-    BundesweiteAdresseResponse searchAddresses(final SearchAddressesGermanyModel searchAddressesGermanyModel)
+    BundesweiteAdresseResponse searchAddresses(SearchAddressesGermanyModel searchAddressesGermanyModel)
             throws AddressServiceIntegrationClientErrorException, AddressServiceIntegrationServerErrorException, AddressServiceIntegrationException;
 
 }

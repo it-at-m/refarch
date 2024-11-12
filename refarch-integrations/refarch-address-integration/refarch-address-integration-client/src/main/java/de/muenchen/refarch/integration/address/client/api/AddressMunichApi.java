@@ -27,7 +27,7 @@ public interface AddressMunichApi {
      * @throws AddressServiceIntegrationServerErrorException
      * @throws AddressServiceIntegrationException
      */
-    MuenchenAdresse checkAddress(final CheckAddressesModel checkAddressesModel)
+    MuenchenAdresse checkAddress(CheckAddressesModel checkAddressesModel)
             throws AddressServiceIntegrationClientErrorException, AddressServiceIntegrationServerErrorException, AddressServiceIntegrationException;
 
     /**
@@ -39,7 +39,7 @@ public interface AddressMunichApi {
      * @throws AddressServiceIntegrationServerErrorException
      * @throws AddressServiceIntegrationException
      */
-    MuenchenAdresseResponse listAddresses(final ListAddressesModel listAddressesModel)
+    MuenchenAdresseResponse listAddresses(ListAddressesModel listAddressesModel)
             throws AddressServiceIntegrationClientErrorException, AddressServiceIntegrationServerErrorException, AddressServiceIntegrationException;
 
     /**
@@ -51,7 +51,7 @@ public interface AddressMunichApi {
      * @throws AddressServiceIntegrationException
      * @throws AddressServiceIntegrationClientErrorException
      */
-    AenderungResponse listChanges(final ListAddressChangesModel listAddressChangesModel)
+    AenderungResponse listChanges(ListAddressChangesModel listAddressChangesModel)
             throws AddressServiceIntegrationServerErrorException, AddressServiceIntegrationException, AddressServiceIntegrationClientErrorException;
 
     /**
@@ -63,7 +63,7 @@ public interface AddressMunichApi {
      * @throws AddressServiceIntegrationException
      * @throws AddressServiceIntegrationClientErrorException
      */
-    MuenchenAdresseResponse searchAddresses(final SearchAddressesModel searchAddressesModel)
+    MuenchenAdresseResponse searchAddresses(SearchAddressesModel searchAddressesModel)
             throws AddressServiceIntegrationServerErrorException, AddressServiceIntegrationException, AddressServiceIntegrationClientErrorException;
 
     /**
@@ -75,6 +75,6 @@ public interface AddressMunichApi {
      * @throws AddressServiceIntegrationException
      * @throws AddressServiceIntegrationClientErrorException
      */
-    AddressDistancesModel searchAddressesGeo(final SearchAddressesGeoModel searchAddressesGeoModel)
+    AddressDistancesModel searchAddressesGeo(SearchAddressesGeoModel searchAddressesGeoModel)
             throws AddressServiceIntegrationServerErrorException, AddressServiceIntegrationException, AddressServiceIntegrationClientErrorException;
 }

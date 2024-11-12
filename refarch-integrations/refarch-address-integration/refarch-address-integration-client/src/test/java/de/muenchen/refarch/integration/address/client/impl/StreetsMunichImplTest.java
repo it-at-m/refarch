@@ -8,7 +8,6 @@ import de.muenchen.refarch.integration.address.client.api.StreetsMunichApi;
 import de.muenchen.refarch.integration.address.client.exception.AddressServiceIntegrationClientErrorException;
 import de.muenchen.refarch.integration.address.client.exception.AddressServiceIntegrationException;
 import de.muenchen.refarch.integration.address.client.exception.AddressServiceIntegrationServerErrorException;
-import de.muenchen.refarch.integration.address.client.impl.StreetsMunichImpl;
 import de.muenchen.refarch.integration.address.client.model.request.ListStreetsModel;
 import de.muenchen.refarch.integration.address.client.gen.api.StraenMnchenApi;
 import de.muenchen.refarch.integration.address.client.gen.model.AddressServicePage;
@@ -30,16 +29,17 @@ import reactor.core.publisher.Mono;
 
 class StreetsMunichImplTest {
 
+    public static final String MESSAGE = "message";
     private final StraenMnchenApi straessenMuenchenApi = Mockito.mock(StraenMnchenApi.class);
     private final StreetsMunichApi streetsMunich = new StreetsMunichImpl(straessenMuenchenApi);
 
-    private final long streetId = 123;
+    private static final long STREET_ID = 123;
     private final Strasse strasse = new Strasse();
 
     @BeforeEach
     void setup() {
         // basic street info
-        strasse.setStrasseId(streetId);
+        strasse.setStrasseId(STREET_ID);
         strasse.setStrassenname("streetName");
         strasse.setStrassennameKurz("streetNameShort");
         strasse.setStrassennameAbgekuerzt("streetNameAbbreviated");
@@ -59,35 +59,35 @@ class StreetsMunichImplTest {
     }
 
     @Test
-    void testFindStreetsById_Success()
+    void testFindStreetsByIdSuccess()
             throws AddressServiceIntegrationServerErrorException, AddressServiceIntegrationException, AddressServiceIntegrationClientErrorException {
         final Strasse expectedStrasse = this.strasse;
-        expectedStrasse.setStrasseId(this.streetId);
-        when(straessenMuenchenApi.findStrasseByNummer(streetId)).thenReturn(Mono.just(strasse));
-        final Strasse result = streetsMunich.findStreetsById(streetId);
+        expectedStrasse.setStrasseId(this.STREET_ID);
+        when(straessenMuenchenApi.findStrasseByNummer(STREET_ID)).thenReturn(Mono.just(strasse));
+        final Strasse result = streetsMunich.findStreetsById(STREET_ID);
         assertThat(result).isEqualTo(expectedStrasse);
     }
 
     @Test
-    void testFindStreetsById_ClientErrorException() {
-        when(straessenMuenchenApi.findStrasseByNummer(streetId)).thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST, "message"));
-        assertThatThrownBy(() -> streetsMunich.findStreetsById(streetId)).isInstanceOf(AddressServiceIntegrationClientErrorException.class);
+    void testFindStreetsByIdClientErrorException() {
+        when(straessenMuenchenApi.findStrasseByNummer(STREET_ID)).thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST, MESSAGE));
+        assertThatThrownBy(() -> streetsMunich.findStreetsById(STREET_ID)).isInstanceOf(AddressServiceIntegrationClientErrorException.class);
     }
 
     @Test
-    void testFindStreetsById_ServerErrorException() {
-        when(straessenMuenchenApi.findStrasseByNummer(streetId)).thenThrow(new HttpServerErrorException(HttpStatus.BAD_REQUEST, "message"));
-        assertThatThrownBy(() -> streetsMunich.findStreetsById(streetId)).isInstanceOf(AddressServiceIntegrationServerErrorException.class);
+    void testFindStreetsByIdServerErrorException() {
+        when(straessenMuenchenApi.findStrasseByNummer(STREET_ID)).thenThrow(new HttpServerErrorException(HttpStatus.BAD_REQUEST, MESSAGE));
+        assertThatThrownBy(() -> streetsMunich.findStreetsById(STREET_ID)).isInstanceOf(AddressServiceIntegrationServerErrorException.class);
     }
 
     @Test
-    void testFindStreetsById_RestClientException() {
-        when(straessenMuenchenApi.findStrasseByNummer(streetId)).thenThrow(new RestClientException(""));
-        assertThatThrownBy(() -> streetsMunich.findStreetsById(streetId)).isInstanceOf(AddressServiceIntegrationException.class);
+    void testFindStreetsByIdRestClientException() {
+        when(straessenMuenchenApi.findStrasseByNummer(STREET_ID)).thenThrow(new RestClientException(""));
+        assertThatThrownBy(() -> streetsMunich.findStreetsById(STREET_ID)).isInstanceOf(AddressServiceIntegrationException.class);
     }
 
     @Test
-    void testListStreets_Success()
+    void testListStreetsSuccess()
             throws AddressServiceIntegrationServerErrorException, AddressServiceIntegrationException, AddressServiceIntegrationClientErrorException {
         final ListStreetsModel listStreetsModel = ListStreetsModel.builder()
                 .streetName("streetName")
@@ -114,36 +114,36 @@ class StreetsMunichImplTest {
     }
 
     @Test
-    void testListStreets_ClientErrorException() {
-        ListStreetsModel listStreetsModel = ListStreetsModel.builder().build(); // Create a valid model
+    void testListStreetsClientErrorException() {
+        final ListStreetsModel listStreetsModel = ListStreetsModel.builder().build(); // Create a valid model
         when(straessenMuenchenApi.listStrassen(
                 listStreetsModel.getCityDistrictNames(),
                 listStreetsModel.getCityDistrictNumbers(),
                 listStreetsModel.getStreetName(),
                 listStreetsModel.getSortdir(),
                 listStreetsModel.getPage(),
-                listStreetsModel.getPagesize())).thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST, "message"));
+                listStreetsModel.getPagesize())).thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST, MESSAGE));
 
         assertThatThrownBy(() -> streetsMunich.listStreets(listStreetsModel)).isInstanceOf(AddressServiceIntegrationClientErrorException.class);
     }
 
     @Test
-    void testListStreets_ServerErrorException() {
-        ListStreetsModel listStreetsModel = ListStreetsModel.builder().build(); // Create a valid model
+    void testListStreetsServerErrorException() {
+        final ListStreetsModel listStreetsModel = ListStreetsModel.builder().build(); // Create a valid model
         when(straessenMuenchenApi.listStrassen(
                 listStreetsModel.getCityDistrictNames(),
                 listStreetsModel.getCityDistrictNumbers(),
                 listStreetsModel.getStreetName(),
                 listStreetsModel.getSortdir(),
                 listStreetsModel.getPage(),
-                listStreetsModel.getPagesize())).thenThrow(new HttpServerErrorException(HttpStatus.BAD_REQUEST, "message"));
+                listStreetsModel.getPagesize())).thenThrow(new HttpServerErrorException(HttpStatus.BAD_REQUEST, MESSAGE));
 
         assertThatThrownBy(() -> streetsMunich.listStreets(listStreetsModel)).isInstanceOf(AddressServiceIntegrationServerErrorException.class);
     }
 
     @Test
-    void testListStreets_RestClientException() {
-        ListStreetsModel listStreetsModel = ListStreetsModel.builder().build(); // Create a valid model
+    void testListStreetsRestClientException() {
+        final ListStreetsModel listStreetsModel = ListStreetsModel.builder().build(); // Create a valid model
         when(straessenMuenchenApi.listStrassen(
                 listStreetsModel.getCityDistrictNames(),
                 listStreetsModel.getCityDistrictNumbers(),

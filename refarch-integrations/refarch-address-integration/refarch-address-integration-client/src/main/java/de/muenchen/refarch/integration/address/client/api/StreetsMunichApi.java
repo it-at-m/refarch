@@ -21,7 +21,7 @@ public interface StreetsMunichApi {
      * @throws AddressServiceIntegrationException
      * @throws AddressServiceIntegrationClientErrorException
      */
-    Strasse findStreetsById(final long streetId)
+    Strasse findStreetsById(long streetId)
             throws AddressServiceIntegrationServerErrorException, AddressServiceIntegrationException, AddressServiceIntegrationClientErrorException;
 
     /**
@@ -33,7 +33,7 @@ public interface StreetsMunichApi {
      * @throws AddressServiceIntegrationException
      * @throws AddressServiceIntegrationClientErrorException
      */
-    StrasseResponse listStreets(final ListStreetsModel listStreetsModel)
+    StrasseResponse listStreets(ListStreetsModel listStreetsModel)
             throws AddressServiceIntegrationServerErrorException, AddressServiceIntegrationException, AddressServiceIntegrationClientErrorException;
 
 }
