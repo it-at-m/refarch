@@ -1,7 +1,3 @@
-/*
- * Copyright (c): it@M - Dienstleister für Informations- und Telekommunikationstechnik
- * der Landeshauptstadt München, 2022
- */
 package de.muenchen.refarch.integration.s3.configuration.nfcconverter;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -21,7 +17,12 @@ import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.Normalizer;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.apache.commons.collections4.list.UnmodifiableList;
 import org.apache.commons.collections4.map.UnmodifiableMap;
 import org.apache.commons.io.IOUtils;
@@ -36,7 +37,7 @@ import org.mockito.quality.Strictness;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-public class NfcConverterTest {
+class NfcConverterTest {
 
     // Für Stellen der API an denen Strings bestimmten Regeln genügen müssen.
     public static final String TOKEN = "token";
@@ -60,7 +61,7 @@ public class NfcConverterTest {
     // Test, das Request mit konfigriertem ContentType auf NFC normalisiert wird.
     //
     @Test
-    public void testFilterIfContenttypeInWhitelist() throws ServletException, IOException {
+    void testFilterIfContenttypeInWhitelist() throws ServletException, IOException {
         mockRequest("text/plain");
 
         filter.setContentTypes("text/plain;text/html;application/json");
@@ -70,7 +71,7 @@ public class NfcConverterTest {
         //
         // Check
         //
-        ArgumentCaptor<HttpServletRequest> reqCaptor = ArgumentCaptor.forClass(HttpServletRequest.class);
+        final ArgumentCaptor<HttpServletRequest> reqCaptor = ArgumentCaptor.forClass(HttpServletRequest.class);
         Mockito.verify(chain, Mockito.times(1)).doFilter(reqCaptor.capture(), Mockito.any(ServletResponse.class));
 
         assertEquals(VALUE_NFC, reqCaptor.getValue().getParameter(NAME_NFC));
@@ -89,7 +90,7 @@ public class NfcConverterTest {
     // auf NFC normalisiert wird.
     //
     @Test
-    public void testSkipFilterIfContenttypeNotInWhitelist() throws ServletException, IOException {
+    void testSkipFilterIfContenttypeNotInWhitelist() throws ServletException, IOException {
         mockRequest("application/postscript");
 
         filter.setContentTypes("text/plain;text/html");
@@ -99,7 +100,7 @@ public class NfcConverterTest {
         //
         // Check
         //
-        ArgumentCaptor<HttpServletRequest> reqCaptor = ArgumentCaptor.forClass(HttpServletRequest.class);
+        final ArgumentCaptor<HttpServletRequest> reqCaptor = ArgumentCaptor.forClass(HttpServletRequest.class);
         Mockito.verify(chain, Mockito.times(1)).doFilter(reqCaptor.capture(), Mockito.any(ServletResponse.class));
 
         assertEquals(VALUE_NFD, reqCaptor.getValue().getParameter(NAME_NFD));
@@ -117,19 +118,19 @@ public class NfcConverterTest {
         Mockito.when(req.getContentType()).thenReturn(contentType);
         Mockito.when(req.getRequestURI()).thenReturn("/index.html?type=" + contentType);
 
-        Map<String, String[]> baseMapParams = new HashMap<>();
+        final Map<String, String[]> baseMapParams = new HashMap<>();
         baseMapParams.put(NAME_NFD, new String[] { VALUE_NFD, VALUE2_NFD });
         final Map<String, String[]> params = UnmodifiableMap.unmodifiableMap(baseMapParams);
         Mockito.when(req.getParameter(NAME_NFD)).thenReturn(params.get(NAME_NFD)[0]);
         Mockito.when(req.getParameterMap()).thenReturn(params);
-        Map<String, String> baseMapHeaders = new HashMap<>();
+        final Map<String, String> baseMapHeaders = new HashMap<>();
         baseMapHeaders.put(NAME_NFD, VALUE_NFD);
         final Map<String, String> headers = UnmodifiableMap.unmodifiableMap(baseMapHeaders);
         Mockito.when(req.getHeaderNames()).thenReturn(Collections.enumeration(headers.keySet()));
         Mockito.when(req.getHeader(NAME_NFD)).thenReturn(headers.get(NAME_NFD));
-        List<String> baseListvalues = new ArrayList<>();
+        final List<String> baseListvalues = new ArrayList<>();
         baseListvalues.add(VALUE_NFD);
-        final UnmodifiableList<String> values = new UnmodifiableList<>(baseListvalues);
+        final List<String> values = new UnmodifiableList<>(baseListvalues);
         Mockito.when(req.getHeaders(NAME_NFD)).thenReturn(Collections.enumeration(values));
         Mockito.when(req.getCookies()).thenReturn(mockCookies());
 
@@ -148,9 +149,9 @@ public class NfcConverterTest {
     }
 
     private List<Part> mockParts() throws IOException {
-        Part part = Mockito.mock(Part.class);
+        final Part part = Mockito.mock(Part.class);
         Mockito.when(part.getInputStream()).thenReturn(new ByteArrayInputStream(VALUE_NFD.getBytes(UTF8)));
-        List<Part> baseListParts = new ArrayList<>();
+        final List<Part> baseListParts = new ArrayList<>();
         baseListParts.add(part);
         return new UnmodifiableList<>(baseListParts);
     }

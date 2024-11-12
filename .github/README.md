@@ -3,9 +3,11 @@
 [![Made with love by it@M][made-with-love-shield]][itm-opensource]
 <!-- feel free to add more shields, style 'for-the-badge' -> see https://shields.io/badges -->
 
-Collection of different ready to use reference architecture (RefArch) components developed by it@M.
+Collection of different ready to use reference architecture (RefArch) components.
 
-As counterpart there are also [refarch-templates](https://github.com/it-at-m/refarch-templates).
+For creating a new RefArch project use the [refarch-templates](https://github.com/it-at-m/refarch-templates).
+
+The RefArch is based on [Spring](https://spring.io/) and [VueJS](https://vuejs.org/).
 
 ## Usage
 

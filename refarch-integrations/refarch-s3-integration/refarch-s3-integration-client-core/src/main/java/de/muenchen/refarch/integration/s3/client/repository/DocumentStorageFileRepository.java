@@ -25,7 +25,7 @@ public abstract class DocumentStorageFileRepository {
      * @throws DocumentStorageException if the problem cannot be assigned to either the client or the S3
      *             storage or the document storage.
      */
-    public byte[] getFile(String pathToFile, int expireInMinutes)
+    public byte[] getFile(final String pathToFile, final int expireInMinutes)
             throws DocumentStorageException, DocumentStorageClientErrorException, DocumentStorageServerErrorException {
         final String presignedUrl = this.presignedUrlRepository.getPresignedUrlGetFile(pathToFile, expireInMinutes);
         return this.s3FileTransferRepository.getFile(presignedUrl);
@@ -42,7 +42,7 @@ public abstract class DocumentStorageFileRepository {
      * @throws DocumentStorageException if the problem cannot be assigned to either the client or the S3
      *             storage or the document storage.
      */
-    abstract Long getFileSize(String pathToFile)
+    public abstract Long getFileSize(String pathToFile)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException;
 
     /**

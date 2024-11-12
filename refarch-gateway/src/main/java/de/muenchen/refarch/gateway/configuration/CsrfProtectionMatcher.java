@@ -27,7 +27,7 @@ public class CsrfProtectionMatcher implements ServerWebExchangeMatcher {
     private final SecurityProperties securityProperties;
 
     @Override
-    public Mono<MatchResult> matches(ServerWebExchange exchange) {
+    public Mono<MatchResult> matches(final ServerWebExchange exchange) {
         return Mono.just(exchange.getRequest())
                 .flatMap((r) -> Mono.justOrEmpty(new MethodAndPath(r.getMethod(), r.getPath().toString())))
                 .filter((mp) -> ALLOWED_METHODS.contains(mp.method) || isWhitelisted(mp.path))
@@ -35,8 +35,8 @@ public class CsrfProtectionMatcher implements ServerWebExchangeMatcher {
                 .switchIfEmpty(MatchResult.match());
     }
 
-    private boolean isWhitelisted(String path) {
-        for (String whitelisted : securityProperties.getCsrfWhitelisted()) {
+    private boolean isWhitelisted(final String path) {
+        for (final String whitelisted : securityProperties.getCsrfWhitelisted()) {
             if (new AntPathMatcher().match(whitelisted, path)) {
                 return true;
             }

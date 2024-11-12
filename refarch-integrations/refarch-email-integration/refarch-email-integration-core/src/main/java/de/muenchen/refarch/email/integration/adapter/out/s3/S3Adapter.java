@@ -44,12 +44,13 @@ public class S3Adapter implements LoadMailAttachmentOutPort {
             final List<FileAttachment> contents = new ArrayList<>();
             final Set<String> filepath;
             filepath = documentStorageFolderRepository.getAllFilesInFolderRecursively(folderPath);
-            if (Objects.isNull(filepath))
+            if (Objects.isNull(filepath)) {
                 throw new LoadAttachmentError("An folder could not be loaded from url: " + folderPath);
+            }
             filepath.forEach(file -> contents.add(getFile(file)));
             return contents;
         } catch (final DocumentStorageException | DocumentStorageServerErrorException | DocumentStorageClientErrorException e) {
-            throw new LoadAttachmentError("An folder could not be loaded from path: " + folderPath);
+            throw new LoadAttachmentError("An folder could not be loaded from path: " + folderPath, e);
         }
     }
 
@@ -61,13 +62,13 @@ public class S3Adapter implements LoadMailAttachmentOutPort {
             final String filename = FilenameUtils.getName(filePath);
             final ByteArrayDataSource file = new ByteArrayDataSource(bytes, mimeType);
 
-            // check if mimeType exists
-            if (!fileValidationService.isSupported(mimeType))
+            if (!fileValidationService.isSupported(mimeType)) {
                 throw new LoadAttachmentError("The type of this file is not supported: " + filePath);
+            }
 
             return new FileAttachment(filename, file);
         } catch (final DocumentStorageException | DocumentStorageServerErrorException | DocumentStorageClientErrorException e) {
-            throw new LoadAttachmentError("An file could not be loaded from path: " + filePath);
+            throw new LoadAttachmentError("An file could not be loaded from path: " + filePath, e);
         }
     }
 }

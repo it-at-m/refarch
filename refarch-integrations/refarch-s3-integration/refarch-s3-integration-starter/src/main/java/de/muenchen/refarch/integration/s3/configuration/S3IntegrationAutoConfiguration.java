@@ -13,35 +13,40 @@ import de.muenchen.refarch.integration.s3.domain.exception.FileSystemAccessExcep
 import de.muenchen.refarch.integration.s3.properties.S3IntegrationProperties;
 import io.minio.MinioClient;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @RequiredArgsConstructor
 @EnableConfigurationProperties(S3IntegrationProperties.class)
+@ComponentScan(basePackages = "de.muenchen.refarch.integration.s3")
 public class S3IntegrationAutoConfiguration {
 
     public final S3IntegrationProperties s3IntegrationProperties;
 
     @ConditionalOnMissingBean
     @Bean
+    @SuppressWarnings("PMD.CloseResource")
     public S3Adapter s3Adapter() throws FileSystemAccessException {
         final MinioClient minioClient = MinioClient.builder()
                 .endpoint(this.s3IntegrationProperties.getUrl())
                 .credentials(this.s3IntegrationProperties.getAccessKey(), this.s3IntegrationProperties.getSecretKey())
                 .build();
-        return new S3Adapter(
+        final S3Adapter adapter = new S3Adapter(
                 this.s3IntegrationProperties.getBucketName(),
-                minioClient,
-                BooleanUtils.isNotFalse(this.s3IntegrationProperties.getInitialConnectionTest()));
+                minioClient);
+        if (this.s3IntegrationProperties.getInitialConnectionTest()) {
+            adapter.testConnection();
+        }
+        return adapter;
     }
 
     @ConditionalOnMissingBean
     @Bean
-    public CreatePresignedUrlsInPort createPresignedUrlsInPort(FileOperationsPresignedUrlUseCase fileHandlingService) {
+    public CreatePresignedUrlsInPort createPresignedUrlsInPort(final FileOperationsPresignedUrlUseCase fileHandlingService) {
         return new CreatePresignedUrlsUseCase(
                 fileHandlingService,
                 this.s3IntegrationProperties.getPresignedUrlExpiresInMinutes());
@@ -49,13 +54,13 @@ public class S3IntegrationAutoConfiguration {
 
     @ConditionalOnMissingBean
     @Bean
-    public FileOperationsInPort fileOperationsInPort(S3Adapter s3Adapter) {
+    public FileOperationsInPort fileOperationsInPort(final S3Adapter s3Adapter) {
         return new FileOperationsUseCase(s3Adapter);
     }
 
     @ConditionalOnMissingBean
     @Bean
-    public FileOperationsPresignedUrlUseCase fileOperationsPresignedUrlUseCase(S3Adapter s3Adapter) {
+    public FileOperationsPresignedUrlUseCase fileOperationsPresignedUrlUseCase(final S3Adapter s3Adapter) {
         return new FileOperationsPresignedUrlUseCase(s3Adapter);
     }
 

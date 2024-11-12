@@ -1,23 +1,26 @@
 "Type: Feature":
-  - head-branch: [ '^feat', 'feature' ]
+  - head-branch: [ '^feat', '-feature-' ]
 "Type: Bug":
-  - head-branch: [ '^bug', 'bug' ]
+  - head-branch: [ '^bug', '-bug-' ]
 "Type: Maintenance":
-  - head-branch: [ '^maint', 'maintenance', '^refact' ]
+  - head-branch: [ '^maint', '^refact', '-maintenance-' ]
 "Type: Documentation":
-  - head-branch: [ '^docs', "documentation" ]
+  - head-branch: [ '^docs', '-documentation-' ]
   - changed-files:
       - any-glob-to-any-file: [ 'docs/**' ]
 "Type: Dependency":
-  - head-branch: [ '^dep', 'dependency' ]
+  - head-branch: [ '^dep', '-dependency-' ]
 "Type: Security":
-  - head-branch: [ '^sec', 'security' ]
+  - head-branch: [ '^sec', '-security-' ]
 "Component: API-Gateway":
   - changed-files:
       - any-glob-to-any-file: [ 'refarch-gateway/**' ]
 "Component: Integrations":
   - changed-files:
       - any-glob-to-any-file: [ 'refarch-integrations/**' ]
+"Component: Tools":
+  - changed-files:
+      - any-glob-to-any-file: [ 'refarch-tools/**' ]
 "Component: CLI":
   - changed-files:
       - any-glob-to-any-file: [ 'refarch-cli/**' ]

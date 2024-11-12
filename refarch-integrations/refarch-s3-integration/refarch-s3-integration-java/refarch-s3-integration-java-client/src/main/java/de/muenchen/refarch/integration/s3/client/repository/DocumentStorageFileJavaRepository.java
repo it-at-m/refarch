@@ -18,7 +18,7 @@ public class DocumentStorageFileJavaRepository extends DocumentStorageFileReposi
     }
 
     @Override
-    public Long getFileSize(String pathToFile) throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
+    public Long getFileSize(final String pathToFile) throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
         try {
             return fileOperationsInPort.getFileSize(pathToFile).fileSize();
         } catch (FileSystemAccessException e) {

@@ -1,7 +1,3 @@
-/*
- * Copyright (c): it@M - Dienstleister für Informations- und Telekommunikationstechnik
- * der Landeshauptstadt München, 2022
- */
 package de.muenchen.refarch.integration.s3;
 
 import org.springframework.boot.SpringApplication;
@@ -13,9 +9,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  */
 @SpringBootApplication
 @EnableScheduling
+@SuppressWarnings("PMD.UseUtilityClass")
 public class S3IntegrationApplication {
-
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         SpringApplication.run(S3IntegrationApplication.class, args);
     }
 

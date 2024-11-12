@@ -23,7 +23,7 @@ public class FileValidationService {
      * Map stores supported file extensions and their corresponding MIME types. If it is empty, all
      * types are supported.
      */
-    private final SupportedFileExtensions supportedFileExtensions;
+    private final Map<String, String> supportedFileExtensions;
 
     /** The maximum allowed file size. A value of 0 indicates no limits. */
     @Getter
@@ -33,7 +33,7 @@ public class FileValidationService {
     @Getter
     private final DataSize maxBatchSize;
 
-    public FileValidationService(final SupportedFileExtensions supportedFileExtensions, final DataSize maxFileSize, final DataSize maxBatchSize) {
+    public FileValidationService(final Map<String, String> supportedFileExtensions, final DataSize maxFileSize, final DataSize maxBatchSize) {
         this.supportedFileExtensions = Objects.nonNull(supportedFileExtensions) ? supportedFileExtensions : new SupportedFileExtensions();
         this.maxFileSize = maxFileSize;
         this.maxBatchSize = maxBatchSize;
@@ -56,7 +56,9 @@ public class FileValidationService {
      * @return {@code true} if the file size is valid, {@code false} otherwise.
      */
     public boolean isValidFileSize(final long fileSizeInBytes) {
-        if (Objects.isNull(maxFileSize) || maxFileSize.toBytes() == 0L) return true;
+        if (Objects.isNull(maxFileSize) || maxFileSize.toBytes() == 0L) {
+            return true;
+        }
         return DataSize.ofBytes(fileSizeInBytes).compareTo(maxFileSize) <= 0;
     }
 
@@ -87,7 +89,9 @@ public class FileValidationService {
      * @return {@code true} if the batch size is valid, {@code false} otherwise.
      */
     public boolean isValidBatchSize(final DataSize batchSizeInBytes) {
-        if (Objects.isNull(maxBatchSize) || maxBatchSize.toBytes() == 0L) return true;
+        if (Objects.isNull(maxBatchSize) || maxBatchSize.toBytes() == 0L) {
+            return true;
+        }
         return batchSizeInBytes.compareTo(maxBatchSize) <= 0;
     }
 
@@ -122,17 +126,21 @@ public class FileValidationService {
      */
     public String getFileExtension(final String type) {
         final MimeTypes allMimeTypes = MimeTypes.getDefaultMimeTypes();
-        MimeType mimeType;
+        final MimeType mimeType;
         try {
             mimeType = allMimeTypes.forName(type);
         } catch (MimeTypeException e) {
-            throw new NoFileTypeException(String.format(NO_FILE_EXTENSION, type));
+            throw new NoFileTypeException(String.format(NO_FILE_EXTENSION, type), e);
         }
         final String extension = mimeType.getExtension();
         final int lastDotIndex = extension.lastIndexOf('.');
-        if (lastDotIndex == -1) throw new NoFileTypeException(String.format(NO_FILE_EXTENSION, type));
+        if (lastDotIndex == -1) {
+            throw new NoFileTypeException(String.format(NO_FILE_EXTENSION, type));
+        }
         final String fileExtension = extension.substring(lastDotIndex + 1);
-        if (fileExtension.isEmpty()) throw new NoFileTypeException(String.format(NO_FILE_EXTENSION, type));
+        if (fileExtension.isEmpty()) {
+            throw new NoFileTypeException(String.format(NO_FILE_EXTENSION, type));
+        }
         return fileExtension;
     }
 

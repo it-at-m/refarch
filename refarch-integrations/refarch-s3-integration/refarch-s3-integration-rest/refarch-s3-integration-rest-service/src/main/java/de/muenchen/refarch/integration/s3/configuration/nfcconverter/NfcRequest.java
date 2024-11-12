@@ -10,7 +10,13 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.IteratorUtils;
 import org.apache.commons.io.IOUtils;
@@ -31,9 +37,6 @@ public class NfcRequest extends HttpServletRequestWrapper implements HttpServlet
 
     public NfcRequest(final HttpServletRequest request, final Set<String> contentTypes) {
         super(request);
-        this.params = null;
-        this.cookies = null;
-        this.headers = null;
         this.contentTypes = contentTypes;
     }
 
@@ -49,7 +52,7 @@ public class NfcRequest extends HttpServletRequestWrapper implements HttpServlet
     @Override
     public Cookie[] getCookies() {
         convert();
-        return this.cookies;
+        return Arrays.copyOf(cookies, cookies.length);
     }
 
     @Override
@@ -126,7 +129,7 @@ public class NfcRequest extends HttpServletRequestWrapper implements HttpServlet
      * Only the username is converted to nfc. Password won't be touched!
      */
     @Override
-    public void login(String username, String password) throws ServletException {
+    public void login(final String username, final String password) throws ServletException {
         getOriginalRequest().login(NfcHelper.nfcConverter(username), password);
     }
 
@@ -183,8 +186,8 @@ public class NfcRequest extends HttpServletRequestWrapper implements HttpServlet
 
         final String encoding = getOriginalRequest().getCharacterEncoding();
 
-        String content;
-        try (final InputStream is = getOriginalRequest().getInputStream()) {
+        final String content;
+        try (InputStream is = getOriginalRequest().getInputStream()) {
             content = new String(IOUtils.toByteArray(is), encoding);
         }
 

@@ -14,7 +14,8 @@ public class DocumentStorageFolderJavaRepository implements DocumentStorageFolde
     private final FolderOperationsInPort folderOperationsInPort;
 
     @Override
-    public void deleteFolder(String pathToFolder) throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
+    public void deleteFolder(final String pathToFolder)
+            throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
         try {
             folderOperationsInPort.deleteFolder(pathToFolder);
         } catch (FileSystemAccessException e) {
@@ -23,7 +24,7 @@ public class DocumentStorageFolderJavaRepository implements DocumentStorageFolde
     }
 
     @Override
-    public Set<String> getAllFilesInFolderRecursively(String pathToFolder)
+    public Set<String> getAllFilesInFolderRecursively(final String pathToFolder)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
         try {
             return folderOperationsInPort.getAllFilesInFolderRecursively(pathToFolder).pathToFiles();
@@ -33,7 +34,7 @@ public class DocumentStorageFolderJavaRepository implements DocumentStorageFolde
     }
 
     @Override
-    public Map<String, Long> getAllFileSizesInFolderRecursively(String pathToFolder)
+    public Map<String, Long> getAllFileSizesInFolderRecursively(final String pathToFolder)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
         try {
             return folderOperationsInPort.getAllFileSizesInFolderRecursively(pathToFolder).fileSizes();
