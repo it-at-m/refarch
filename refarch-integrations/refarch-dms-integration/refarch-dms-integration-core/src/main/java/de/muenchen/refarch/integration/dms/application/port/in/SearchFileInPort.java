@@ -3,6 +3,7 @@ package de.muenchen.refarch.integration.dms.application.port.in;
 import de.muenchen.refarch.integration.dms.domain.exception.DmsException;
 import java.util.List;
 
+@SuppressWarnings("PMD.UseObjectForClearerAPI")
 public interface SearchFileInPort {
 
     /**

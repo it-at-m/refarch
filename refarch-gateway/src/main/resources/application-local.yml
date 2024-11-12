@@ -1,6 +1,3 @@
-SSO_ISSUER_URL: http://localhost:8100/auth/realms/local_realm
-SSO_CLIENT_ID: local
-SSO_CLIENT_SECRET: client_secret
 server:
   port: 8083
 spring:
@@ -12,9 +9,24 @@ spring:
           predicates:
             - "Path=/api/backend-service/rest/**"
           filters:
-            - RewritePath=/api/digitalwf-backend-service/(?<urlsegments>.*), /$\{urlsegments}
+            - RewritePath=/api/backend-service/(?<urlsegments>.*), /$\{urlsegments}
             - "RemoveResponseHeader=WWW-Authenticate"
         - id: frontend
           uri: http://localhost:4173/
           predicates:
             - "Path=/**"
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8100/auth/realms/local_realm
+      client:
+        provider:
+          sso:
+            issuer-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}
+        registration:
+          sso:
+            provider: sso
+            client-id: local
+            client-secret: client_secret
+            scope: profile, openid

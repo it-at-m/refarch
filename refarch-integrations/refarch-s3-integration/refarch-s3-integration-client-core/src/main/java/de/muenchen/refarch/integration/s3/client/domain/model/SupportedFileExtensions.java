@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
  * I.e. "pdf: application/pdf"
  */
 @NoArgsConstructor
+@SuppressWarnings("PMD.MissingSerialVersionUID")
 public class SupportedFileExtensions extends HashMap<String, String> {
     public SupportedFileExtensions(final Map<String, String> map) {
         super(map);

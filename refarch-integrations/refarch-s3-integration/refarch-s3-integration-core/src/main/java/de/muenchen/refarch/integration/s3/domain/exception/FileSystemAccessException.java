@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
  * Represents a technical exception
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@SuppressWarnings("PMD.MissingSerialVersionUID")
 public class FileSystemAccessException extends Exception {
     public FileSystemAccessException(final String message) {
         super(message);

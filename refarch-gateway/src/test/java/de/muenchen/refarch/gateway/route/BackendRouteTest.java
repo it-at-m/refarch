@@ -28,6 +28,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 @AutoConfigureWireMock
 class BackendRouteTest {
 
+    public static final String XSRF_HEADER_NAME = "X-XSRF-TOKEN";
     @Autowired
     private WebTestClient webTestClient;
 
@@ -37,9 +38,10 @@ class BackendRouteTest {
                 .willReturn(aResponse()
                         .withStatus(HttpStatus.OK.value())
                         .withHeaders(new HttpHeaders(
-                                new HttpHeader("Content-Type", "application/json"),
-                                new HttpHeader("WWW-Authenticate", "Bearer realm=\"Access to the staging site\", charset=\"UTF-8\""), // removed by route filter
-                                new HttpHeader("Expires", "Wed, 21 Oct 2099 07:28:06 GMT") // removed by route filter
+                                new HttpHeader(org.springframework.http.HttpHeaders.CONTENT_TYPE, "application/json"),
+                                new HttpHeader(org.springframework.http.HttpHeaders.WWW_AUTHENTICATE,
+                                        "Bearer realm=\"Access to the staging site\", charset=\"UTF-8\""), // removed by route filter
+                                new HttpHeader(org.springframework.http.HttpHeaders.EXPIRES, "Wed, 21 Oct 2099 07:28:06 GMT") // removed by route filter
                         ))
                         .withBody("{ \"testkey\" : \"testvalue\" }")));
     }
@@ -48,20 +50,21 @@ class BackendRouteTest {
     @WithMockUser
     void backendRouteResponse() {
         webTestClient.get().uri("/api/refarch-gateway-backend-service/remote/endpoint")
-                .header("Cookie", "SESSION=5cfb01a3-b691-4ca9-8735-a05690e6c2ec; XSRF-TOKEN=4d82f9f1-41f6-4a09-994a-df99d30d1be9") // removed by default-filter
-                .header("X-XSRF-TOKEN", "5cfb01a3-b691-4ca9-8735-a05690e6c2ec") // angular specific -> removed by default-filter
-                .header("Content-Type", "application/hal+json")
+                .header(org.springframework.http.HttpHeaders.COOKIE,
+                        "SESSION=5cfb01a3-b691-4ca9-8735-a05690e6c2ec; XSRF-TOKEN=4d82f9f1-41f6-4a09-994a-df99d30d1be9") // removed by default-filter
+                .header(XSRF_HEADER_NAME, "5cfb01a3-b691-4ca9-8735-a05690e6c2ec") // angular specific -> removed by default-filter
+                .header(org.springframework.http.HttpHeaders.CONTENT_TYPE, "application/hal+json")
                 .exchange()
                 .expectStatus().isEqualTo(HttpStatus.OK)
-                .expectHeader().valueMatches("Content-Type", "application/json")
-                .expectHeader().doesNotExist("WWW-Authenticate")
-                .expectHeader().valueMatches("Expires", "0")
+                .expectHeader().valueMatches(org.springframework.http.HttpHeaders.CONTENT_TYPE, "application/json")
+                .expectHeader().doesNotExist(org.springframework.http.HttpHeaders.WWW_AUTHENTICATE)
+                .expectHeader().valueMatches(org.springframework.http.HttpHeaders.EXPIRES, "0")
                 .expectBody().jsonPath("$.testkey").isEqualTo("testvalue");
 
         verify(getRequestedFor(urlEqualTo("/remote/endpoint"))
-                .withoutHeader("Cookie")
-                .withoutHeader("X-SRF-TOKEN")
-                .withHeader("Content-Type", new EqualToPattern("application/hal+json")));
+                .withoutHeader(org.springframework.http.HttpHeaders.COOKIE)
+                .withoutHeader(XSRF_HEADER_NAME)
+                .withHeader(org.springframework.http.HttpHeaders.CONTENT_TYPE, new EqualToPattern("application/hal+json")));
     }
 
 }

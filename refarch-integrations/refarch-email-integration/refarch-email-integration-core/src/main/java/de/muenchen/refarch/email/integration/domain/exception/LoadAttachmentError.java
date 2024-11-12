@@ -1,7 +1,12 @@
 package de.muenchen.refarch.email.integration.domain.exception;
 
-public class LoadAttachmentError extends Error {
+@SuppressWarnings("PMD.MissingSerialVersionUID")
+public class LoadAttachmentError extends RuntimeException {
     public LoadAttachmentError(final String message) {
         super(message);
+    }
+
+    public LoadAttachmentError(final String message, final Exception cause) {
+        super(message, cause);
     }
 }

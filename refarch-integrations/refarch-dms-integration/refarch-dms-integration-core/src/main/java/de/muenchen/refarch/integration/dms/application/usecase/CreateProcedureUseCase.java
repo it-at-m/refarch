@@ -10,6 +10,7 @@ import org.springframework.validation.annotation.Validated;
 
 @Validated
 @RequiredArgsConstructor
+@SuppressWarnings("PMD.UseObjectForClearerAPI")
 public class CreateProcedureUseCase implements CreateProcedureInPort {
 
     private final CreateProcedureOutPort createProcedureOutPort;

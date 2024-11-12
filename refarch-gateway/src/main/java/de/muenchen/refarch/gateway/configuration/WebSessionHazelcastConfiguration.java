@@ -2,10 +2,14 @@ package de.muenchen.refarch.gateway.configuration;
 
 import com.hazelcast.config.Config;
 import com.hazelcast.config.EvictionPolicy;
+import com.hazelcast.config.JoinConfig;
 import com.hazelcast.config.MapConfig;
+import com.hazelcast.config.NetworkConfig;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.map.IMap;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -26,19 +30,11 @@ import org.springframework.session.hazelcast.HazelcastIndexedSessionRepository;
 @Configuration
 @EnableSpringWebSession
 @Profile({ "hazelcast-local", "hazelcast-k8s" })
-public class WebSessionConfiguration {
+@RequiredArgsConstructor
+@SuppressFBWarnings("EI_EXPOSE_REP2")
+public class WebSessionHazelcastConfiguration {
 
-    @Value("${hazelcast.instance:hazl_instance}")
-    public String hazelcastInstanceName;
-
-    @Value("${hazelcast.group-name:session_replication_group}")
-    public String groupConfigName;
-
-    @Value("${app.spring-session-hazelcast.namespace:my_namespace}")
-    public String openshiftNamespace;
-
-    @Value("${hazelcast.openshift-service-name:apigateway}")
-    public String openshiftServiceName;
+    private final HazelcastProperties hazelcastProperties;
 
     @Bean
     public ServerOAuth2AuthorizedClientRepository authorizedClientRepository() {
@@ -46,7 +42,7 @@ public class WebSessionConfiguration {
     }
 
     @Bean
-    public ReactiveSessionRepository<MapSession> reactiveSessionRepository(@Autowired HazelcastInstance hazelcastInstance) {
+    public ReactiveSessionRepository<MapSession> reactiveSessionRepository(@Autowired final HazelcastInstance hazelcastInstance) {
         final IMap<String, Session> map = hazelcastInstance.getMap(HazelcastIndexedSessionRepository.DEFAULT_SESSION_MAP_NAME);
         return new ReactiveMapSessionRepository(map);
     }
@@ -60,39 +56,37 @@ public class WebSessionConfiguration {
     @Profile({ "hazelcast-local" })
     public Config localConfig(@Value(
         "${spring.session.timeout}"
-    ) int timeout) {
-        final var hazelcastConfig = new Config();
-        hazelcastConfig.setInstanceName(hazelcastInstanceName);
-        hazelcastConfig.setClusterName(groupConfigName);
+    ) final int timeout) {
+        final Config hazelcastConfig = new Config();
+        hazelcastConfig.setClusterName(hazelcastProperties.getClusterName());
+        hazelcastConfig.setInstanceName(hazelcastProperties.getInstanceName());
 
         addSessionTimeoutToHazelcastConfig(hazelcastConfig, timeout);
 
-        final var networkConfig = hazelcastConfig.getNetworkConfig();
+        final NetworkConfig networkConfig = hazelcastConfig.getNetworkConfig();
 
-        final var joinConfig = networkConfig.getJoin();
+        final JoinConfig joinConfig = networkConfig.getJoin();
         joinConfig.getMulticastConfig().setEnabled(false);
         joinConfig.getTcpIpConfig()
                 .setEnabled(true)
-                .addMember("127.0.0.1");
+                .addMember("localhost");
 
         return hazelcastConfig;
     }
 
     @Bean
     @Profile({ "hazelcast-k8s" })
-    public Config config(@Value("${spring.session.timeout}") int timeout) {
-        final var hazelcastConfig = new Config();
-        hazelcastConfig.setInstanceName(hazelcastInstanceName);
-        hazelcastConfig.setClusterName(groupConfigName);
+    public Config config(@Value("${spring.session.timeout}") final int timeout) {
+        final Config hazelcastConfig = new Config();
+        hazelcastConfig.setClusterName(hazelcastProperties.getClusterName());
+        hazelcastConfig.setInstanceName(hazelcastProperties.getInstanceName());
 
         addSessionTimeoutToHazelcastConfig(hazelcastConfig, timeout);
 
         hazelcastConfig.getNetworkConfig().getJoin().getMulticastConfig().setEnabled(false);
         hazelcastConfig.getNetworkConfig().getJoin().getKubernetesConfig().setEnabled(true)
-                // explicitly configure namespace because default env lookup is not always correct
-                .setProperty("namespace", openshiftNamespace)
                 //If we don't set a specific name, it would call -all- services within a namespace
-                .setProperty("service-name", openshiftServiceName);
+                .setProperty("service-name", hazelcastProperties.getServiceName());
 
         return hazelcastConfig;
     }
@@ -107,7 +101,7 @@ public class WebSessionConfiguration {
      * @param sessionTimeout for security session.
      */
     private void addSessionTimeoutToHazelcastConfig(final Config hazelcastConfig, final int sessionTimeout) {
-        final var sessionConfig = new MapConfig();
+        final MapConfig sessionConfig = new MapConfig();
         sessionConfig.setName(HazelcastIndexedSessionRepository.DEFAULT_SESSION_MAP_NAME);
         sessionConfig.setTimeToLiveSeconds(sessionTimeout);
         sessionConfig.getEvictionConfig().setEvictionPolicy(EvictionPolicy.LRU);

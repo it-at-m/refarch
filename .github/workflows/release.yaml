@@ -10,6 +10,7 @@ on:
         options:
           - refarch-gateway
           - refarch-integrations
+          - refarch-tools/refarch-java-tools
       release:
         description: 'Release?'
         type: boolean
@@ -30,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Maven build and release
         uses: ./.github/actions/build-maven
         with:
@@ -49,7 +50,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Build and push image
         uses: ./.github/actions/build-image
         with:
@@ -72,7 +73,7 @@ jobs:
             path: ./refarch-integrations/refarch-s3-integration/refarch-s3-integration-rest/refarch-s3-integration-rest-service
     steps:
       - name: Checkout code
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Build and push images
         uses: ./.github/actions/build-image
         with:
@@ -91,7 +92,7 @@ jobs:
     steps:
       - name: Create GitHub Release
         id: create_release
-        uses: softprops/action-gh-release@c062e08bd532815e2082a85e87e3ef29c3e6d191 # v2.0.8
+        uses: softprops/action-gh-release@e7a8f85e1c67a31e6ed99a94b41bd0b71bbee6b8 # v2.0.9
         with:
           tag_name: "${{ inputs.module }}_${{ github.event.inputs.release-version }}"
           draft: false

@@ -41,7 +41,7 @@ class S3AdapterTest {
     }
 
     @Test
-    void testLoadAttachment_DocumentStorageException()
+    void testLoadAttachmentDocumentStorageException()
             throws DocumentStorageException, DocumentStorageClientErrorException, DocumentStorageServerErrorException {
         final String path = "path/to/some-file.txt";
 
@@ -53,7 +53,7 @@ class S3AdapterTest {
     }
 
     @Test
-    void testLoadAttachment_Success() throws DocumentStorageException, DocumentStorageClientErrorException, DocumentStorageServerErrorException {
+    void testLoadAttachmentSuccess() throws DocumentStorageException, DocumentStorageClientErrorException, DocumentStorageServerErrorException {
         final Map<String, String> files = Map.of(
                 "test-logo.png", "image/png",
                 "test-pdf.pdf", "application/pdf",

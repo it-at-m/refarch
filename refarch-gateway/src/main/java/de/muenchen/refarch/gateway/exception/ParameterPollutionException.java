@@ -1,6 +1,7 @@
 package de.muenchen.refarch.gateway.exception;
 
 import de.muenchen.refarch.gateway.filter.GlobalRequestParameterPollutionFilter;
+import java.io.Serial;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -19,5 +20,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class ParameterPollutionException extends RuntimeException {
+    @Serial
+    private static final long serialVersionUID = 1L;
     // default Ctor
 }

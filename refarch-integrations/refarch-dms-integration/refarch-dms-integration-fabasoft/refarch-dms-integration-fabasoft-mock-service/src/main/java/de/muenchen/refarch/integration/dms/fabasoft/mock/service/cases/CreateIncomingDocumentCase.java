@@ -4,16 +4,15 @@ import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.CreateIncomingGI;
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.CreateIncomingGIResponse;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import de.muenchen.refarch.integration.dms.fabasoft.mock.WiremockWsdlUtility;
-import lombok.val;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CreateIncomingDocumentCase implements MockCase {
 
     @Override
-    public void initCase(WireMockServer server) {
+    public void initCase(final WireMockServer server) {
 
-        val createIncomingGIResponse = new CreateIncomingGIResponse();
+        final CreateIncomingGIResponse createIncomingGIResponse = new CreateIncomingGIResponse();
         createIncomingGIResponse.setObjid("1234567890");
 
         WiremockWsdlUtility.stubOperation(

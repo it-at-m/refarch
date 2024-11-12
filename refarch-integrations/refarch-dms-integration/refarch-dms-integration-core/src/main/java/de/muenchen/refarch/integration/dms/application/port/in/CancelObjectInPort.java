@@ -5,6 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 
 public interface CancelObjectInPort {
 
-    void cancelObject(@NotBlank final String objectCoo, @NotBlank final String user) throws DmsException;
+    void cancelObject(@NotBlank String objectCoo, @NotBlank String user) throws DmsException;
 
 }

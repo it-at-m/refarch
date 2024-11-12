@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.3</version>
+        <version>3.3.4</version>
         <relativePath />
     </parent>
 
@@ -13,7 +13,7 @@
     <artifactId>refarch-gateway</artifactId>
     <name>refarch-gateway</name>
     <description>Ready to use RefArch gateway based on Spring Cloud Gateway</description>
-    <version>1.2.0-SNAPSHOT</version>
+    <version>1.4.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -32,6 +32,10 @@
         <!-- Linting & Formatting -->
         <spotless-maven-plugin.version>2.34.0</spotless-maven-plugin.version>
         <itm-java-codeformat.version>1.0.10</itm-java-codeformat.version>
+        <pmd-maven-plugin.version>3.26.0</pmd-maven-plugin.version>
+        <spotbugs-maven-plugin.version>4.8.6.5</spotbugs-maven-plugin.version>
+        <spotbugs-annotations.version>4.8.6</spotbugs-annotations.version>
+        <findsecbugs-plugin.version>1.13.0</findsecbugs-plugin.version>
 
         <!-- Testing -->
         <jacoco.version>0.8.12</jacoco.version>
@@ -41,6 +45,7 @@
 
         <!-- Utility -->
         <apache-commons-lang.version>3.17.0</apache-commons-lang.version>
+        <refarch-tools.version>1.0.0</refarch-tools.version>
 
         <!-- Additional required dependencies -->
         <hazelcast.version>5.5.0</hazelcast.version>
@@ -138,6 +143,13 @@
             <artifactId>spring-cloud-starter-contract-stub-runner</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!-- Other -->
+        <dependency>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs-annotations</artifactId>
+            <version>${spotbugs-annotations.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -228,6 +240,64 @@
                         <trimTrailingWhitespace />
                         <endWithNewline />
                     </java>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Linting -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>${pmd-maven-plugin.version}</version>
+                <configuration>
+                    <minimumTokens>100</minimumTokens>
+                    <targetJdk>${java.version}</targetJdk>
+                    <printFailingErrors>true</printFailingErrors>
+                    <linkXRef>false</linkXRef>
+                    <includeTests>true</includeTests>
+                    <excludeRoots>
+                        <excludeRoot>target/generated-sources</excludeRoot>
+                        <excludeRoot>target/generated-test-sources</excludeRoot>
+                    </excludeRoots>
+                    <rulesets>
+                        <ruleset>refarch-pmd-ruleset.xml</ruleset>
+                    </rulesets>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                            <goal>cpd-check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>de.muenchen.refarch.tools</groupId>
+                        <artifactId>refarch-pmd</artifactId>
+                        <version>${refarch-tools.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>${spotbugs-maven-plugin.version}</version>
+                <configuration>
+                    <effort>Max</effort>
+                    <plugins>
+                        <plugin>
+                            <groupId>com.h3xstream.findsecbugs</groupId>
+                            <artifactId>findsecbugs-plugin</artifactId>
+                            <version>${findsecbugs-plugin.version}</version>
+                        </plugin>
+                    </plugins>
                 </configuration>
                 <executions>
                     <execution>

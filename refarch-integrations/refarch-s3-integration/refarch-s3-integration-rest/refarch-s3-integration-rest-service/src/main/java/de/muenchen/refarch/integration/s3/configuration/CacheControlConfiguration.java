@@ -24,7 +24,7 @@ public class CacheControlConfiguration {
 
     @Bean
     public FilterRegistrationBean<CacheControlFilter> cacheControlFilter() {
-        FilterRegistrationBean<CacheControlFilter> registration = new FilterRegistrationBean<>();
+        final FilterRegistrationBean<CacheControlFilter> registration = new FilterRegistrationBean<>();
         registration.setFilter(new CacheControlFilter());
         registration.addUrlPatterns("/*");
         return registration;
@@ -50,9 +50,9 @@ public class CacheControlConfiguration {
          * ServletRequest and ServletResponse ones.
          */
         @Override
-        protected void doFilterInternal(@NotNull HttpServletRequest request,
-                HttpServletResponse response,
-                @NotNull FilterChain filterChain) throws ServletException, IOException {
+        protected void doFilterInternal(@NotNull final HttpServletRequest request,
+                final HttpServletResponse response,
+                @NotNull final FilterChain filterChain) throws ServletException, IOException {
 
             final String cacheControlHeaderValue = response.getHeader(HttpHeaders.CACHE_CONTROL);
             if (StringUtils.isBlank(cacheControlHeaderValue)) {

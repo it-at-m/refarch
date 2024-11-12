@@ -13,9 +13,9 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 @AutoConfigureWebTestClient
 @AutoConfigureObservability
 @ActiveProfiles(profiles = { TestConstants.SPRING_TEST_PROFILE })
-public class SecurityConfigurationTest {
+class SecurityConfigurationTest {
     @Autowired
-    WebTestClient api;
+    private WebTestClient api;
 
     @Test
     void accessSecuredResourceRootThenUnauthorized() {

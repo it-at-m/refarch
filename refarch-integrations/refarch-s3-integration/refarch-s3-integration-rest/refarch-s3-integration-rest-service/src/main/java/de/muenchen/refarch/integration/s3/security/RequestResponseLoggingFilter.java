@@ -42,7 +42,7 @@ public class RequestResponseLoggingFilter implements Filter {
      */
     @Override
     public void init(final FilterConfig filterConfig) {
-        log.debug("Initializing filter: {}", this);
+        log.debug("Initializing RequestResponseLoggingFilter with mode '{}'", this.requestLoggingMode);
     }
 
     /**
@@ -71,7 +71,7 @@ public class RequestResponseLoggingFilter implements Filter {
      */
     @Override
     public void destroy() {
-        log.debug("Destructing filter: {}", this);
+        log.debug("Destructing RequestResponseLoggingFilter");
     }
 
     /**
@@ -80,9 +80,9 @@ public class RequestResponseLoggingFilter implements Filter {
      * @param httpServletRequest The request to check for logging.
      * @return True if logging should be done otherwise false.
      */
-    private boolean checkForLogging(HttpServletRequest httpServletRequest) {
-        return requestLoggingMode.equals(REQUEST_LOGGING_MODE_ALL)
-                || (requestLoggingMode.equals(REQUEST_LOGGING_MODE_CHANGING)
+    private boolean checkForLogging(final HttpServletRequest httpServletRequest) {
+        return REQUEST_LOGGING_MODE_ALL.equals(requestLoggingMode)
+                || (REQUEST_LOGGING_MODE_CHANGING.equals(requestLoggingMode)
                         && CHANGING_METHODS.contains(httpServletRequest.getMethod()));
     }
 

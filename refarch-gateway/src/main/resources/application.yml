@@ -8,21 +8,6 @@ spring:
       indent-output: on
   session:
     timeout: 1800  # in seconds; Goal: same lifetime as SSO Session, actual: 30 minutes
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: ${SSO_ISSUER_URL}
-      client:
-        provider:
-          keycloak:
-            issuer-uri: ${SSO_ISSUER_URL}
-        registration:
-          keycloak:
-            client-id: ${SSO_CLIENT_ID}
-            client-secret: ${SSO_CLIENT_SECRET}
-            scope: email, profile, openid  # needed for userInfo endpoint
-            provider: keycloak
   cloud:
     gateway:
       globalcors:

@@ -23,12 +23,10 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.oauth2.client.AuthorizedClientServiceOAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
-import org.springframework.util.ResourceUtils;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
@@ -54,7 +52,7 @@ public class S3IntegrationClientAutoConfiguration {
     @ConditionalOnProperty(prefix = "refarch.s3.client", name = "enable-security", havingValue = "true")
     public ApiClient securedApiClient(final ClientRegistrationRepository clientRegistrationRepository,
             final OAuth2AuthorizedClientService authorizedClientService) {
-        final var apiClient = new ApiClient(
+        final ApiClient apiClient = new ApiClient(
                 this.authenticatedWebClient(clientRegistrationRepository, authorizedClientService));
         apiClient.setBasePath(this.s3IntegrationClientProperties.getDocumentStorageUrl());
         return apiClient;
@@ -63,7 +61,7 @@ public class S3IntegrationClientAutoConfiguration {
     @Bean
     @ConditionalOnProperty(prefix = "refarch.s3.client", name = "enable-security", havingValue = "false", matchIfMissing = true)
     public ApiClient apiClient() {
-        final var apiClient = new ApiClient(
+        final ApiClient apiClient = new ApiClient(
                 WebClient.builder().build());
         apiClient.setBasePath(this.s3IntegrationClientProperties.getDocumentStorageUrl());
         return apiClient;
@@ -72,7 +70,7 @@ public class S3IntegrationClientAutoConfiguration {
     private WebClient authenticatedWebClient(
             final ClientRegistrationRepository clientRegistrationRepository,
             final OAuth2AuthorizedClientService authorizedClientService) {
-        final var oauth = new ServletOAuth2AuthorizedClientExchangeFilterFunction(
+        final ServletOAuth2AuthorizedClientExchangeFilterFunction oauth = new ServletOAuth2AuthorizedClientExchangeFilterFunction(
                 new AuthorizedClientServiceOAuth2AuthorizedClientManager(
                         clientRegistrationRepository, authorizedClientService));
         oauth.setDefaultClientRegistrationId("s3");
@@ -90,6 +88,7 @@ public class S3IntegrationClientAutoConfiguration {
      */
     @Bean
     @ConditionalOnBean(SupportedFileExtensions.class)
+    @SuppressWarnings("PMD.LooseCoupling")
     public FileValidationService fileService(final SupportedFileExtensions supportedFileExtensions) {
         return new FileValidationService(supportedFileExtensions, this.s3IntegrationClientProperties.getMaxFileSize(),
                 this.s3IntegrationClientProperties.getMaxBatchSize());

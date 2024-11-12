@@ -78,7 +78,7 @@ public class NfcRequestFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain)
+    protected void doFilterInternal(final HttpServletRequest request, @NotNull final HttpServletResponse response, @NotNull final FilterChain filterChain)
             throws ServletException, IOException {
 
         log.debug("Request-Type={}", request.getClass().getName());

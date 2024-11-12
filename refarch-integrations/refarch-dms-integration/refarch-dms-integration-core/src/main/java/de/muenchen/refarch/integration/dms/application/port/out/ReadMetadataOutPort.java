@@ -5,8 +5,8 @@ import de.muenchen.refarch.integration.dms.domain.model.Metadata;
 
 public interface ReadMetadataOutPort {
 
-    Metadata readMetadata(final String coo, final String user) throws DmsException;
+    Metadata readMetadata(String coo, String user) throws DmsException;
 
-    Metadata readContentMetadata(final String coo, final String user) throws DmsException;
+    Metadata readContentMetadata(String coo, String user) throws DmsException;
 
 }

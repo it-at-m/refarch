@@ -18,6 +18,7 @@ import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.DepositObjectGIResponse;
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.LHMBAI151700GIAttachmentType;
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.LHMBAI151700GIMetadataType;
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.LHMBAI151700GIObjectType;
+import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.LHMBAI151700GIWSDSoap;
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.ReadContentObjectGIResponse;
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.ReadContentObjectMetaDataGI;
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.ReadContentObjectMetaDataGIResponse;
@@ -39,10 +40,10 @@ import de.muenchen.refarch.integration.dms.domain.model.Content;
 import de.muenchen.refarch.integration.dms.domain.model.Document;
 import de.muenchen.refarch.integration.dms.domain.model.DocumentType;
 import de.muenchen.refarch.integration.dms.domain.model.File;
+import de.muenchen.refarch.integration.dms.domain.model.Metadata;
 import de.muenchen.refarch.integration.dms.domain.model.Procedure;
-import de.muenchen.refarch.integration.dms.fabasoft.mock.FabasoftClienFactory;
+import de.muenchen.refarch.integration.dms.fabasoft.mock.FabasoftClientFactory;
 import de.muenchen.refarch.integration.dms.fabasoft.mock.WiremockWsdlUtility;
-import lombok.val;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -51,61 +52,70 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @WireMockTest()
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 class FabasoftAdapterTest {
+
+    public static final String USER = "user";
+    public static final String OBJID = "1234567890";
+    public static final byte[] CONTENT = "content".getBytes();
+    public static final String NAME = "name";
+    public static final String EXTENSION = "extension";
+    public static final String DOCUMENT_COO = "documentCOO";
 
     private final FabasoftProperties properties = new FabasoftProperties();
     private FabasoftAdapter fabasoftAdapter;
 
     @BeforeEach
-    public void setUp(WireMockRuntimeInfo wmRuntimeInfo) {
-        this.properties.setUsername("user");
+    public void setUp(final WireMockRuntimeInfo wmRuntimeInfo) {
+        this.properties.setUsername(USER);
         this.properties.setPassword("password");
         this.properties.setBusinessapp("businessapp");
         this.properties.setUiUrl("uiurl");
-        val soapClient = FabasoftClienFactory.dmsWsClient("http://localhost:" + wmRuntimeInfo.getHttpPort() + "/");
+        final LHMBAI151700GIWSDSoap soapClient = FabasoftClientFactory.dmsWsClient("http://localhost:" + wmRuntimeInfo.getHttpPort() + "/");
         fabasoftAdapter = new FabasoftAdapter(properties, soapClient);
     }
 
     @Test
-    void execute_createFile_request() throws DmsException {
-        val response = new CreateFileGIResponse();
-        response.setObjid("1234567890");
+    void executeCreateFileRequest() throws DmsException {
+        final CreateFileGIResponse response = new CreateFileGIResponse();
+        response.setObjid(OBJID);
 
         WiremockWsdlUtility.stubOperation(
                 "CreateFileGI",
                 CreateFileGI.class, (u) -> "new file".equals(u.getShortname()),
                 response);
 
-        val file = new File("apentryCOO", "new file");
+        final File file = new File("apentryCOO", "new file");
 
-        val procedureResponse = fabasoftAdapter.createFile(file, "user");
+        final String procedureResponse = fabasoftAdapter.createFile(file, USER);
 
-        assertEquals(procedureResponse, "1234567890");
+        assertEquals(procedureResponse, OBJID);
     }
 
     @Test
-    void execute_createProcedure_request() throws DmsException {
-        val response = new CreateProcedureGIResponse();
-        response.setObjid("1234567890");
+    void executeCreateProcedureRequest() throws DmsException {
+        final CreateProcedureGIResponse response = new CreateProcedureGIResponse();
+        response.setObjid(OBJID);
 
         WiremockWsdlUtility.stubOperation(
                 "CreateProcedureGI",
                 CreateProcedureGI.class, (u) -> "new procedure".equals(u.getShortname()),
                 response);
 
-        val procedure = new Procedure("fileCOO", "new procedure", "custom file subject");
+        final Procedure procedure = new Procedure("fileCOO", "new procedure", "custom file subject");
 
-        val procedureResponse = fabasoftAdapter.createProcedure(procedure, "user");
+        final Procedure procedureResponse = fabasoftAdapter.createProcedure(procedure, USER);
 
-        assertEquals(procedureResponse.coo(), "1234567890");
+        assertEquals(procedureResponse.coo(), OBJID);
     }
 
     @Test
-    void execute_depositObject_request() throws DmsException {
-        val response = new DepositObjectGIResponse();
+    void executeDepositObjectRequest() {
+        final DepositObjectGIResponse response = new DepositObjectGIResponse();
         response.setObjid("objectCoo");
 
         WiremockWsdlUtility.stubOperation(
@@ -113,111 +123,111 @@ class FabasoftAdapterTest {
                 DepositObjectGI.class, (u) -> true,
                 response);
 
-        fabasoftAdapter.depositObject("objectCoo", "user");
+        assertDoesNotThrow(() -> fabasoftAdapter.depositObject("objectCoo", USER));
     }
 
     @Test
-    void execute_createIncomingDocument_request() throws DmsException {
-        Content content = new Content("extension", "name", "content".getBytes());
+    void executeCreateIncomingDocumentRequest() throws DmsException {
+        final Content content = new Content(EXTENSION, NAME, CONTENT);
 
-        val response = new CreateIncomingGIResponse();
-        response.setObjid("documentCOO");
+        final CreateIncomingGIResponse response = new CreateIncomingGIResponse();
+        response.setObjid(DOCUMENT_COO);
 
         WiremockWsdlUtility.stubOperation(
                 "CreateIncomingGI",
                 CreateIncomingGI.class, (u) -> true,
                 response);
 
-        val documentResponse = fabasoftAdapter
-                .createDocument(new Document("procedureCOO", "title", LocalDate.parse("2023-12-31"), DocumentType.EINGEHEND, List.of(content)), "user");
+        final String documentResponse = fabasoftAdapter
+                .createDocument(new Document("procedureCOO", "title", LocalDate.parse("2023-12-31"), DocumentType.EINGEHEND, List.of(content)), USER);
 
-        assertEquals(documentResponse, "documentCOO");
+        assertEquals(documentResponse, DOCUMENT_COO);
     }
 
     @Test
-    void execute_createOutgoingDocument_request() throws DmsException {
-        Content content = new Content("extension", "name", "content".getBytes());
+    void executeCreateOutgoingDocumentRequest() throws DmsException {
+        final Content content = new Content(EXTENSION, NAME, CONTENT);
 
-        val response = new CreateOutgoingGIResponse();
-        response.setObjid("documentCOO");
+        final CreateOutgoingGIResponse response = new CreateOutgoingGIResponse();
+        response.setObjid(DOCUMENT_COO);
 
         WiremockWsdlUtility.stubOperation(
                 "CreateOutgoingGI",
                 CreateOutgoingGI.class, (u) -> true,
                 response);
 
-        val documentResponse = fabasoftAdapter
-                .createDocument(new Document("procedureCOO", "title", LocalDate.parse("2023-12-31"), DocumentType.AUSGEHEND, List.of(content)), "user");
+        final String documentResponse = fabasoftAdapter
+                .createDocument(new Document("procedureCOO", "title", LocalDate.parse("2023-12-31"), DocumentType.AUSGEHEND, List.of(content)), USER);
 
-        assertEquals(documentResponse, "documentCOO");
+        assertEquals(documentResponse, DOCUMENT_COO);
     }
 
     @Test
-    void execute_createInternalDocument_request() throws DmsException {
-        Content content = new Content("extension", "name", "content".getBytes());
+    void executeCreateInternalDocumentRequest() throws DmsException {
+        final Content content = new Content(EXTENSION, NAME, CONTENT);
 
-        val response = new CreateInternalGIResponse();
-        response.setObjid("documentCOO");
+        final CreateInternalGIResponse response = new CreateInternalGIResponse();
+        response.setObjid(DOCUMENT_COO);
 
         WiremockWsdlUtility.stubOperation(
                 "CreateInternalGI",
                 CreateInternalGI.class, (u) -> true,
                 response);
 
-        val documentResponse = fabasoftAdapter
-                .createDocument(new Document("procedureCOO", "title", LocalDate.parse("2023-12-31"), DocumentType.INTERN, List.of(content)), "user");
+        final String documentResponse = fabasoftAdapter
+                .createDocument(new Document("procedureCOO", "title", LocalDate.parse("2023-12-31"), DocumentType.INTERN, List.of(content)), USER);
 
-        assertEquals(documentResponse, "documentCOO");
+        assertEquals(documentResponse, DOCUMENT_COO);
     }
 
     @Test
-    void execute_updateIncomingDocument_request() throws DmsException {
-        Content content = new Content("extension", "name", "content".getBytes());
+    void executeUpdateIncomingDocumentRequest() {
+        final Content content = new Content(EXTENSION, NAME, CONTENT);
 
-        val response = new UpdateIncomingGIResponse();
-        response.setObjid("documentCOO");
+        final UpdateIncomingGIResponse response = new UpdateIncomingGIResponse();
+        response.setObjid(DOCUMENT_COO);
 
         WiremockWsdlUtility.stubOperation(
                 "UpdateIncomingGI",
                 UpdateIncomingGI.class, (u) -> true,
                 response);
 
-        fabasoftAdapter.updateDocument("documentCOO", DocumentType.EINGEHEND, List.of(content), "user");
+        assertDoesNotThrow(() -> fabasoftAdapter.updateDocument(DOCUMENT_COO, DocumentType.EINGEHEND, List.of(content), USER));
     }
 
     @Test
-    void execute_updateOutgoingDocument_request() throws DmsException {
-        Content content = new Content("extension", "name", "content".getBytes());
+    void executeUpdateOutgoingDocumentRequest() {
+        final Content content = new Content(EXTENSION, NAME, CONTENT);
 
-        val response = new UpdateOutgoingGIResponse();
-        response.setObjid("documentCOO");
+        final UpdateOutgoingGIResponse response = new UpdateOutgoingGIResponse();
+        response.setObjid(DOCUMENT_COO);
 
         WiremockWsdlUtility.stubOperation(
                 "UpdateOutgoingGI",
                 UpdateOutgoingGI.class, (u) -> true,
                 response);
 
-        fabasoftAdapter.updateDocument("documentCOO", DocumentType.AUSGEHEND, List.of(content), "user");
+        assertDoesNotThrow(() -> fabasoftAdapter.updateDocument(DOCUMENT_COO, DocumentType.AUSGEHEND, List.of(content), USER));
     }
 
     @Test
-    void execute_updateInternalDocument_request() throws DmsException {
-        Content content = new Content("extension", "name", "content".getBytes());
+    void executeUpdateInternalDocumentRequest() {
+        final Content content = new Content(EXTENSION, NAME, CONTENT);
 
-        val response = new UpdateInternalGIResponse();
-        response.setObjid("documentCOO");
+        final UpdateInternalGIResponse response = new UpdateInternalGIResponse();
+        response.setObjid(DOCUMENT_COO);
 
         WiremockWsdlUtility.stubOperation(
                 "UpdateInternalGI",
                 UpdateInternalGI.class, (u) -> true,
                 response);
 
-        fabasoftAdapter.updateDocument("documentCOO", DocumentType.INTERN, List.of(content), "user");
+        assertDoesNotThrow(() -> fabasoftAdapter.updateDocument(DOCUMENT_COO, DocumentType.INTERN, List.of(content), USER));
     }
 
     @Test
-    void execute_cancelObject_request() throws DmsException {
-        val response = new CancelObjectGIResponse();
+    void executeCancelObjectRequest() throws DmsException {
+        final CancelObjectGIResponse response = new CancelObjectGIResponse();
         response.setStatus(0);
 
         WiremockWsdlUtility.stubOperation(
@@ -225,18 +235,18 @@ class FabasoftAdapterTest {
                 CancelObjectGI.class, (u) -> true,
                 response);
 
-        fabasoftAdapter.cancelObject("objectCoo", "user");
+        assertDoesNotThrow(() -> fabasoftAdapter.cancelObject("objectCoo", USER));
     }
 
     @Test
-    void execute_list_files() throws DmsException {
-        val file1 = new LHMBAI151700GIObjectType();
+    void executeListRiles() throws DmsException {
+        final LHMBAI151700GIObjectType file1 = new LHMBAI151700GIObjectType();
         file1.setLHMBAI151700Objaddress("contentCoo1");
         file1.setLHMBAI151700Objname("File-Name");
-        val content = new ArrayOfLHMBAI151700GIObjectType();
+        final ArrayOfLHMBAI151700GIObjectType content = new ArrayOfLHMBAI151700GIObjectType();
         content.getLHMBAI151700GIObjectType().add(file1);
 
-        val response = new ReadDocumentGIObjectsResponse();
+        final ReadDocumentGIObjectsResponse response = new ReadDocumentGIObjectsResponse();
         response.setStatus(0);
         response.setGiobjecttype(content);
 
@@ -245,22 +255,22 @@ class FabasoftAdapterTest {
                 CancelObjectGI.class, (u) -> true,
                 response);
 
-        val contentCoos = fabasoftAdapter.listContentCoos("coo1", "user");
+        final List<String> contentCoos = fabasoftAdapter.listContentCoos("coo1", USER);
 
-        val expectedCoos = List.of("contentCoo1");
+        final List<String> expectedCoos = List.of("contentCoo1");
 
         assertThat(contentCoos.size()).isEqualTo(1);
         assertEquals(expectedCoos, contentCoos);
     }
 
     @Test
-    void execute_read_files() throws DmsException {
-        val content = new LHMBAI151700GIAttachmentType();
+    void executeReadFiles() throws DmsException {
+        final LHMBAI151700GIAttachmentType content = new LHMBAI151700GIAttachmentType();
         content.setLHMBAI151700Filename("filename");
-        content.setLHMBAI151700Fileextension("extension");
-        content.setLHMBAI151700Filecontent("content".getBytes());
+        content.setLHMBAI151700Fileextension(EXTENSION);
+        content.setLHMBAI151700Filecontent(CONTENT);
 
-        val response = new ReadContentObjectGIResponse();
+        final ReadContentObjectGIResponse response = new ReadContentObjectGIResponse();
         response.setStatus(0);
         response.setGiattachmenttype(content);
 
@@ -269,9 +279,9 @@ class FabasoftAdapterTest {
                 CancelObjectGI.class, (u) -> true,
                 response);
 
-        val files = fabasoftAdapter.readContent(List.of("coo1"), "user");
+        final List<Content> files = fabasoftAdapter.readContent(List.of("coo1"), USER);
 
-        val expectedFile = new Content("extension", "filename", "content".getBytes());
+        final Content expectedFile = new Content(EXTENSION, "filename", CONTENT);
 
         assertThat(files.size()).isEqualTo(1);
         assertThat(files.getFirst()).usingRecursiveComparison().isEqualTo(expectedFile);
@@ -281,31 +291,31 @@ class FabasoftAdapterTest {
      * Tests a file search.
      */
     @Test
-    void execute_searchFile_request() throws DmsException {
-        internalSearchFileCallTest(DMSObjectClass.Sachakte, "searchString", "user", null, null);
+    void executeSearchFileRequest() {
+        assertDoesNotThrow(() -> internalSearchFileCallTest(DMSObjectClass.Sachakte, "searchString", USER, null, null));
     }
 
     /**
      * Tests a file search but includes refinement on a business date/'Fachdatum'.
      */
     @Test
-    void execute_searchFile_request_business_data() throws DmsException {
-        internalSearchFileCallTest(DMSObjectClass.Sachakte, "searchString", "user", "reference", "value");
+    void executeSearchFileRequestBusinessData() throws DmsException {
+        assertDoesNotThrow(() -> internalSearchFileCallTest(DMSObjectClass.Sachakte, "searchString", USER, "reference", "value"));
     }
 
     /**
      * Tests a subject search.
      */
     @Test
-    void execute_searchSubjectArea_request() throws DmsException {
-        val file = new LHMBAI151700GIObjectType();
+    void executeSearchSubjectAreaRequest() throws DmsException {
+        final LHMBAI151700GIObjectType file = new LHMBAI151700GIObjectType();
         file.setLHMBAI151700Objaddress("testCoo");
         file.setLHMBAI151700Objname("testName");
 
-        val array = new ArrayOfLHMBAI151700GIObjectType();
+        final ArrayOfLHMBAI151700GIObjectType array = new ArrayOfLHMBAI151700GIObjectType();
         array.getLHMBAI151700GIObjectType().add(file);
 
-        val response = new SearchObjNameGIResponse();
+        final SearchObjNameGIResponse response = new SearchObjNameGIResponse();
         response.setStatus(0);
         response.setGiobjecttype(array);
 
@@ -314,7 +324,7 @@ class FabasoftAdapterTest {
                 SearchObjNameGI.class, (u) -> u.getObjclass().equals(DMSObjectClass.Aktenplaneintrag.getName()),
                 response);
 
-        val files = fabasoftAdapter.searchSubjectArea("searchString", "user");
+        final List<String> files = fabasoftAdapter.searchSubjectArea("searchString", USER);
 
         assertThat(files.size()).isEqualTo(1);
     }
@@ -322,14 +332,14 @@ class FabasoftAdapterTest {
     private void internalSearchFileCallTest(final DMSObjectClass dmsObjectClass, final String searchString, final String user, final String reference,
             final String value)
             throws DmsException {
-        val file = new LHMBAI151700GIObjectType();
+        final LHMBAI151700GIObjectType file = new LHMBAI151700GIObjectType();
         file.setLHMBAI151700Objaddress("testCoo");
         file.setLHMBAI151700Objname("testName");
 
-        val array = new ArrayOfLHMBAI151700GIObjectType();
+        final ArrayOfLHMBAI151700GIObjectType array = new ArrayOfLHMBAI151700GIObjectType();
         array.getLHMBAI151700GIObjectType().add(file);
 
-        val response = new SearchObjNameGIResponse();
+        final SearchObjNameGIResponse response = new SearchObjNameGIResponse();
         response.setStatus(0);
         response.setGiobjecttype(array);
 
@@ -338,45 +348,48 @@ class FabasoftAdapterTest {
                 SearchObjNameGI.class, (u) -> u.getObjclass().equals(dmsObjectClass.getName()) && validateBusinessData(u),
                 response);
 
-        val files = fabasoftAdapter.searchFile(searchString, user, reference, value);
+        final List<String> files = fabasoftAdapter.searchFile(searchString, user, reference, value);
 
         assertThat(files.size()).isEqualTo(1);
     }
 
     private boolean validateBusinessData(final SearchObjNameGI searchObjNameGI) {
-        val reference = Optional.ofNullable(searchObjNameGI.getReference()).orElse("");
-        val value = Optional.ofNullable(searchObjNameGI.getValue()).orElse("");
-        if (reference.isEmpty()) return true;
-        if (value.isEmpty()) return false;
-        return !reference.equals("reference") || value.equals("value");
+        final String reference = Optional.ofNullable(searchObjNameGI.getReference()).orElse("");
+        final String value = Optional.ofNullable(searchObjNameGI.getValue()).orElse("");
+        if (reference.isEmpty()) {
+            return true;
+        }
+        if (value.isEmpty()) {
+            return false;
+        }
+        return !"reference".equals(reference) || "value".equals(value);
     }
 
     @Test
-    void execute_read_metadata() throws DmsException {
-
-        val response = new ReadMetadataObjectGIResponse();
+    void executeReadMetadata() throws DmsException {
+        final ReadMetadataObjectGIResponse response = new ReadMetadataObjectGIResponse();
         response.setStatus(0);
         response.setObjclass("Vorgang");
-        response.setObjname("name");
+        response.setObjname(NAME);
 
         WiremockWsdlUtility.stubOperation(
                 "ReadMetadataObjectGI",
                 ReadMetadataObjectGI.class, (u) -> true,
                 response);
 
-        val metadata = fabasoftAdapter.readMetadata("coo", "user");
+        final Metadata metadata = fabasoftAdapter.readMetadata("coo", USER);
 
-        assertThat(metadata.name()).isEqualTo("name");
+        assertThat(metadata.name()).isEqualTo(NAME);
         assertThat(metadata.type()).isEqualTo("Vorgang");
     }
 
     @Test
-    void execute_read_content_metadata() throws DmsException {
-        val content = new LHMBAI151700GIMetadataType();
-        content.setLHMBAI151700Filename("name");
+    void executeReadContentMetadata() throws DmsException {
+        final LHMBAI151700GIMetadataType content = new LHMBAI151700GIMetadataType();
+        content.setLHMBAI151700Filename(NAME);
         content.setLHMBAI151700Objclass("pdf");
 
-        val response = new ReadContentObjectMetaDataGIResponse();
+        final ReadContentObjectMetaDataGIResponse response = new ReadContentObjectMetaDataGIResponse();
         response.setStatus(0);
         response.setGimetadatatype(content);
 
@@ -385,9 +398,9 @@ class FabasoftAdapterTest {
                 ReadContentObjectMetaDataGI.class, (u) -> true,
                 response);
 
-        val metadata = fabasoftAdapter.readContentMetadata("coo", "user");
+        final Metadata metadata = fabasoftAdapter.readContentMetadata("coo", USER);
 
-        assertThat(metadata.name()).isEqualTo("name");
+        assertThat(metadata.name()).isEqualTo(NAME);
         assertThat(metadata.type()).isEqualTo("pdf");
     }
 

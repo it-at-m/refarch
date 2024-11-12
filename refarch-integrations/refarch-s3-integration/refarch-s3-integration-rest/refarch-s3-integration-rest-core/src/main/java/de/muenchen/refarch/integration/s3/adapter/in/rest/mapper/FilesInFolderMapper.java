@@ -8,6 +8,6 @@ import org.mapstruct.Mapper;
 @Mapper(config = MapstructConfiguration.class)
 public interface FilesInFolderMapper {
 
-    FilesInFolderDto model2Dto(final FilesInFolder filesInFolder);
+    FilesInFolderDto model2Dto(FilesInFolder filesInFolder);
 
 }
