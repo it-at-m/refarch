@@ -20,6 +20,7 @@
         <module>refarch-s3-integration</module>
         <module>refarch-email-integration</module>
         <module>refarch-dms-integration</module>
+        <module>refarch-address-integration</module>
     </modules>
 
     <properties>
