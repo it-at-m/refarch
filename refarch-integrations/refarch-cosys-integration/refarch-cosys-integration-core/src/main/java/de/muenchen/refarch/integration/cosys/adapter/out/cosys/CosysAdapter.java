@@ -18,6 +18,7 @@ public class CosysAdapter implements GenerateDocumentOutPort {
 
     public static final String DATA_FILE_NAME = "data";
     public static final String MERGE_FILE_NAME = "merge";
+    public static final String DOC_GEN_EXCEPTION_MESSAGE = "Document could not be created.";
 
     private final CosysConfiguration configuration;
     private final GenerationApi generationApi;
@@ -47,15 +48,15 @@ public class CosysAdapter implements GenerateDocumentOutPort {
                     null)
                     .onStatus(HttpStatusCode::is5xxServerError,
                             response -> response.bodyToMono(byte[].class)
-                                    .flatMap(body -> Mono.error(new CosysException("Document could not be created."))))
+                                    .flatMap(body -> Mono.error(new CosysException(DOC_GEN_EXCEPTION_MESSAGE))))
                     .onStatus(HttpStatusCode::is4xxClientError,
                             response -> response.bodyToMono(byte[].class)
-                                    .flatMap(body -> Mono.error(new CosysException("Document could not be created."))))
+                                    .flatMap(body -> Mono.error(new CosysException(DOC_GEN_EXCEPTION_MESSAGE))))
                     .bodyToMono(byte[].class);
 
         } catch (final IOException ex) {
-            log.error("Document could not be created.", ex);
-            throw new CosysException("Document could not be created.");
+            log.error(DOC_GEN_EXCEPTION_MESSAGE, ex);
+            throw new CosysException(DOC_GEN_EXCEPTION_MESSAGE, ex);
         }
     }
 

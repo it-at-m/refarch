@@ -9,6 +9,6 @@ import jakarta.validation.constraints.NotBlank;
 public interface CreateDocumentInPort {
 
     void createDocument(
-            @Valid final GenerateDocument generateDocument,
-            @NotBlank final String filePath) throws CosysException, DocumentStorageException;
+            @Valid GenerateDocument generateDocument,
+            @NotBlank String filePath) throws CosysException, DocumentStorageException;
 }

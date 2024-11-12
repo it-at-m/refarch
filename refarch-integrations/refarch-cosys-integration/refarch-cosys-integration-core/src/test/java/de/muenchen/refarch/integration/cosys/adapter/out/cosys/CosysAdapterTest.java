@@ -12,7 +12,6 @@ import de.muenchen.refarch.integration.cosys.domain.exception.CosysException;
 import de.muenchen.refarch.integration.cosys.domain.model.GenerateDocument;
 import java.io.File;
 import java.io.IOException;
-import lombok.val;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -40,11 +39,11 @@ class CosysAdapterTest {
     }
 
     @Test
-    void testGenerateCosysDocument_Success() throws IOException, CosysException {
+    void testGenerateCosysDocumentSuccess() throws IOException, CosysException {
         // given
-        val generateDocument = generateDocument();
-        val response = "Response".getBytes();
-        val responseSpecMock = Mockito.mock(WebClient.ResponseSpec.class);
+        final GenerateDocument generateDocument = generateDocument();
+        final byte[] response = "Response".getBytes();
+        final WebClient.ResponseSpec responseSpecMock = Mockito.mock(WebClient.ResponseSpec.class);
         when(responseSpecMock.onStatus(any(), any())).thenReturn(responseSpecMock);
         when(responseSpecMock.bodyToMono(byte[].class)).thenReturn(Mono.just(response));
         final ArgumentCaptor<File> dataFileCaptor = ArgumentCaptor.forClass(File.class);

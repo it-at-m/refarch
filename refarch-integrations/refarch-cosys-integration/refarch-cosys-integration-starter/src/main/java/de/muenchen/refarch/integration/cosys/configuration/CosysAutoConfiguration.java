@@ -71,7 +71,7 @@ public class CosysAutoConfiguration {
     private WebClient webClient(
             final ClientRegistrationRepository clientRegistrationRepository,
             final OAuth2AuthorizedClientService authorizedClientService) {
-        final var oauth = new ServletOAuth2AuthorizedClientExchangeFilterFunction(
+        final ServletOAuth2AuthorizedClientExchangeFilterFunction oauth = new ServletOAuth2AuthorizedClientExchangeFilterFunction(
                 new AuthorizedClientServiceOAuth2AuthorizedClientManager(
                         clientRegistrationRepository, authorizedClientService));
         oauth.setDefaultClientRegistrationId("cosys");

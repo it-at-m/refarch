@@ -34,9 +34,10 @@ public class S3Adapter implements SaveFileToStorageOutPort {
     }
 
     private void validateFileSize(final byte[] data) {
-        if (!fileValidationService.isValidFileSize(data))
+        if (!fileValidationService.isValidFileSize(data)) {
             throw new FileSizeValidationException(
                     String.format("Invalid file size %d MB. Allowed are %d MB.", DataSize.ofBytes(data.length).toMegabytes(),
                             fileValidationService.getMaxFileSize().toMegabytes()));
+        }
     }
 }

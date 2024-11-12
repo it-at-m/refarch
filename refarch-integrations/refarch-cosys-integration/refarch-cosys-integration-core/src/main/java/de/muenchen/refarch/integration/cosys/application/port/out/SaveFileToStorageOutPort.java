@@ -4,6 +4,6 @@ import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageExcept
 
 public interface SaveFileToStorageOutPort {
     void saveDocumentInStorage(
-            final String filePath,
-            final byte[] data) throws DocumentStorageException;
+            String filePath,
+            byte[] data) throws DocumentStorageException;
 }

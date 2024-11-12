@@ -24,7 +24,7 @@ class CreateDocumentUseCaseTest {
 
     private final GenerateDocument generateDocument = new GenerateDocument("Client", "Role", "guid", new ObjectMapper().readTree("{\"key1\":\"value\"}"));
 
-    CreateDocumentUseCaseTest() throws JsonProcessingException {
+    protected CreateDocumentUseCaseTest() throws JsonProcessingException {
     }
 
     @Test

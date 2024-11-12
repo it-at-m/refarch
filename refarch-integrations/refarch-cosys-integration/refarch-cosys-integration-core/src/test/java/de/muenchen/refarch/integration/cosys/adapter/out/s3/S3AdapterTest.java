@@ -52,18 +52,18 @@ class S3AdapterTest {
             throws DocumentStorageException, DocumentStorageClientErrorException, DocumentStorageServerErrorException {
         doThrow(new DocumentStorageException("DocumentStorageClientErrorException", new Exception())).when(documentStorageFileRepository)
                 .saveFile(anyString(), any(), eq(1));
-        DocumentStorageException documentStorageException = assertThrows(DocumentStorageException.class,
+        final DocumentStorageException documentStorageException = assertThrows(DocumentStorageException.class,
                 () -> s3Adapter.saveDocumentInStorage("filePath.txt", DATA_AS_BYTE_ARRAY));
 
-        String expectedMessage = "Document could not be saved.";
-        String actualMessage = documentStorageException.getMessage();
+        final String expectedMessage = "Document could not be saved.";
+        final String actualMessage = documentStorageException.getMessage();
 
         assertEquals(expectedMessage, actualMessage);
     }
 
     @Test
     void testSaveDocumentInStorageThrowsBpmnErrorForInvalidFileSize() {
-        String expectedMessage = String.format("Invalid file size %d MB. Allowed are %d MB.", DataSize.ofBytes(TOO_LARGE_FILE.length).toMegabytes(),
+        final String expectedMessage = String.format("Invalid file size %d MB. Allowed are %d MB.", DataSize.ofBytes(TOO_LARGE_FILE.length).toMegabytes(),
                 ALLOWED_FILE_SIZE.toMegabytes());
 
         assertThatThrownBy(() -> s3Adapter.saveDocumentInStorage("filePath.txt", TOO_LARGE_FILE))

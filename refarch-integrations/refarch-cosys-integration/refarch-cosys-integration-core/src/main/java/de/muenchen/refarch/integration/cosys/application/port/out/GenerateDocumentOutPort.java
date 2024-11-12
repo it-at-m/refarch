@@ -6,6 +6,6 @@ import reactor.core.publisher.Mono;
 
 public interface GenerateDocumentOutPort {
 
-    Mono<byte[]> generateCosysDocument(final GenerateDocument generateDocument) throws CosysException;
+    Mono<byte[]> generateCosysDocument(GenerateDocument generateDocument) throws CosysException;
 
 }

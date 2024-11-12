@@ -18,7 +18,7 @@ public class ExampleController {
 
     private final GenerateDocumentOutPort generateDocumentOutPort;
 
-    @PostMapping(value = "/test/document")
+    @PostMapping("/test/document")
     public ResponseEntity<byte[]> testCreateCosysDocument() throws CosysException {
         final byte[] file = this.generateDocumentOutPort.generateCosysDocument(this.generateDocument()).block();
         return ResponseEntity.ok(file);

@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class FileUtils {
+public final class FileUtils {
+    private FileUtils() {
+    }
 
     public static File createFile(final String name, final byte[] content) throws IOException {
         final Path tempFile = Files.createTempFile(name, ".json");

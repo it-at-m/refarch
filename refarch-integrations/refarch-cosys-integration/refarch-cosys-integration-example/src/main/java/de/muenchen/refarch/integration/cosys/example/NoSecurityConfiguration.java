@@ -13,7 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class NoSecurityConfiguration {
 
     @Bean
-    public SecurityFilterChain mainSecurityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain mainSecurityFilterChain(final HttpSecurity http) throws Exception {
         // @formatter:off
         http
                 .headers(httpSecurityHeadersConfigurer -> httpSecurityHeadersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
