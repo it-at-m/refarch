@@ -4,7 +4,7 @@ refarch:
       document-storage-url: http://localhost:8086
       enable-security: true
   cosys:
-    url: https://cosysk007.srv.muenchen.de/cosys-eai/rest
+    url: https://cosys.example.com/cosys-eai/rest
     merge:
       datafile: //multi
       inputLanguage: Deutsch
