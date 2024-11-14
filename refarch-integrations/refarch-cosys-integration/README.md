@@ -1,6 +1,6 @@
 # RefArch CoSys integration
 
-Integration for creating documents with cosys. Uses s3-integration for file handling.
+Integration for creating documents with coSys. Uses s3-integration for file handling.
 
 ## Usage
 
