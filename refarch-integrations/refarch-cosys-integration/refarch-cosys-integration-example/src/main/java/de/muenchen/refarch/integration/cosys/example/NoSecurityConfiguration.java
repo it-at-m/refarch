@@ -14,14 +14,12 @@ public class NoSecurityConfiguration {
 
     @Bean
     public SecurityFilterChain mainSecurityFilterChain(final HttpSecurity http) throws Exception {
-        // @formatter:off
         http
                 .headers(httpSecurityHeadersConfigurer -> httpSecurityHeadersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .authorizeHttpRequests(authorizeRequest -> {
                     authorizeRequest.anyRequest().permitAll();
                 })
                 .csrf(AbstractHttpConfigurer::disable);
-        // @formatter:on
         return http.build();
     }
 
