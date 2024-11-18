@@ -2,6 +2,7 @@ package de.muenchen.refarch.integration.address.application.usecase;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -15,7 +16,7 @@ import org.mockito.Mockito;
 
 class AddressesGermanyUseCaseTest {
 
-    private final AddressClientOutPort addressClientOutPort = Mockito.mock(AddressClientOutPort.class);
+    private final AddressClientOutPort addressClientOutPort = mock(AddressClientOutPort.class);
 
     private final AddressGermanyInPort addressesGermanyUseCase = new AddressesGermanyUseCase(addressClientOutPort);
 

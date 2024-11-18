@@ -3,6 +3,7 @@ package de.muenchen.refarch.integration.address.client.impl;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import de.muenchen.refarch.integration.address.client.api.AddressMunichApi;
@@ -27,7 +28,6 @@ import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
@@ -41,7 +41,7 @@ class AddressMunichImplTest {
     public static final String INTERNAL_SERVER_ERROR = "Internal Server Error";
     public static final String REST_EXCEPTION = "REST exception";
     public static final String SORT = "name";
-    private final AdressenMnchenApi adressenMuenchenApi = Mockito.mock(AdressenMnchenApi.class);
+    private final AdressenMnchenApi adressenMuenchenApi = mock(AdressenMnchenApi.class);
     private final AddressMunichApi addressMunich = new AddressesMunichImpl(adressenMuenchenApi);
 
     private final CheckAddressesModel checkAddressesModel = this.createCheckAddressesModel();

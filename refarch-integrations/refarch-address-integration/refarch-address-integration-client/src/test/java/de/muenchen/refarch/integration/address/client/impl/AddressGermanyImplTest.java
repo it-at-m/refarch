@@ -2,6 +2,7 @@ package de.muenchen.refarch.integration.address.client.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import de.muenchen.refarch.integration.address.client.api.AddressGermanyApi;
@@ -17,7 +18,6 @@ import de.muenchen.refarch.integration.address.client.gen.model.BundesweiteAdres
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
@@ -32,7 +32,7 @@ class AddressGermanyImplTest {
     public static final String GEMEINDESCHLUESSEL = "456789";
     public static final String SORT = "name";
     public static final String SORTDIR = "asc";
-    private final AdressenBundesweitApi adressenBundesweitApi = Mockito.mock(AdressenBundesweitApi.class);
+    private final AdressenBundesweitApi adressenBundesweitApi = mock(AdressenBundesweitApi.class);
     private final AddressGermanyApi addressGermany = new AddressGermanyImpl(adressenBundesweitApi);
 
     private final SearchAddressesGermanyModel searchAddressesModel = SearchAddressesGermanyModel.builder().build();

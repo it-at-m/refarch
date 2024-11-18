@@ -2,6 +2,7 @@ package de.muenchen.refarch.integration.address.client.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import de.muenchen.refarch.integration.address.client.api.StreetsMunichApi;
@@ -20,7 +21,6 @@ import de.muenchen.refarch.integration.address.client.gen.model.StrasseVerwaltun
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
@@ -30,7 +30,7 @@ import reactor.core.publisher.Mono;
 class StreetsMunichImplTest {
 
     public static final String MESSAGE = "message";
-    private final StraenMnchenApi straessenMuenchenApi = Mockito.mock(StraenMnchenApi.class);
+    private final StraenMnchenApi straessenMuenchenApi = mock(StraenMnchenApi.class);
     private final StreetsMunichApi streetsMunich = new StreetsMunichImpl(straessenMuenchenApi);
 
     private static final long STREET_ID = 123;
