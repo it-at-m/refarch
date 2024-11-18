@@ -35,12 +35,17 @@
     <rule ref="category/java/bestpractices.xml/UnitTestShouldIncludeAssert">
         <properties>
             <!-- From Spring WebTestClient -->
-            <property name="extraAssertMethodNames" value="expectStatus,expectHeader" />
+            <property name="extraAssertMethodNames" value="expectStatus,expectHeader,andExpect" />
         </properties>
     </rule>
     <rule ref="category/java/codestyle.xml/MethodNamingConventions">
         <properties>
             <property name="junit5TestPattern" value="[a-z]([a-zA-Z0-9]*[a-zA-Z]_?)*[a-zA-Z0-9]*" />
+        </properties>
+    </rule> 
+    <rule ref="category/java/codestyle.xml/CommentDefaultAccessModifier">
+        <properties>
+            <property name="ignoredAnnotations" value="android.support.annotation.VisibleForTesting,co.elastic.clients.util.VisibleForTesting,com.google.common.annotations.VisibleForTesting,org.junit.jupiter.api.AfterAll,org.junit.jupiter.api.AfterEach,org.junit.jupiter.api.BeforeAll,org.junit.jupiter.api.BeforeEach,org.junit.jupiter.api.RepeatedTest,org.junit.jupiter.api.Test,org.junit.jupiter.api.TestFactory,org.junit.jupiter.api.TestTemplate,org.junit.jupiter.api.extension.RegisterExtension,org.junit.jupiter.params.ParameterizedTest,org.testng.annotations.AfterClass,org.testng.annotations.AfterGroups,org.testng.annotations.AfterMethod,org.testng.annotations.AfterSuite,org.testng.annotations.AfterTest,org.testng.annotations.BeforeClass,org.testng.annotations.BeforeGroups,org.testng.annotations.BeforeMethod,org.testng.annotations.BeforeSuite,org.testng.annotations.BeforeTest,org.testng.annotations.Test,org.junit.jupiter.api.Nested" />
         </properties>
     </rule>     
 </ruleset>
