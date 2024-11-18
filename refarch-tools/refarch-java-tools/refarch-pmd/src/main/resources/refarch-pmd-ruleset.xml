@@ -38,4 +38,9 @@
             <property name="extraAssertMethodNames" value="expectStatus,expectHeader" />
         </properties>
     </rule>
+    <rule ref="category/java/codestyle.xml/MethodNamingConventions">
+        <properties>
+            <property name="junit5TestPattern" value="[a-z]([a-zA-Z0-9]*[a-zA-Z]_?)*[a-zA-Z0-9]*" />
+        </properties>
+    </rule>     
 </ruleset>
