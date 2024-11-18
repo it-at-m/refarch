@@ -10,7 +10,9 @@ Collection of different integration which can be used as is in RefArch projects.
   s3-integration for file handling.
 - [dms-integration](./refarch-dms-integration/README.md): For CRUD operations on a dms system in specific fabasoft. Uses
   s3-integration for file handling.
-- [address-integration](./refarch-email-integration/README.md): For reading, searching and validating addresses.
+- [cosys-integration](./refarch-cosys-integration/README.md): For creating documents with coSys. Uses
+  s3-integration for file handling.
+- [address-integration](./refarch-address-integration/README.md): For reading, searching and validating addresses.
 
 ## Naming conventions
 
