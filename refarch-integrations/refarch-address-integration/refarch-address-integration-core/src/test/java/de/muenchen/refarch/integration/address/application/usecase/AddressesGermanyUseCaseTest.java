@@ -12,7 +12,6 @@ import de.muenchen.refarch.integration.address.client.exception.AddressServiceIn
 import de.muenchen.refarch.integration.address.client.model.request.SearchAddressesGermanyModel;
 import de.muenchen.refarch.integration.address.client.gen.model.BundesweiteAdresseResponse;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 class AddressesGermanyUseCaseTest {
 
