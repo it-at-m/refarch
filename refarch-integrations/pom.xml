@@ -23,6 +23,7 @@
         <module>refarch-email-integration</module>
         <module>refarch-dms-integration</module>
         <module>refarch-cosys-integration</module>
+        <module>refarch-address-integration</module>
     </modules>
 
     <properties>
