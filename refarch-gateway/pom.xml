@@ -13,6 +13,7 @@
     <artifactId>refarch-gateway</artifactId>
     <name>refarch-gateway</name>
     <description>Ready to use RefArch gateway based on Spring Cloud Gateway</description>
+    <url>https://github.com/it-at-m/refarch</url>
     <version>1.4.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
