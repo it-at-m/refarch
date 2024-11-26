@@ -11,10 +11,6 @@ on:
           - refarch-gateway
           - refarch-integrations
           - refarch-tools/refarch-java-tools
-      release:
-        description: 'Release?'
-        type: boolean
-        default: true
       release-version:
         description: 'Release version'
         type: string
@@ -33,10 +29,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Maven build and release
-        uses: ./.github/actions/build-maven
+        uses: ./.github/actions/release-maven
         with:
           module: ${{ inputs.module }}
-          release: ${{ inputs.release }}
           release-version: ${{ inputs.release-version }}
           next-version: ${{ inputs.next-version }}
           gpg-private-key: ${{ secrets.gpg_private_key }}

@@ -5,9 +5,6 @@ inputs:
   module:
     description: 'Module to build'
     required: true
-  release:
-    description: 'Release?'
-    default: 'false'
   release-version:
     description: 'Release version'
     required: false
@@ -48,12 +45,7 @@ runs:
         server-password: CENTRAL_PASSWORD
         gpg-private-key: ${{ inputs.gpg-private-key }}
         gpg-passphrase: SIGN_KEY_PASS
-    - name: Maven build
-      if: ${{ inputs.release != 'true' }}
-      shell: bash
-      run: mvn -f ./${{ inputs.module }}/pom.xml --batch-mode clean install
     - name: Maven release
-      if: ${{ inputs.release == 'true' }}
       shell: bash
       run: |
         git config --global user.email "github-actions@github.com"
@@ -71,13 +63,11 @@ runs:
         path: "**/target"
         retention-days: 5
     - name: Push changes to new branch
-      if: ${{ inputs.release == 'true' }}
       shell: bash
       run: |
         git checkout -b ${{ github.ref_name }}-version-bump
         git push --force origin ${{ github.ref_name }}-version-bump
     - name: Create pull request
-      if: ${{ inputs.release == 'true' }}
       uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
       with:
         script: |
