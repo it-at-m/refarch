@@ -79,7 +79,6 @@ jobs:
             type=raw,value=latest,enable=${{ inputs.release == true }}
 
   create-github-release:
-    if: ${{ inputs.release == true }}
     needs: build-maven
     runs-on: ubuntu-latest
     steps:
