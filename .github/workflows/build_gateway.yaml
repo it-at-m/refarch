@@ -22,14 +22,13 @@ jobs:
     needs: build-maven
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Build and push image
-        uses: ./.github/actions/build-image
+        uses: it-at-m/.github/.github/actions/action-build-image@main
         with:
           registry-username: ${{ github.actor }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
           path: ./refarch-gateway
+          artifact-name: "target"
           image-name: refarch-gateway
           image-tags: |
             type=raw,value=dev
