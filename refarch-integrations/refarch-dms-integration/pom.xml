@@ -16,6 +16,7 @@
     <modules>
         <module>refarch-dms-integration-core</module>
         <module>refarch-dms-integration-fabasoft-soap</module>
+        <module>refarch-dms-integration-fabasoft-rest-api</module>
         <module>refarch-dms-integration-starter</module>
     </modules>
 
