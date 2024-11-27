@@ -69,6 +69,7 @@
                             <serverVariableOverrides />
                             <configOptions>
                                 <useJakartaEe>true</useJakartaEe>
+                                <useAbstractionForFiles>true</useAbstractionForFiles>
                             </configOptions>
                         </configuration>
                     </execution>
