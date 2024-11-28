@@ -21,6 +21,7 @@ jobs:
           app-path: refarch-integrations
 
   build-images:
+    if: github.ref_name == 'main'
     needs: build-maven
     runs-on: ubuntu-latest
     strategy:
