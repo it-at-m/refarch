@@ -36,7 +36,7 @@ jobs:
           registry-username: ${{ github.actor }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
           path: ${{ matrix.path }}
-          artifact-name: ${{ needs.release-maven.outputs.ARTIFACT_NAME }}
+          artifact-name: ${{ needs.build-maven.outputs.ARTIFACT_NAME }}
           image-name: ${{ matrix.name }}
           image-tags: |
             type=raw,value=dev
