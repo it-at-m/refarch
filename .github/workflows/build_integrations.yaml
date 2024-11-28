@@ -21,7 +21,7 @@ jobs:
           app-path: refarch-integrations
 
   build-images:
-    #if: github.ref_name == 'main'
+    if: github.ref_name == 'main'
     needs: build-maven
     runs-on: ubuntu-latest
     strategy:
@@ -31,7 +31,7 @@ jobs:
             path: ./refarch-integrations/refarch-s3-integration/refarch-s3-integration-rest/refarch-s3-integration-rest-service
     steps:
       - name: Build and push image
-        uses: ./.github/actions/build-image
+        uses: it-at-m/.github/.github/actions/action-build-image@main
         with:
           registry-username: ${{ github.actor }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
