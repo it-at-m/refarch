@@ -14,7 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include: # hier müssen die Pfade angegeben werden
+        include: # paths of different modules
           - app-path: refarch-gateway
           - app-path: refarch-tools/refarch-java-tools
             build-image: false
