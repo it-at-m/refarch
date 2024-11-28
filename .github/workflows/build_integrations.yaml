@@ -15,8 +15,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Maven build
-        uses: it-at-m/.github/.github/actions/action-maven-build@main
-        id: maven-build-step
+        uses: ./.github/actions/build-maven
+        #id: maven-build-step
         with:
           app-path: refarch-integrations
 

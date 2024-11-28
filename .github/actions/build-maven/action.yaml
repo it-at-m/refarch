@@ -1,0 +1,39 @@
+name: Compliance check and build test
+
+inputs:
+  java-version:
+    required: false
+    default: 21
+    type: string
+  app-path:
+    required: true
+    type: string
+outputs:
+  artifact-name:
+    description: "name of the artifact upload"
+    value: ${{steps.artifact-name.outputs.artifact-name}}
+runs:
+
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v4
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        java-version: ${{ inputs.java-version }}
+        distribution: "temurin"
+        cache: "maven"
+        cache-dependency-path: "./${{inputs.app-path}}/pom.xml"
+    - name: Build with Maven
+      run: mvn --update-snapshots -f ./${{inputs.app-path}}/pom.xml install
+      shell: bash
+    - id: artifact-name
+      run: echo "artifact-name=${{hashFiles(format('./{0}/pom.xml', inputs.app-path))}}" >> "$GITHUB_OUTPUT"
+      shell: bash
+    - id: upload-artifact
+      name: "Upload Artifact"
+      uses: actions/upload-artifact@v4
+      with:
+        name: target
+        path: "**/target"
+        retention-days: 5
