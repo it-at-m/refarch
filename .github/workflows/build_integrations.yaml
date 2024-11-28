@@ -30,8 +30,6 @@ jobs:
           - name: s3-integration-rest-service
             path: ./refarch-integrations/refarch-s3-integration/refarch-s3-integration-rest/refarch-s3-integration-rest-service
     steps:
-      - name: Checkout code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Build and push image
         uses: ./.github/actions/build-image
         with:
