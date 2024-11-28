@@ -7,11 +7,11 @@ inputs:
     required: true
   release-version:
     description: 'Release version'
-    required: false
+    required: true
     default: "X.Y.Z"
   next-version:
     description: "Next version to use after release"
-    required: false
+    required: true
     default: "X.Y.Z-SNAPSHOT"
   java-version:
     description: "Jave version used for building"
@@ -19,16 +19,16 @@ inputs:
     default: "21"
   gpg-private-key:
     description: "Gpg private key used for signing packages for maven central release"
-    required: false
+    required: true
   gpg-passphrase:
     description: "Gpg passphrase for private key"
-    required: false
+    required: true
   sonatype-username:
     description: "Sonatype username for maven central release"
-    required: false
+    required: true
   sonatype-password:
     description: "Sonatype password for maven central release"
-    required: false
+    required: true
 
 runs:
   using: "composite"
