@@ -34,6 +34,6 @@ runs:
       name: "Upload Artifact"
       uses: actions/upload-artifact@v4
       with:
-        name: target
+        name: "77332b8782dbc75966b9802882a1ce2b094bace4475de327467d0df499a69b88"
         path: "**/target"
         retention-days: 5
