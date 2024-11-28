@@ -9,13 +9,16 @@ on:
 jobs:
   build-maven:
     runs-on: ubuntu-latest
+    outputs:
+      ARTIFACT_NAME: ${{ steps.maven-build-step.outputs.artifact-name }}
     steps:
       - name: Checkout code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Maven build
-        uses: ./.github/actions/build-maven
+        uses: it-at-m/.github/.github/actions/action-maven-build@main
+        id: maven-build-step
         with:
-          module: refarch-integrations
+          app-path: refarch-integrations
 
   build-images:
     if: github.ref_name == 'main'
@@ -27,14 +30,13 @@ jobs:
           - name: s3-integration-rest-service
             path: ./refarch-integrations/refarch-s3-integration/refarch-s3-integration-rest/refarch-s3-integration-rest-service
     steps:
-      - name: Checkout code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Build and push image
-        uses: ./.github/actions/build-image
+        uses: it-at-m/.github/.github/actions/action-build-image@main
         with:
           registry-username: ${{ github.actor }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
           path: ${{ matrix.path }}
+          artifact-name: ${{ needs.release-maven.outputs.ARTIFACT_NAME }}
           image-name: ${{ matrix.name }}
           image-tags: |
             type=raw,value=dev
