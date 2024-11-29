@@ -1,6 +1,7 @@
 package de.muenchen.refarch.integration.s3.properties;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -24,7 +25,8 @@ public class S3IntegrationProperties {
     @NotBlank
     private String bucketName;
 
-    private Boolean initialConnectionTest;
+    @NotNull
+    private Boolean initialConnectionTest = true;
 
     private int presignedUrlExpiresInMinutes = 7 * 24 * 60; // 7 days
 }
