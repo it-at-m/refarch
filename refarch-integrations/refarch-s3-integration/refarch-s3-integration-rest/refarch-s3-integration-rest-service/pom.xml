@@ -10,6 +10,7 @@
 
     <artifactId>refarch-s3-integration-rest-service</artifactId>
     <name>refarch-s3-integration-rest-service</name>
+    <description>Integration for CRUD operations on a s3 storage</description>
 
     <properties>
         <commons-io.version>2.18.0</commons-io.version>

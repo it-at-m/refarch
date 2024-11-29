@@ -1,5 +1,5 @@
 spring:
-  application.name: '@project.artifactId@'
+  application.name: @project.artifactId@
   banner.location: banner.txt
   main:
     web-application-type: reactive
@@ -57,8 +57,12 @@ management:
 
 info:
   application:
-    name: ${spring.application.name}
-    version: '@project.version@'
+    name: @project.artifactId@
+    version: @project.version@
+    description: @project.description@
+  build:
+    java.version: @java.version@
+    spring-cloud.version: @spring-cloud-dependencies.version@
 
 config:
   map5xxto400: true
