@@ -41,12 +41,13 @@ Whether a property is an alias can be checked in the corresponding `application.
 
 ### s3-integration-rest-service
 
-| Property                 | Description                                                    | Example                                       |
-|--------------------------|----------------------------------------------------------------|-----------------------------------------------|
-| `refarch.s3.url`         | Url of s3 endpoint to connect to.                              | `s3.example.com`                              |
-| `refarch.s3.bucket-name` | Name of the bucket to connect to.                              | `refarch-bucket`                              |
-| `refarch.s3.access-key`  | Access key to use for connection.                              |                                               |
-| `refarch.s3.secret-key`  | Secret key to use for connection.                              |                                               |
+| Property                                        | Description                       | Example          |
+|-------------------------------------------------|-----------------------------------|------------------|
+| `refarch.s3.url`                                | Url of s3 endpoint to connect to. | `s3.example.com` |
+| `refarch.s3.bucket-name`                        | Name of the bucket to connect to. | `refarch-bucket` |
+| `refarch.s3.access-key`                         | Access key to use for connection. |                  |
+| `refarch.s3.secret-key`                         | Secret key to use for connection. |                  |
+| `refarch.s3.initial-connection-test` (optional) | Test connection to s3 at startup  | `true` (default) |
 
 For authenticating the different endpoints oAuth2 authentication needs to be configured.
 See below example or the [according Spring documentation](https://docs.spring.io/spring-security/reference/servlet/oauth2/index.html#oauth2-resource-server).
