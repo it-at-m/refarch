@@ -31,11 +31,11 @@ server:
     include-message: always
     whitelabel:
       enabled: false
-  shutdown: graceful
 
 management:
   endpoints:
-    enabled-by-default: false
+    access:
+      default: none
     web:
       exposure:
         include: health, info, prometheus, livenessState, readinessState
@@ -43,13 +43,13 @@ management:
         prometheus: metrics
   endpoint:
     health:
-      enabled: on
+      access: read_only
       probes:
         enabled: true
     info:
-      enabled: on
+      access: read_only
     prometheus:
-      enabled: on
+      access: read_only
   info:
     env:
       enabled: true
