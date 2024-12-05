@@ -32,7 +32,6 @@ server:
     include-message: always
     whitelabel:
       enabled: false
-  shutdown: graceful
 
 management:
   endpoints:
