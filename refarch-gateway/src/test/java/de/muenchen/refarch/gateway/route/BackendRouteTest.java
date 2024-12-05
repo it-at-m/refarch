@@ -40,8 +40,7 @@ class BackendRouteTest {
                         .withHeaders(new HttpHeaders(
                                 new HttpHeader(org.springframework.http.HttpHeaders.CONTENT_TYPE, "application/json"),
                                 new HttpHeader(org.springframework.http.HttpHeaders.WWW_AUTHENTICATE,
-                                        "Bearer realm=\"Access to the staging site\", charset=\"UTF-8\""), // removed by route filter
-                                new HttpHeader(org.springframework.http.HttpHeaders.EXPIRES, "Wed, 21 Oct 2099 07:28:06 GMT") // removed by route filter
+                                        "Bearer realm=\"Access to the staging site\", charset=\"UTF-8\"") // removed by route filter
                         ))
                         .withBody("{ \"testkey\" : \"testvalue\" }")));
     }
@@ -58,7 +57,6 @@ class BackendRouteTest {
                 .expectStatus().isEqualTo(HttpStatus.OK)
                 .expectHeader().valueMatches(org.springframework.http.HttpHeaders.CONTENT_TYPE, "application/json")
                 .expectHeader().doesNotExist(org.springframework.http.HttpHeaders.WWW_AUTHENTICATE)
-                .expectHeader().valueMatches(org.springframework.http.HttpHeaders.EXPIRES, "0")
                 .expectBody().jsonPath("$.testkey").isEqualTo("testvalue");
 
         verify(getRequestedFor(urlEqualTo("/remote/endpoint"))

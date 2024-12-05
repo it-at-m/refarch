@@ -19,7 +19,6 @@ spring:
             allowedHeaders: "*"
             allowCredentials: true
       default-filters:
-        - RemoveResponseHeader=Expires
         - RemoveRequestHeader=cookie
         - RemoveRequestHeader=x-xsrf-token
         - TokenRelay=
