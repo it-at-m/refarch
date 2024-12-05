@@ -1,5 +1,6 @@
 package de.muenchen.refarch.gateway.configuration;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,6 +25,7 @@ public class CsrfProtectionMatcher implements ServerWebExchangeMatcher {
     private static final Set<HttpMethod> ALLOWED_METHODS = new HashSet<>(
             Arrays.asList(HttpMethod.GET, HttpMethod.HEAD, HttpMethod.TRACE, HttpMethod.OPTIONS));
 
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
     private final SecurityProperties securityProperties;
 
     @Override
