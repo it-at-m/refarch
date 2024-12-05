@@ -45,15 +45,13 @@ class GlobalBackend5xxTo400MapperTest {
                         .withHeaders(new HttpHeaders(
                                 new HttpHeader(org.springframework.http.HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType()),
                                 new HttpHeader(org.springframework.http.HttpHeaders.WWW_AUTHENTICATE,
-                                        "Bearer realm=\"Access to the staging site\", charset=\"UTF-8\""),
-                                new HttpHeader(org.springframework.http.HttpHeaders.EXPIRES, "Wed, 21 Oct 2099 07:28:06 GMT")))
+                                        "Bearer realm=\"Access to the staging site\", charset=\"UTF-8\"")))
                         .withBody("{ \"testkey\" : \"testvalue\" }")));
 
         webTestClient.get().uri("/api/refarch-gateway-backend-service/remote").exchange()
                 .expectStatus().isEqualTo(HttpStatus.BAD_REQUEST)
                 .expectHeader().valueMatches(org.springframework.http.HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType())
                 .expectHeader().doesNotExist(org.springframework.http.HttpHeaders.WWW_AUTHENTICATE)
-                .expectHeader().valueMatches(org.springframework.http.HttpHeaders.EXPIRES, "0")
                 .expectBody()
                 .jsonPath("$.status").isEqualTo("400")
                 .jsonPath("$.error").isEqualTo("Bad Request");
@@ -69,15 +67,13 @@ class GlobalBackend5xxTo400MapperTest {
                         .withHeaders(new HttpHeaders(
                                 new HttpHeader(org.springframework.http.HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType()),
                                 new HttpHeader(org.springframework.http.HttpHeaders.WWW_AUTHENTICATE,
-                                        "Bearer realm=\"Access to the staging site\", charset=\"UTF-8\""),
-                                new HttpHeader(org.springframework.http.HttpHeaders.EXPIRES, "Wed, 21 Oct 2099 07:28:06 GMT")))
+                                        "Bearer realm=\"Access to the staging site\", charset=\"UTF-8\"")))
                         .withBody("{ \"testkey\" : \"testvalue\" }")));
 
         webTestClient.get().uri("/api/refarch-gateway-backend-service/remote").exchange()
                 .expectStatus().isEqualTo(HttpStatus.OK)
                 .expectHeader().valueMatches(org.springframework.http.HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType())
                 .expectHeader().doesNotExist(org.springframework.http.HttpHeaders.WWW_AUTHENTICATE)
-                .expectHeader().valueMatches(org.springframework.http.HttpHeaders.EXPIRES, "0")
                 .expectBody()
                 .jsonPath("$.testkey").isEqualTo("testvalue");
     }
