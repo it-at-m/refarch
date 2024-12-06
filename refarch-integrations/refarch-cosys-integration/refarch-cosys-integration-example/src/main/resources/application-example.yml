@@ -1,15 +1,3 @@
-refarch:
-  s3:
-    client:
-      document-storage-url: http://localhost:8086
-      enable-security: true
-  cosys:
-    url: https://cosys.example.com/cosys-eai/rest
-    merge:
-      datafile: //multi
-      inputLanguage: Deutsch
-      outputLanguage: Deutsch
-      keepFields: unresolved-ref
 spring:
   security:
     oauth2:
@@ -33,3 +21,16 @@ spring:
 
 server:
   port: 8093
+
+refarch:
+  s3:
+    client:
+      document-storage-url: http://localhost:8086
+      enable-security: true
+  cosys:
+    url: https://cosys.example.com/cosys-eai/rest
+    merge:
+      datafile: //multi
+      inputLanguage: Deutsch
+      outputLanguage: Deutsch
+      keepFields: unresolved-ref

@@ -4,15 +4,18 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://keycloak:8100/auth/realms/local_realm
+
 security:
   oauth2:
     resource:
       user-info-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/userinfo
+
+server:
+  port: 8086
+
 refarch:
   s3:
     bucket-name: test-bucket
     access-key: minio
     secret-key: Test1234
     url: http://localhost:9000
-server:
-  port: 8086

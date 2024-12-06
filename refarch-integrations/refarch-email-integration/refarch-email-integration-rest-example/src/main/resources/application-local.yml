@@ -1,5 +1,3 @@
-server:
-  port: 8087
 spring:
   mail:
     host: localhost
@@ -20,6 +18,10 @@ spring:
             authorization-grant-type: client_credentials
             client-id: local
             client-secret: client_secret
+
+server:
+  port: 8087
+
 refarch:
   mail:
     from-address: test@muenchen.de
