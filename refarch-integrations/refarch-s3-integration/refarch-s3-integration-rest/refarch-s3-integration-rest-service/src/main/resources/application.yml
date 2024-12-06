@@ -1,19 +1,9 @@
-info:
-  application:
-    name: @project.artifactId@
-    version: @project.version@
-    description: @project.description@
-  build:
-    java.version: @java.version@
-
 spring:
   application:
     name: ${info.application.name}
 
 server:
   error:
-    include-exception: false
-    include-stacktrace: never
     whitelabel:
       enabled: false
 
@@ -24,12 +14,14 @@ management:
       default: none
     web:
       exposure:
-        include: health, info, prometheus, livenessstate, readinessstate
+        include: health, info, prometheus
       path-mapping:
         prometheus: metrics
   endpoint:
     health:
       access: read_only
+      probes:
+        enabled: true
     info:
       access: read_only
     prometheus:
@@ -42,3 +34,11 @@ management:
       enabled: true
     readinessstate:
       enabled: true
+
+info:
+  application:
+    name: @project.artifactId@
+    version: @project.version@
+    description: @project.description@
+  build:
+    java.version: @java.version@

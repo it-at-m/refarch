@@ -1,11 +1,8 @@
 spring:
-  application.name: @project.artifactId@
-  banner.location: banner.txt
+  application:
+    name: @project.artifactId@
   main:
     web-application-type: reactive
-  jackson:
-    serialization:
-      indent-output: on
   session:
     timeout: 1800  # in seconds; Goal: same lifetime as SSO Session, actual: 30 minutes
   cloud:
@@ -24,10 +21,7 @@ spring:
         - TokenRelay=
 
 server:
-  port: 8080
   error:
-    include-exception: false
-    include-stacktrace: never
     include-message: always
     whitelabel:
       enabled: false
@@ -38,7 +32,7 @@ management:
       default: none
     web:
       exposure:
-        include: health, info, prometheus, livenessState, readinessState
+        include: health, info, prometheus
       path-mapping:
         prometheus: metrics
   endpoint:
