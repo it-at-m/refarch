@@ -22,7 +22,6 @@ spring:
 
 server:
   error:
-    include-exception: true
     include-message: always
     whitelabel:
       enabled: false

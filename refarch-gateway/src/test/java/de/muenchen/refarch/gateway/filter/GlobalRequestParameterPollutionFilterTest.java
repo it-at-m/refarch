@@ -38,7 +38,7 @@ class GlobalRequestParameterPollutionFilterTest {
                 .expectBody()
                 .consumeWith(responseBody -> jsonResponseBody.append(
                         new String(Objects.requireNonNull(responseBody.getResponseBody()), StandardCharsets.UTF_8)));
-        assertTrue(jsonResponseBody.toString().contains("\"message\":\"parameter pollution\",\"exception\":\"de.muenchen.refarch.gateway.exception.ParameterPollutionException\""));
+        assertTrue(jsonResponseBody.toString().contains("\"message\":\"parameter pollution\""));
     }
 
 }
