@@ -44,7 +44,7 @@ class ReadMetadataUseCaseTest {
     void readMetadataThrowsDmsException() throws DmsException {
         when(this.readMetadataOutPort.readMetadata(any(), any())).thenReturn(new Metadata("name", "Ausgang", "url"));
 
-        final DmsException dmsException = catchThrowableOfType(() -> readMetadataUseCase.readMetadata(ObjectType.Sachakte, COO, USER), DmsException.class);
+        final DmsException dmsException = catchThrowableOfType(DmsException.class, () -> readMetadataUseCase.readMetadata(ObjectType.Sachakte, COO, USER));
 
         final String expectedMessage = String.format(
                 "WRONG_INPUT_OBJECT_CLASS: The input object with the COO address %s is invalid because it is of the object class %s and this does not match the expected object class(es) %s.",
