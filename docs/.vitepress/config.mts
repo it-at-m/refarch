@@ -33,6 +33,10 @@ const vitepressConfig = defineConfig({
     socialLinks: [
       { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
     ],
+    editLink: {
+      pattern: "https://github.com/it-at-m/refarch/blob/main/docs/:path",
+      text: "View this page on GitHub",
+    },
     search: {
       provider: 'local'
     }
