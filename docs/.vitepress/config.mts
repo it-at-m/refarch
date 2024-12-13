@@ -5,6 +5,16 @@ import { withMermaid } from "vitepress-plugin-mermaid"; // https://vitepress.dev
 const vitepressConfig = defineConfig({
   title: "Refarch Vitepress init",
   description: "Documentation for the RefArch",
+  head: [
+    [
+      "link",
+      {
+        rel: "icon",
+        href: `https://assets.muenchen.de/logos/lhm/icon-lhm-muenchen-32.png`,
+      },
+    ],
+  ],
+  lastUpdated: true,
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
