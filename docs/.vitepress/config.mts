@@ -56,6 +56,9 @@ const vitepressConfig = defineConfig({
     search: {
       provider: "local",
     },
+    footer: {
+      message: `<a href="https://opensource.muenchen.de/impress.html">Impress and Contact</a>`,
+    },
   },
 });
 
