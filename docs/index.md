@@ -3,23 +3,31 @@
 layout: home
 
 hero:
-  name: "Refarch Vitepress init"
-  text: "Documentation for the RefArch"
-  tagline: My great project tagline
+  name: "RefArch"
+  text: "Documentation for the reference architecture of it@M"
+  tagline: "Standardized way for developing web applications"
   actions:
     - theme: brand
-      text: Markdown Examples
-      link: /markdown-examples
+      text: Overview
+      link: /overview
     - theme: alt
-      text: API Examples
-      link: /api-examples
+      text: Templates
+      link: https://refarch-templates.oss.muenchen.de
+    - theme: alt
+      text: API-Gateway
+      link: /gateway
+    - theme: alt
+      text: Integrations
+      link: /integrations
 
 features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - icon: 🕒
+    title: Time Savings
+    details: Focus on building features instead of reinventing the wheel.
+  - icon: 💎
+    title: High Quality
+    details: Leverage well-tested and reliable components that enhance your project’s stability.
+  - icon: 🔌
+    title: Easy Integration
+    details: Our components are designed for effortless integration, ensuring a smooth workflow.
 ---
-
