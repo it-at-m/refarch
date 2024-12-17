@@ -1,6 +1,6 @@
 # Overview
 
-The reference architecture (RefArch) of it@M provides a baseframe vor developing web applications.
+The reference architecture (RefArch) of it@M provides a baseframe for developing web applications.
 It's based on [Spring](https://spring.io/) as backend and [Vue.js](https://vuejs.org/) as frontend framework.
 
 Beside this generic and ready to use components documentation there is also [the documentation for all the templates](https://refarch-templates.oss.muenchen.de).
@@ -30,7 +30,7 @@ flowchart LR
 
 ### API-Gateway
 
-The api gateway is a ready to use component and the only exposed interface for accessing the application.
+The API gateway is a ready to use component and the only exposed interface for accessing the application.
 It manages all requests and routes them to the independent services.
 
 See [API-Gateway](./gateway.md) for further information.
@@ -51,7 +51,7 @@ The according template is described [here](https://refarch-templates.oss.muenche
 
 ### Web component
 
-In addition to the frontend there is also a templates for developing web components which then can be used in other applications.
+In addition to the frontend there is also a template for developing web components which then can be used in other applications.
 
 Further information regarding the web component template can be found [here](https://refarch-templates.oss.muenchen.de/webcomponent).
 
