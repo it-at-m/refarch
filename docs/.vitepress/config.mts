@@ -46,6 +46,9 @@ const vitepressConfig = defineConfig({
         ],
       },
     ],
+    outline: {
+      level: "deep",
+    },
     socialLinks: [
       { icon: "github", link: "https://github.com/it-at-m/refarch" },
     ],
