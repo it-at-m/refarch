@@ -18,7 +18,7 @@ Besides that there can be cases where modular frontends through web components, 
 
 ```mermaid
 flowchart LR
-    u([Users])
+    u([Client])
     g[API gateway]
     f[Frontend]
     b[Backend]
