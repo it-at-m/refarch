@@ -14,7 +14,7 @@ The RefArch is a microservice-based architecture where each service can be scale
 Following up is a description of the different components and a visualization of the connections between them.
 
 Most applications consist of an API gateway, a frontend (served by a webserver) and a backend component.
-Besides that there can be variations with web components or multiple frontends or backends.
+Besides that there can be cases where modular frontends through web components, multiple frontends or multiple backends are desired.
 
 ```mermaid
 flowchart LR
@@ -32,21 +32,22 @@ flowchart LR
 ### API gateway
 
 The API gateway is a ready-to-use component and the only exposed interface for accessing the application.
-It manages all requests and routes them to the independent services.
+It manages all requests and routes them to the respective development components like frontend and backend.
+Besides that, it also handles cross-cutting concepts like authentication using a SSO.
 
 See [API-Gateway](./gateway.md) for further information.
 
 ### Frontend
 
 The frontend provides the application UI and is developed with Vue.js. It calls the backend (via the API gateway) for reading and modifying data.
-It's developed separate for each application and started from a default template.
+It's developed separate for each application and therefore a default template is provided.
 
 The template is described [here](https://refarch-templates.oss.muenchen.de/frontend).
 
 ### Backend
 
 The backend provides a REST-API for reading and modifying application data, handles business logic and access to databases.
-Like the frontend the backend is also started from a template.
+Like the frontend the backend is also provided as a template.
 
 The template is described [here](https://refarch-templates.oss.muenchen.de/backend).
 
