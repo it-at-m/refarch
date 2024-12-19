@@ -23,7 +23,7 @@ const vitepressConfig = defineConfig({
         text: "Docs",
         items: [
           { text: "Overview", link: "/overview" },
-          { text: "API-Gateway", link: "/gateway" },
+          { text: "API gateway", link: "/gateway" },
           { text: "Integrations", link: "/integrations" },
           { text: "Development", link: "/dev" },
         ],
@@ -31,7 +31,7 @@ const vitepressConfig = defineConfig({
     ],
     sidebar: [
       { text: "Overview", link: "/overview" },
-      { text: "API-Gateway", link: "/gateway" },
+      { text: "API gateway", link: "/gateway" },
       {
         text: "Integrations",
         link: "/integrations",
