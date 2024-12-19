@@ -1,18 +1,19 @@
 # Overview
 
-The reference architecture (RefArch) of it@M provides a baseframe for developing web applications.
-It's based on [Spring](https://spring.io/) as backend and [Vue.js](https://vuejs.org/) as frontend framework.
+The reference architecture of it@M (further referred to as "RefArch") provides a frame for developing web applications and integration components.
+It's based on [Spring](https://spring.io/) as backend framework and [Vue.js](https://vuejs.org/) as frontend framework. [Apache Camel](https://camel.apache.org/) is used as integration framework.
 
-Beside this generic and ready to use components documentation there is also [the documentation for all the templates](https://refarch-templates.oss.muenchen.de).
+This website contains documentation for the general topics about the reference architecture, as well as content about generic and ready-to-use components.
+Additionally, there is [documentation for repository templates](https://refarch-templates.oss.muenchen.de), which is especially relevant when developing own applications with the RefArch.
 
-In the following the architecture and the different components are described.
+The following sections further describe the architecture and its involved components.
 
 ## Architecture
 
-The RefArch is a microservice architecture where each service can be scaled and developed independent. 
-In the following these different services and their connections with each other are visualized and described.
+The RefArch is a microservice-based architecture where each service can be scaled and developed independently.
+Following up is a description of the different components and a visualization of the connections between them.
 
-The most applications consist of the api gateway, a frontend and a backend.
+Most applications consist of an API gateway, a frontend (served by a webserver) and a backend component.
 Besides that there can be variations with web components or multiple frontends or backends.
 
 ```mermaid
@@ -28,36 +29,37 @@ flowchart LR
     g --> w
 ```
 
-### API-Gateway
+### API gateway
 
-The API gateway is a ready to use component and the only exposed interface for accessing the application.
+The API gateway is a ready-to-use component and the only exposed interface for accessing the application.
 It manages all requests and routes them to the independent services.
 
 See [API-Gateway](./gateway.md) for further information.
 
 ### Frontend
 
-The frontend provides the ui and is developed with Vue.js. It calls the backend for reading and modifying data.
+The frontend provides the application UI and is developed with Vue.js. It calls the backend (via the API gateway) for reading and modifying data.
 It's developed separate for each application and started from a default template.
 
 The template is described [here](https://refarch-templates.oss.muenchen.de/frontend).
 
 ### Backend
 
-The backend provides an REST-API for reading and modifying application data.
+The backend provides a REST-API for reading and modifying application data, handles business logic and access to databases.
 Like the frontend the backend is also started from a template.
 
-The according template is described [here](https://refarch-templates.oss.muenchen.de/backend).
+The template is described [here](https://refarch-templates.oss.muenchen.de/backend).
 
 ### Web component
 
-In addition to the frontend there is also a template for developing web components which then can be used in other applications.
+The web components template enables development of modular frontend components which can be integrated into other applications.
+This concept is also known as micro frontends. By default, most applications won't require this template.
 
-Further information regarding the web component template can be found [here](https://refarch-templates.oss.muenchen.de/webcomponent).
+The template is described [here](https://refarch-templates.oss.muenchen.de/webcomponent).
 
-## Application integration (EAI)
+## Enterprise Application integration (EAI)
 
-Beside the development of web application the RefArch also provides presets for enterprise application integration (EAI).
-This enables to interconnect two existing applications.
+Beside the development of web applications, the RefArch also provides a template for enterprise application integration (EAI). 
+This enables integration between existing applications. By default, most applications won't require this template.
 
-The according templates and documentation can he found [here](https://refarch-templates.oss.muenchen.de/eai).
+The template is described [here](https://refarch-templates.oss.muenchen.de/eai).
