@@ -14,7 +14,7 @@ hero:
       text: Templates
       link: https://refarch-templates.oss.muenchen.de
     - theme: alt
-      text: API-Gateway
+      text: API gateway
       link: /gateway
     - theme: alt
       text: Integrations
