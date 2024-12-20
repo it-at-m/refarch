@@ -18,8 +18,8 @@ Besides that there can be cases where modular frontends through web components, 
 
 ```mermaid
 flowchart LR
-    u([Users])
-    g[API-Gateway]
+    u([Client])
+    g[API gateway]
     f[Frontend]
     b[Backend]
     w[Web component]
@@ -35,7 +35,7 @@ The API gateway is a ready-to-use component and the only exposed interface for a
 It manages all requests and routes them to the respective development components like frontend and backend.
 Besides that, it also handles cross-cutting concepts like authentication using a SSO.
 
-See [API-Gateway](./gateway.md) for further information.
+See [API gateway](./gateway.md) for further information.
 
 ### Frontend
 
