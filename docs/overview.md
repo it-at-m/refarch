@@ -19,23 +19,23 @@ Besides that there can be cases where modular frontends through web components, 
 ```mermaid
 flowchart LR
     u([Client])
-    g[API gateway]
+    g[API Gateway]
     f[Frontend]
     b[Backend]
-    w[Web component]
+    w[Web Component]
     u --> g
     g --> f
     g --> b
     g --> w
 ```
 
-### API gateway
+### API Gateway
 
 The API gateway is a ready-to-use component and the only exposed interface for accessing the application.
 It manages all requests and routes them to the respective development components like frontend and backend.
 Besides that, it also handles cross-cutting concepts like authentication using a SSO.
 
-See [API gateway](./gateway.md) for further information.
+See [API Gateway](./gateway.md) for further information.
 
 ### Frontend
 
@@ -51,14 +51,14 @@ Like the frontend the backend is also provided as a template.
 
 The template is described [here](https://refarch-templates.oss.muenchen.de/backend).
 
-### Web component
+### Web Component
 
 The web components template enables development of modular frontend components which can be integrated into other applications.
 This concept is also known as micro frontends. By default, most applications won't require this template.
 
 The template is described [here](https://refarch-templates.oss.muenchen.de/webcomponent).
 
-## Enterprise Application integration (EAI)
+## Enterprise Application Integration (EAI)
 
 Beside the development of web applications, the RefArch also provides a template for enterprise application integration (EAI). 
 This enables integration between existing applications. By default, most applications won't require this template.

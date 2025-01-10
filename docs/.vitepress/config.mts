@@ -23,27 +23,18 @@ const vitepressConfig = defineConfig({
         text: "Docs",
         items: [
           { text: "Overview", link: "/overview" },
-          { text: "API gateway", link: "/gateway" },
+          { text: "API Gateway", link: "/gateway" },
           { text: "Integrations", link: "/integrations" },
-          { text: "Development", link: "/dev" },
         ],
       },
     ],
     sidebar: [
       { text: "Overview", link: "/overview" },
-      { text: "API gateway", link: "/gateway" },
+      { text: "API Gateway", link: "/gateway" },
       {
         text: "Integrations",
         link: "/integrations",
         items: [{ text: "S3", link: "/integrations/s3" }],
-      },
-      {
-        text: "Development",
-        link: "/dev",
-        items: [
-          { text: "Tools", link: "/dev/tools" },
-          { text: "Stack", link: "/dev/stack" },
-        ],
       },
     ],
     outline: {
