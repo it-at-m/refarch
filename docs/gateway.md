@@ -2,12 +2,6 @@
 
 RefArch gateway based on [Spring Cloud Gateway](https://spring.io/projects/spring-cloud-gateway).
 
-::: info
-In the previous version of the RefArch each project managed their own API gateway.
-
-With the new version this should only occur very rarely and only if a very specific feature can't be implemented within the managed gateway.
-:::
-
 ## Usage
 
 The gateway is released as container image `ghcr.io/it-at-m/refarch/refarch-gateway` and can be used either directly or
