@@ -27,7 +27,7 @@ Beside the default functionality of Spring Cloud Gateway (i.e. routing) followin
 
 Routes are configured via environment variables as listed under [Configuration](#configuration).
 
-By default, routes require authentication through oAuth2 and manage the session between the client and gateway using
+By default, routes require authentication through OAuth 2.0 and manage the session between the client and gateway using
 cookies.
 The gateway then maps the session cookie to a JWT before routing it.
 
@@ -41,7 +41,7 @@ Beside the default behaviour there are some special route prefixes which are han
 | Profile           | Description                                                                                       |
 |-------------------|---------------------------------------------------------------------------------------------------|
 | `json-logging`    | Switches logging from textual to JSON output.                                                     |
-| `no-security`     | Disables complete security like authentication, authorization, csrf etc. Routing works as normal. |
+| `no-security`     | Disables all security mechanisms (e.g. authentication, authorization, CSRF) Routing works as normal. |
 | `hazelcast-local` | Configures Spring Session Hazelcast for connection via localhost (i.e. local development).        |
 | `hazelcast-k8s`   | Configures Spring Session Hazelcast for usage in Kubernetes/OpenShift cluster.                    |
 
@@ -50,18 +50,18 @@ Beside the default behaviour there are some special route prefixes which are han
 | Var                                                      | Description                                                       | Example                                                                 |
 |----------------------------------------------------------|-------------------------------------------------------------------|-------------------------------------------------------------------------|
 | `SPRING_PROFILES_ACTIVE`                                 | See profiles                                                      | `local,hazelcast-local`                                                 |
-| `SPRING_CLOUD_GATEWAY_ROUTES_<index>_ID`                 | Id of a route definition.                                         | `backend`                                                               |
-| `SPRING_CLOUD_GATEWAY_ROUTES_<index>_URI`                | The uri to route to if this route matches.                        | `http://backend-service:8080/`                                          |
+| `SPRING_CLOUD_GATEWAY_ROUTES_<index>_ID`                 | ID of a route definition.                                         | `backend`                                                               |
+| `SPRING_CLOUD_GATEWAY_ROUTES_<index>_URI`                | The URI to route to if this route matches.                        | `http://backend-service:8080/`                                          |
 | `SPRING_CLOUD_GATEWAY_ROUTES_<index>_PREDICATES_<index>` | Route predicates i.e. matcher.                                    | `Path=/api/backend-service/**`                                          |
 | `SPRING_CLOUD_GATEWAY_ROUTES_<index>_FILTERS_<index>`    | List of filters applied to the route.                             | `RewritePath=/api/backend-service/(?<urlsegments>.*), /$\{urlsegments}` |
 | `REFARCH_HAZELCAST_SERVICENAME`                          | Kubernetes service name for when using profile `hazelcast-k8s`.   |                                                                         |
-| `ALLOWED_ORIGINS_PUBLIC` (optional)                      | List of urls allowed as origin for public routes.                 | `https://*.example.com,http://localhost:*`                              |
-| `ALLOWED_ORIGINS_CLIENTS` (optional)                     | List of urls allowed as origin for clients routes.                | `https://*.example.com,http://localhost:*`                              |
-| `REFARCH_SECURITY_CSRFWHITELISTED_<index>` (optional)    | List of routes to disable csrf protection for.                    | `/example/**`                                                           |
+| `ALLOWED_ORIGINS_PUBLIC` (optional)                      | List of URIs allowed as origin for public routes.                 | `https://*.example.com,http://localhost:*`                              |
+| `ALLOWED_ORIGINS_CLIENTS` (optional)                     | List of URIs allowed as origin for clients routes.                | `https://*.example.com,http://localhost:*`                              |
+| `REFARCH_SECURITY_CSRFWHITELISTED_<index>` (optional)    | List of routes to disable CSRF protection for.                    | `/example/**`                                                           |
 
 ### Security
 
-For authentication via SSO, OAuth2 needs to be configured.
+For authentication via SSO, OAuth 2.0 needs to be configured.
 See following example or the [according Spring documentation](https://docs.spring.io/spring-security/reference/servlet/oauth2/index.html).
 
 Alternatively the `no-security` profile can be used.
