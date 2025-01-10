@@ -15,7 +15,7 @@ Beside the default functionality of Spring Cloud Gateway (i.e. routing) followin
 - Route protection
 - CSRF protection with whitelist
 - Cookie to JWT mapping for session management
-  - Session synchronisation between multiple instances via Hazelcast (see sections [Profiles](#profiles) and [Hazelcast](#hazelcast))
+- Session synchronisation between multiple instances via Hazelcast (see sections [Profiles](#profiles) and [Hazelcast](#hazelcast))
 - Health and metrics endpoints
 - Request filters (e.g. distributed tracing, error code mapper, parameter pollution, ...)
 
