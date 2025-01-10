@@ -1,4 +1,4 @@
-# RefArch CoSys integration
+# CoSys Integration
 
 Integration for creating documents with [coSys](https://www.cib.de/cosys/). Uses s3-integration for file handling.
 

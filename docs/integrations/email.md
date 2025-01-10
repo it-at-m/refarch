@@ -1,4 +1,4 @@
-# RefArch email integration
+# Email Integration
 
 Integration for sending text and html emails with attachments. Uses [s3-integration](../refarch-s3-integration) for file
 handling.

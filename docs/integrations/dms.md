@@ -1,4 +1,4 @@
-# RefArch DMS integration
+# DMS Integration
 
 Integration for CRUD operations on a dms system in specific fabasoft. Uses
 s3-integration for file handling.
