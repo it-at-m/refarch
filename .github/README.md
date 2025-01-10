@@ -11,10 +11,10 @@ The RefArch is based on [Spring](https://spring.io/) and [VueJS](https://vuejs.o
 
 ## Usage
 
-Following a list of the available components. Each of them is described in their own section of the [documentation](https://refarch.oss.muenchen.de/).
+Following a list of the available components. Each of them is described in their own section of the documentation.
 
-- [refarch-gateway](../refarch-gateway)
-- [refarch-integrations](../refarch-integrations)
+- refarch-gateway ([Code](../refarch-gateway), [Documentation](https://refarch.oss.muenchen.de/gateway))
+- refarch-integrations ([Code](../refarch-integrations), [Documentation](https://refarch.oss.muenchen.de/integrations))
 
 ## Contributing
 
