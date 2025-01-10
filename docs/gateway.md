@@ -30,28 +30,19 @@ Beside the default behaviour there are some special route prefixes which are han
 - `/public/**`: All `OPTIONS` and `GET` requests are routed without security.
 - `/clients/**`: Uses JWT for authenticating incoming requests instead of session cookies.
 
-## Profiles
-
-| Profile           | Description                                                                                       |
-|-------------------|---------------------------------------------------------------------------------------------------|
-| `json-logging`    | Switches logging from textual to JSON output.                                                     |
-| `no-security`     | Disables all security mechanisms (e.g. authentication, authorization, CSRF) Routing works as normal. |
-| `hazelcast-local` | Configures Spring Session Hazelcast for connection via localhost (i.e. local development).        |
-| `hazelcast-k8s`   | Configures Spring Session Hazelcast for usage in Kubernetes/OpenShift cluster.                    |
-
 ## Configuration
 
-| Var                                                      | Description                                                       | Example                                                                 |
-|----------------------------------------------------------|-------------------------------------------------------------------|-------------------------------------------------------------------------|
-| `SPRING_PROFILES_ACTIVE`                                 | See profiles                                                      | `local,hazelcast-local`                                                 |
-| `SPRING_CLOUD_GATEWAY_ROUTES_<index>_ID`                 | ID of a route definition.                                         | `backend`                                                               |
-| `SPRING_CLOUD_GATEWAY_ROUTES_<index>_URI`                | The URI to route to if this route matches.                        | `http://backend-service:8080/`                                          |
-| `SPRING_CLOUD_GATEWAY_ROUTES_<index>_PREDICATES_<index>` | Route predicates i.e. matcher.                                    | `Path=/api/backend-service/**`                                          |
-| `SPRING_CLOUD_GATEWAY_ROUTES_<index>_FILTERS_<index>`    | List of filters applied to the route.                             | `RewritePath=/api/backend-service/(?<urlsegments>.*), /$\{urlsegments}` |
-| `REFARCH_HAZELCAST_SERVICENAME`                          | Kubernetes service name for when using profile `hazelcast-k8s`.   |                                                                         |
-| `ALLOWED_ORIGINS_PUBLIC` (optional)                      | List of URIs allowed as origin for public routes.                 | `https://*.example.com,http://localhost:*`                              |
-| `ALLOWED_ORIGINS_CLIENTS` (optional)                     | List of URIs allowed as origin for clients routes.                | `https://*.example.com,http://localhost:*`                              |
-| `REFARCH_SECURITY_CSRFWHITELISTED_<index>` (optional)    | List of routes to disable CSRF protection for.                    | `/example/**`                                                           |
+| Var                                                      | Description                                                     | Example                                                                 |
+|----------------------------------------------------------|-----------------------------------------------------------------|-------------------------------------------------------------------------|
+| `SPRING_PROFILES_ACTIVE`                                 | See [profiles](#profiles)                                       | `local,hazelcast-local`                                                 |
+| `SPRING_CLOUD_GATEWAY_ROUTES_<index>_ID`                 | ID of a route definition.                                       | `backend`                                                               |
+| `SPRING_CLOUD_GATEWAY_ROUTES_<index>_URI`                | The URI to route to if this route matches.                      | `http://backend-service:8080/`                                          |
+| `SPRING_CLOUD_GATEWAY_ROUTES_<index>_PREDICATES_<index>` | Route predicates i.e. matcher.                                  | `Path=/api/backend-service/**`                                          |
+| `SPRING_CLOUD_GATEWAY_ROUTES_<index>_FILTERS_<index>`    | List of filters applied to the route.                           | `RewritePath=/api/backend-service/(?<urlsegments>.*), /$\{urlsegments}` |
+| `REFARCH_HAZELCAST_SERVICENAME`                          | Kubernetes service name for when using profile `hazelcast-k8s`. |                                                                         |
+| `ALLOWED_ORIGINS_PUBLIC` (optional)                      | List of URIs allowed as origin for public routes.               | `https://*.example.com,http://localhost:*`                              |
+| `ALLOWED_ORIGINS_CLIENTS` (optional)                     | List of URIs allowed as origin for clients routes.              | `https://*.example.com,http://localhost:*`                              |
+| `REFARCH_SECURITY_CSRFWHITELISTED_<index>` (optional)    | List of routes to disable CSRF protection for.                  | `/example/**`                                                           |
 
 ### Security
 
@@ -79,6 +70,15 @@ spring:
             # needed for userInfo endpoint
             scope: profile, openid
 ```
+
+### Profiles
+
+| Profile           | Description                                                                                          |
+|-------------------|------------------------------------------------------------------------------------------------------|
+| `json-logging`    | Switches logging from textual to JSON output.                                                        |
+| `no-security`     | Disables all security mechanisms (e.g. authentication, authorization, CSRF) Routing works as normal. |
+| `hazelcast-local` | Configures Spring Session Hazelcast for connection via localhost (i.e. local development).           |
+| `hazelcast-k8s`   | Configures Spring Session Hazelcast for usage in Kubernetes/OpenShift cluster.                       |
 
 ### Hazelcast
 
