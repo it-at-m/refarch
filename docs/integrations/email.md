@@ -16,7 +16,7 @@ handling.
 </dependencies>
 ```
 
-and a [s3-integration starter](../refarch-s3-integration/README.md#usage).
+and a [s3-integration starter](./s3.md#usage).
 
 ## Configuration
 
