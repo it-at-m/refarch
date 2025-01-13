@@ -1,6 +1,6 @@
 # Email Integration
 
-Integration for sending text and html emails with attachments. Uses [s3-integration](../refarch-s3-integration) for file
+Integration for sending text and html emails with attachments. Uses [s3-integration](./s3.md) for file
 handling.
 
 ## Modules
@@ -51,4 +51,4 @@ and a [s3-integration starter](./s3.md#usage).
 | `refarch.mail.from-address`             | Default from address used when sending mails.     | `test@example.com`     |
 | `refarch.mail.default-reply-to-address` | Default reply to address used when sending mails. | `no_reply@example.com` |
 
-In addition, properties of selected [s3-integration starter](../refarch-s3-integration/README.md#usage).
+In addition, properties of selected [s3-integration starter](./s3.md#usage).
