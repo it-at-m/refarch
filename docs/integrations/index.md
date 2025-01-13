@@ -18,6 +18,15 @@ Collection of different integration which can be used as is in RefArch projects.
 
 The different submodules of integrations follow following naming conventions:
 
+- `*-client`: Interface for accessing the API of the underlying service.
 - `*-core`: Implementation of the base functionality of the integration in hexagonal architecture.
 - `*-starter`: Provides Beans of core services.
 - `*-service`: A Spring application using the starter. Is provided as container image. Should not be used as dependency.
+- `*-example`: A example Spring application for testing and reference. Should not be used as dependency or real environments.
+
+### Dependency graph
+
+```mermaid
+flowchart RL
+    service --> starter --> core --> client
+```

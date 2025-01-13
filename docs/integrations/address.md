@@ -2,6 +2,10 @@
 
 Integration for reading, searching and validating addresses via the LHM address service.
 
+## Modules
+
+The modules follow the [default naming convention](./index.md#naming-conventions).
+
 ## Usage
 
 ```xml

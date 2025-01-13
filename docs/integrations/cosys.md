@@ -2,6 +2,18 @@
 
 Integration for creating documents with [coSys](https://www.cib.de/cosys/). Uses s3-integration for file handling.
 
+## Modules
+
+The modules follow the [default naming convention](./index.md#naming-conventions).
+
+### Dependency graph
+
+```mermaid
+flowchart RL
+    example --> starter --> core --> client
+    core --> s3-client
+```
+
 ## Usage
 
 ```xml

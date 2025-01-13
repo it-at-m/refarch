@@ -3,6 +3,24 @@
 Integration for CRUD operations on a dms system in specific fabasoft. Uses
 s3-integration for file handling.
 
+## Modules
+
+The modules follow the [default naming convention](./index.md#naming-conventions).
+
+- soap-api: Interface for accessing the SOAP-API of the underlying service.
+- soap-mock: Mock for testing purposes of soap-api.
+- rest-api: Interface for accessing the REST-API of the underlying service. Alternative for soap-api currently not used by integration.
+
+### Dependency graph
+
+```mermaid
+flowchart RL
+    starter --> core --> fabasoft-soap-api
+    core --> s3-client
+    fabasoft-soap-mock-service --> fabasoft-soap-mock --> fabasoft-soap-api
+    fabasoft-rest-api
+```
+
 ## Usage
 
 ```xml

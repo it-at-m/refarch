@@ -3,6 +3,26 @@
 Integration for sending text and html emails with attachments. Uses [s3-integration](../refarch-s3-integration) for file
 handling.
 
+## Modules
+
+The modules follow the [default naming convention](./index.md#naming-conventions).
+
+- email-api: Implementation of core email functionality. Will be included in core in the future.
+- rest-example: Example which uses s3-rest-client.
+- java-example: Example which uses s3-java-client.
+
+### Dependency graph
+
+```mermaid
+flowchart RL
+    starter --> core --> api-starter --> api
+    core --> s3-client
+    rest-example --> starter
+    rest-example --> s3-rest-client-starter
+    java-example --> starter
+    java-example --> s3-java-client-starter
+```
+
 ## Usage
 
 ```xml
