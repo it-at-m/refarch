@@ -1,7 +1,29 @@
-# RefArch DMS integration
+# DMS Integration
 
 Integration for CRUD operations on a dms system in specific fabasoft. Uses
 s3-integration for file handling.
+
+## Modules
+
+The modules follow the [default naming convention](./index.md#naming-conventions).
+
+Beside the default modules there are following additional:
+
+- soap-api: Interface for accessing the SOAP-API of the underlying service.
+- soap-mock: Mock for testing purposes of soap-api.
+- rest-api: Interface for accessing the REST-API of the underlying service. Alternative for soap-api currently not used by integration.
+
+### Dependency graph
+
+The following graph shows the relationships between the various modules and how they interact and rely on each other.
+
+```mermaid
+flowchart RL
+    starter --> core --> fabasoft-soap-api
+    core --> s3-client
+    fabasoft-soap-mock-service --> fabasoft-soap-mock --> fabasoft-soap-api
+    fabasoft-rest-api
+```
 
 ## Usage
 
@@ -16,7 +38,7 @@ s3-integration for file handling.
 </dependencies>
 ```
 
-and a [s3-integration starter](../refarch-s3-integration/README.md#usage).
+and a [s3-integration starter](./s3.md#usage).
 
 ## Configuration
 

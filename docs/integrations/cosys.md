@@ -1,6 +1,20 @@
-# RefArch CoSys integration
+# CoSys Integration
 
 Integration for creating documents with [coSys](https://www.cib.de/cosys/). Uses s3-integration for file handling.
+
+## Modules
+
+The modules follow the [default naming convention](./index.md#naming-conventions).
+
+### Dependency graph
+
+The following graph shows the relationships between the various modules and how they interact and rely on each other.
+
+```mermaid
+flowchart RL
+    example --> starter --> core --> client
+    core --> s3-client
+```
 
 ## Usage
 
@@ -15,7 +29,7 @@ Integration for creating documents with [coSys](https://www.cib.de/cosys/). Uses
 </dependencies>
 ```
 
-and a [s3-integration starter](../refarch-s3-integration/README.md#usage).
+and a [s3-integration starter](./s3.md#usage).
 
 ## Configuration
 
