@@ -26,6 +26,8 @@ The different submodules of integrations follow following naming conventions:
 
 ### Dependency graph
 
+The following graph shows the relationships between the various modules and how they interact and rely on each other.
+
 ```mermaid
 flowchart RL
     service --> starter --> core --> client
