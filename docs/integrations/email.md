@@ -7,6 +7,8 @@ handling.
 
 The modules follow the [default naming convention](./index.md#naming-conventions).
 
+Beside the default modules there are following additional:
+
 - email-api: Implementation of core email functionality. Will be included in core in the future.
 - rest-example: Example which uses s3-rest-client.
 - java-example: Example which uses s3-java-client.
