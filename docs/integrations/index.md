@@ -12,7 +12,7 @@ Collection of different integration which can be used as is in RefArch projects.
   s3-integration for file handling.
 - [cosys-integration](./cosys.md): For creating documents with coSys. Uses
   s3-integration for file handling.
-- [address-integration](./address.md): For reading, searching and validating addresses.
+- [address-integration](./address.md): For reading, searching and validating addresses via the LHM address service.
 
 ## Naming conventions
 
