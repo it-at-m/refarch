@@ -1,49 +1,66 @@
+[open-issues]: https://github.com/it-at-m/refarch/issues
+[new-issue]: https://github.com/it-at-m/refarch/issues/new/choose
+[milestones]: https://github.com/it-at-m/refarch/milestones
+[project-board]: https://github.com/orgs/it-at-m/projects/17
+[documentation]: https://refarch.oss.muenchen.de/
+[itm-opensource]: https://opensource.muenchen.de/
+[license]: ../LICENSE
+[code-of-conduct]: ./CODE_OF_CONDUCT.md
+
+[refarch-templates-documentation]: https://refarch-templates.oss.muenchen.de
+[refarch-templates-code]: https://github.com/it-at-m/refarch-templates
+[spring-documentation]: https://spring.io/
+[vuejs-documentation]:  https://vuejs.org/
+[gateway-documentation]: https://refarch.oss.muenchen.de/gateway
+[gateway-code]: ../refarch-gateway
+[integrations-documentation]: https://refarch.oss.muenchen.de/integrations
+[integrations-code]: ../refarch-integrations
+
+[documentation-shield]: https://img.shields.io/badge/documentation-blue?style=for-the-badge
+[new-issue-shield]: https://img.shields.io/badge/new%20issue-blue?style=for-the-badge
+[made-with-love-shield]: https://img.shields.io/badge/made%20with%20%E2%9D%A4%20by-it%40M-yellow?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/it-at-m/refarch?style=for-the-badge
+
 # RefArch
 
+[![Documentation][documentation-shield]][documentation]
+[![New issue][new-issue-shield]][new-issue]
 [![Made with love by it@M][made-with-love-shield]][itm-opensource]
-<!-- feel free to add more shields, style 'for-the-badge' -> see https://shields.io/badges -->
+[![GitHub license][license-shield]][license]
 
-Collection of different ready to use reference architecture (RefArch) components.
+Collection of different ready to use reference architecture (RefArch) components, libraries and configurations.
 
-For creating a new RefArch project use the [refarch-templates](https://github.com/it-at-m/refarch-templates).
+To create a new project using our architecture, check out the `refarch-templates` [documentation][refarch-templates-documentation] or [code][refarch-templates-code].
 
-The RefArch is based on [Spring](https://spring.io/) and [VueJS](https://vuejs.org/).
+The RefArch is based on [Spring][spring-documentation] and [Vue.js][vuejs-documentation].
 
 ## Usage
 
-Following a list of the available components. Each of them is described in their own section of the documentation.
+The following list contains the available components. Each of them is described in their own section of the documentation.
 
-- refarch-gateway ([Code](../refarch-gateway), [Documentation](https://refarch.oss.muenchen.de/gateway))
-- refarch-integrations ([Code](../refarch-integrations), [Documentation](https://refarch.oss.muenchen.de/integrations))
+- `refarch-gateway` ([Code][gateway-code], [Documentation][gateway-documentation])
+- `refarch-integrations` ([Code][integrations-code], [Documentation][integrations-documentation])
+
+## Roadmap
+
+See the [open issues][open-issues] for a full list of proposed features (and known issues).
+To get a better overview on what's currently being worked on, check out our [project board][project-board].
+We often also plan our issues in [milestones][milestones].
 
 ## Contributing
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any
-contributions you make are **greatly appreciated**.
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-If you have a suggestion that would make this better, please open an issue with the tag "enhancement", fork the repo and
-create a pull request. You can also simply open an issue with the tag "enhancement".
+If you have a suggestion that would make this better, please [open an issue][new-issue] and fill out the appropriate issue form with as much information as possible.
+If you want to work on a solution, fork the repo and create a pull request.
 Don't forget to give the project a star! Thanks again!
 
-1. Open an issue with the tag "enhancement"
-2. Fork the Project
-3. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-4. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-5. Push to the Branch (`git push origin feature/AmazingFeature`)
-6. Open a Pull Request
-
-More about this in the [CODE_OF_CONDUCT](./CODE_OF_CONDUCT.md) file.
+More about this in the [CODE_OF_CONDUCT][code-of-conduct] file.
 
 ## License
 
-Distributed under the MIT License. See [LICENSE](../LICENSE) file for more information.
+Distributed under the MIT License. See [LICENSE][license] file for more information.
 
 ## Contact
 
 it@M - opensource@muenchen.de
-
-<!-- project shields / links -->
-
-[made-with-love-shield]: https://img.shields.io/badge/made%20with%20%E2%9D%A4%20by-it%40M-yellow?style=for-the-badge
-
-[itm-opensource]: https://opensource.muenchen.de/
