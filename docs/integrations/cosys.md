@@ -1,6 +1,6 @@
 # CoSys Integration
 
-Integration for creating documents with [coSys](https://www.cib.de/cosys/). Uses s3-integration for file handling.
+Integration for creating documents with [coSys](https://www.cib.de/cosys/). Uses [s3-integration](./s3.md) for file handling.
 
 ## Modules
 
