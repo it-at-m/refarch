@@ -1,7 +1,6 @@
 # Email Integration
 
-Integration for sending text and html emails with attachments. Uses [s3-integration](./s3.md) for file
-handling.
+Integration for sending text and html emails with attachments. Uses [s3-integration](./s3.md) for file handling.
 
 ## Modules
 

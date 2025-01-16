@@ -1,7 +1,6 @@
 # DMS Integration
 
-Integration for CRUD operations on a dms system in specific fabasoft. Uses
-s3-integration for file handling.
+Integration for CRUD operations on a dms system in specific fabasoft. Uses [s3-integration](./s3.md) for file handling.
 
 ## Modules
 
