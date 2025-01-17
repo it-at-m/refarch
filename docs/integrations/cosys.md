@@ -29,7 +29,8 @@ flowchart RL
 </dependencies>
 ```
 
-and a [s3-integration starter](./s3.md#usage).
+Additionally, a specific `s3-integration-*-client-starter` is required as dependency, because S3 is used for file handling.
+See [according documentation](./s3.md#usage).
 
 ## Configuration
 
