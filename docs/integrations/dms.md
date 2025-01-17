@@ -6,7 +6,7 @@ Integration for CRUD operations on a dms system in specific fabasoft. Uses [s3-i
 
 The modules follow the [default naming convention](./index.md#naming-conventions).
 
-Beside the default modules there are following additional:
+Besides the default modules we provide the additional ones:
 
 - soap-api: Interface for accessing the SOAP-API of the underlying service.
 - soap-mock: Mock for testing purposes of soap-api.

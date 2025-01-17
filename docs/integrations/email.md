@@ -6,7 +6,7 @@ Integration for sending text and HTML mails with attachments. Uses [s3-integrati
 
 The modules follow the [default naming convention](./index.md#naming-conventions).
 
-Beside the default modules there are following additional:
+Besides the default modules we provide the additional ones:
 
 - email-api: Implementation of core email functionality. Will be included in core in the future.
 - rest-example: Example which uses s3-rest-client.
