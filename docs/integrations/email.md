@@ -8,9 +8,9 @@ The modules follow the [default naming convention](./index.md#naming-conventions
 
 Besides the default modules we provide the additional ones:
 
-- email-api: Implementation of core email functionality. Will be included in core in the future.
-- rest-example: Example which uses s3-rest-client.
-- java-example: Example which uses s3-java-client.
+- `email-api`: Implementation of core email functionality. Will be included in core in the future.
+- `rest-example`: Example which uses s3-rest-client.
+- `java-example`: Example which uses s3-java-client.
 
 ### Dependency graph
 

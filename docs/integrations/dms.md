@@ -8,9 +8,9 @@ The modules follow the [default naming convention](./index.md#naming-conventions
 
 Besides the default modules we provide the additional ones:
 
-- soap-api: Interface for accessing the SOAP-API of the underlying service.
-- soap-mock: Mock for testing purposes of soap-api.
-- rest-api: Interface for accessing the REST-API of the underlying service. Alternative to soap-api but can't currently be used as drop-in-replacement.
+- `soap-api`: Interface for accessing the SOAP-API of the underlying service.
+- `soap-mock`: Mock for testing purposes of soap-api.
+- `rest-api`: Interface for accessing the REST-API of the underlying service. Alternative to soap-api but can't currently be used as drop-in-replacement.
 
 ### Dependency graph
 
