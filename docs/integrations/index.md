@@ -23,7 +23,7 @@ The different submodules of integrations follow following naming conventions:
 - `*-core`: Implementation of the base functionality of the integration in hexagonal architecture.
 - `*-starter`: Provides Beans of core services.
 - `*-service`: A Spring application using the starter. It is provided as container image and should not be used as dependency.
-- `*-example`: A example Spring application for testing and reference. It should not be used as dependency or in real environments.
+- `*-example`: An example Spring application for testing and reference. It should not be used as dependency or in real environments.
 
 ### Dependency graph
 
