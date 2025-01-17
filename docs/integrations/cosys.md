@@ -40,13 +40,13 @@ Whether a property is an alias can be checked in the corresponding `application.
 
 ### refarch-cosys-integration-starter
 
-| Property                             | Description                                                                   | Example          |
-|--------------------------------------|-------------------------------------------------------------------------------|------------------|
-| `refarch.cosys.url`                  | Url of the CoSys service                                                      |                  |
-| `refarch.cosys.merge.datafile`       |                                                                               | `/root/multi`    |
-| `refarch.cosys.merge.inputLanguage`  | incoming language                                                             | `Deutsch`        |
-| `refarch.cosys.merge.outputLanguage` | outgoing language                                                             | `Deutsch`        |
-| `refarch.cosys.merge.keepFields`     |                                                                               | `unresolved-ref` |
+| Property                             | Description              | Example          |
+| ------------------------------------ | ------------------------ | ---------------- |
+| `refarch.cosys.url`                  | Url of the CoSys service |                  |
+| `refarch.cosys.merge.datafile`       |                          | `/root/multi`    |
+| `refarch.cosys.merge.inputLanguage`  | incoming language        | `Deutsch`        |
+| `refarch.cosys.merge.outputLanguage` | outgoing language        | `Deutsch`        |
+| `refarch.cosys.merge.keepFields`     |                          | `unresolved-ref` |
 
 For authentication against cosys a OAuth2 registration with the name `cosys` needs to be provided.
 See following example or the [according Spring documentation](https://docs.spring.io/spring-security/reference/servlet/oauth2/index.html#oauth2-client).

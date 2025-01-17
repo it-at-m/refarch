@@ -35,7 +35,7 @@ Beside the default behaviour there are some special route prefixes which are han
 ## Configuration
 
 | Var                                                      | Description                                                     | Example                                                                 |
-|----------------------------------------------------------|-----------------------------------------------------------------|-------------------------------------------------------------------------|
+| -------------------------------------------------------- | --------------------------------------------------------------- | ----------------------------------------------------------------------- |
 | `SPRING_PROFILES_ACTIVE`                                 | See [profiles](#profiles)                                       | `local,hazelcast-local`                                                 |
 | `SPRING_CLOUD_GATEWAY_ROUTES_<index>_ID`                 | ID of a route definition.                                       | `backend`                                                               |
 | `SPRING_CLOUD_GATEWAY_ROUTES_<index>_URI`                | The URI to route to if this route matches.                      | `http://backend-service:8080/`                                          |
@@ -67,7 +67,7 @@ spring:
         registration:
           sso:
             provider: sso
-            client-id: 
+            client-id:
             client-secret:
             # needed for userInfo endpoint
             scope: profile, openid
@@ -76,7 +76,7 @@ spring:
 ### Profiles
 
 | Profile           | Description                                                                                          |
-|-------------------|------------------------------------------------------------------------------------------------------|
+| ----------------- | ---------------------------------------------------------------------------------------------------- |
 | `json-logging`    | Switches logging from textual to JSON output.                                                        |
 | `no-security`     | Disables all security mechanisms (e.g. authentication, authorization, CSRF) Routing works as normal. |
 | `hazelcast-local` | Configures Spring Session Hazelcast for connection via localhost (i.e. local development).           |
@@ -86,20 +86,22 @@ spring:
 
 Beside the already mentioned properties Hazelcast also has the following requirements.
 
-#### Modular java
-See https://docs.hazelcast.com/hazelcast/5.5/getting-started/install-hazelcast#using-modular-java
+#### Modular Java
+
+See <https://docs.hazelcast.com/hazelcast/5.5/getting-started/install-hazelcast#using-modular-java>
 
 Following Java options need to be set.
 For the gateway image this can be done with `JAVA_OPTS_APPEND`.
-```
+
+```text
 --add-modules java.se \
-  --add-exports java.base/jdk.internal.ref=ALL-UNNAMED \
-  --add-opens java.base/java.lang=ALL-UNNAMED \
-  --add-opens java.base/java.nio=ALL-UNNAMED \
-  --add-opens java.base/sun.nio.ch=ALL-UNNAMED \
-  --add-opens java.management/sun.management=ALL-UNNAMED \
-  --add-opens jdk.management/com.ibm.lang.management.internal=ALL-UNNAMED \
-  --add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
+--add-exports java.base/jdk.internal.ref=ALL-UNNAMED \
+--add-opens java.base/java.lang=ALL-UNNAMED \
+--add-opens java.base/java.nio=ALL-UNNAMED \
+--add-opens java.base/sun.nio.ch=ALL-UNNAMED \
+--add-opens java.management/sun.management=ALL-UNNAMED \
+--add-opens jdk.management/com.ibm.lang.management.internal=ALL-UNNAMED \
+--add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
 ```
 
 #### Kubernetes

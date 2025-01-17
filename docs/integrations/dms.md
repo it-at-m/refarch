@@ -45,7 +45,7 @@ See [according documentation](./s3.md#usage).
 ### refarch-dms-integration-starter
 
 | Property                                  | Description                                                                                                    |
-|-------------------------------------------|----------------------------------------------------------------------------------------------------------------|
+| ----------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
 | `refarch.dms.fabasoft.url`                | Url to fabasoft endpoint                                                                                       |
 | `refarch.dms.fabasoft.username`           | Technical fabasoft dms user                                                                                    |
 | `refarch.dms.fabasoft.password`           | Technical fabasoft dms password                                                                                |

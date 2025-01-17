@@ -1,6 +1,6 @@
 # Integrations
 
-Integrations are ready to use implementations for accessing often used services in own applications without re-implementing the same logic. 
+Integrations are ready to use implementations for accessing often used services in own applications without re-implementing the same logic.
 These enable reduced coding effort and maintenance as well as standardized programming interfaces.
 
 ## Integrations

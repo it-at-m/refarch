@@ -24,5 +24,5 @@ The modules follow the [default naming convention](./index.md#naming-conventions
 ### refarch-address-integration-starter
 
 | Property              | Description                |
-|-----------------------|----------------------------|
+| --------------------- | -------------------------- |
 | `refarch.address.url` | URL of the address service |
