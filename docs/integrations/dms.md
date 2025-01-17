@@ -10,7 +10,7 @@ Beside the default modules there are following additional:
 
 - soap-api: Interface for accessing the SOAP-API of the underlying service.
 - soap-mock: Mock for testing purposes of soap-api.
-- rest-api: Interface for accessing the REST-API of the underlying service. Alternative for soap-api currently not used by integration.
+- rest-api: Interface for accessing the REST-API of the underlying service. Alternative to soap-api but can't currently be used as drop-in-replacement.
 
 ### Dependency graph
 
