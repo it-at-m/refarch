@@ -34,7 +34,13 @@ const vitepressConfig = defineConfig({
       {
         text: "Integrations",
         link: "/integrations",
-        items: [{ text: "S3", link: "/integrations/s3" }],
+        items: [
+          { text: "S3", link: "/integrations/s3" },
+          { text: "Address", link: "/integrations/address" },
+          { text: "CoSys", link: "/integrations/cosys" },
+          { text: "DMS", link: "/integrations/dms" },
+          { text: "E-Mail", link: "/integrations/email" },
+        ],
       },
     ],
     outline: {
