@@ -1,6 +1,7 @@
 # Integrations
 
-Collection of different integration which can be used as is in RefArch projects.
+Integrations are ready to use implementations for accessing often used services in own applications without re-implementing the same logic. 
+These enable reduced coding effort and maintenance as well as standardized programming interfaces.
 
 ## Integrations
 
