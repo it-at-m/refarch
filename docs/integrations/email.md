@@ -47,7 +47,7 @@ See [according documentation](./s3.md#usage).
 ### refarch-email-integration-starter
 
 | Property                                | Description                                       | Example                |
-|-----------------------------------------|---------------------------------------------------|------------------------|
+| --------------------------------------- | ------------------------------------------------- | ---------------------- |
 | `spring.mail.host`                      | Host of smtp server used for sending mails.       | `mail.example.com`     |
 | `spring.mail.port`                      | Host of smtp server used for sending mails.       | `1025`                 |
 | `spring.mail.username`                  | Username of smtp server.                          |                        |

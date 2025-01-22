@@ -60,7 +60,7 @@ The template is described [here](https://refarch-templates.oss.muenchen.de/webco
 
 ## Enterprise Application Integration (EAI)
 
-Beside the development of web applications, the RefArch also provides a template for enterprise application integration (EAI). 
+Beside the development of web applications, the RefArch also provides a template for enterprise application integration (EAI).
 This enables integration between existing applications. By default, most applications won't require this template.
 
 The template is described [here](https://refarch-templates.oss.muenchen.de/eai).
