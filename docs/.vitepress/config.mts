@@ -25,6 +25,7 @@ const vitepressConfig = defineConfig({
           { text: "Overview", link: "/overview" },
           { text: "API Gateway", link: "/gateway" },
           { text: "Integrations", link: "/integrations" },
+          { text: "Tools", link: "/tools" },
         ],
       },
     ],
@@ -42,6 +43,7 @@ const vitepressConfig = defineConfig({
           { text: "E-Mail", link: "/integrations/email" },
         ],
       },
+      { text: "Tools", link: "/tools" },
     ],
     outline: {
       level: "deep",
