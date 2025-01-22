@@ -48,8 +48,8 @@ Additionally, it includes specific presets for tagging and dependency restrictio
 
 The used presets from Renovate are described in the according [Renovate documentation](https://docs.renovatebot.com/presets-default/).
 
-For using the preset a file `renovate.json5` with following content needs to be created in the repository root.
-The RefArch templates already include this file.
+To use this configuration, create a `renovate.json5` file with the following content in the repository root.
+The file is included by default in the RefArch templates.
 
 ```json5
 {
