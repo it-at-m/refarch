@@ -43,8 +43,8 @@ See following example. The RefArch templates are already configured this way.
 
 ## Renovate
 
-The provided [Renovate](https://renovatebot.com) configuration [`refarch-renovate-config.json5`](https://github.com/it-at-m/refarch/blob/main/refarch-tools/refarch-renovate/refarch-renovate-config.json5) is based on the [it@M global Renovate configurations](https://github.com/it-at-m/.github/tree/main/renovate-configs).
-Besides that there are some presets for tagging and restrictions for specific modules, so that Renovate doesn't suggest updates for dependencies which are pinned from the RefArch side.
+The provided [Renovate](https://renovatebot.com) configuration [`refarch-renovate-config.json5`](https://github.com/it-at-m/refarch/blob/main/refarch-tools/refarch-renovate/refarch-renovate-config.json5) extends the [it@M global Renovate configurations](https://github.com/it-at-m/.github/tree/main/renovate-configs).
+Additionally, it includes specific presets for tagging and dependency restrictions to prevent Renovate from suggesting updates to dependencies that are pinned by RefArch.
 
 The used presets from Renovate are described in the according [Renovate documentation](https://docs.renovatebot.com/presets-default/).
 
