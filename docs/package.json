@@ -1,13 +1,17 @@
 {
+  "name": "refarch-docs",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=22.11 <=22"
+  },
   "scripts": {
     "dev": "vitepress dev",
     "build": "vitepress build",
     "preview": "vitepress preview",
     "lint": "prettier . --check",
     "fix": "prettier . --write"
-  },
-  "engines": {
-    "node": ">=20 <=22"
   },
   "devDependencies": {
     "@muenchen/prettier-codeformat": "1.0.2",
