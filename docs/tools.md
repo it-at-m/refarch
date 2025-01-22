@@ -1,8 +1,8 @@
 # Tools
 
-For better developer experience the RefArch provides configuration presets for different tools.
+For better developer experience, the RefArch provides configuration presets for different tools.
 
-This different configurations are described in the following.
+These different configurations are described in the following.
 The tools itself are described in the [Organize](https://refarch-templates.oss.muenchen.de/organize.html) and [Develop](https://refarch-templates.oss.muenchen.de/develop.html) sections of the RefArch templates documentation.
 
 ## PMD
