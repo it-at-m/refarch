@@ -19,6 +19,9 @@ hero:
     - theme: alt
       text: Integrations
       link: /integrations
+    - theme: alt
+      text: Tools
+      link: /tools
 
 features:
   - icon: 🕒
