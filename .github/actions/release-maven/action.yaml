@@ -1,5 +1,5 @@
-name: ""
-description: ""
+name: "Release Maven"
+description: "Executes mvn release and creates a PR for the version change commits"
 
 inputs:
   module:
@@ -65,18 +65,18 @@ runs:
     - name: Push changes to new branch
       shell: bash
       run: |
-        git checkout -b ${{ github.ref_name }}-version-bump
-        git push --force origin ${{ github.ref_name }}-version-bump
+        git checkout -b ${{ github.module }}-version-bump
+        git push --force origin ${{ github.module }}-version-bump
     - name: Create pull request
       uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
       with:
         script: |
           const { repo, owner } = context.repo;
           const pullResult = await github.rest.pulls.create({
-            title: 'chore: bump release version ${{ github.ref_name }}',
+            title: 'chore: bump release version ${{ github.module }}',
             owner,
             repo,
-            head: '${{ github.ref_name }}-version-bump',
+            head: '${{ github.module }}-version-bump',
             base: '${{ github.ref_name }}',
             body: [
               'This PR is auto-generated'
