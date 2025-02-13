@@ -22,7 +22,7 @@
       "description": "Limit Camel updates to current LTS version (needs to be updated manually when new LTS release is out)",
       "matchDatasources": ["maven"],
       "matchPackageNames": ["org.apache.camel.springboot:camel-spring-boot-dependencies"],
-      "allowedVersions": "<=4.8"
+      "allowedVersions": "<=4.10"
     },
     {
       "description": "Limit Spotless updates because greater versions break internal build (because of proxy). See https://github.com/it-at-m/refarch-templates/issues/16",
