@@ -30,6 +30,9 @@ inputs:
     description: "Sonatype password for maven central release"
     required: true
 
+permissions:
+  contents: read
+
 runs:
   using: "composite"
   steps:
