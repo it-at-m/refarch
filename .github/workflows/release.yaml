@@ -25,7 +25,8 @@ on:
 jobs:
   build-maven:
     permissions:
-      contents: read
+      contents: write
+      pull-requests: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
