@@ -28,6 +28,7 @@ const vitepressConfig = defineConfig({
           { text: "Tools", link: "/tools" },
         ],
       },
+      { text: "Contribute", link: "https://refarch-templates.oss.muenchen.de/contribute.html" },
     ],
     sidebar: [
       { text: "Overview", link: "/overview" },

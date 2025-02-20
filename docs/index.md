@@ -11,7 +11,7 @@ hero:
       text: Overview
       link: /overview
     - theme: alt
-      text: Templates
+      text: ⤴ Templates
       link: https://refarch-templates.oss.muenchen.de
     - theme: alt
       text: API Gateway
@@ -22,6 +22,9 @@ hero:
     - theme: alt
       text: Tools
       link: /tools
+    - theme: alt
+      text: ⤴ Contribute to the project
+      link: https://refarch-templates.oss.muenchen.de/contribute.html
 
 features:
   - icon: 🕒
