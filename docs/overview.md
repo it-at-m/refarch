@@ -42,25 +42,25 @@ See [API Gateway](./gateway.md) for further information.
 The frontend provides the application UI and is developed with Vue.js. It calls the backend (via the API gateway) for reading and modifying data.
 It's developed separate for each application and therefore a default template is provided.
 
-The template is described [here](https://refarch-templates.oss.muenchen.de/frontend).
+More on how to use the template can be found in the [RefArch templates documentation](https://refarch-templates.oss.muenchen.de/getting-started.html#frontend-web-components).
 
 ### Backend
 
 The backend provides a REST-API for reading and modifying application data, handles business logic and access to databases.
 Like the frontend the backend is also provided as a template.
 
-The template is described [here](https://refarch-templates.oss.muenchen.de/backend).
+More on how to use the template can be found in the [RefArch templates documentation](https://refarch-templates.oss.muenchen.de/getting-started.html#backend-eai).
 
 ### Web Component
 
 The web components template enables development of modular frontend components which can be integrated into other applications.
 This concept is also known as micro frontends. By default, most applications won't require this template.
 
-The template is described [here](https://refarch-templates.oss.muenchen.de/webcomponent).
+More on how to use the template can be found in the [RefArch templates documentation](https://refarch-templates.oss.muenchen.de/getting-started.html#frontend-web-components).
 
 ## Enterprise Application Integration (EAI)
 
 Beside the development of web applications, the RefArch also provides a template for enterprise application integration (EAI).
 This enables integration between existing applications. By default, most applications won't require this template.
 
-The template is described [here](https://refarch-templates.oss.muenchen.de/eai).
+More on how to use the template can be found in the [RefArch templates documentation](https://refarch-templates.oss.muenchen.de/getting-started.html#backend-eai).
