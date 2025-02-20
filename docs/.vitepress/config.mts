@@ -28,6 +28,7 @@ const vitepressConfig = defineConfig({
           { text: "Tools", link: "/tools" },
         ],
       },
+      { text: "⤴ Contribute", link: "/contribute" },
     ],
     sidebar: [
       { text: "Overview", link: "/overview" },
