@@ -31,9 +31,6 @@ Issue: #XXX
 - [ ] Wrote code and comments in English
 - [ ] Added unit tests
 - [ ] Removed waste on branch (e.g. `console.log`), see [code quality tooling][code-quality-link]
-
-#### Gateway / Integrations
-
 - [ ] Added integration tests
 - [ ] Added Swagger API annotations (if changes to API was made)
 
