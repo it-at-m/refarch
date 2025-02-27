@@ -46,6 +46,11 @@ See following example. The RefArch templates are already configured this way.
 The provided [Renovate](https://renovatebot.com) configuration [`refarch-renovate-config.json5`](https://github.com/it-at-m/refarch/blob/main/refarch-tools/refarch-renovate/refarch-renovate-config.json5) extends the [it@M global Renovate configurations](https://github.com/it-at-m/.github/tree/main/renovate-configs).
 Additionally, it includes specific presets for tagging and dependency restrictions to prevent Renovate from suggesting updates to dependencies that are pinned by RefArch.
 
+::: info Information
+The configuration also enables auto-merging of patch releases and pinning operations for GitHub Actions, NPM dependencies, Maven artifacts and Dockerfile base images while keeping pinning of dependencies intact.
+This greatly simplifies LCM effort.
+:::
+
 The used presets from Renovate are described in the according [Renovate documentation](https://docs.renovatebot.com/presets-default/).
 
 To use this configuration, create a `renovate.json5` file with the following content in the repository root.
