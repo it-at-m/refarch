@@ -12,27 +12,28 @@
   ],
   "packageRules": [
     {
-      "description": "Automerge patch-level updates",
+      "description": "Automerge patch-level updates and version pinning",
+      "matchManagers": ["github-actions", "dockerfile", "maven", "npm"],
       "matchUpdateTypes": ["patch", "pin", "pinDigest"],
       "matchCurrentVersion": "!/^0/", // version should not start with 0.x.x, as pre-releases can have breaking changes anytime.
       "automerge": true
     },
     {
       "description": "Ignore spring-boot-parent updates in EAI projects because Camel version specifies compatible Spring version",
-      "matchDatasources": ["maven"],
+      "matchManagers": ["maven"],
       "matchPackageNames": ["org.springframework.boot:spring-boot-starter-parent"],
       "matchFileNames": ["**/*-eai/pom.xml"],
       "enabled": false
     },
     {
       "description": "Limit Camel updates to current LTS version (needs to be updated manually when new LTS release is out)",
-      "matchDatasources": ["maven"],
+      "matchManagers": ["maven"],
       "matchPackageNames": ["org.apache.camel.springboot:camel-spring-boot-dependencies"],
       "allowedVersions": "<=4.10"
     },
     {
       "description": "Limit Spotless updates because greater versions break internal build (because of proxy). See https://github.com/it-at-m/refarch-templates/issues/16",
-      "matchDatasources": ["maven"],
+      "matchManagers": ["maven"],
       "matchPackageNames": ["com.diffplug.spotless:spotless-maven-plugin"],
       "allowedVersions": "<=2.34.0"
     }
