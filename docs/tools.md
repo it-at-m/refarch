@@ -47,7 +47,7 @@ The provided [Renovate](https://renovatebot.com) configuration [`refarch-renovat
 Additionally, it includes specific presets for tagging and dependency restrictions to prevent Renovate from suggesting updates to dependencies that are pinned by RefArch.
 
 ::: info Information
-The configuration also enables auto-merging of patch releases and pinning operations for GitHub Actions, NPM dependencies and Maven artifacts while keeping pinning of dependencies in tact.
+The configuration also enables auto-merging of patch releases and pinning operations for GitHub Actions, NPM dependencies, Maven artifacts and Dockerfile base images while keeping pinning of dependencies intact.
 This greatly simplifies LCM effort.
 :::
 
