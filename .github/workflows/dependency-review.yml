@@ -1,4 +1,4 @@
-name: dependency-review
+name: Check dependencies
 
 on:
   pull_request:

@@ -1,4 +1,4 @@
-name: release
+name: Build artifacts and images and execute GitHub release
 
 on:
   workflow_dispatch:
@@ -48,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Build and push image
-        uses: it-at-m/.github/.github/actions/action-build-image@main
+        uses: it-at-m/lhm_actions/action-templates/actions/action-build-image@0adbb607339cb32296289c8c319970b9ef2121cb # v1.0.2
         with:
           registry-username: ${{ github.actor }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
@@ -70,7 +70,7 @@ jobs:
             path: ./refarch-integrations/refarch-s3-integration/refarch-s3-integration-rest/refarch-s3-integration-rest-service
     steps:
       - name: Build and push images
-        uses: it-at-m/.github/.github/actions/action-build-image@main
+        uses: it-at-m/lhm_actions/action-templates/actions/action-build-image@0adbb607339cb32296289c8c319970b9ef2121cb # v1.0.2
         with:
           registry-username: ${{ github.actor }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}

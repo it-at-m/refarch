@@ -1,5 +1,5 @@
 # Workflow for advanced CodeQL setup used for scanning Java/JavaScript/TypeScript/Vue/Python based source files
-name: "CodeQL Advanced"
+name: Execute CodeQL Advanced check
 
 on:
   # Runs on pull requests and on pushes to main (in order to keep the regular scanning by GitHub working)
