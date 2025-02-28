@@ -77,7 +77,6 @@ spring:
 
 | Profile           | Description                                                                                          |
 | ----------------- | ---------------------------------------------------------------------------------------------------- |
-| `json-logging`    | Switches logging from textual to JSON output.                                                        |
 | `no-security`     | Disables all security mechanisms (e.g. authentication, authorization, CSRF) Routing works as normal. |
 | `hazelcast-local` | Configures Spring Session Hazelcast for connection via localhost (i.e. local development).           |
 | `hazelcast-k8s`   | Configures Spring Session Hazelcast for usage in Kubernetes/OpenShift cluster.                       |
