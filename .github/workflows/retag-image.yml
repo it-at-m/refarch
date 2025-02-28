@@ -1,4 +1,4 @@
-name: retag-image
+name: Retag Docker image
 
 on:
   workflow_dispatch:
