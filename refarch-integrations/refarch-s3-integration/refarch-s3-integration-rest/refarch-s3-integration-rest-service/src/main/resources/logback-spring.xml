@@ -8,7 +8,7 @@
     <springProperty scope="context" name="springAppName" source="spring.application.name"/>
 
 
-    <springProfile name="!json-logging">
+    <springProfile name="local | test">
 
         <!-- Log appender -->
         <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
@@ -22,13 +22,19 @@
         </appender>
 
         <!-- Logger -->
-        <logger name="de.muenchen.oss.refarch.gateway"
+        <logger name="de.muenchen.refarch.integration"
                 level="debug"
                 additivity="false">
             <appender-ref ref="STDOUT"/>
         </logger>
 
         <logger name="org.springframework.web"
+                level="debug"
+                additivity="false">
+            <appender-ref ref="STDOUT"/>
+        </logger>
+
+        <logger name="org.springframework.cloud.gateway"
                 level="debug"
                 additivity="false">
             <appender-ref ref="STDOUT"/>
@@ -48,39 +54,25 @@
     </springProfile>
 
 
-    <springProfile name="json-logging">
+    <springProfile name="!local &amp; !test">
 
-        <!-- Log appender -->
         <appender name="JSON_STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-            <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
-                <providers>
-                    <!-- provides the fields in the configured pattern -->
-                    <pattern>
-                        <!-- the pattern that defines what to include -->
-                        <pattern>
-                            {
-                            "timestamp" : "%date{yyyy-MM-dd'T'HH:mm:ss.SSS}",
-                            "appName" : "${springAppName}",
-                            "TraceId" : "%mdc{traceId}",
-                            "SpanId" : "%mdc{spanId}",
-                            "thread" : "%thread",
-                            "level" : "%level",
-                            "logger": "%logger",
-                            "location" : {
-                            "fileName" : "%file",
-                            "line" : "%line"
-                            },
-                            "message": "%message"
-                            }
-                        </pattern>
-                    </pattern>
-                </providers>
+            <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+                <throwableConverter
+                        class="net.logstash.logback.stacktrace.ShortenedThrowableConverter">
+                    <!-- default max size of one log line in docker is 16kb - UTF8 ~ 1 Character = 1 Byte -->
+                    <!-- therefore limit stack_traces to a maximum of 8192 characters (to leave room for the rest of the message) -->
+                    <maxLength>8192</maxLength>
+                    <exclude>sun\.reflect\..*\.invoke.*</exclude>
+                    <exclude>net\.sf\.cglib\.proxy\.MethodProxy\.invoke</exclude>
+                    <rootCauseFirst>true</rootCauseFirst>
+                </throwableConverter>
             </encoder>
         </appender>
 
         <!-- Logger usage -->
         <root level="info">
-            <appender-ref ref="JSON_STDOUT"/>
+            <appender-ref ref="JSON_STDOUT" />
         </root>
 
     </springProfile>
