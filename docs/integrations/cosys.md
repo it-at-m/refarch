@@ -19,7 +19,6 @@ flowchart RL
 ## Usage
 
 ```xml
-
 <dependencies>
     <dependency>
         <groupId>de.muenchen.refarch</groupId>
