@@ -38,7 +38,7 @@ const vitepressConfig = defineConfig({
       { text: "API Gateway", link: "/gateway" },
       {
         text: "Integrations",
-        link: "/integrations",
+        link: "/integrations/",
         items: [
           { text: "S3", link: "/integrations/s3" },
           { text: "Address", link: "/integrations/address" },
