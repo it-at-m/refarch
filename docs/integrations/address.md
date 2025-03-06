@@ -9,7 +9,6 @@ The modules follow the [default naming convention](./index.md#naming-conventions
 ## Usage
 
 ```xml
-
 <dependencies>
     <dependency>
         <groupId>de.muenchen.refarch</groupId>
