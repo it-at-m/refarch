@@ -4,7 +4,7 @@
     <parent>
         <artifactId>refarch-email-integration</artifactId>
         <groupId>de.muenchen.refarch</groupId>
-        <version>1.4.0-SNAPSHOT</version>
+        <version>1.4.0</version>
     </parent>
 
     <artifactId>refarch-email-integration-core</artifactId>
