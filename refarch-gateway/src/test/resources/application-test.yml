@@ -2,12 +2,6 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: sso
-          uri: https://ssotest.muenchen.de/
-          predicates:
-            - Path=/api/sso/userinfo
-          filters:
-            - RewritePath=/api/sso/userinfo, /auth/realms/test_realm/protocol/openid-connect/userinfo
         - id: backend
           uri: http://localhost:${wiremock.server.port}/
           predicates:
