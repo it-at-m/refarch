@@ -9,7 +9,6 @@ import de.muenchen.refarch.gateway.OAuthSecurityMockConfiguration;
 import org.apache.http.entity.ContentType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.context.annotation.Import;
@@ -19,7 +18,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles(SPRING_TEST_PROFILE)
 @AutoConfigureWireMock
 @TestPropertySource(
@@ -27,7 +26,6 @@ import org.springframework.test.web.reactive.server.WebTestClient;
                 "config.map5xxto400=true",
         }
 )
-@AutoConfigureWebTestClient
 @Import(OAuthSecurityMockConfiguration.class)
 class GlobalBackend5xxTo400MapperTest {
     @Autowired
