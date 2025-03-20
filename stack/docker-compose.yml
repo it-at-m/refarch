@@ -3,7 +3,7 @@ name: refarch-development-stack
 services:
   # === Keycloak ===
   keycloak:
-    image: keycloak/keycloak:26.1.4
+    image: keycloak/keycloak:26.1.4@sha256:044a457e04987e1fff756be3d2fa325a4ef420fa356b7034ecc9f1b693c32761
     command:
       - start-dev
     environment:
@@ -26,7 +26,7 @@ services:
       - no-new-privileges:true
 
   init-keycloak:
-    image: klg71/keycloakmigration:0.2.80
+    image: klg71/keycloakmigration:0.2.80@sha256:60c1ac0787aec53557fda932843e0a1e943a268de8be1de15ccac264724cd7dc
     depends_on:
       - keycloak
     environment:
