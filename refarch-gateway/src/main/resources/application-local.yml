@@ -5,7 +5,7 @@ spring:
     gateway:
       routes:
         - id: sso
-          uri: http://localhost:8100/
+          uri: http://kubernetes.docker.internal:8100/
           predicates:
             - "Path=/api/sso/userinfo"
           filters:
@@ -25,7 +25,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8100/auth/realms/local_realm
+          issuer-uri: http://kubernetes.docker.internal:8100/auth/realms/local_realm
       client:
         provider:
           sso:
