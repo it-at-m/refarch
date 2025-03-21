@@ -76,7 +76,7 @@ services:
 
   # === Mail ===
   mailpit:
-    image: axllent/mailpit:v1.21.8@sha256:81370195cd4a0eab9604d17c2617a7525b0486f9365555253b6c5376c6350f1a
+    image: axllent/mailpit:v1.23.2@sha256:71a97aac6adb07fe3ba1f789094f5388b16bbf69a8b783343d2f816de5de3dec
     ports:
       - '1025:1025' # SMTP Server
       - '8025:8025' # UI
