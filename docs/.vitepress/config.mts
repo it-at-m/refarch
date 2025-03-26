@@ -23,18 +23,26 @@ const vitepressConfig = defineConfig({
         text: "Docs",
         items: [
           { text: "Overview", link: "/overview" },
+          { text: "Templates", link: "/templates" },
           { text: "API Gateway", link: "/gateway" },
           { text: "Integrations", link: "/integrations" },
           { text: "Tools", link: "/tools" },
         ],
       },
-      {
-        text: "Contribute",
-        link: "https://refarch-templates.oss.muenchen.de/contribute.html",
-      },
+      { text: "Contribute", link: "/contribute" },
     ],
     sidebar: [
       { text: "Overview", link: "/overview" },
+      {
+        text: "Templates",
+        link: "/templates/",
+        items: [
+          { text: "Getting Started", link: "/templates/getting-started" },
+          { text: "Develop", link: "/templates/develop" },
+          { text: "Document", link: "/templates/document" },
+          { text: "Organize", link: "/templates/organize" },
+        ],
+      },
       { text: "API Gateway", link: "/gateway" },
       {
         text: "Integrations",
