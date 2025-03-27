@@ -122,7 +122,7 @@ Issues reported by the PMD and SpotBugs are currently not auto-fixable so you st
 The tools are configured through the respective configuration files or configuration sections inside the `pom.xml`
 
 - Spotless: `pom.xml` and using a [centralized configuration](https://github.com/it-at-m/itm-java-codeformat)
-- PMD: `pom.xml` and using centralized configuration (more information in [RefArch tools documentation](../tools#pmd))
+- PMD: `pom.xml` and using centralized configuration (more information in [Tools](../tools#pmd))
 - SpotBugs: `pom.xml` and `spotbugs-exclude-rules.xml` (configuration part of the templates)
 
 ### Vue Dev Tools
@@ -178,7 +178,7 @@ The configuration in the `application.yml` file (inside the `appswitcher-server`
 
 [Renovate](https://docs.renovatebot.com/) is used to keep your dependencies up to date.
 
-The templates by default make use of a centralized configuration we provide for RefArch-based projects. More information can be found in the [RefArch tools documentation](../tools#renovate).
+The templates by default make use of a centralized configuration we provide for RefArch-based projects. More information can be found in [Tools](../tools#renovate).
 
 To modify the default Renovate settings, the `renovate.json5` file in the project's root directory can be edited.
 

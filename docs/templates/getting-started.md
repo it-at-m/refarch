@@ -1,12 +1,12 @@
 # Getting Started
 
-Welcome to the Getting Started guide for the [templates](../templates).
+Welcome to the Getting Started guide for the templates.
 This guide aims to help you in setting up a code repository 
 and to execute initial required steps for the individual templates.
 
 The purpose of these templates is to provide developers with an out-of-the-box solution for
 building full-stack applications based on the reference architecture (RefArch) of it@M.
-For more information on the RefArch itself, please check the [RefArch overview](../overview)
+For more information on the RefArch itself, please check the [Overview](../overview).
 
 ::: danger IMPORTANT
 To use the `refarch-templates` you need to have [Docker](https://www.docker.com/) installed on your system.
@@ -117,7 +117,7 @@ After getting the documentation template (`docs` directory), you will need to ma
 
 ## CI/CD
 
-To make the [predefined CI/CD configurations](/develop#ci-cd-configurations) work, you need to adjust the content of the `.yml` files inside the `.github/workflows` directory to the specific folder structure of your project.
+To make the [predefined CI/CD configurations](./develop#ci-cd-configurations) work, you need to adjust the content of the `.yml` files inside the `.github/workflows` directory to the specific folder structure of your project.
 
 ::: info Information
 For example, you should replace occurrences of `refarch-backend` with `myapp-backend`.

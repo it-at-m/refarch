@@ -3,7 +3,7 @@
 For better developer experience, the RefArch provides configuration presets for different tools.
 
 These different configurations are described in the following.
-The tools itself are described in the [Develop](https://refarch-templates.oss.muenchen.de/develop.html) section of the RefArch templates documentation.
+The tools itself are described in [Develop](./templates/develop).
 
 ## PMD
 
