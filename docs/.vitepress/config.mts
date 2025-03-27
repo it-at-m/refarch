@@ -23,13 +23,13 @@ const vitepressConfig = defineConfig({
         text: "Docs",
         items: [
           { text: "Overview", link: "/overview" },
-          { text: "Templates", link: "/templates" },
           { text: "API Gateway", link: "/gateway" },
+          { text: "Templates", link: "/templates" },
+          { text: "Integrations", link: "/integrations" },
           {
             text: "CI/CD",
             link: "https://github.com/it-at-m/lhm_actions/blob/main/docs/actions.md",
           },
-          { text: "Integrations", link: "/integrations" },
           { text: "Tools", link: "/tools" },
         ],
       },
@@ -47,6 +47,7 @@ const vitepressConfig = defineConfig({
     ],
     sidebar: [
       { text: "Overview", link: "/overview" },
+      { text: "API Gateway", link: "/gateway" },
       {
         text: "Templates",
         link: "/templates/",
@@ -57,7 +58,6 @@ const vitepressConfig = defineConfig({
           { text: "Organize", link: "/templates/organize" },
         ],
       },
-      { text: "API Gateway", link: "/gateway" },
       {
         text: "Integrations",
         link: "/integrations/",
@@ -68,6 +68,10 @@ const vitepressConfig = defineConfig({
           { text: "DMS", link: "/integrations/dms" },
           { text: "E-Mail", link: "/integrations/email" },
         ],
+      },
+      {
+        text: "CI/CD",
+        link: "https://github.com/it-at-m/lhm_actions/blob/main/docs/actions.md",
       },
       { text: "Tools", link: "/tools" },
     ],
