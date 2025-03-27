@@ -10,7 +10,6 @@
 [refarch-templates-board-link]: https://github.com/orgs/it-at-m/projects/16
 [refarch-issues-link]: https://github.com/it-at-m/refarch/issues
 [refarch-templates-issues-link]: https://github.com/it-at-m/refarch-templates/issues
-
 [contribution-guideline-link]: https://github.com/it-at-m/refarch
 [code-of-conduct-link]: https://github.com/it-at-m/refarch/blob/main/.github/CODE_OF_CONDUCT.md
 

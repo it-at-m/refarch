@@ -25,7 +25,10 @@ const vitepressConfig = defineConfig({
           { text: "Overview", link: "/overview" },
           { text: "Templates", link: "/templates" },
           { text: "API Gateway", link: "/gateway" },
-          { text: "CI/CD", link: "https://github.com/it-at-m/lhm_actions/blob/main/docs/actions.md" },
+          {
+            text: "CI/CD",
+            link: "https://github.com/it-at-m/lhm_actions/blob/main/docs/actions.md",
+          },
           { text: "Integrations", link: "/integrations" },
           { text: "Tools", link: "/tools" },
         ],
@@ -35,9 +38,12 @@ const vitepressConfig = defineConfig({
         text: "GitHub",
         items: [
           { text: "Core", link: "https://github.com/it-at-m/refarch" },
-          { text: "Templates", link: "https://github.com/it-at-m/refarch-templates" },
+          {
+            text: "Templates",
+            link: "https://github.com/it-at-m/refarch-templates",
+          },
         ],
-      }
+      },
     ],
     sidebar: [
       { text: "Overview", link: "/overview" },
