@@ -1,8 +1,9 @@
 blank_issues_enabled: false
 contact_links:
-  - name: 📦 RefArch Templates - Open issue there if topic is related to the template code
+  - name: 📦 RefArch - Templates
     url: https://github.com/it-at-m/refarch-templates/issues/new/choose
-  - name: 💡 Discussions- Ideas
+    about: Open an issue in refarch-templates if the topic is related to code of the templates
+  - name: 💡 Discussions - Ideas
     url: https://github.com/it-at-m/refarch/discussions/categories/ideas
     about: Feel free to share ideas for the project that are to vague to create a dedicated issue beforehand
   - name: ⁉ Discussions - Q&A
