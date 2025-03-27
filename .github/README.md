@@ -3,19 +3,19 @@
 [milestones]: https://github.com/it-at-m/refarch/milestones
 [project-board]: https://github.com/orgs/it-at-m/projects/17
 [documentation]: https://refarch.oss.muenchen.de/
-[contribution-documentation]: https://refarch-templates.oss.muenchen.de/contribute.html
+[contribution-documentation]: https://refarch.oss.muenchen.de/contribute
 [itm-opensource]: https://opensource.muenchen.de/
 [license]: ../LICENSE
 [code-of-conduct]: ./CODE_OF_CONDUCT.md
 
-[refarch-templates-documentation]: https://refarch-templates.oss.muenchen.de
+[refarch-templates-documentation]: https://refarch.oss.muenchen.de/templates
 [refarch-templates-code]: https://github.com/it-at-m/refarch-templates
-[spring-documentation]: https://spring.io/
-[vuejs-documentation]:  https://vuejs.org/
 [gateway-documentation]: https://refarch.oss.muenchen.de/gateway
 [gateway-code]: ../refarch-gateway
 [integrations-documentation]: https://refarch.oss.muenchen.de/integrations
 [integrations-code]: ../refarch-integrations
+[spring-documentation]: https://spring.io/
+[vuejs-documentation]:  https://vuejs.org/
 
 [documentation-shield]: https://img.shields.io/badge/documentation-blue?style=for-the-badge
 [new-issue-shield]: https://img.shields.io/badge/new%20issue-blue?style=for-the-badge
@@ -31,7 +31,7 @@
 
 Collection of different ready to use reference architecture (RefArch) components, libraries and configurations.
 
-To create a new project using our architecture, check out the `refarch-templates` [documentation][refarch-templates-documentation] or [code][refarch-templates-code].
+To create a new project using our architecture, check out the `refarch-templates` [repository][refarch-templates-code] add according [documentation][refarch-templates-documentation].
 
 The RefArch is based on [Spring][spring-documentation] and [Vue.js][vuejs-documentation].
 
