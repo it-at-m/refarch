@@ -11,20 +11,23 @@ hero:
       text: Overview
       link: /overview
     - theme: alt
-      text: ⤴ Templates
-      link: https://refarch-templates.oss.muenchen.de
-    - theme: alt
       text: API Gateway
       link: /gateway
+    - theme: alt
+      text: Templates
+      link: /templates
     - theme: alt
       text: Integrations
       link: /integrations
     - theme: alt
+      text: ⤴ CI/CD
+      link: https://github.com/it-at-m/lhm_actions/blob/main/docs/actions.md
+    - theme: alt
       text: Tools
       link: /tools
     - theme: alt
-      text: ⤴ Contribute to the project
-      link: https://refarch-templates.oss.muenchen.de/contribute.html
+      text: Contribute to the project
+      link: /contribute
 
 features:
   - icon: 🕒

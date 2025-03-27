@@ -24,18 +24,40 @@ const vitepressConfig = defineConfig({
         items: [
           { text: "Overview", link: "/overview" },
           { text: "API Gateway", link: "/gateway" },
+          { text: "Templates", link: "/templates" },
           { text: "Integrations", link: "/integrations" },
+          {
+            text: "CI/CD",
+            link: "https://github.com/it-at-m/lhm_actions/blob/main/docs/actions.md",
+          },
           { text: "Tools", link: "/tools" },
         ],
       },
+      { text: "Contribute", link: "/contribute" },
       {
-        text: "Contribute",
-        link: "https://refarch-templates.oss.muenchen.de/contribute.html",
+        text: "GitHub",
+        items: [
+          { text: "Core", link: "https://github.com/it-at-m/refarch" },
+          {
+            text: "Templates",
+            link: "https://github.com/it-at-m/refarch-templates",
+          },
+        ],
       },
     ],
     sidebar: [
       { text: "Overview", link: "/overview" },
       { text: "API Gateway", link: "/gateway" },
+      {
+        text: "Templates",
+        link: "/templates/",
+        items: [
+          { text: "Getting Started", link: "/templates/getting-started" },
+          { text: "Develop", link: "/templates/develop" },
+          { text: "Document", link: "/templates/document" },
+          { text: "Organize", link: "/templates/organize" },
+        ],
+      },
       {
         text: "Integrations",
         link: "/integrations/",
@@ -47,14 +69,15 @@ const vitepressConfig = defineConfig({
           { text: "E-Mail", link: "/integrations/email" },
         ],
       },
+      {
+        text: "CI/CD",
+        link: "https://github.com/it-at-m/lhm_actions/blob/main/docs/actions.md",
+      },
       { text: "Tools", link: "/tools" },
     ],
     outline: {
       level: "deep",
     },
-    socialLinks: [
-      { icon: "github", link: "https://github.com/it-at-m/refarch" },
-    ],
     editLink: {
       pattern: "https://github.com/it-at-m/refarch/blob/main/docs/:path",
       text: "View this page on GitHub",

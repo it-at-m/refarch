@@ -1,5 +1,5 @@
 name: 📄 Documentation change
-description: Suggest a documentation change for this project.
+description: Suggest a documentation change for the RefArch itself and the corresponding templates.
 title: "[Documentation] "
 labels: ["Type: Documentation"]
 body:
@@ -19,6 +19,7 @@ body:
       multiple: true
       description: Affected documentation parts
       options:
+        - refarch-templates
         - refarch-gateway
         - refarch-integrations
         - refarch-tools
