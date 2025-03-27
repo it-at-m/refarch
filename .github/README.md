@@ -31,7 +31,7 @@
 
 Collection of different ready to use reference architecture (RefArch) components, libraries and configurations.
 
-To create a new project using our architecture, check out the `refarch-templates` [repository][refarch-templates-code] add according [documentation][refarch-templates-documentation].
+To create a new project using our architecture, check out the `refarch-templates` [repository][refarch-templates-code] and according [documentation][refarch-templates-documentation].
 
 The RefArch is based on [Spring][spring-documentation] and [Vue.js][vuejs-documentation].
 

@@ -8,7 +8,7 @@ The templates allow us to:
 2. 💎 Achieve consistent code quality: By establishing best practices for a unified structure and including helpful development tools, code consistency and quality is maintained across the organization as best as possible and collaboration is improved.
 3. 👥 Simplify onboarding: With clear documentation and predefined development configurations, new developers can quickly get up to speed, reducing the learning curve and increasing productivity from day one.
 
-The code for the templates is maintained under a different repository than the rest of the RefArch code. This is because the templates are used a template repository in GitHub and thus need to be in its separate location.
+The code for the templates is maintained under a different repository than the rest of the RefArch code. This is because the templates are used as a template repository in GitHub and thus need to be in its separate location.
 You can find the code for the templates in the [refarch-templates repository](https://github.com/it-at-m/refarch-templates).
 
 ::: info Information
