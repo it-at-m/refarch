@@ -2,6 +2,7 @@ package de.muenchen.refarch.integration.s3.adapter.out.s3;
 
 import de.muenchen.refarch.integration.s3.application.port.out.S3OutPort;
 import de.muenchen.refarch.integration.s3.domain.exception.FileSystemAccessException;
+import de.muenchen.refarch.integration.s3.domain.model.FileMetadata;
 import io.minio.BucketExistsArgs;
 import io.minio.GetPresignedObjectUrlArgs;
 import io.minio.ListObjectsArgs;
@@ -22,12 +23,14 @@ import jakarta.annotation.PreDestroy;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.IteratorUtils;
 
@@ -116,6 +119,43 @@ public class S3Adapter implements S3OutPort {
             return filepathesFromFolder;
         } catch (final MinioException | InvalidKeyException | NoSuchAlgorithmException | IllegalArgumentException | IOException exception) {
             final String message = String.format("Failed to extract file paths from folder %s.", folder);
+            log.error(message, exception);
+            throw new FileSystemAccessException(message, exception);
+        }
+    }
+
+    /**
+     * Returns the metadata of the files in a given folder.
+     *
+     * @param folder The folder. The path must be absolute and without specifying the bucket. Example 1:
+     *            Folder in bucket: "BUCKET/folder" Specification in
+     *            parameter: "folder" Example 2: Folder in bucket: "BUCKET/folder/subfolder"
+     *            Specification in parameter: "folder/subfolder"
+     * @return the metadata of the files in a given folder. Also returns the metadata of the files in
+     *         subfolders.
+     * @throws FileSystemAccessException if the paths cannot be downloaded.
+     */
+    @Override
+    public List<FileMetadata> getMetadataOfFilesFromFolder(final String folder) throws FileSystemAccessException {
+        try {
+            final ListObjectsArgs listObjectsArgs = ListObjectsArgs.builder()
+                    .bucket(this.bucketName)
+                    .prefix(folder)
+                    .recursive(true)
+                    .build();
+            final List<Result<Item>> resultItemList = IteratorUtils.toList(this.client.listObjects(listObjectsArgs).iterator());
+            final List<FileMetadata> fileInformationsFromFolder = new ArrayList<>();
+            for (final Result<Item> resultItem : resultItemList) {
+                final FileMetadata fileInformation = new FileMetadata(
+                        resultItem.get().objectName(),
+                        resultItem.get().size(),
+                        resultItem.get().etag(),
+                        resultItem.get().lastModified().toLocalDateTime());
+                fileInformationsFromFolder.add(fileInformation);
+            }
+            return fileInformationsFromFolder;
+        } catch (final MinioException | InvalidKeyException | NoSuchAlgorithmException | IllegalArgumentException | IOException exception) {
+            final String message = String.format("Failed to extract the metadata of the files from folder %s.", folder);
             log.error(message, exception);
             throw new FileSystemAccessException(message, exception);
         }

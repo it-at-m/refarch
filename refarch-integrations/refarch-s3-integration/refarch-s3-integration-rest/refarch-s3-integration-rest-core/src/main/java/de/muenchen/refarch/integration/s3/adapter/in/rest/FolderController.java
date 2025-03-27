@@ -2,11 +2,14 @@ package de.muenchen.refarch.integration.s3.adapter.in.rest;
 
 import de.muenchen.refarch.integration.s3.adapter.in.rest.dto.FileSizesInFolderDto;
 import de.muenchen.refarch.integration.s3.adapter.in.rest.dto.FilesInFolderDto;
+import de.muenchen.refarch.integration.s3.adapter.in.rest.dto.FilesMetadataInFolderDto;
+import de.muenchen.refarch.integration.s3.adapter.in.rest.mapper.FileMetadataMapper;
 import de.muenchen.refarch.integration.s3.adapter.in.rest.mapper.FileSizesInFolderMapper;
 import de.muenchen.refarch.integration.s3.adapter.in.rest.mapper.FilesInFolderMapper;
 import de.muenchen.refarch.integration.s3.application.port.in.FolderOperationsInPort;
 import de.muenchen.refarch.integration.s3.domain.model.FileSizesInFolder;
 import de.muenchen.refarch.integration.s3.domain.model.FilesInFolder;
+import de.muenchen.refarch.integration.s3.domain.model.FilesMetadataInFolder;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotEmpty;
@@ -31,6 +34,7 @@ public class FolderController {
     private final FolderOperationsInPort folderOperations;
     private final FilesInFolderMapper filesInFolderMapper;
     private final FileSizesInFolderMapper fileSizesInFolderMapper;
+    private final FileMetadataMapper fileMetadataMapper;
 
     @DeleteMapping
     @Operation(description = "Deletes the folder specified in the parameter")
@@ -52,6 +56,19 @@ public class FolderController {
             final FilesInFolder filesInFolder = folderOperations.getAllFilesInFolderRecursively(pathToFolder);
             final FilesInFolderDto filesInFolderDto = this.filesInFolderMapper.model2Dto(filesInFolder);
             return ResponseEntity.ok(filesInFolderDto);
+        } catch (final Exception exception) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage(), exception);
+        }
+    }
+
+    @GetMapping("/metadata")
+    @Operation(description = "Returns metadata of all files for the folder specified in the parameter")
+    public ResponseEntity<FilesMetadataInFolderDto> getMetadataOfAllFilesInFolderRecursively(@RequestParam @NotEmpty final String pathToFolder) {
+        try {
+            log.info("Received a request for getting metadata of all files for a certain folder.");
+            final FilesMetadataInFolder filesMetadataInFolder = folderOperations.getMetadataOfAllFilesInFolderRecursively(pathToFolder);
+            final FilesMetadataInFolderDto filesMetadataInFolderDto = this.fileMetadataMapper.model2Dto(filesMetadataInFolder);
+            return ResponseEntity.ok(filesMetadataInFolderDto);
         } catch (final Exception exception) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage(), exception);
         }

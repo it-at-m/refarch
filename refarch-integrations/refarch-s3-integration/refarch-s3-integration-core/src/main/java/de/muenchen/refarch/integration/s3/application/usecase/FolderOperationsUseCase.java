@@ -3,9 +3,13 @@ package de.muenchen.refarch.integration.s3.application.usecase;
 import de.muenchen.refarch.integration.s3.application.port.in.FolderOperationsInPort;
 import de.muenchen.refarch.integration.s3.application.port.out.S3OutPort;
 import de.muenchen.refarch.integration.s3.domain.exception.FileSystemAccessException;
+import de.muenchen.refarch.integration.s3.domain.model.FileMetadata;
 import de.muenchen.refarch.integration.s3.domain.model.FileSizesInFolder;
 import de.muenchen.refarch.integration.s3.domain.model.FilesInFolder;
+import de.muenchen.refarch.integration.s3.domain.model.FilesMetadataInFolder;
 import de.muenchen.refarch.integration.s3.domain.validation.FolderInFilePathValidator;
+
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
@@ -72,6 +76,22 @@ public class FolderOperationsUseCase implements FolderOperationsInPort {
         final String pathToFolderWithSeparatorAtTheEnd = addPathSeparatorToTheEnd(pathToFolder);
         final Set<String> filePathsInFolder = this.s3OutPort.getFilePathsFromFolder(pathToFolderWithSeparatorAtTheEnd);
         return new FilesInFolder(filePathsInFolder);
+    }
+
+    /**
+     * Returns the metadata of all files identified by file paths for all files contained within
+     * the folder and subfolder recursively.
+     *
+     * @param pathToFolder identifies the path to the folder.
+     * @return the metadata of the files within the folder and subfolder.
+     * @throws FileSystemAccessException if the S3 storage cannot be accessed.
+     */
+    @NotNull
+    @Override
+    public FilesMetadataInFolder getMetadataOfAllFilesInFolderRecursively(@NotNull final String pathToFolder) throws FileSystemAccessException {
+        final String pathToFolderWithSeparatorAtTheEnd = addPathSeparatorToTheEnd(pathToFolder);
+        final List<FileMetadata> filePathsInFolder = this.s3OutPort.getMetadataOfFilesFromFolder(pathToFolderWithSeparatorAtTheEnd);
+        return new FilesMetadataInFolder(filePathsInFolder);
     }
 
     /**
