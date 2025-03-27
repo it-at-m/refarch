@@ -1,8 +1,8 @@
 # Pull Request
 
 <!-- Links -->
-[documentation-link]: https://refarch-templates.oss.muenchen.de/document.html#writing-the-documentation
-[code-quality-link]: https://refarch-templates.oss.muenchen.de/develop.html#code-quality
+[documentation-link]: https://refarch.oss.muenchen.de/document.html#writing-the-documentation
+[code-quality-link]: https://refarch.oss.muenchen.de/develop.html#code-quality
 [refarch-templates-create-issue-link]: https://github.com/it-at-m/refarch-templates/issues/new/choose
 
 ## Changes
