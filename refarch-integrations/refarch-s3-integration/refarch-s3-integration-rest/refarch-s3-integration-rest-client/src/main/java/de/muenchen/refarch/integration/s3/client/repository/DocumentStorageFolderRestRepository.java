@@ -8,10 +8,12 @@ import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageServer
 import de.muenchen.refarch.integration.s3.client.model.FileSizesInFolderDto;
 import de.muenchen.refarch.integration.s3.client.model.FilesInFolderDto;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import de.muenchen.refarch.integration.s3.client.model.FilesMetadataInFolderDto;
+import de.muenchen.refarch.integration.s3.client.repository.mapper.FileMetadataMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.client.HttpClientErrorException;
@@ -22,13 +24,15 @@ import reactor.core.publisher.Mono;
 @Slf4j
 @RequiredArgsConstructor
 public class DocumentStorageFolderRestRepository implements DocumentStorageFolderRepository {
+
     private final FolderApiApi folderApi;
+    private final FileMetadataMapper fileMetadataMapper;
 
     @Override
     public void deleteFolder(final String pathToFolder)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
         try {
-            folderApi.delete(pathToFolder);
+            folderApi.delete1(pathToFolder).block();
         } catch (final HttpClientErrorException exception) {
             final String message = String.format("The request to delete a folder failed %s.", exception.getStatusCode());
             log.error(message);
@@ -66,11 +70,11 @@ public class DocumentStorageFolderRestRepository implements DocumentStorageFolde
     }
 
     @Override
-    public List<FileMetadata> getMetadataOfAllFilesInFolderRecursively(String pathToFolder)
+    public List<FileMetadata> getMetadataOfAllFilesInFolderRecursively(final String pathToFolder)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
         try {
-            final Mono<FileMetadataDto> filesInFolderDto = folderApi.g(pathToFolder);
-            return new ArrayList<>();
+            final Mono<FilesMetadataInFolderDto> filesMetadateInFolder = folderApi.getMetadataOfAllFilesInFolderRecursively(pathToFolder);
+            return fileMetadataMapper.dto2Model(filesMetadateInFolder.block().getFiles());
         } catch (final HttpClientErrorException exception) {
             final String message = String.format("The request to get the metadata of all files within a folder failed %s.", exception.getStatusCode());
             log.error(message);

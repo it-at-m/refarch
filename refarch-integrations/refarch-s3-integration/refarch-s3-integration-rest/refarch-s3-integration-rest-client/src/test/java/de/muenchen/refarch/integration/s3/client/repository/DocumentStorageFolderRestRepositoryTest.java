@@ -17,6 +17,8 @@ import de.muenchen.refarch.integration.s3.client.model.FileSizesInFolderDto;
 import de.muenchen.refarch.integration.s3.client.model.FilesInFolderDto;
 import java.util.Map;
 import java.util.Set;
+
+import de.muenchen.refarch.integration.s3.client.repository.mapper.FileMetadataMapperImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,7 +43,9 @@ class DocumentStorageFolderRestRepositoryTest {
 
     @BeforeEach
     public void beforeEach() {
-        this.documentStorageFolderRestRepository = new DocumentStorageFolderRestRepository(this.folderApi);
+        this.documentStorageFolderRestRepository = new DocumentStorageFolderRestRepository(
+                this.folderApi,
+                new FileMetadataMapperImpl());
     }
 
     @Test
@@ -49,24 +53,24 @@ class DocumentStorageFolderRestRepositoryTest {
         final String pathToFolder = "folder";
 
         reset(this.folderApi);
-        when(this.folderApi.delete(pathToFolder)).thenReturn(Mono.empty());
+        when(this.folderApi.delete1(pathToFolder)).thenReturn(Mono.empty());
         this.documentStorageFolderRestRepository.deleteFolder(pathToFolder);
-        verify(this.folderApi, times(1)).delete(pathToFolder);
+        verify(this.folderApi, times(1)).delete1(pathToFolder);
 
         reset(this.folderApi);
-        doThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST)).when(this.folderApi).delete(pathToFolder);
+        doThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST)).when(this.folderApi).delete1(pathToFolder);
         assertThrows(DocumentStorageClientErrorException.class, () -> this.documentStorageFolderRestRepository.deleteFolder(pathToFolder));
-        verify(this.folderApi, times(1)).delete(pathToFolder);
+        verify(this.folderApi, times(1)).delete1(pathToFolder);
 
         reset(this.folderApi);
-        doThrow(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR)).when(this.folderApi).delete(pathToFolder);
+        doThrow(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR)).when(this.folderApi).delete1(pathToFolder);
         assertThrows(DocumentStorageServerErrorException.class, () -> this.documentStorageFolderRestRepository.deleteFolder(pathToFolder));
-        verify(this.folderApi, times(1)).delete(pathToFolder);
+        verify(this.folderApi, times(1)).delete1(pathToFolder);
 
         reset(this.folderApi);
-        doThrow(new RestClientException("Something happened")).when(this.folderApi).delete(pathToFolder);
+        doThrow(new RestClientException("Something happened")).when(this.folderApi).delete1(pathToFolder);
         assertThrows(DocumentStorageException.class, () -> this.documentStorageFolderRestRepository.deleteFolder(pathToFolder));
-        verify(this.folderApi, times(1)).delete(pathToFolder);
+        verify(this.folderApi, times(1)).delete1(pathToFolder);
     }
 
     @Test

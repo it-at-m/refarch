@@ -80,7 +80,9 @@
                             <generateModelDocumentation>false</generateModelDocumentation>
                             <generateSupportingFiles>true</generateSupportingFiles>
                             <configOptions>
+                                <serializationLibrary>jackson</serializationLibrary>
                                 <hideGenerationTimestamp>true</hideGenerationTimestamp>
+                                <dateLibrary>java8-localdatetime</dateLibrary>
                                 <useJakartaEe>true</useJakartaEe>
                             </configOptions>
                             <globalProperties>
