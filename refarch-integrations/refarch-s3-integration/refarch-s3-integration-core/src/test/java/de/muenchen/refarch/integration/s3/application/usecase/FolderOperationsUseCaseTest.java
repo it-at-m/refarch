@@ -7,6 +7,10 @@ import de.muenchen.refarch.integration.s3.adapter.out.s3.S3Adapter;
 import de.muenchen.refarch.integration.s3.domain.exception.FileSystemAccessException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
+
+import de.muenchen.refarch.integration.s3.domain.model.FileMetadata;
+import de.muenchen.refarch.integration.s3.domain.model.FilesMetadataInFolder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,6 +44,19 @@ class FolderOperationsUseCaseTest {
         Mockito.when(this.s3Adapter.getFilePathsFromFolder(pathToFolderWithSeparator)).thenReturn(new HashSet<>(List.of(pathToFile)));
         assertDoesNotThrow(() -> this.folderHandlingService.deleteFolder(pathToFolder));
         Mockito.verify(this.s3Adapter, Mockito.times(1)).deleteFile(pathToFile);
+    }
+
+    @Test
+    void getMetadataOfAllFilesInFolderRecursively() throws FileSystemAccessException {
+        final String pathToFolder = "folder";
+        final String pathToFolderWithSeparator = pathToFolder + "/";
+
+        Mockito.when(this.s3Adapter.getMetadataOfFilesFromFolder(pathToFolderWithSeparator)).thenReturn(List.of(new FileMetadata()));
+        final AtomicReference<FilesMetadataInFolder> result = new AtomicReference<>();
+        assertDoesNotThrow(() -> result.set(this.folderHandlingService.getMetadataOfAllFilesInFolderRecursively(pathToFolder)));
+        final FilesMetadataInFolder expected = new FilesMetadataInFolder(List.of(new FileMetadata()));
+        assertThat(result.get()).isEqualTo(expected);
+        Mockito.verify(this.s3Adapter, Mockito.times(1)).getMetadataOfFilesFromFolder(pathToFolderWithSeparator);
     }
 
     @Test
