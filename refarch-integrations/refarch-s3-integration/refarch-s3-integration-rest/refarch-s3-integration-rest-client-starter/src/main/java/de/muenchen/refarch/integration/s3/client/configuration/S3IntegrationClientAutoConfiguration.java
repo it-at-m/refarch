@@ -9,6 +9,7 @@ import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFileR
 import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFileRestRepository;
 import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFolderRepository;
 import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFolderRestRepository;
+import de.muenchen.refarch.integration.s3.client.repository.mapper.FileMetadataMapperImpl;
 import de.muenchen.refarch.integration.s3.client.repository.presignedurl.PresignedUrlRepository;
 import de.muenchen.refarch.integration.s3.client.repository.presignedurl.PresignedUrlRestRepository;
 import de.muenchen.refarch.integration.s3.client.repository.transfer.S3FileTransferRepository;
@@ -140,6 +141,6 @@ public class S3IntegrationClientAutoConfiguration {
     @ConditionalOnMissingBean
     public DocumentStorageFolderRepository documentStorageFolderRepository(
             final FolderApiApi folderApi) {
-        return new DocumentStorageFolderRestRepository(folderApi);
+        return new DocumentStorageFolderRestRepository(folderApi, new FileMetadataMapperImpl());
     }
 }
