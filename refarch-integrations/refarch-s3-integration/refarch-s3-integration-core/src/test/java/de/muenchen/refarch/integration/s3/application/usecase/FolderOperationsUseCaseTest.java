@@ -36,7 +36,7 @@ class FolderOperationsUseCaseTest {
     }
 
     @Test
-    void deleteFolder() throws FileSystemAccessException {
+    void testDeleteFolder() throws FileSystemAccessException {
         final String pathToFile = "folder/file.txt";
         final String pathToFolder = "folder";
         final String pathToFolderWithSeparator = pathToFolder + "/";
@@ -47,7 +47,7 @@ class FolderOperationsUseCaseTest {
     }
 
     @Test
-    void getMetadataOfAllFilesInFolderRecursively() throws FileSystemAccessException {
+    void testGetMetadataOfAllFilesInFolderRecursively() throws FileSystemAccessException {
         final String pathToFolder = "folder";
         final String pathToFolderWithSeparator = pathToFolder + "/";
 
@@ -60,7 +60,7 @@ class FolderOperationsUseCaseTest {
     }
 
     @Test
-    void addPathSeparatorToTheEnd() {
+    void testAddPathSeparatorToTheEnd() {
         assertThat(FolderOperationsUseCase.addPathSeparatorToTheEnd("folder/subfolder")).isEqualTo("folder/subfolder/");
         assertThat(FolderOperationsUseCase.addPathSeparatorToTheEnd("folder/subfolder/")).isEqualTo("folder/subfolder/");
         assertThat(FolderOperationsUseCase.addPathSeparatorToTheEnd("folder")).isEqualTo("folder/");
