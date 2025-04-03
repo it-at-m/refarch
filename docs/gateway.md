@@ -72,6 +72,8 @@ Alternatively the `no-security` profile can be used.
 
 ```yaml
 spring:
+  session:
+    timeout: 10h # should be same as SSO session lifetime (e.g. internally 10h); default: 30m
   security:
     oauth2:
       resourceserver:
