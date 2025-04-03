@@ -1,8 +1,8 @@
 package de.muenchen.refarch.integration.dms.fabasoft.mock;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.requestMatching;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import jakarta.xml.bind.JAXBContext;

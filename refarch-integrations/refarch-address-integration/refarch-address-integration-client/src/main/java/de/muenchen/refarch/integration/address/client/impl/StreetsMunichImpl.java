@@ -4,10 +4,10 @@ import de.muenchen.refarch.integration.address.client.api.StreetsMunichApi;
 import de.muenchen.refarch.integration.address.client.exception.AddressServiceIntegrationClientErrorException;
 import de.muenchen.refarch.integration.address.client.exception.AddressServiceIntegrationException;
 import de.muenchen.refarch.integration.address.client.exception.AddressServiceIntegrationServerErrorException;
-import de.muenchen.refarch.integration.address.client.model.request.ListStreetsModel;
 import de.muenchen.refarch.integration.address.client.gen.api.StraenMnchenApi;
 import de.muenchen.refarch.integration.address.client.gen.model.Strasse;
 import de.muenchen.refarch.integration.address.client.gen.model.StrasseResponse;
+import de.muenchen.refarch.integration.address.client.model.request.ListStreetsModel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

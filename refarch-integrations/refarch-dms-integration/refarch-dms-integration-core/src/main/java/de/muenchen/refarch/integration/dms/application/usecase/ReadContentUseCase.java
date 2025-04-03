@@ -7,10 +7,9 @@ import de.muenchen.refarch.integration.dms.domain.exception.DmsException;
 import de.muenchen.refarch.integration.dms.domain.model.Content;
 import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageException;
 import jakarta.validation.constraints.NotBlank;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-
-import java.util.List;
 
 @Validated
 @RequiredArgsConstructor
