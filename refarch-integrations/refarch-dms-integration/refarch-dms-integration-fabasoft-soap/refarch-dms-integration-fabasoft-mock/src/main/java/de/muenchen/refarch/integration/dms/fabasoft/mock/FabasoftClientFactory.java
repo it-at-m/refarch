@@ -2,7 +2,6 @@ package de.muenchen.refarch.integration.dms.fabasoft.mock;
 
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.LHMBAI151700GIWSD;
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.LHMBAI151700GIWSDSoap;
-
 import jakarta.xml.ws.BindingProvider;
 
 /**

@@ -10,12 +10,6 @@ import de.muenchen.refarch.integration.address.client.api.AddressMunichApi;
 import de.muenchen.refarch.integration.address.client.exception.AddressServiceIntegrationClientErrorException;
 import de.muenchen.refarch.integration.address.client.exception.AddressServiceIntegrationException;
 import de.muenchen.refarch.integration.address.client.exception.AddressServiceIntegrationServerErrorException;
-import de.muenchen.refarch.integration.address.client.model.request.CheckAddressesModel;
-import de.muenchen.refarch.integration.address.client.model.request.ListAddressChangesModel;
-import de.muenchen.refarch.integration.address.client.model.request.ListAddressesModel;
-import de.muenchen.refarch.integration.address.client.model.request.SearchAddressesGeoModel;
-import de.muenchen.refarch.integration.address.client.model.request.SearchAddressesModel;
-import de.muenchen.refarch.integration.address.client.model.response.AddressDistancesModel;
 import de.muenchen.refarch.integration.address.client.gen.api.AdressenMnchenApi;
 import de.muenchen.refarch.integration.address.client.gen.model.AddressServicePage;
 import de.muenchen.refarch.integration.address.client.gen.model.AdresseDistanz;
@@ -24,6 +18,12 @@ import de.muenchen.refarch.integration.address.client.gen.model.AenderungsRespon
 import de.muenchen.refarch.integration.address.client.gen.model.MuenchenAdresse;
 import de.muenchen.refarch.integration.address.client.gen.model.MuenchenAdresseResponse;
 import de.muenchen.refarch.integration.address.client.gen.model.MuenchenAdresseResponseItem;
+import de.muenchen.refarch.integration.address.client.model.request.CheckAddressesModel;
+import de.muenchen.refarch.integration.address.client.model.request.ListAddressChangesModel;
+import de.muenchen.refarch.integration.address.client.model.request.ListAddressesModel;
+import de.muenchen.refarch.integration.address.client.model.request.SearchAddressesGeoModel;
+import de.muenchen.refarch.integration.address.client.model.request.SearchAddressesModel;
+import de.muenchen.refarch.integration.address.client.model.response.AddressDistancesModel;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -120,7 +120,7 @@ class AddressMunichImplTest {
             throws AddressServiceIntegrationServerErrorException, AddressServiceIntegrationException, AddressServiceIntegrationClientErrorException {
         when(adressenMuenchenApi.listAdressen(any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(),
                 any(), any(), any()))
-                        .thenReturn(Mono.just(muenchenAdresseResponse));
+                .thenReturn(Mono.just(muenchenAdresseResponse));
         final MuenchenAdresseResponse result = addressMunich.listAddresses(listAddressesModel);
         assertThat(result).isEqualTo(muenchenAdresseResponse);
     }
@@ -129,7 +129,7 @@ class AddressMunichImplTest {
     void testListAddressesClientErrorException() {
         when(adressenMuenchenApi.listAdressen(any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(),
                 any(), any(), any()))
-                        .thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST, BAD_REQUEST));
+                .thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST, BAD_REQUEST));
         assertThatThrownBy(() -> addressMunich.listAddresses(listAddressesModel))
                 .isInstanceOf(AddressServiceIntegrationClientErrorException.class);
     }
@@ -138,7 +138,7 @@ class AddressMunichImplTest {
     void testListAddressesServerErrorException() {
         when(adressenMuenchenApi.listAdressen(any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(),
                 any(), any(), any()))
-                        .thenThrow(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, INTERNAL_SERVER_ERROR));
+                .thenThrow(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR, INTERNAL_SERVER_ERROR));
         assertThatThrownBy(() -> addressMunich.listAddresses(listAddressesModel))
                 .isInstanceOf(AddressServiceIntegrationServerErrorException.class);
     }
@@ -147,7 +147,7 @@ class AddressMunichImplTest {
     void testListAddressesRestClientException() {
         when(adressenMuenchenApi.listAdressen(any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(),
                 any(), any(), any()))
-                        .thenThrow(new RestClientException(REST_EXCEPTION));
+                .thenThrow(new RestClientException(REST_EXCEPTION));
         assertThatThrownBy(() -> addressMunich.listAddresses(listAddressesModel))
                 .isInstanceOf(AddressServiceIntegrationException.class);
     }

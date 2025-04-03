@@ -1,9 +1,8 @@
 package de.muenchen.refarch.integration.dms.application.port.out;
 
 import de.muenchen.refarch.integration.dms.domain.exception.DmsException;
-import org.springframework.lang.NonNull;
-
 import java.util.List;
+import org.springframework.lang.NonNull;
 
 public interface ListContentOutPort {
     /**

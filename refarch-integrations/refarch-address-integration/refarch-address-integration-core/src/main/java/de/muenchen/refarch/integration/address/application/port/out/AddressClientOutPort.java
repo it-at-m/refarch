@@ -1,6 +1,12 @@
 package de.muenchen.refarch.integration.address.application.port.out;
 
 import de.muenchen.refarch.integration.address.client.exception.AddressServiceIntegrationException;
+import de.muenchen.refarch.integration.address.client.gen.model.AenderungResponse;
+import de.muenchen.refarch.integration.address.client.gen.model.BundesweiteAdresseResponse;
+import de.muenchen.refarch.integration.address.client.gen.model.MuenchenAdresse;
+import de.muenchen.refarch.integration.address.client.gen.model.MuenchenAdresseResponse;
+import de.muenchen.refarch.integration.address.client.gen.model.Strasse;
+import de.muenchen.refarch.integration.address.client.gen.model.StrasseResponse;
 import de.muenchen.refarch.integration.address.client.model.request.CheckAddressesModel;
 import de.muenchen.refarch.integration.address.client.model.request.ListAddressChangesModel;
 import de.muenchen.refarch.integration.address.client.model.request.ListAddressesModel;
@@ -9,12 +15,6 @@ import de.muenchen.refarch.integration.address.client.model.request.SearchAddres
 import de.muenchen.refarch.integration.address.client.model.request.SearchAddressesGermanyModel;
 import de.muenchen.refarch.integration.address.client.model.request.SearchAddressesModel;
 import de.muenchen.refarch.integration.address.client.model.response.AddressDistancesModel;
-import de.muenchen.refarch.integration.address.client.gen.model.AenderungResponse;
-import de.muenchen.refarch.integration.address.client.gen.model.BundesweiteAdresseResponse;
-import de.muenchen.refarch.integration.address.client.gen.model.MuenchenAdresse;
-import de.muenchen.refarch.integration.address.client.gen.model.MuenchenAdresseResponse;
-import de.muenchen.refarch.integration.address.client.gen.model.Strasse;
-import de.muenchen.refarch.integration.address.client.gen.model.StrasseResponse;
 
 /**
  * Port to integration infrastructure.

@@ -1,12 +1,12 @@
 package de.muenchen.refarch.integration.dms.adapter.out.fabasoft;
 
-import de.muenchen.refarch.integration.dms.domain.exception.DmsException;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import de.muenchen.refarch.integration.dms.domain.exception.DmsException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class DMSErrorHandlerTest {
 

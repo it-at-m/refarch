@@ -1,27 +1,5 @@
 package de.muenchen.refarch.integration.dms.adapter.out.s3;
 
-import de.muenchen.refarch.integration.dms.domain.model.Content;
-import de.muenchen.refarch.integration.s3.client.domain.model.SupportedFileExtensions;
-import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageClientErrorException;
-import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageException;
-import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageServerErrorException;
-import de.muenchen.refarch.integration.s3.client.exception.FileSizeValidationException;
-import de.muenchen.refarch.integration.s3.client.exception.FileTypeValidationException;
-import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFileRepository;
-import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFolderRepository;
-import de.muenchen.refarch.integration.s3.client.service.FileValidationService;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.util.unit.DataSize;
-
-import java.io.IOException;
-
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -35,6 +13,27 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import de.muenchen.refarch.integration.dms.domain.model.Content;
+import de.muenchen.refarch.integration.s3.client.domain.model.SupportedFileExtensions;
+import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageClientErrorException;
+import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageException;
+import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageServerErrorException;
+import de.muenchen.refarch.integration.s3.client.exception.FileSizeValidationException;
+import de.muenchen.refarch.integration.s3.client.exception.FileTypeValidationException;
+import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFileRepository;
+import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFolderRepository;
+import de.muenchen.refarch.integration.s3.client.service.FileValidationService;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.util.unit.DataSize;
 
 class S3AdapterTest {
 
