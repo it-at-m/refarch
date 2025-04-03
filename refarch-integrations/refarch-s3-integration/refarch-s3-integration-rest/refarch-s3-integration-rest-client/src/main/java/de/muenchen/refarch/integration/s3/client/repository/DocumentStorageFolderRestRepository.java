@@ -30,7 +30,7 @@ public class DocumentStorageFolderRestRepository implements DocumentStorageFolde
     public void deleteFolder(final String pathToFolder)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
         try {
-            folderApi.delete1(pathToFolder).block();
+            folderApi.deleteFolder(pathToFolder).block();
         } catch (final HttpClientErrorException exception) {
             final String message = String.format("The request to delete a folder failed %s.", exception.getStatusCode());
             log.error(message);

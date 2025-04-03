@@ -38,7 +38,7 @@ public class FolderController {
 
     @DeleteMapping
     @Operation(description = "Deletes the folder specified in the parameter")
-    public ResponseEntity<Void> delete(@RequestParam @NotEmpty final String pathToFolder) {
+    public ResponseEntity<Void> deleteFolder(@RequestParam @NotEmpty final String pathToFolder) {
         try {
             log.info("Received a request for deletion of a certain folder.");
             folderOperations.deleteFolder(pathToFolder);

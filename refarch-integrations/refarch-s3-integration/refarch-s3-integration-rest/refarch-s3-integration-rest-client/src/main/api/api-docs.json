@@ -126,7 +126,7 @@
           "FileAPI"
         ],
         "description": "Creates a presigned URL to delete the file specified in the parameter from the S3 storage",
-        "operationId": "delete",
+        "operationId": "deleteFile",
         "parameters": [
           {
             "name": "pathToFile",
@@ -199,7 +199,7 @@
           "FolderAPI"
         ],
         "description": "Deletes the folder specified in the parameter",
-        "operationId": "delete_1",
+        "operationId": "deleteFolder",
         "parameters": [
           {
             "name": "pathToFolder",

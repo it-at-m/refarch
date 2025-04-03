@@ -57,24 +57,24 @@ class DocumentStorageFolderRestRepositoryTest {
         final String pathToFolder = "folder";
 
         reset(this.folderApi);
-        when(this.folderApi.delete1(pathToFolder)).thenReturn(Mono.empty());
+        when(this.folderApi.deleteFolder(pathToFolder)).thenReturn(Mono.empty());
         this.documentStorageFolderRestRepository.deleteFolder(pathToFolder);
-        verify(this.folderApi, times(1)).delete1(pathToFolder);
+        verify(this.folderApi, times(1)).deleteFolder(pathToFolder);
 
         reset(this.folderApi);
-        doThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST)).when(this.folderApi).delete1(pathToFolder);
+        doThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST)).when(this.folderApi).deleteFolder(pathToFolder);
         assertThrows(DocumentStorageClientErrorException.class, () -> this.documentStorageFolderRestRepository.deleteFolder(pathToFolder));
-        verify(this.folderApi, times(1)).delete1(pathToFolder);
+        verify(this.folderApi, times(1)).deleteFolder(pathToFolder);
 
         reset(this.folderApi);
-        doThrow(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR)).when(this.folderApi).delete1(pathToFolder);
+        doThrow(new HttpServerErrorException(HttpStatus.INTERNAL_SERVER_ERROR)).when(this.folderApi).deleteFolder(pathToFolder);
         assertThrows(DocumentStorageServerErrorException.class, () -> this.documentStorageFolderRestRepository.deleteFolder(pathToFolder));
-        verify(this.folderApi, times(1)).delete1(pathToFolder);
+        verify(this.folderApi, times(1)).deleteFolder(pathToFolder);
 
         reset(this.folderApi);
-        doThrow(new RestClientException("Something happened")).when(this.folderApi).delete1(pathToFolder);
+        doThrow(new RestClientException("Something happened")).when(this.folderApi).deleteFolder(pathToFolder);
         assertThrows(DocumentStorageException.class, () -> this.documentStorageFolderRestRepository.deleteFolder(pathToFolder));
-        verify(this.folderApi, times(1)).delete1(pathToFolder);
+        verify(this.folderApi, times(1)).deleteFolder(pathToFolder);
     }
 
     @Test

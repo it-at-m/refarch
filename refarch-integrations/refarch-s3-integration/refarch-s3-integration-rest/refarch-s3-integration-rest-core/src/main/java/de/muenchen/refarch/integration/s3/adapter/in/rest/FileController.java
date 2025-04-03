@@ -116,7 +116,7 @@ public class FileController {
 
     @DeleteMapping
     @Operation(description = "Creates a presigned URL to delete the file specified in the parameter from the S3 storage")
-    public ResponseEntity<PresignedUrlDto> delete(
+    public ResponseEntity<PresignedUrlDto> deleteFile(
             @RequestParam @NotEmpty @Size(max = FileData.LENGTH_PATH_TO_FILE) @FolderInFilePath final String pathToFile,
             @RequestParam @NotNull @Min(FileData.MIN_EXPIRES_IN_MINUTES) final Integer expiresInMinutes) {
         try {
