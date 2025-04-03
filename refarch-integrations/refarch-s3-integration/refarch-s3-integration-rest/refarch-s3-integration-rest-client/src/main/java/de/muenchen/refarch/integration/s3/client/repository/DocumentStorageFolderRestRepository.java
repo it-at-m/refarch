@@ -7,13 +7,11 @@ import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageExcept
 import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageServerErrorException;
 import de.muenchen.refarch.integration.s3.client.model.FileSizesInFolderDto;
 import de.muenchen.refarch.integration.s3.client.model.FilesInFolderDto;
-
+import de.muenchen.refarch.integration.s3.client.model.FilesMetadataInFolderDto;
+import de.muenchen.refarch.integration.s3.client.repository.mapper.FileMetadataMapper;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import de.muenchen.refarch.integration.s3.client.model.FilesMetadataInFolderDto;
-import de.muenchen.refarch.integration.s3.client.repository.mapper.FileMetadataMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.client.HttpClientErrorException;

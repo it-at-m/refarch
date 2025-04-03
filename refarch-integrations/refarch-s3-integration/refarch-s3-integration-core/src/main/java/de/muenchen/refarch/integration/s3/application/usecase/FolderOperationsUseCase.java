@@ -8,7 +8,6 @@ import de.muenchen.refarch.integration.s3.domain.model.FileSizesInFolder;
 import de.muenchen.refarch.integration.s3.domain.model.FilesInFolder;
 import de.muenchen.refarch.integration.s3.domain.model.FilesMetadataInFolder;
 import de.muenchen.refarch.integration.s3.domain.validation.FolderInFilePathValidator;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Set;

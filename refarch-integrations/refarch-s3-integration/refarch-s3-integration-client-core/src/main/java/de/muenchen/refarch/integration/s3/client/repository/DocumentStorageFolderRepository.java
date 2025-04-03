@@ -4,7 +4,6 @@ import de.muenchen.refarch.integration.s3.client.domain.model.FileMetadata;
 import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageClientErrorException;
 import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageException;
 import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageServerErrorException;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Set;

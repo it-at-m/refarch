@@ -3,7 +3,6 @@ package de.muenchen.refarch.integration.s3.application.port.out;
 import de.muenchen.refarch.integration.s3.domain.exception.FileSystemAccessException;
 import de.muenchen.refarch.integration.s3.domain.model.FileMetadata;
 import io.minio.http.Method;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Set;

@@ -7,12 +7,10 @@ import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageExcept
 import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageServerErrorException;
 import de.muenchen.refarch.integration.s3.client.repository.mapper.FileMetadataMapper;
 import de.muenchen.refarch.integration.s3.domain.exception.FileSystemAccessException;
-
+import de.muenchen.refarch.integration.s3.domain.model.FilesMetadataInFolder;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import de.muenchen.refarch.integration.s3.domain.model.FilesMetadataInFolder;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

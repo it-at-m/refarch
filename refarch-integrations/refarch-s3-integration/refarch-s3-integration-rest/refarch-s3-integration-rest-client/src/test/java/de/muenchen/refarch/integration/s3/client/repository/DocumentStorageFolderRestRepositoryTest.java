@@ -16,15 +16,13 @@ import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageServer
 import de.muenchen.refarch.integration.s3.client.model.FileMetadataDto;
 import de.muenchen.refarch.integration.s3.client.model.FileSizesInFolderDto;
 import de.muenchen.refarch.integration.s3.client.model.FilesInFolderDto;
-
+import de.muenchen.refarch.integration.s3.client.model.FilesMetadataInFolderDto;
+import de.muenchen.refarch.integration.s3.client.repository.mapper.FileMetadataMapperImpl;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import de.muenchen.refarch.integration.s3.client.model.FilesMetadataInFolderDto;
-import de.muenchen.refarch.integration.s3.client.repository.mapper.FileMetadataMapperImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -5,12 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import de.muenchen.refarch.integration.s3.adapter.out.s3.S3Adapter;
 import de.muenchen.refarch.integration.s3.domain.exception.FileSystemAccessException;
+import de.muenchen.refarch.integration.s3.domain.model.FileMetadata;
+import de.muenchen.refarch.integration.s3.domain.model.FilesMetadataInFolder;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
-
-import de.muenchen.refarch.integration.s3.domain.model.FileMetadata;
-import de.muenchen.refarch.integration.s3.domain.model.FilesMetadataInFolder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
