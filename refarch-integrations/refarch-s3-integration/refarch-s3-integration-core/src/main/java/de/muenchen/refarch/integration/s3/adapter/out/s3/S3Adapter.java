@@ -32,6 +32,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.IteratorUtils;
+import org.apache.commons.lang3.StringUtils;
 
 @Slf4j
 public class S3Adapter implements S3OutPort {
@@ -148,7 +149,7 @@ public class S3Adapter implements S3OutPort {
                 final FileMetadata fileInformation = new FileMetadata(
                         resultItem.get().objectName(),
                         resultItem.get().size(),
-                        resultItem.get().etag(),
+                        StringUtils.strip(resultItem.get().etag(), "\""),
                         resultItem.get().lastModified().toLocalDateTime());
                 fileInformationsFromFolder.add(fileInformation);
             }
