@@ -4,9 +4,9 @@ import de.muenchen.refarch.integration.address.client.api.AddressGermanyApi;
 import de.muenchen.refarch.integration.address.client.exception.AddressServiceIntegrationClientErrorException;
 import de.muenchen.refarch.integration.address.client.exception.AddressServiceIntegrationException;
 import de.muenchen.refarch.integration.address.client.exception.AddressServiceIntegrationServerErrorException;
-import de.muenchen.refarch.integration.address.client.model.request.SearchAddressesGermanyModel;
 import de.muenchen.refarch.integration.address.client.gen.api.AdressenBundesweitApi;
 import de.muenchen.refarch.integration.address.client.gen.model.BundesweiteAdresseResponse;
+import de.muenchen.refarch.integration.address.client.model.request.SearchAddressesGermanyModel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

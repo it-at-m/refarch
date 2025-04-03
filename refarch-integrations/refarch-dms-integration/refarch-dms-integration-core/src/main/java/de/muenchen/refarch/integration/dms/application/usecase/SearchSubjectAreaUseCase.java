@@ -1,7 +1,7 @@
 package de.muenchen.refarch.integration.dms.application.usecase;
 
-import de.muenchen.refarch.integration.dms.application.port.out.SearchSubjectAreaOutPort;
 import de.muenchen.refarch.integration.dms.application.port.in.SearchSubjectAreaInPort;
+import de.muenchen.refarch.integration.dms.application.port.out.SearchSubjectAreaOutPort;
 import de.muenchen.refarch.integration.dms.domain.exception.DmsException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
