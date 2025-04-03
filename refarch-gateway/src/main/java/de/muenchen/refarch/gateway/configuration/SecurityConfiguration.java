@@ -1,8 +1,7 @@
 package de.muenchen.refarch.gateway.configuration;
 
-import java.time.Duration;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.session.SessionProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -24,12 +23,7 @@ import reactor.core.publisher.Mono;
 public class SecurityConfiguration {
 
     private final CsrfProtectionMatcher csrfProtectionMatcher;
-
-    /**
-     * Same lifetime as SSO Session (e.g. 10 hours).
-     */
-    @Value("${spring.session.timeout:36000}")
-    private long springSessionTimeoutSeconds;
+    private final SessionProperties springSessionProperties;
 
     @Bean
     @Order(0)
@@ -85,7 +79,7 @@ public class SecurityConfiguration {
                     @Override
                     public Mono<Void> onAuthenticationSuccess(final WebFilterExchange webFilterExchange, final Authentication authentication) {
                         webFilterExchange.getExchange().getSession().subscribe(
-                                webSession -> webSession.setMaxIdleTime(Duration.ofSeconds(springSessionTimeoutSeconds)));
+                                webSession -> webSession.setMaxIdleTime(springSessionProperties.getTimeout()));
                         return super.onAuthenticationSuccess(webFilterExchange, authentication);
                     }
                 }));
