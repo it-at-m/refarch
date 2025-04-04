@@ -132,6 +132,7 @@ You might not be able to access `download.eclipse.org` from your machine directl
 This can be the case when you are behind a proxy or want to use a company internal P2 mirror.
 To make the setup work in this case, you need to add and adjust the following XML to your `settings.xml` file
 inside the `<profile>` block:
+
 ```xml
 <properties>
     <p2.username>my_user</p2.username>
@@ -139,6 +140,7 @@ inside the `<profile>` block:
     <p2.mirror>registry.example.com/mycustomp2mirror/</p2.mirror>
 </properties>
 ```
+
 :::
 
 ::: details it@M internal configuration
