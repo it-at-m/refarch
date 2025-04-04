@@ -3,6 +3,7 @@ package de.muenchen.refarch.integration.s3.application.port.in;
 import de.muenchen.refarch.integration.s3.domain.exception.FileSystemAccessException;
 import de.muenchen.refarch.integration.s3.domain.model.FileSizesInFolder;
 import de.muenchen.refarch.integration.s3.domain.model.FilesInFolder;
+import de.muenchen.refarch.integration.s3.domain.model.FilesMetadataInFolder;
 import org.springframework.lang.NonNull;
 
 /**
@@ -19,6 +20,16 @@ public interface FolderOperationsInPort {
      */
     @NonNull
     FilesInFolder getAllFilesInFolderRecursively(@NonNull String pathToFolder) throws FileSystemAccessException;
+
+    /**
+     * Retrieves a list of metadata for files in a folder.
+     *
+     * @param pathToFolder path to folder.
+     * @return list of metadata for files in folder.
+     * @throws FileSystemAccessException on access errors.
+     */
+    @NonNull
+    FilesMetadataInFolder getMetadataOfAllFilesInFolderRecursively(@NonNull String pathToFolder) throws FileSystemAccessException;
 
     /**
      * Retrieves the sizes of all files within a specified folder.
