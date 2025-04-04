@@ -8,9 +8,9 @@ import com.hazelcast.config.NetworkConfig;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.map.IMap;
+import java.time.Duration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -28,11 +28,11 @@ import org.springframework.session.hazelcast.HazelcastIndexedSessionRepository;
  */
 @Configuration
 @EnableSpringWebSession
-@Profile({ "hazelcast-local", "hazelcast-k8s" })
+@Profile("!no-security & (hazelcast-local | hazelcast-k8s)")
 @RequiredArgsConstructor
 public class WebSessionHazelcastConfiguration {
-
     private final HazelcastProperties hazelcastProperties;
+    private final SecurityConfiguration securityConfiguration;
 
     @Bean
     public ServerOAuth2AuthorizedClientRepository authorizedClientRepository() {
@@ -52,14 +52,12 @@ public class WebSessionHazelcastConfiguration {
 
     @Bean
     @Profile({ "hazelcast-local" })
-    public Config localConfig(@Value(
-        "${spring.session.timeout}"
-    ) final int timeout) {
+    public Config localConfig() {
         final Config hazelcastConfig = new Config();
         hazelcastConfig.setClusterName(hazelcastProperties.getClusterName());
         hazelcastConfig.setInstanceName(hazelcastProperties.getInstanceName());
 
-        addSessionTimeoutToHazelcastConfig(hazelcastConfig, timeout);
+        addSessionTimeoutToHazelcastConfig(hazelcastConfig, securityConfiguration.getSessionTimeout());
 
         final NetworkConfig networkConfig = hazelcastConfig.getNetworkConfig();
 
@@ -74,12 +72,12 @@ public class WebSessionHazelcastConfiguration {
 
     @Bean
     @Profile({ "hazelcast-k8s" })
-    public Config config(@Value("${spring.session.timeout}") final int timeout) {
+    public Config config() {
         final Config hazelcastConfig = new Config();
         hazelcastConfig.setClusterName(hazelcastProperties.getClusterName());
         hazelcastConfig.setInstanceName(hazelcastProperties.getInstanceName());
 
-        addSessionTimeoutToHazelcastConfig(hazelcastConfig, timeout);
+        addSessionTimeoutToHazelcastConfig(hazelcastConfig, securityConfiguration.getSessionTimeout());
 
         hazelcastConfig.getNetworkConfig().getJoin().getMulticastConfig().setEnabled(false);
         hazelcastConfig.getNetworkConfig().getJoin().getKubernetesConfig().setEnabled(true)
@@ -98,10 +96,10 @@ public class WebSessionHazelcastConfiguration {
      * @param hazelcastConfig to add the timeout.
      * @param sessionTimeout for security session.
      */
-    private void addSessionTimeoutToHazelcastConfig(final Config hazelcastConfig, final int sessionTimeout) {
+    private void addSessionTimeoutToHazelcastConfig(final Config hazelcastConfig, final Duration sessionTimeout) {
         final MapConfig sessionConfig = new MapConfig();
         sessionConfig.setName(HazelcastIndexedSessionRepository.DEFAULT_SESSION_MAP_NAME);
-        sessionConfig.setTimeToLiveSeconds(sessionTimeout);
+        sessionConfig.setTimeToLiveSeconds(Long.valueOf(sessionTimeout.getSeconds()).intValue());
         sessionConfig.getEvictionConfig().setEvictionPolicy(EvictionPolicy.LRU);
 
         hazelcastConfig.addMapConfig(sessionConfig);

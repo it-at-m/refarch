@@ -3,8 +3,6 @@ spring:
     name: @project.artifactId@
   main:
     web-application-type: reactive
-  session:
-    timeout: 1800  # in seconds; Goal: same lifetime as SSO Session, actual: 30 minutes
   cloud:
     gateway:
       globalcors:

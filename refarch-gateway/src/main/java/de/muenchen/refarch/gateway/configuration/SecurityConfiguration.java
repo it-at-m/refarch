@@ -2,7 +2,8 @@ package de.muenchen.refarch.gateway.configuration;
 
 import java.time.Duration;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.session.SessionProperties;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -24,12 +25,8 @@ import reactor.core.publisher.Mono;
 public class SecurityConfiguration {
 
     private final CsrfProtectionMatcher csrfProtectionMatcher;
-
-    /**
-     * Same lifetime as SSO Session (e.g. 10 hours).
-     */
-    @Value("${spring.session.timeout:36000}")
-    private long springSessionTimeoutSeconds;
+    private final SessionProperties sessionProperties;
+    private final ServerProperties serverProperties;
 
     @Bean
     @Order(0)
@@ -85,7 +82,7 @@ public class SecurityConfiguration {
                     @Override
                     public Mono<Void> onAuthenticationSuccess(final WebFilterExchange webFilterExchange, final Authentication authentication) {
                         webFilterExchange.getExchange().getSession().subscribe(
-                                webSession -> webSession.setMaxIdleTime(Duration.ofSeconds(springSessionTimeoutSeconds)));
+                                webSession -> webSession.setMaxIdleTime(getSessionTimeout()));
                         return super.onAuthenticationSuccess(webFilterExchange, authentication);
                     }
                 }));
@@ -93,4 +90,17 @@ public class SecurityConfiguration {
         return http.build();
     }
 
+    /**
+     * Get Spring Session timeout.
+     * Uses {@link SessionProperties} and {@link ServerProperties#getServlet()} as fallback, like Spring
+     * Session itself.
+     * See according
+     * <a href="https://docs.spring.io/spring-boot/reference/web/spring-session.html">Spring
+     * documentation</a>.
+     *
+     * @return Spring session timeout.
+     */
+    protected Duration getSessionTimeout() {
+        return sessionProperties.determineTimeout(() -> serverProperties.getServlet().getSession().getTimeout());
+    }
 }

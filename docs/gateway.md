@@ -34,17 +34,34 @@ Beside the default behaviour there are some special route prefixes which are han
 
 ## Configuration
 
-| Var                                                      | Description                                                     | Example                                                                 |
-| -------------------------------------------------------- | --------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| `SPRING_PROFILES_ACTIVE`                                 | See [profiles](#profiles)                                       | `local,hazelcast-local`                                                 |
-| `SPRING_CLOUD_GATEWAY_ROUTES_<index>_ID`                 | ID of a route definition.                                       | `backend`                                                               |
-| `SPRING_CLOUD_GATEWAY_ROUTES_<index>_URI`                | The URI to route to if this route matches.                      | `http://backend-service:8080/`                                          |
-| `SPRING_CLOUD_GATEWAY_ROUTES_<index>_PREDICATES_<index>` | Route predicates i.e. matcher.                                  | `Path=/api/backend-service/**`                                          |
-| `SPRING_CLOUD_GATEWAY_ROUTES_<index>_FILTERS_<index>`    | List of filters applied to the route.                           | `RewritePath=/api/backend-service/(?<urlsegments>.*), /$\{urlsegments}` |
-| `REFARCH_HAZELCAST_SERVICENAME`                          | Kubernetes service name for when using profile `hazelcast-k8s`. |                                                                         |
-| `ALLOWED_ORIGINS_PUBLIC` (optional)                      | List of URIs allowed as origin for public routes.               | `https://*.example.com,http://localhost:*`                              |
-| `ALLOWED_ORIGINS_CLIENTS` (optional)                     | List of URIs allowed as origin for clients routes.              | `https://*.example.com,http://localhost:*`                              |
-| `REFARCH_SECURITY_CSRFWHITELISTED_<index>` (optional)    | List of routes to disable CSRF protection for.                  | `/example/**`                                                           |
+Following is a configuration example with description and example values. See also [Security](#security) for additional security configuration.
+
+Spring can also be configured via environment variables. See [according documentation](https://docs.spring.io/spring-boot/reference/features/external-config.html#features.external-config.typesafe-configuration-properties.relaxed-binding.environment-variables).
+
+```yaml
+spring:
+  profiles:
+    active: local,hazelcast-local # see section profiles
+  cloud:
+    gateway:
+      routes:
+        - id: backend
+          uri: http://backend-service:8080/
+          predicates:
+            - "Path=/api/backend-service/**"
+          filters:
+            - RewritePath=/api/backend-service/(?<urlsegments>.*), /$\{urlsegments}
+refarch:
+  hazelcast:
+    service-name: # Kubernetes service name for when using profile `hazelcast-k8s`
+  security:
+    csrf-whitelisted: # List of routes to disable CSRF protection for (optional)
+      - /example/**
+
+# Aliases for `spring.cloud.gateway.globalcors.cors-configurations` to allow configuration via environment variables, as the used glob patterns can't be used there
+ALLOWED_ORIGINS_PUBLIC: https://*.example.com,http://localhost:* # List of URIs allowed as origin for public routes (optional)
+ALLOWED_ORIGINS_CLIENTS: https://*.example.com,http://localhost:* # List of URIs allowed as origin for client routes (optional)
+```
 
 ### Security
 
@@ -55,6 +72,8 @@ Alternatively the `no-security` profile can be used.
 
 ```yaml
 spring:
+  session:
+    timeout: 10h # should be same as SSO session lifetime (e.g. internally 10h); default: 30m
   security:
     oauth2:
       resourceserver:
