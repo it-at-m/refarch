@@ -130,8 +130,8 @@ Spotless downloads additional P2 dependencies from `download.eclipse.org`
 to make use of the Eclipse JDT tooling required for formatting the Java code.
 You might not be able to access `download.eclipse.org` from your machine directly.
 This can be the case when you are behind a proxy or want to use a company internal P2 mirror.
-To make the setup work in this case, you need to add and adjust the following XML to your `settings.xml` file
-inside the `<profile>` block:
+To make the setup work in this case, you need to add the following XML to your `settings.xml` file
+inside the `<profile>` block and adjust it as needed:
 
 ```xml
 <properties>
