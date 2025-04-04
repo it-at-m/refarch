@@ -26,7 +26,7 @@ services:
       - no-new-privileges:true
 
   init-keycloak:
-    image: klg71/keycloakmigration:0.2.80@sha256:60c1ac0787aec53557fda932843e0a1e943a268de8be1de15ccac264724cd7dc
+    image: klg71/keycloakmigration:0.2.81@sha256:2c73c904a644b75637a01434f357caee9c029f37bd8960793c68233d5afa468a
     depends_on:
       - keycloak
     environment:
