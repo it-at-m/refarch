@@ -1,8 +1,8 @@
 package de.muenchen.refarch.integration.dms.adapter.out.s3;
 
+import de.muenchen.refarch.integration.dms.application.port.out.LoadFileOutPort;
 import de.muenchen.refarch.integration.dms.application.port.out.TransferContentOutPort;
 import de.muenchen.refarch.integration.dms.domain.model.Content;
-import de.muenchen.refarch.integration.dms.application.port.out.LoadFileOutPort;
 import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageClientErrorException;
 import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageException;
 import de.muenchen.refarch.integration.s3.client.exception.DocumentStorageServerErrorException;
@@ -17,12 +17,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.util.unit.DataSize;
-
-import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor

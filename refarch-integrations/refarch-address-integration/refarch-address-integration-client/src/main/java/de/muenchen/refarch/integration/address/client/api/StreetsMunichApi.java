@@ -3,9 +3,9 @@ package de.muenchen.refarch.integration.address.client.api;
 import de.muenchen.refarch.integration.address.client.exception.AddressServiceIntegrationClientErrorException;
 import de.muenchen.refarch.integration.address.client.exception.AddressServiceIntegrationException;
 import de.muenchen.refarch.integration.address.client.exception.AddressServiceIntegrationServerErrorException;
-import de.muenchen.refarch.integration.address.client.model.request.ListStreetsModel;
 import de.muenchen.refarch.integration.address.client.gen.model.Strasse;
 import de.muenchen.refarch.integration.address.client.gen.model.StrasseResponse;
+import de.muenchen.refarch.integration.address.client.model.request.ListStreetsModel;
 
 /**
  * This interface defines the methods used for the communication with the address service.

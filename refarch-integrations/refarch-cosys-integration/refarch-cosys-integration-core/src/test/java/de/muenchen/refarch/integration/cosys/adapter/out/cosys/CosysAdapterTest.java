@@ -36,7 +36,7 @@ class CosysAdapterTest {
 
         when(generationApi.generatePdfWithResponseSpec(any(), any(), any(), dataFileCaptor.capture(), any(), any(), any(), any(), any(), any(),
                 mergeFileCaptor.capture(), any(), any()))
-                        .thenReturn(responseSpecMock);
+                .thenReturn(responseSpecMock);
 
         when(configuration.getMergeOptions()).thenReturn("mergedata".getBytes());
 

@@ -1,12 +1,11 @@
 package de.muenchen.refarch.integration.dms.fabasoft.mock.service.cases;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
+import jakarta.annotation.PostConstruct;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import jakarta.annotation.PostConstruct;
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
