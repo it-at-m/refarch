@@ -92,7 +92,7 @@ public class PresignedUrlRestRepository implements PresignedUrlRepository {
     public String getPresignedUrlDeleteFile(final String pathToFile, final int expireInMinutes)
             throws DocumentStorageClientErrorException, DocumentStorageServerErrorException, DocumentStorageException {
         try {
-            final Mono<PresignedUrlDto> presignedUrlDto = fileApi.delete1(pathToFile, expireInMinutes);
+            final Mono<PresignedUrlDto> presignedUrlDto = fileApi.deleteFile(pathToFile, expireInMinutes);
             return presignedUrlDto.block().getUrl();
         } catch (final HttpClientErrorException exception) {
             final String message = String.format("The request to create a presigned url to delete a file failed %s.", exception.getStatusCode());
