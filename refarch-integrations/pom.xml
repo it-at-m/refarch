@@ -33,10 +33,10 @@
         <maven.compiler.release>${java.version}</maven.compiler.release>
 
         <!-- Logging -->
-        <logstash-logback-encoder.version>8.0</logstash-logback-encoder.version>
+        <logstash-logback-encoder.version>8.1</logstash-logback-encoder.version>
 
         <!-- Linting & Formatting -->
-        <spotless-maven-plugin.version>2.44.3</spotless-maven-plugin.version>
+        <spotless-maven-plugin.version>2.44.4</spotless-maven-plugin.version>
         <itm-java-codeformat.version>1.0.10</itm-java-codeformat.version>
         <pmd-maven-plugin.version>3.26.0</pmd-maven-plugin.version>
 
@@ -46,7 +46,7 @@
         <maven-gpg-plugin.version>3.2.7</maven-gpg-plugin.version>
 
         <!-- Testing -->
-        <jacoco.version>0.8.12</jacoco.version>
+        <jacoco.version>0.8.13</jacoco.version>
 
         <!-- Utility -->
         <mapstruct.version>1.6.3</mapstruct.version>

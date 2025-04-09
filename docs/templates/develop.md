@@ -81,7 +81,7 @@ We use the following component libraries to accelerate our frontend development 
 
 ### Code Quality
 
-#### Frontend / WebComponent
+#### JavaScript / TypeScript / Vue
 
 [Prettier](https://prettier.io/) and [ESLint](https://eslint.org/) are used for linting and code formatting JavaScript, TypeScript and Vue-based code.
 Additionally, [vue-tsc](https://github.com/vuejs/language-tools/tree/master/packages/tsc) is used for running type-checking when working with TypeScript.
@@ -100,7 +100,7 @@ The tools are configured through the respective configuration files
 - Prettier: `.prettierrc.json` (points to a [centralized configuration](https://github.com/it-at-m/itm-prettier-codeformat))
 - ESLint: `eslint.config.js` (configuration part of the templates)
 
-#### Backend / EAI
+#### Java
 
 [Spotless](https://github.com/diffplug/spotless), [PMD](https://pmd.github.io/) and [SpotBugs](https://spotbugs.github.io/) are used for code formatting and linting Java-based code.
 Additionally, [find-sec-bugs](https://github.com/find-sec-bugs/find-sec-bugs) is used to check for vulnerabilities inside your code.
@@ -124,6 +124,28 @@ The tools are configured through the respective configuration files or configura
 - Spotless: `pom.xml` and using a [centralized configuration](https://github.com/it-at-m/itm-java-codeformat)
 - PMD: `pom.xml` and using centralized configuration (more information in [Tools](../tools#pmd))
 - SpotBugs: `pom.xml` and `spotbugs-exclude-rules.xml` (configuration part of the templates)
+
+::: danger IMPORTANT
+Spotless downloads additional P2 dependencies from `download.eclipse.org`
+to make use of the Eclipse JDT tooling required for formatting the Java code.
+You might not be able to access `download.eclipse.org` from your machine directly.
+This can be the case when you are behind a proxy or want to use a company internal P2 mirror.
+To make the setup work in this case, you need to add the following XML to your `settings.xml` file
+inside the `<profile>` block and adjust it as needed:
+
+```xml
+<properties>
+    <p2.username>my_user</p2.username>
+    <p2.password>my_token_or_password</p2.password>
+    <p2.mirror>registry.example.com/mycustomp2mirror/</p2.mirror>
+</properties>
+```
+
+:::
+
+::: details it@M internal configuration
+If you are working behind our company internal Artifactory please set `p2.mirror` mentioned above to `artifactory.muenchen.de/artifactory/download.eclipse.org/`.
+:::
 
 ### Vue Dev Tools
 
