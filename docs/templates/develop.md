@@ -294,6 +294,14 @@ More information about the centralized actions can be found in the [lhm_actions 
 Note that the CI/CD setup of the templates is in a Work-In-Progress state, so its subject to change in the near future.
 :::
 
+If you have specific needs in your project that go beyond what the default workflows offer, you can adjust the workflows to your own needs.
+More information can be found in the [official GitHub documentation](https://docs.github.com/en/actions).
+
+::: info Information
+The templates by default ship with the workflow `actionlint.yml`. This workflow makes use of [actionlint](https://github.com/rhysd/actionlint) and ensures your workflows
+are always syntactically correct. We therefore suggest that you do not remove this file.
+:::
+
 ## CODEOWNERS
 
 The **CODEOWNERS** file (found under the `.github` directory of the template) is an essential tool in version control systems like GitHub.
