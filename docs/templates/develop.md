@@ -289,7 +289,7 @@ GitHub Actions has a feature called [Problem Matchers](https://github.com/action
 The templates provide a default configuration for this feature inside the file `.github/problem-matcher.json`.
 
 ::: info Information
-Currently the templates only configure this feature for the [linting of GitHub workflows](#ci-cd-configurations) but might be extended to other tools in the future.
+Currently, the templates only configure this feature for the [linting of GitHub workflows](./develop#ci-cd-configurations). We might extend this to other tools in the future.
 :::
 
 ## CI/CD Configurations
