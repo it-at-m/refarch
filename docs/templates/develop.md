@@ -292,7 +292,6 @@ The templates provide a default configuration for this feature inside the file `
 Currently the templates only configure this feature for the [linting of GitHub workflows](#ci-cd-configurations) but might be extended to other tools in the future.
 :::
 
-
 ## CI/CD Configurations
 
 The `.github/workflows` folder contains various GitHub workflow files. Those reference centralized actions to simplify different parts of the CI/CD process.
