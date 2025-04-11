@@ -283,6 +283,15 @@ We strongly encourage you to enable the status checks for those tools before bei
 Status checks are configurable as part of the rulesets.
 :::
 
+### Problem Matchers
+
+GitHub Actions has a feature called [Problem Matchers](https://github.com/actions/toolkit/blob/main/docs/problem-matchers.md) which enables the annotation of violations inside the GUI of the PR changes.
+The templates provide a default configuration for this feature inside the file `.github/problem-matcher.json`.
+
+::: info Information
+Currently, the templates only configure this feature for the [linting of GitHub workflows](./develop#ci-cd-configurations). We might extend this to other tools in the future.
+:::
+
 ## CI/CD Configurations
 
 The `.github/workflows` folder contains various GitHub workflow files. Those reference centralized actions to simplify different parts of the CI/CD process.
@@ -292,6 +301,14 @@ More information about the centralized actions can be found in the [lhm_actions 
 
 ::: danger IMPORTANT
 Note that the CI/CD setup of the templates is in a Work-In-Progress state, so its subject to change in the near future.
+:::
+
+If you have specific needs in your project that go beyond what the default workflows offer, you can adjust the workflows to your own needs.
+More information can be found in the [official GitHub documentation](https://docs.github.com/en/actions).
+
+::: info Information
+The templates by default ship with the workflow `actionlint.yml`. This workflow makes use of [actionlint](https://github.com/rhysd/actionlint) and ensures your workflows
+are always syntactically correct. We therefore suggest that you do not remove this file.
 :::
 
 ## CODEOWNERS
