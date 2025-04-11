@@ -283,6 +283,16 @@ We strongly encourage you to enable the status checks for those tools before bei
 Status checks are configurable as part of the rulesets.
 :::
 
+### Problem Matchers
+
+GitHub Actions has a feature called [Problem Matchers](https://github.com/actions/toolkit/blob/main/docs/problem-matchers.md) which enables the annotation of violations inside the GUI of the PR changes.
+The templates provide a default configuration for this feature inside the file `.github/problem-matcher.json`.
+
+::: info Information
+Currently the templates only configure this feature for the [linting of GitHub workflows](#ci-cd-configurations) but might be extended to other tools in the future.
+:::
+
+
 ## CI/CD Configurations
 
 The `.github/workflows` folder contains various GitHub workflow files. Those reference centralized actions to simplify different parts of the CI/CD process.
