@@ -57,7 +57,7 @@ jobs:
           image-name: refarch-gateway
           image-tags: |
             type=raw,value=${{ inputs.release-version }}
-            type=raw,value=latest,enable=${{ inputs.release == true }}
+            type=raw,value=latest
 
   build-images-integrations:
     if: inputs.module == 'refarch-integrations'
@@ -79,7 +79,7 @@ jobs:
           image-name: ${{ matrix.name }}
           image-tags: |
             type=raw,value=${{ inputs.release-version }}
-            type=raw,value=latest,enable=${{ inputs.release == true }}
+            type=raw,value=latest
 
   create-github-release:
     needs: build-maven
