@@ -32,6 +32,6 @@ nbdist/
 # Stack
 minio/
 
-# Additional
-$(pwd)
+# Node
+node_modules
 
