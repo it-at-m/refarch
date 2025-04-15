@@ -50,7 +50,7 @@ public class SecurityConfiguration {
                 .authorizeExchange(authorizeExchangeSpec -> authorizeExchangeSpec
                         // permitAll
                         .pathMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
-                        .pathMatchers("/api/*/info",
+                        .pathMatchers("/api/*/actuator/info",
                                 "/actuator/health",
                                 "/actuator/health/liveness",
                                 "/actuator/health/readiness",
