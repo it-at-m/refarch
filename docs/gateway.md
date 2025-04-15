@@ -29,7 +29,7 @@ The gateway then maps the session cookie to a JWT before routing it.
 
 Beside the default behaviour there are some special route prefixes which are handled different:
 
-- `/public/**`: All `OPTIONS` and `GET` requests are routed without security.
+- `/public/**`: All requests are routed WITHOUT security.
 - `/clients/**`: Uses JWT for authenticating incoming requests instead of session cookies.
 
 ## Configuration

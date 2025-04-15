@@ -47,21 +47,19 @@ public class SecurityConfiguration {
     public SecurityWebFilterChain springSecurityFilterChain(final ServerHttpSecurity http) {
         http
                 .logout(ServerHttpSecurity.LogoutSpec::disable)
-                .authorizeExchange(authorizeExchangeSpec -> {
-                    // permitAll
-                    authorizeExchangeSpec.pathMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
-                            .pathMatchers("/api/*/info",
-                                    "/actuator/health",
-                                    "/actuator/health/liveness",
-                                    "/actuator/health/readiness",
-                                    "/actuator/info",
-                                    "/actuator/metrics")
-                            .permitAll()
-                            .pathMatchers(HttpMethod.OPTIONS, "/public/**").permitAll()
-                            .pathMatchers(HttpMethod.GET, "/public/**").permitAll()
-                            // only authenticated
-                            .anyExchange().authenticated();
-                })
+                .authorizeExchange(authorizeExchangeSpec -> authorizeExchangeSpec
+                        // permitAll
+                        .pathMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
+                        .pathMatchers("/api/*/actuator/info",
+                                "/actuator/health",
+                                "/actuator/health/liveness",
+                                "/actuator/health/readiness",
+                                "/actuator/info",
+                                "/actuator/metrics",
+                                "/public/**")
+                        .permitAll()
+                        // only authenticated
+                        .anyExchange().authenticated())
                 .cors(corsSpec -> {
                 })
                 .csrf(csrfSpec -> {
