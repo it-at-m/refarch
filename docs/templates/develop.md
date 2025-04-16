@@ -216,6 +216,9 @@ For projects in the `it-at-m` organization, Renovate has access by default and i
 However, to finish the onboarding process of Renovate, you need to open a PR for a dependency update found by Renovate through the "Dependency Dashboard" issue.
 This PR then has to be merged manually once.
 After that's done Renovate will start opening PRs automatically.
+
+Also keep in mind Renovate needs to be able to bypass the [CODEOWNERS](#codeowners) requirements if you enabled that functionality inside your [ruleset](#github-rulesets).
+This can be achieved by adding the Renovate bot account to the [bypass list](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/creating-rulesets-for-a-repository#granting-bypass-permissions-for-your-branch-or-tag-ruleset).
 :::
 
 ## Pull Requests
