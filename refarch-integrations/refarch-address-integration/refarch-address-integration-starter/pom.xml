@@ -4,7 +4,7 @@
     <parent>
         <groupId>de.muenchen.refarch</groupId>
         <artifactId>refarch-address-integration</artifactId>
-        <version>1.5.1</version>
+        <version>1.6.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>refarch-address-integration-starter</artifactId>
