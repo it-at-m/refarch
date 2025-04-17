@@ -23,7 +23,7 @@ on:
         default: "X.Y.Z-SNAPSHOT"
       tag-latest:
         type: boolean
-        description: "If built images should be tagged with latest"
+        description: "Tag images with latest"
         required: true
         default: true
 
