@@ -29,18 +29,17 @@ jobs:
       pull-requests: write
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Maven build and release
-        uses: ./.github/actions/release-maven
+        id: maven-release-step
+        uses: it-at-m/lhm_actions/action-templates/actions/action-maven-release@7863642bb665a1d1994b2c2645db6e64a1a694ad # v1.0.9
         with:
-          module: ${{ inputs.module }}
-          release-version: ${{ inputs.release-version }}
-          next-version: ${{ inputs.next-version }}
-          gpg-private-key: ${{ secrets.gpg_private_key }}
-          gpg-passphrase: ${{ secrets.gpg_passphrase }}
-          sonatype-username: ${{ secrets.sonatype_username }}
-          sonatype-password: ${{ secrets.sonatype_password }}
+          app-path: /${{ github.event.inputs.app-path }}
+          releaseVersion: ${{ github.event.inputs.release-version }}
+          developmentVersion: ${{ github.event.inputs.next-version }}
+          SIGN_KEY_PASS: ${{ secrets.gpg_passphrase }}
+          GDP_PRIVATE_KEY: ${{ secrets.gpg_private_key }}
+          CENTRAL_USERNAME: ${{ secrets.sonatype_username }}
+          CENTRAL_PASSWORD: ${{ secrets.sonatype_password }}
 
   build-images-gateway:
     if: inputs.module == 'refarch-gateway'
