@@ -36,6 +36,7 @@ jobs:
           app-path: /${{ github.event.inputs.app-path }}
           releaseVersion: ${{ github.event.inputs.release-version }}
           developmentVersion: ${{ github.event.inputs.next-version }}
+          use-pr: true
           SIGN_KEY_PASS: ${{ secrets.gpg_passphrase }}
           GDP_PRIVATE_KEY: ${{ secrets.gpg_private_key }}
           CENTRAL_USERNAME: ${{ secrets.sonatype_username }}
