@@ -45,11 +45,8 @@ See following example. The RefArch templates are already configured this way.
 
 The provided [Renovate](https://renovatebot.com) configuration [`refarch-renovate-config.json5`](https://github.com/it-at-m/refarch/blob/main/refarch-tools/refarch-renovate/refarch-renovate-config.json5) extends the [it@M global Renovate configurations](https://github.com/it-at-m/.github/tree/main/renovate-configs).
 Additionally, it includes specific presets for tagging and dependency restrictions to prevent Renovate from suggesting updates to dependencies that are pinned by RefArch.
-
-::: info Information
 The configuration also enables auto-merging of patch releases and pinning operations for GitHub Actions, NPM dependencies, Maven artifacts and Dockerfile base images while keeping pinning of dependencies intact.
-This greatly simplifies LCM effort.
-:::
+This greatly reduces LCM effort.
 
 The used presets from Renovate are described in the according [Renovate documentation](https://docs.renovatebot.com/presets-default/).
 
@@ -64,3 +61,18 @@ The file is included by default in the RefArch templates.
   ],
 }
 ```
+
+::: danger IMPORTANT
+To make Renovate work, make sure that it has access to your GitHub repository.
+For projects in the `it-at-m` organization, Renovate has access by default and is enabled when the configuration file is found in your repository.
+However, to finish the onboarding process of Renovate, you need to open a PR for a dependency update found by Renovate through the "Dependency Dashboard" issue.
+This PR then has to be merged manually once.
+After that's done Renovate will start opening PRs automatically.
+
+If you have configured [CODEOWNERS](./templates/develop#codeowners) for your project and require CODEOWNER approval inside your [ruleset](./templates/develop#github-rulesets),
+you need to configure bypass rules to make auto-merging possible.
+This can be achieved by adding the Renovate bot account to the [bypass list](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/creating-rulesets-for-a-repository#granting-bypass-permissions-for-your-branch-or-tag-ruleset).
+:::
+
+To modify the Renovate settings, the `renovate.json5` file can be edited.
+Check the official [Renovate documentation](https://docs.renovatebot.com/configuration-options/) for further information and configuration options.
