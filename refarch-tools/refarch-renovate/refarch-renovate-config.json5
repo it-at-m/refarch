@@ -5,17 +5,17 @@
     "github>it-at-m/.github//renovate-configs/renovate-config.json5",
 
     // Default Presets (https://docs.renovatebot.com/presets-default/)
+    ":automergePatch",
     ":enableVulnerabilityAlertsWithLabel(Type: Security)", // custom label for security PRs created by Renovatebot
     ":label(Type: Dependency)", // custom label for PRs created by Renovatebot
     ":semanticCommits", // enabled semantic commits in PR titles
   ],
   "packageRules": [
     {
-      "description": "Automerge patch-level updates and version pinning",
-      "matchManagers": ["github-actions", "dockerfile", "maven", "npm"],
-      "matchUpdateTypes": ["patch", "pin", "pinDigest"],
-      "matchCurrentVersion": "!/^0/", // version should not start with 0.x.x, as pre-releases can have breaking changes anytime.
-      "automerge": true
+      "description": "Disable automerge for patch-level updates when pre-release version",
+      "matchUpdateTypes": ["patch"],
+      "matchCurrentVersion": "/^0\\./", // check if version starts with 0.1
+      "automerge": false
     },
     {
       "description": "Ignore spring-boot-parent updates in EAI projects because Camel version specifies compatible Spring version",
