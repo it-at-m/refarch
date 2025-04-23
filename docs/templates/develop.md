@@ -41,7 +41,7 @@ If you need specific tools for your project that go beyond what the stack offers
 
 ::: info Information
 If you add new containers to your development stack, please make sure those images provide a [healthcheck](https://docs.docker.com/reference/dockerfile/#healthcheck) out of the box.
-If they don't, you can add [own healthchecks](https://github.com/peter-evans/docker-compose-healthcheck) in your `docker-compose.yml` file.
+If they don't, you can add [own healthchecks](https://docs.docker.com/reference/compose-file/services/#healthcheck) in your `docker-compose.yml` file.
 The health checks make sure your containers are starting properly and are healthy throughout usage.
 The health of the development stack is automatically validated in GitHub CI/CD using the provided/manually added healthchecks.
 :::
