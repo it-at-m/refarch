@@ -86,7 +86,7 @@ class BackendRouteTest {
                 .exchange()
                 // because redirect to login
                 .expectStatus().isEqualTo(HttpStatus.FOUND)
-                .expectHeader().exists(org.springframework.http.HttpHeaders.LOCATION);
+                .expectHeader().valueMatches(org.springframework.http.HttpHeaders.LOCATION, ".*/login.*");
     }
 
     @Test
