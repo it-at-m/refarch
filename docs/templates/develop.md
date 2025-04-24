@@ -93,6 +93,11 @@ We use the following component libraries to accelerate our frontend development 
 - Development of standalone web applications and SPAs: [Vuetify](https://vuetifyjs.com/en/)
 - WebComponent development for integration with [official Munich website](https://www.muenchen.de/): [PatternLab](https://it-at-m.github.io/muc-patternlab-vue/?path=/docs/getting-started--docs)
 
+::: info Information
+No explicit component imports inside the SFCs `<script>` are necessary when importing Vuetify components.
+This is automatically handled by Vite using the [Vuetify Vite Plugin](https://github.com/vuetifyjs/vuetify-loader/tree/master/packages/vite-plugin).
+:::
+
 ### Code Quality
 
 #### JavaScript / TypeScript / Vue
