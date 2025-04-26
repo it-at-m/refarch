@@ -10,4 +10,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Label PR"
-        uses: it-at-m/lhm_actions/action-templates/actions/action-pr-labeler@64029b5828a39660a4e592658ddf2a4c94a439b6 # v1.0.10
+        uses: it-at-m/lhm_actions/action-templates/actions/action-pr-labeler@e76e0bde64af98eb44ccd5b6e048ce5d82f4acc4 # v1.0.13
