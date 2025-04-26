@@ -48,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Build and push image
-        uses: it-at-m/lhm_actions/action-templates/actions/action-build-image@64029b5828a39660a4e592658ddf2a4c94a439b6 # v1.0.10
+        uses: it-at-m/lhm_actions/action-templates/actions/action-build-image@e76e0bde64af98eb44ccd5b6e048ce5d82f4acc4 # v1.0.13
         with:
           registry-username: ${{ github.actor }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
@@ -70,7 +70,7 @@ jobs:
             path: ./refarch-integrations/refarch-s3-integration/refarch-s3-integration-rest/refarch-s3-integration-rest-service
     steps:
       - name: Build and push images
-        uses: it-at-m/lhm_actions/action-templates/actions/action-build-image@64029b5828a39660a4e592658ddf2a4c94a439b6 # v1.0.10
+        uses: it-at-m/lhm_actions/action-templates/actions/action-build-image@e76e0bde64af98eb44ccd5b6e048ce5d82f4acc4 # v1.0.13
         with:
           registry-username: ${{ github.actor }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
