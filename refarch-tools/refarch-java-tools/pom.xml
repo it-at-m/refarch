@@ -49,7 +49,7 @@
                             <showDeprecation>true</showDeprecation>
                             <failOnWarning>true</failOnWarning>
                         </configuration>
-				    </execution>
+                    </execution>
                 </executions>
             </plugin>
             <plugin>
