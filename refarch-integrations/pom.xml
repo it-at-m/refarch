@@ -149,6 +149,8 @@
                             <version>${lombok-mapstruct-binding.version}</version>
                         </path>
                     </annotationProcessorPaths>
+                    <showDeprecation>true</showDeprecation>
+                    <failOnWarning>true</failOnWarning>
                 </configuration>
             </plugin>
             <plugin>
