@@ -46,8 +46,8 @@ jobs:
           developmentVersion: ${{ inputs.next-version }}
           use-pr: true
           skipDeployment: false
+          GPG_PRIVATE_KEY: ${{ secrets.gpg_private_key }}
           SIGN_KEY_PASS: ${{ secrets.gpg_passphrase }}
-          GDP_PRIVATE_KEY: ${{ secrets.gpg_private_key }}
           CENTRAL_USERNAME: ${{ secrets.sonatype_username }}
           CENTRAL_PASSWORD: ${{ secrets.sonatype_password }}
 
