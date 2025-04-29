@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.4</version>
+        <version>3.4.5</version>
         <relativePath />
     </parent>
 
@@ -87,7 +87,7 @@
             <dependency>
                 <groupId>org.wiremock</groupId>
                 <artifactId>wiremock-standalone</artifactId>
-                <version>3.12.1</version>
+                <version>3.13.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -149,6 +149,8 @@
                             <version>${lombok-mapstruct-binding.version}</version>
                         </path>
                     </annotationProcessorPaths>
+                    <showDeprecation>true</showDeprecation>
+                    <failOnWarning>true</failOnWarning>
                 </configuration>
             </plugin>
             <plugin>

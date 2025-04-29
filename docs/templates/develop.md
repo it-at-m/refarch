@@ -37,6 +37,20 @@ Stack components (as Docker Images):
 Some tools provide local Browser-based UIs. We encourage you to use the UI provided by App Switcher to open them.
 :::
 
+If you need specific tools for your project that go beyond what the stack offers by default feel free to adjust the `docker-compose.yml` file.
+
+::: info Information
+If you add new containers to your development stack, please make sure those images provide a [healthcheck](https://docs.docker.com/reference/dockerfile/#healthcheck) out of the box.
+If they don't, you can add [own healthchecks](https://docs.docker.com/reference/compose-file/services/#healthcheck) in your `docker-compose.yml` file.
+The health checks make sure your containers are starting properly and are healthy throughout usage.
+The health of the development stack is automatically validated in GitHub CI/CD using the provided/manually added healthchecks.
+:::
+
+::: danger IMPORTANT
+If for some reason you cannot add health checks to a container (this might be the case when a barebone base image is used and the container does not have tools like `curl` or `wget`)
+you need to set `skip-no-healthcheck: true` as described in the [CI/CD documentation](https://github.com/it-at-m/lhm_actions/blob/main/docs/actions.md#action-dockercompose-healthcheck) in order for the CI/CD to pass.
+:::
+
 ### Vite
 
 [Vite](https://vite.dev/) is used as the build tool for JavaScript-based projects, along with the testing framework [Vitest](https://vitest.dev/).
@@ -78,6 +92,11 @@ We use the following component libraries to accelerate our frontend development 
 
 - Development of standalone web applications and SPAs: [Vuetify](https://vuetifyjs.com/en/)
 - WebComponent development for integration with [official Munich website](https://www.muenchen.de/): [PatternLab](https://it-at-m.github.io/muc-patternlab-vue/?path=/docs/getting-started--docs)
+
+::: info Information
+No explicit imports inside the `<script>` of your custom Vue components are necessary when importing Vuetify components.
+This is automatically handled by Vite using the [Vuetify Vite Plugin](https://github.com/vuetifyjs/vuetify-loader/tree/master/packages/vite-plugin).
+:::
 
 ### Code Quality
 
