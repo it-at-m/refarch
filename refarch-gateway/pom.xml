@@ -14,7 +14,7 @@
     <name>refarch-gateway</name>
     <description>Ready to use RefArch gateway based on Spring Cloud Gateway</description>
     <url>https://github.com/it-at-m/refarch</url>
-    <version>1.5.0-test</version>
+    <version>1.6.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -331,7 +331,7 @@
         <url>https://github.com/it-at-m/refarch.git</url>
         <connection>scm:git:https://github.com/it-at-m/refarch.git</connection>
         <developerConnection>scm:git:https://github.com/it-at-m/refarch.git</developerConnection>
-        <tag>refarch-gateway-1.5.0-test</tag>
+        <tag>HEAD</tag>
     </scm>
     <licenses>
         <license>
