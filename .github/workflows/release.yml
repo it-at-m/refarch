@@ -48,7 +48,7 @@ jobs:
           CENTRAL_USERNAME: ${{ secrets.sonatype_username }}
           CENTRAL_PASSWORD: ${{ secrets.sonatype_password }}
 
-  build-images-gateway:
+  build-image-gateway:
     if: inputs.module == 'refarch-gateway'
     needs: release-maven
     runs-on: ubuntu-latest
@@ -88,7 +88,8 @@ jobs:
             type=raw,value=latest,enable=${{ inputs.tag-latest == true }}
 
   create-github-release:
-    needs: release-maven
+    if: ${{ !failure() && !cancelled() }}
+    needs: ["build-image-gateway", "build-images-integrations"]
     runs-on: ubuntu-latest
     steps:
       - name: Create GitHub Release
