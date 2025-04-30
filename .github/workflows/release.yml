@@ -21,30 +21,39 @@ on:
         type: string
         required: true
         default: "X.Y.Z-SNAPSHOT"
+      tag-latest:
+        type: boolean
+        description: "Tag images with latest"
+        required: true
+        default: true
 
 jobs:
-  build-maven:
+  release-maven:
     permissions:
       contents: write
       pull-requests: write
     runs-on: ubuntu-latest
+    outputs:
+      MVN_ARTIFACT_ID: ${{ steps.maven-release-step.outputs.MVN_ARTIFACT_ID }}
+      ARTIFACT_NAME: ${{ steps.maven-release-step.outputs.artifact-name }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Maven build and release
-        uses: ./.github/actions/release-maven
+        id: maven-release-step
+        uses: it-at-m/lhm_actions/action-templates/actions/action-maven-release@7863642bb665a1d1994b2c2645db6e64a1a694ad # v1.0.9
         with:
-          module: ${{ inputs.module }}
-          release-version: ${{ inputs.release-version }}
-          next-version: ${{ inputs.next-version }}
-          gpg-private-key: ${{ secrets.gpg_private_key }}
-          gpg-passphrase: ${{ secrets.gpg_passphrase }}
-          sonatype-username: ${{ secrets.sonatype_username }}
-          sonatype-password: ${{ secrets.sonatype_password }}
+          app-path: ${{ inputs.module }}
+          releaseVersion: ${{ inputs.release-version }}
+          developmentVersion: ${{ inputs.next-version }}
+          use-pr: true
+          skipDeployment: false
+          GPG_PRIVATE_KEY: ${{ secrets.gpg_private_key }}
+          SIGN_KEY_PASS: ${{ secrets.gpg_passphrase }}
+          CENTRAL_USERNAME: ${{ secrets.sonatype_username }}
+          CENTRAL_PASSWORD: ${{ secrets.sonatype_password }}
 
-  build-images-gateway:
+  build-image-gateway:
     if: inputs.module == 'refarch-gateway'
-    needs: build-maven
+    needs: release-maven
     runs-on: ubuntu-latest
     steps:
       - name: Build and push image
@@ -53,15 +62,15 @@ jobs:
           registry-username: ${{ github.actor }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
           path: ./refarch-gateway
-          artifact-name: "target"
+          artifact-name: ${{ needs.release-maven.outputs.ARTIFACT_NAME }}
           image-name: refarch-gateway
           image-tags: |
             type=raw,value=${{ inputs.release-version }}
-            type=raw,value=latest
+            type=raw,value=latest,enable=${{ inputs.tag-latest == true }}
 
   build-images-integrations:
     if: inputs.module == 'refarch-integrations'
-    needs: build-maven
+    needs: release-maven
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -75,14 +84,15 @@ jobs:
           registry-username: ${{ github.actor }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
           path: ${{ matrix.path }}
-          artifact-name: "target"
+          artifact-name: ${{ needs.release-maven.outputs.ARTIFACT_NAME }}
           image-name: ${{ matrix.name }}
           image-tags: |
             type=raw,value=${{ inputs.release-version }}
-            type=raw,value=latest
+            type=raw,value=latest,enable=${{ inputs.tag-latest == true }}
 
   create-github-release:
-    needs: build-maven
+    if: ${{ !failure() && !cancelled() }}
+    needs: ["build-image-gateway", "build-images-integrations"]
     runs-on: ubuntu-latest
     steps:
       - name: Create GitHub Release
