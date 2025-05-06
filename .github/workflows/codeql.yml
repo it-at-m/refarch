@@ -10,6 +10,8 @@ on:
 jobs:
   codeql:
     uses: it-at-m/.github/.github/workflows/codeql.yml@main
+    permissions:
+      contents: read
     with:
       analyze-java: true
       analyze-javascript-typescript-vue: false
