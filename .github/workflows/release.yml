@@ -102,4 +102,4 @@ jobs:
           tag-name: "${{ inputs.module }}_${{ github.event.inputs.release-version }}"
           generate-release-notes: true
           artifact-name: ${{ needs.release-maven.outputs.ARTIFACT_NAME }}
-          artifact-path: "./**/target/*.jar"
+          artifact-path: "./refarch-gateway/target/*.jar"
