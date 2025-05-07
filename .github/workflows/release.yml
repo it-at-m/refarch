@@ -92,7 +92,7 @@ jobs:
 
   create-github-release:
     if: ${{ !failure() && !cancelled() }}
-    needs: ["build-image-gateway", "build-images-integrations"]
+    needs: ["release-maven", "build-image-gateway", "build-images-integrations"]
     runs-on: ubuntu-latest
     steps:
       - name: Create GitHub Release
@@ -101,3 +101,5 @@ jobs:
         with:
           tag_name: "${{ inputs.module }}_${{ github.event.inputs.release-version }}"
           generate-release-notes: true
+          artifact-name: ${{ needs.release-maven.outputs.ARTIFACT_NAME }}
+          artifact-path: "./**/target/*.jar"
