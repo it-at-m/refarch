@@ -99,7 +99,7 @@ jobs:
         id: create_release
         uses: it-at-m/lhm_actions/action-templates/actions/action-create-github-release@0f8ed45a5eb72bf1cc2fe1d3dbcbcfb852549c27 # v1.0.17
         with:
-          tag_name: "${{ inputs.module }}_${{ github.event.inputs.release-version }}"
+          tag-name: "${{ inputs.module }}_${{ github.event.inputs.release-version }}"
           generate-release-notes: true
           artifact-name: ${{ needs.release-maven.outputs.ARTIFACT_NAME }}
           artifact-path: "./**/target/*.jar"
