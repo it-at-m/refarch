@@ -97,7 +97,7 @@ jobs:
     steps:
       - name: Create GitHub Release
         id: create_release
-        uses: it-at-m/lhm_actions/action-templates/actions/action-create-github-release@test/github-release-upload-fails
+        uses: it-at-m/lhm_actions/action-templates/actions/action-create-github-release@a7d25dbabec2057695f865169fdc411d475d4667 # v1.0.19
         with:
           tag-name: "${{ inputs.module }}_${{ github.event.inputs.release-version }}"
           generate-release-notes: true
