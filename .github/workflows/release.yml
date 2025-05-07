@@ -97,9 +97,7 @@ jobs:
     steps:
       - name: Create GitHub Release
         id: create_release
-        uses: softprops/action-gh-release@da05d552573ad5aba039eaac05058a918a7bf631 # v2.2.2
+        uses: it-at-m/lhm_actions/action-templates/actions/action-create-github-release@0f8ed45a5eb72bf1cc2fe1d3dbcbcfb852549c27 # v1.0.17
         with:
           tag_name: "${{ inputs.module }}_${{ github.event.inputs.release-version }}"
-          draft: false
-          prerelease: false
-          generate_release_notes: true
+          generate-release-notes: true
