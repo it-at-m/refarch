@@ -92,14 +92,15 @@ jobs:
 
   create-github-release:
     if: ${{ !failure() && !cancelled() }}
-    needs: ["build-image-gateway", "build-images-integrations"]
+    needs: ["release-maven", "build-image-gateway", "build-images-integrations"]
     runs-on: ubuntu-latest
     steps:
       - name: Create GitHub Release
         id: create_release
-        uses: softprops/action-gh-release@da05d552573ad5aba039eaac05058a918a7bf631 # v2.2.2
+        uses: it-at-m/lhm_actions/action-templates/actions/action-create-github-release@a7d25dbabec2057695f865169fdc411d475d4667 # v1.0.19
         with:
-          tag_name: "${{ inputs.module }}_${{ github.event.inputs.release-version }}"
-          draft: false
-          prerelease: false
-          generate_release_notes: true
+          tag-name: "${{ inputs.module }}_${{ github.event.inputs.release-version }}"
+          generate-release-notes: true
+          artifact-name: ${{ needs.release-maven.outputs.ARTIFACT_NAME }}
+          artifact-path: |
+            ./refarch-gateway/target/*.jar
