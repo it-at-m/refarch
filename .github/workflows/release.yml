@@ -39,7 +39,7 @@ jobs:
     steps:
       - name: Maven build and release
         id: maven-release-step
-        uses: it-at-m/lhm_actions/action-templates/actions/action-maven-release@0f8ed45a5eb72bf1cc2fe1d3dbcbcfb852549c27 # v1.0.17
+        uses: it-at-m/lhm_actions/action-templates/actions/action-maven-release@a7d25dbabec2057695f865169fdc411d475d4667 # v1.0.19
         with:
           app-path: ${{ inputs.module }}
           releaseVersion: ${{ inputs.release-version }}
@@ -59,7 +59,7 @@ jobs:
       packages: write
     steps:
       - name: Build and push image
-        uses: it-at-m/lhm_actions/action-templates/actions/action-build-image@0f8ed45a5eb72bf1cc2fe1d3dbcbcfb852549c27 # v1.0.17
+        uses: it-at-m/lhm_actions/action-templates/actions/action-build-image@a7d25dbabec2057695f865169fdc411d475d4667 # v1.0.19
         with:
           registry-username: ${{ github.actor }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
@@ -83,7 +83,7 @@ jobs:
             path: ./refarch-integrations/refarch-s3-integration/refarch-s3-integration-rest/refarch-s3-integration-rest-service
     steps:
       - name: Build and push images
-        uses: it-at-m/lhm_actions/action-templates/actions/action-build-image@0f8ed45a5eb72bf1cc2fe1d3dbcbcfb852549c27 # v1.0.17
+        uses: it-at-m/lhm_actions/action-templates/actions/action-build-image@a7d25dbabec2057695f865169fdc411d475d4667 # v1.0.19
         with:
           registry-username: ${{ github.actor }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
@@ -96,16 +96,17 @@ jobs:
 
   create-github-release:
     if: ${{ !failure() && !cancelled() }}
-    needs: ["build-image-gateway", "build-images-integrations"]
+    needs: ["release-maven", "build-image-gateway", "build-images-integrations"]
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
       - name: Create GitHub Release
         id: create_release
-        uses: softprops/action-gh-release@da05d552573ad5aba039eaac05058a918a7bf631 # v2.2.2
+        uses: it-at-m/lhm_actions/action-templates/actions/action-create-github-release@a7d25dbabec2057695f865169fdc411d475d4667 # v1.0.19
         with:
-          tag_name: "${{ inputs.module }}_${{ github.event.inputs.release-version }}"
-          draft: false
-          prerelease: false
-          generate_release_notes: true
+          tag-name: "${{ inputs.module }}_${{ github.event.inputs.release-version }}"
+          generate-release-notes: true
+          artifact-name: ${{ needs.release-maven.outputs.ARTIFACT_NAME }}
+          artifact-path: |
+            ./refarch-gateway/target/*.jar
