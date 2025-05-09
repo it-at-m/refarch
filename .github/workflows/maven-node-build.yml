@@ -11,6 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       TZ: Europe/Berlin # timezone
+    permissions:
+      contents: read
+      packages: write
     strategy:
       fail-fast: false
       matrix:

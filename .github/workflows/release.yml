@@ -55,6 +55,8 @@ jobs:
     if: inputs.module == 'refarch-gateway'
     needs: release-maven
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
     steps:
       - name: Build and push image
         uses: it-at-m/lhm_actions/action-templates/actions/action-build-image@a7d25dbabec2057695f865169fdc411d475d4667 # v1.0.19
@@ -72,6 +74,8 @@ jobs:
     if: inputs.module == 'refarch-integrations'
     needs: release-maven
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
     strategy:
       matrix:
         include:
@@ -94,6 +98,8 @@ jobs:
     if: ${{ !failure() && !cancelled() }}
     needs: ["release-maven", "build-image-gateway", "build-images-integrations"]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Create GitHub Release
         id: create_release

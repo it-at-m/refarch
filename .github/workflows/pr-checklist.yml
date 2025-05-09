@@ -7,5 +7,7 @@ on:
 jobs:
   pr-checklist:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: it-at-m/lhm_actions/action-templates/actions/action-pr-checklist@a7d25dbabec2057695f865169fdc411d475d4667 # v1.0.19
