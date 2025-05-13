@@ -364,7 +364,7 @@
                             <execution>
                                 <id>process-aot</id>
                                 <configuration>
-                                    <profiles>${env.NATIVE_SPRING_PROFILES}</profiles>
+                                    <profiles>native,${env.NATIVE_SPRING_PROFILES}</profiles>
                                 </configuration>
                             </execution>
                         </executions>
