@@ -1,0 +1,30 @@
+name: Build refarch-gateway native
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-maven:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Set up JDK
+        uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
+        with:
+          java-version: "21"
+          distribution: "temurin"
+          cache: "maven"
+          cache-dependency-path: "./refarch-gateway/pom.xml"
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build with Maven
+        env:
+          NATIVE_SPRING_PROFILES: keycloak-k8s
+        run: -f ./${{inputs.app-path}}/pom.xml -Pnative spring-boot:build-image
