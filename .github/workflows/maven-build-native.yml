@@ -27,4 +27,4 @@ jobs:
       - name: Build with Maven
         env:
           NATIVE_SPRING_PROFILES: keycloak-k8s
-        run: -f ./${{inputs.app-path}}/pom.xml -Pnative spring-boot:build-image
+        run: mvn -f ./refarch-gateway/pom.xml -Pnative spring-boot:build-image
