@@ -43,6 +43,7 @@
 
         <!-- Release -->
         <maven-release-plugin.version>3.1.1</maven-release-plugin.version>
+        <image.name>itatm/${project.artifactId}</image.name>
 
         <!-- Utility -->
         <apache-commons-lang.version>3.17.0</apache-commons-lang.version>
@@ -333,7 +334,33 @@
 
     <profiles>
         <profile>
-            <id>native</id>
+            <id>lhm</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <configuration>
+                            <docker>
+                                <builderRegistry>
+                                    <username>${env.DOCKERHUB_USERNAME}</username>
+                                    <password>${env.DOCKERHUB_PASSWORD}</password>
+                                    <url>https://index.docker.io/v1/</url>
+                                </builderRegistry>
+                            </docker>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>ci</id>
+            <properties>
+                <image.name>${env.IMAGE_NAME}</image.name>
+            </properties>
+        </profile>
+        <profile>
+            <id>build-native-image</id>
             <build>
                 <plugins>
                     <plugin>
@@ -344,22 +371,17 @@
                         <groupId>org.springframework.boot</groupId>
                         <artifactId>spring-boot-maven-plugin</artifactId>
                         <!-- Needed for image build behind proxy -->
-                        <!--<configuration>
+                        <configuration>
                             <image>
+                                <name>${image.name}:${project.version}</name>
+                                <tags>${env.IMAGE_TAGS}</tags>
                                 <env>
-                                    <HTTP_PROXY></HTTP_PROXY>
-                                    <HTTPS_PROXY></HTTPS_PROXY>
-                                    <NO_PROXY></NO_PROXY>
+                                    <HTTP_PROXY>${env.HTTP_PROXY}</HTTP_PROXY>
+                                    <HTTPS_PROXY>${env.HTTPS_PROXY}</HTTPS_PROXY>
+                                    <NO_PROXY>${env.NO_PROXY}</NO_PROXY>
                                 </env>
                             </image>
-                            <docker>
-                                <builderRegistry>
-                                    <username></username>
-                                    <password></password>
-                                    <url>https://index.docker.io/v1/</url>
-                                </builderRegistry>
-                            </docker>
-                        </configuration>-->
+                        </configuration>
                         <executions>
                             <execution>
                                 <id>process-aot</id>
@@ -368,6 +390,28 @@
                                 </configuration>
                             </execution>
                         </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>publish-image</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <configuration>
+                            <image>
+                                <publish>true</publish>
+                            </image>
+                            <docker>
+                                <publishRegistry>
+                                    <username>${env.REGISTRY_USER}</username>
+                                    <password>${env.REGISTRY_TOKEN}</password>
+                                </publishRegistry>
+                            </docker>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
