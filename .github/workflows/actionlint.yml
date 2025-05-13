@@ -1,0 +1,13 @@
+name: Actionlint
+
+on:
+  pull_request:
+
+jobs:
+  actionlint:
+    name: Run actionlint
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: it-at-m/lhm_actions/action-templates/actions/action-actionlint@a7d25dbabec2057695f865169fdc411d475d4667 # v1.0.19

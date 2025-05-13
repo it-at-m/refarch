@@ -1,28 +1,8 @@
 spring:
-  application.name: '@project.artifactId@'
-  banner.location: banner.txt
+  application:
+    name: @project.artifactId@
   main:
     web-application-type: reactive
-  jackson:
-    serialization:
-      indent-output: on
-  session:
-    timeout: 1800  # in seconds; Goal: same lifetime as SSO Session, actual: 30 minutes
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: ${SSO_ISSUER_URL:sso.muenchen.de}
-      client:
-        provider:
-          keycloak:
-            issuer-uri: ${SSO_ISSUER_URL}
-        registration:
-          keycloak:
-            client-id: ${SSO_CLIENT_ID}
-            client-secret: ${SSO_CLIENT_SECRET}
-            scope: email, profile, openid  # needed for userInfo endpoint
-            provider: keycloak
   cloud:
     gateway:
       globalcors:
@@ -34,46 +14,51 @@ spring:
             allowedHeaders: "*"
             allowCredentials: true
       default-filters:
-        - RemoveResponseHeader=Expires
         - RemoveRequestHeader=cookie
         - RemoveRequestHeader=x-xsrf-token
         - TokenRelay=
 
 server:
-  port: 8080
   error:
-    include-exception: false
-    include-stacktrace: never
     include-message: always
     whitelabel:
       enabled: false
-  shutdown: graceful
 
 management:
   endpoints:
-    enabled-by-default: false
+    access:
+      default: none
     web:
       exposure:
-        include: health, info, prometheus, livenessState, readinessState
+        include: health, info, prometheus
       path-mapping:
         prometheus: metrics
   endpoint:
     health:
-      enabled: on
+      access: read_only
       probes:
         enabled: true
     info:
-      enabled: on
+      access: read_only
     prometheus:
-      enabled: on
+      access: read_only
   info:
     env:
+      enabled: true
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
       enabled: true
 
 info:
   application:
-    name: ${spring.application.name}
-    version: '@project.version@'
+    name: @project.artifactId@
+    version: @project.version@
+    description: @project.description@
+  build:
+    java.version: @java.version@
+    spring-cloud.version: @spring-cloud-dependencies.version@
 
 config:
   map5xxto400: true

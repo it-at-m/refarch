@@ -1,0 +1,112 @@
+name: Build artifacts and images and execute GitHub release
+
+on:
+  workflow_dispatch:
+    inputs:
+      module:
+        description: 'Module to release'
+        type: choice
+        required: true
+        options:
+          - refarch-gateway
+          - refarch-integrations
+          - refarch-tools/refarch-java-tools
+      release-version:
+        description: 'Release version'
+        type: string
+        required: true
+        default: "X.Y.Z"
+      next-version:
+        description: "Next version to use after release"
+        type: string
+        required: true
+        default: "X.Y.Z-SNAPSHOT"
+      tag-latest:
+        type: boolean
+        description: "Tag images with latest"
+        required: true
+        default: true
+
+jobs:
+  release-maven:
+    permissions:
+      contents: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    outputs:
+      MVN_ARTIFACT_ID: ${{ steps.maven-release-step.outputs.MVN_ARTIFACT_ID }}
+      ARTIFACT_NAME: ${{ steps.maven-release-step.outputs.artifact-name }}
+    steps:
+      - name: Maven build and release
+        id: maven-release-step
+        uses: it-at-m/lhm_actions/action-templates/actions/action-maven-release@a7d25dbabec2057695f865169fdc411d475d4667 # v1.0.19
+        with:
+          app-path: ${{ inputs.module }}
+          releaseVersion: ${{ inputs.release-version }}
+          developmentVersion: ${{ inputs.next-version }}
+          use-pr: true
+          skipDeployment: false
+          GPG_PRIVATE_KEY: ${{ secrets.gpg_private_key }}
+          SIGN_KEY_PASS: ${{ secrets.gpg_passphrase }}
+          CENTRAL_USERNAME: ${{ secrets.sonatype_username }}
+          CENTRAL_PASSWORD: ${{ secrets.sonatype_password }}
+
+  build-image-gateway:
+    if: inputs.module == 'refarch-gateway'
+    needs: release-maven
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    steps:
+      - name: Build and push image
+        uses: it-at-m/lhm_actions/action-templates/actions/action-build-image@a7d25dbabec2057695f865169fdc411d475d4667 # v1.0.19
+        with:
+          registry-username: ${{ github.actor }}
+          registry-password: ${{ secrets.GITHUB_TOKEN }}
+          path: ./refarch-gateway
+          artifact-name: ${{ needs.release-maven.outputs.ARTIFACT_NAME }}
+          image-name: refarch-gateway
+          image-tags: |
+            type=raw,value=${{ inputs.release-version }}
+            type=raw,value=latest,enable=${{ inputs.tag-latest == true }}
+
+  build-images-integrations:
+    if: inputs.module == 'refarch-integrations'
+    needs: release-maven
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    strategy:
+      matrix:
+        include:
+          - name: s3-integration-rest-service
+            path: ./refarch-integrations/refarch-s3-integration/refarch-s3-integration-rest/refarch-s3-integration-rest-service
+    steps:
+      - name: Build and push images
+        uses: it-at-m/lhm_actions/action-templates/actions/action-build-image@a7d25dbabec2057695f865169fdc411d475d4667 # v1.0.19
+        with:
+          registry-username: ${{ github.actor }}
+          registry-password: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ matrix.path }}
+          artifact-name: ${{ needs.release-maven.outputs.ARTIFACT_NAME }}
+          image-name: ${{ matrix.name }}
+          image-tags: |
+            type=raw,value=${{ inputs.release-version }}
+            type=raw,value=latest,enable=${{ inputs.tag-latest == true }}
+
+  create-github-release:
+    if: ${{ !failure() && !cancelled() }}
+    needs: ["release-maven", "build-image-gateway", "build-images-integrations"]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Create GitHub Release
+        id: create_release
+        uses: it-at-m/lhm_actions/action-templates/actions/action-create-github-release@a7d25dbabec2057695f865169fdc411d475d4667 # v1.0.19
+        with:
+          tag-name: "${{ inputs.module }}_${{ github.event.inputs.release-version }}"
+          generate-release-notes: true
+          artifact-name: ${{ needs.release-maven.outputs.ARTIFACT_NAME }}
+          artifact-path: |
+            ./refarch-gateway/target/*.jar

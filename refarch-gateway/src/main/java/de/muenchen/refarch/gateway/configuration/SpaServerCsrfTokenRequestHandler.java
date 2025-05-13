@@ -11,7 +11,7 @@ public class SpaServerCsrfTokenRequestHandler extends ServerCsrfTokenRequestAttr
     private final ServerCsrfTokenRequestHandler delegate = new XorServerCsrfTokenRequestAttributeHandler();
 
     @Override
-    public void handle(ServerWebExchange exchange, Mono<CsrfToken> csrfToken) {
+    public void handle(final ServerWebExchange exchange, final Mono<CsrfToken> csrfToken) {
         /*
          * Always use XorCsrfTokenRequestAttributeHandler to provide BREACH protection of
          * the CsrfToken when it is rendered in the response body.
@@ -20,7 +20,7 @@ public class SpaServerCsrfTokenRequestHandler extends ServerCsrfTokenRequestAttr
     }
 
     @Override
-    public Mono<String> resolveCsrfTokenValue(ServerWebExchange exchange, CsrfToken csrfToken) {
+    public Mono<String> resolveCsrfTokenValue(final ServerWebExchange exchange, final CsrfToken csrfToken) {
         /*
          * If the request contains a request header, use CsrfTokenRequestAttributeHandler
          * to resolve the CsrfToken. This applies when a single-page application includes

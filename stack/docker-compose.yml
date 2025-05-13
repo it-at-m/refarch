@@ -1,0 +1,87 @@
+name: refarch-development-stack
+
+services:
+  # === Keycloak ===
+  keycloak:
+    image: keycloak/keycloak:26.1.5@sha256:be6a86215213145bfb4fb3e2b3ab982a806d00262655abdcf3ffa6a38d241c7c
+    command:
+      - start-dev
+    environment:
+      - KC_BOOTSTRAP_ADMIN_USERNAME=admin
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
+      - KC_HEALTH_ENABLED=true
+      - KC_HTTP_PORT=8100
+      - KC_HTTP_RELATIVE_PATH=/auth
+    ports:
+      - "8100:8100"
+    networks:
+      - keycloak
+    healthcheck: &healthcheck
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/9000;echo -e 'GET /health/ready HTTP/1.1\r\nhost: http://localhost\r\nConnection: close\r\n\r\n' >&3;if [ $? -eq 0 ]; then exit 0;else exit 1;fi;"]
+      interval: 30s
+      timeout: 60s
+      retries: 3
+      start_period: 60s
+    security_opt: &security_settings
+      - no-new-privileges:true
+
+  init-keycloak:
+    image: klg71/keycloakmigration:0.2.81@sha256:2c73c904a644b75637a01434f357caee9c029f37bd8960793c68233d5afa468a
+    depends_on:
+      - keycloak
+    environment:
+      ADMIN_USER: admin
+      ADMIN_PASSWORD: admin
+      BASEURL: http://keycloak:8100/auth
+      WAIT_FOR_KEYCLOAK: 'true'
+      KEYCLOAK_CHANGELOG: /migration/keycloak-changelog.yml
+    volumes:
+      - './keycloak/migration:/migration'
+    networks:
+      - keycloak
+    security_opt: *security_settings
+
+  # === S3 ===
+  minio:
+    image: quay.io/minio/minio:RELEASE.2024-08-17T01-24-54Z@sha256:6f23072e3e222e64fe6f86b31a7f7aca971e5129e55cbccef649b109b8e651a1
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: Test1234
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    volumes:
+      - ./minio:/data
+    networks:
+      - internal
+    healthcheck:
+      <<: *healthcheck
+      test: [ "CMD-SHELL",  "curl http://localhost:9000/minio/health/live" ]
+    security_opt: *security_settings
+
+  init-minio:
+    image: minio/mc:RELEASE.2024-08-17T11-33-50Z@sha256:87382ad79da9f464a444aab607b3db9251c7fe7d1bfda0eb86cbacee2ca2b564
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+        mc config host add minio http://minio:9000 minio Test1234;
+        mc mb minio/test-bucket;
+        exit 0;
+      "
+    networks:
+      - internal
+    security_opt: *security_settings
+
+  # === Mail ===
+  mailpit:
+    image: axllent/mailpit:v1.21.8@sha256:81370195cd4a0eab9604d17c2617a7525b0486f9365555253b6c5376c6350f1a
+    ports:
+      - '1025:1025' # SMTP Server
+      - '8025:8025' # UI
+    security_opt: *security_settings
+
+networks:
+  keycloak:
+  internal:

@@ -1,0 +1,423 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v3"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8086",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "FolderAPI",
+      "description": "API to interact with folders"
+    },
+    {
+      "name": "FileAPI",
+      "description": "API to interact with files"
+    }
+  ],
+  "paths": {
+    "/file": {
+      "get": {
+        "tags": [
+          "FileAPI"
+        ],
+        "description": "Creates a presigned URL to fetch the file specified in the parameter from the S3 storage",
+        "operationId": "get",
+        "parameters": [
+          {
+            "name": "pathToFile",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 1024,
+              "minLength": 0
+            }
+          },
+          {
+            "name": "expiresInMinutes",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PresignedUrlDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "FileAPI"
+        ],
+        "description": "Creates a presigned URL to overwrite the file specified in the parameter within the S3 storage",
+        "operationId": "update",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FileDataDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PresignedUrlDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "FileAPI"
+        ],
+        "description": "Creates a presigned URL to store the file specified in the parameter within the S3 storage",
+        "operationId": "save",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FileDataDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PresignedUrlDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "FileAPI"
+        ],
+        "description": "Creates a presigned URL to delete the file specified in the parameter from the S3 storage",
+        "operationId": "deleteFile",
+        "parameters": [
+          {
+            "name": "pathToFile",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 1024,
+              "minLength": 0
+            }
+          },
+          {
+            "name": "expiresInMinutes",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PresignedUrlDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/folder": {
+      "get": {
+        "tags": [
+          "FolderAPI"
+        ],
+        "description": "Returns all file paths for the folder specified in the parameter",
+        "operationId": "getAllFilesInFolderRecursively",
+        "parameters": [
+          {
+            "name": "pathToFolder",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/FilesInFolderDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "FolderAPI"
+        ],
+        "description": "Deletes the folder specified in the parameter",
+        "operationId": "deleteFolder",
+        "parameters": [
+          {
+            "name": "pathToFolder",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/folder/size": {
+      "get": {
+        "tags": [
+          "FolderAPI"
+        ],
+        "description": "Returns all file sizes for the folder specified in the parameter",
+        "operationId": "getAllFileSizesInFolderRecursively",
+        "parameters": [
+          {
+            "name": "pathToFolder",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileSizesInFolderDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/folder/metadata": {
+      "get": {
+        "tags": [
+          "FolderAPI"
+        ],
+        "description": "Returns metadata of all files for the folder specified in the parameter",
+        "operationId": "getMetadataOfAllFilesInFolderRecursively",
+        "parameters": [
+          {
+            "name": "pathToFolder",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/FilesMetadataInFolderDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/file/size": {
+      "get": {
+        "tags": [
+          "FileAPI"
+        ],
+        "description": "Retrieves the size of the file specified in the parameter from the S3 storage",
+        "operationId": "getFileSize",
+        "parameters": [
+          {
+            "name": "pathToFile",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 1024,
+              "minLength": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/FileSizeDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "FileDataDto": {
+        "type": "object",
+        "description": "File data for requesting a presigned url",
+        "properties": {
+          "pathToFile": {
+            "type": "string",
+            "maxLength": 1024,
+            "minLength": 0
+          },
+          "expiresInMinutes": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "expiresInMinutes"
+        ]
+      },
+      "PresignedUrlDto": {
+        "type": "object",
+        "description": "Presigned file url",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "action": {
+            "type": "string"
+          }
+        }
+      },
+      "FilesInFolderDto": {
+        "type": "object",
+        "description": "File paths",
+        "properties": {
+          "pathToFiles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          }
+        }
+      },
+      "FileSizesInFolderDto": {
+        "type": "object",
+        "description": "File paths to sizes",
+        "properties": {
+          "fileSizes": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        }
+      },
+      "FileMetadataDto": {
+        "type": "object",
+        "properties": {
+          "pathToFile": {
+            "type": "string"
+          },
+          "fileSize": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "etag": {
+            "type": "string"
+          },
+          "lastModified": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "FilesMetadataInFolderDto": {
+        "type": "object",
+        "properties": {
+          "files": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FileMetadataDto"
+            }
+          }
+        }
+      },
+      "FileSizeDto": {
+        "type": "object",
+        "description": "File path to size",
+        "properties": {
+          "fileSize": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      }
+    }
+  }
+}

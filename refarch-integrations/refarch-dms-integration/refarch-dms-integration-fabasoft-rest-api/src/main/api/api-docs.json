@@ -1,0 +1,5739 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "DMS REST API",
+    "version": "1.2"
+  },
+  "servers": [
+    {
+      "url": "/api"
+    }
+  ],
+  "tags": [
+    {
+      "name": "/addAddressees"
+    },
+    {
+      "name": "/addressee"
+    },
+    {
+      "name": "/files"
+    },
+    {
+      "name": "/apentries"
+    },
+    {
+      "name": "/subjectAreaFileObjects"
+    },
+    {
+      "name": "/subjectAreaUnits"
+    },
+    {
+      "name": "/businessDataValue"
+    },
+    {
+      "name": "/depositObjects"
+    },
+    {
+      "name": "/revokeDepositObjects"
+    },
+    {
+      "name": "/disposalScheduleDates"
+    },
+    {
+      "name": "/incomingFromInbox"
+    },
+    {
+      "name": "/objectAndImportToInbox"
+    },
+    {
+      "name": "/readDocumentObjectsMetaData"
+    },
+    {
+      "name": "/documentObjects"
+    },
+    {
+      "name": "/procedureObjects"
+    },
+    {
+      "name": "/subjectAreas"
+    },
+    {
+      "name": "/reAssignObject"
+    },
+    {
+      "name": "/accessDefinitions"
+    },
+    {
+      "name": "/contentObjects"
+    },
+    {
+      "name": "/outgoings"
+    },
+    {
+      "name": "/incomings"
+    },
+    {
+      "name": "/internal"
+    },
+    {
+      "name": "/contentObjectMetaData"
+    },
+    {
+      "name": "/cancelObjects"
+    },
+    {
+      "name": "/searchObjNames"
+    },
+    {
+      "name": "setSignatureObjects"
+    },
+    {
+      "name": "/startWorkflows"
+    },
+    {
+      "name": "/procedures"
+    },
+    {
+      "name": "/proceduresFromTemplate"
+    }
+  ],
+  "paths": {
+    "/addAddressees/{objaddress}": {
+      "put": {
+        "tags": [
+          "/addAddressees"
+        ],
+        "summary": "Hinzufügen eines Freitextadressaten bei Dokumenten oder Vorgängen",
+        "operationId": "AddAddressee",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          },
+          {
+            "name": "objaddress",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddAddresseeRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "success"
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DmsErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/addressee/{objaddress}": {
+      "get": {
+        "tags": [
+          "/addressee"
+        ],
+        "summary": "Auslesen der Freitextadressaten bei Dokumenten oder Vorgängen",
+        "operationId": "GetAddressee",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          },
+          {
+            "name": "objaddress",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "success"
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DmsErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/files/{objaddress}": {
+      "get": {
+        "tags": [
+          "/files"
+        ],
+        "summary": "Akte lesen",
+        "operationId": "ReadFile",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          },
+          {
+            "name": "objaddress",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadFileResponseDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten."
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "/files"
+        ],
+        "summary": "Akte ändern",
+        "operationId": "UpdateFile",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          },
+          {
+            "name": "objaddress",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFileDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DmsObjektResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten."
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/files": {
+      "post": {
+        "tags": [
+          "/files"
+        ],
+        "summary": "Akte anlegen",
+        "operationId": "CreateFile",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFileDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DmsObjektResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten."
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/files/complete": {
+      "post": {
+        "tags": [
+          "/files"
+        ],
+        "summary": "Anlegen einer kompletten Akte",
+        "operationId": "CreateCompleteFile",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCompleteFileRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateCompleteFileResponseDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten."
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/apentries/{objaddress}": {
+      "get": {
+        "tags": [
+          "/apentries"
+        ],
+        "summary": "Untergeordnete Aktenplaneinträge auslesen",
+        "operationId": "ReadApentry",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          },
+          {
+            "name": "objaddress",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadApentryAntwortDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten."
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/subjectAreaFileObjects/{objaddress}": {
+      "get": {
+        "tags": [
+          "/subjectAreaFileObjects"
+        ],
+        "summary": "Liste von Vorgängen auslesen",
+        "operationId": "ReadSubjectAreaFile",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          },
+          {
+            "name": "propdocstate",
+            "in": "header",
+            "description": "docstate Nummer",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "example": "12"
+          },
+          {
+            "name": "propbostate",
+            "in": "header",
+            "description": "bostate",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2301.1.679"
+          },
+          {
+            "name": "objaddress",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadSubjectAreaFileAntwortDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten."
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/subjectAreaUnits": {
+      "post": {
+        "tags": [
+          "/subjectAreaUnits"
+        ],
+        "summary": "Betreffseinheit anlegen",
+        "operationId": "CreateSubjectAreaUnit",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSubjectAreaUnitAnfrageDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DmsObjektResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten."
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/businessDataValue/{objaddress}": {
+      "put": {
+        "tags": [
+          "/businessDataValue"
+        ],
+        "summary": "Setzen/Aktualisieren von Fachdaten",
+        "operationId": "UpdateBusinessDataValue",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          },
+          {
+            "name": "objaddress",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateBusinessDataValueDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "success"
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DmsErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/depositObjects/{objaddress}": {
+      "put": {
+        "tags": [
+          "/depositObjects"
+        ],
+        "summary": "z.A. setzen",
+        "operationId": "DepositObject",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          },
+          {
+            "name": "objaddress",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DmsObjektResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten."
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/revokeDepositObjects/{objaddress}": {
+      "put": {
+        "tags": [
+          "/revokeDepositObjects"
+        ],
+        "summary": "z.A. aufheben",
+        "operationId": "RevokeDeposit",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          },
+          {
+            "name": "objaddress",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DmsObjektResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten."
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/disposalScheduleDates/{objaddress}": {
+      "put": {
+        "tags": [
+          "/disposalScheduleDates"
+        ],
+        "summary": "Aufbewahrungsdatum setzen",
+        "operationId": "DisposalScheduleDate",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          },
+          {
+            "name": "objaddress",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetDisposalScheduleDateAnfrageDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SetDisposalScheduleDateAntwortDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten."
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/incomingFromInbox": {
+      "post": {
+        "tags": [
+          "/incomingFromInbox"
+        ],
+        "summary": "Erfassen eines Eingangs aus dem Postkorb",
+        "operationId": "CreateIncomingFromInbox",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateIncomingFromInboxRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DmsObjektResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten."
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/objectAndImportToInbox": {
+      "post": {
+        "tags": [
+          "/objectAndImportToInbox"
+        ],
+        "summary": "Erzeugen eines Schiftstückes in einem Postkorb",
+        "operationId": "CreateObjectAndImportToInbox",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateObjectAndImportToInboxRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateObjectAndImportToInboxResponseDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten."
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/readDocumentObjectsMetaData/{objaddress}": {
+      "get": {
+        "tags": [
+          "/readDocumentObjectsMetaData"
+        ],
+        "summary": "Liste von Schriftstücken mit Metadaten auslesen",
+        "operationId": "ReadDocumentMetaData",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          },
+          {
+            "name": "propdocstate",
+            "in": "header",
+            "description": "docstate Nummer",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "example": "12"
+          },
+          {
+            "name": "propbostate",
+            "in": "header",
+            "description": "bostate",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2301.1.679"
+          },
+          {
+            "name": "objaddress",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadDocumentObjectMetaDataResponseDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten."
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/documentObjects/{objaddress}": {
+      "get": {
+        "tags": [
+          "/documentObjects"
+        ],
+        "summary": "Liste von Schriftstücken auslesen",
+        "operationId": "ReadDocumentObject",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          },
+          {
+            "name": "propdocstate",
+            "in": "header",
+            "description": "docstate Nummer",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "example": "12"
+          },
+          {
+            "name": "propbostate",
+            "in": "header",
+            "description": "bostate",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2301.1.679"
+          },
+          {
+            "name": "objaddress",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadDocumentObjectsAntwortDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten."
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/procedureObjects/{objaddress}": {
+      "get": {
+        "tags": [
+          "/procedureObjects"
+        ],
+        "summary": "Liste von Dokumenten auslesen",
+        "operationId": "ReadProcedureObject",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          },
+          {
+            "name": "objaddress",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadProcedureObjectsAntwortDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten."
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/subjectAreas/{objaddress}": {
+      "get": {
+        "tags": [
+          "/subjectAreas"
+        ],
+        "summary": "Liste von Sachakten auslesen",
+        "operationId": "ReadSubjectAreaObject",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          },
+          {
+            "name": "objaddress",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadSubjectAreaObjectsAntwortDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten."
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/reAssignObject/{objaddress}": {
+      "put": {
+        "tags": [
+          "/reAssignObject"
+        ],
+        "summary": "Objekt umschreiben",
+        "operationId": "ReAssignObject",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          },
+          {
+            "name": "objaddress",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReAssignObjectDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "success"
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DmsErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/accessDefinitions/{objaddress}": {
+      "put": {
+        "tags": [
+          "/accessDefinitions"
+        ],
+        "summary": "Zugriffsdefinition des angegebenen Objektes ändern",
+        "operationId": "UpdateAccessDefinitionObject",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          },
+          {
+            "name": "objaddress",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAccessDefinitionObjectAnfrageDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "success"
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DmsErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/contentObjects/{objaddress}": {
+      "get": {
+        "tags": [
+          "/contentObjects"
+        ],
+        "summary": "Schriftstück lesen",
+        "operationId": "ReadContentObject",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          },
+          {
+            "name": "objaddress",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadContentObjectResponseDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten."
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "/contentObjects"
+        ],
+        "summary": "Schriftstück ändern",
+        "operationId": "UpdateContentObject",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          },
+          {
+            "name": "objaddress",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateContentObjectRequestBodyDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateContentObjectAntwortDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten."
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/contentObjects": {
+      "post": {
+        "tags": [
+          "/contentObjects"
+        ],
+        "summary": "Schriftstück anlegen",
+        "operationId": "CreateContentObject",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateContentObjectRequestBodyDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateContentObjectAntwortDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten."
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/outgoings": {
+      "post": {
+        "tags": [
+          "/outgoings"
+        ],
+        "summary": "Ausgang anlegen",
+        "operationId": "CreateOutgoing",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOutgoingRequestBodyDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateOutgoingAntwortDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten."
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/outgoings/{objaddress}": {
+      "get": {
+        "tags": [
+          "/outgoings"
+        ],
+        "summary": "Ausgang lesen",
+        "operationId": "ReadOutgoing",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          },
+          {
+            "name": "objaddress",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadOutgoingAntwortDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten."
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "/outgoings"
+        ],
+        "summary": "Ausgang ändern",
+        "operationId": "UpdateOutgoing",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          },
+          {
+            "name": "objaddress",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateOutgoingRequestBodyDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateOutgoingResponseDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten."
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/incomings/{objaddress}": {
+      "put": {
+        "tags": [
+          "/incomings"
+        ],
+        "summary": "Eingang ändern",
+        "operationId": "UpdateIncoming",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          },
+          {
+            "name": "objaddress",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateIncomingRequestBodyDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateIncomingAntwortDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten."
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/incomings": {
+      "post": {
+        "tags": [
+          "/incomings"
+        ],
+        "summary": "Eingang anlegen",
+        "operationId": "CreateIncoming",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateIncomingRequestBodyDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateIncomingAntwortDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten."
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/internal": {
+      "post": {
+        "tags": [
+          "/internal"
+        ],
+        "summary": "Anlegen eines internen Dokuments",
+        "operationId": "CreateInternal",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateInternatRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateInternalResponseDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten."
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/contentObjectMetaData/{objaddress}": {
+      "get": {
+        "tags": [
+          "/contentObjectMetaData"
+        ],
+        "summary": "Schriftstück Metadaten lesen",
+        "operationId": "ReadContentObjectMetaData",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          },
+          {
+            "name": "objaddress",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadContentObjectMetaDataAntwortDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten."
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/cancelObjects/{objaddress}": {
+      "put": {
+        "tags": [
+          "/cancelObjects"
+        ],
+        "summary": "Schriftstück stornieren",
+        "operationId": "CancelObject",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          },
+          {
+            "name": "objaddress",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "success"
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DmsErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/apentries/search": {
+      "post": {
+        "tags": [
+          "/apentries"
+        ],
+        "summary": "Suche nach Aktenplaneinträgen",
+        "operationId": "SearchApentry",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchApentryDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchApentryResponseDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten."
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/searchObjNames/search": {
+      "post": {
+        "tags": [
+          "/searchObjNames"
+        ],
+        "summary": "Suche nach Objektnamen",
+        "operationId": "SearchObjName",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchObjNameAnfrageDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchObjNameAntwortDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten."
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/setSignatureObjects/{objaddress}": {
+      "put": {
+        "tags": [
+          "setSignatureObjects"
+        ],
+        "summary": "Unterschrift setzen auf Objekten",
+        "operationId": "SetSignature",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          },
+          {
+            "name": "objaddress",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetSignatureRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "success"
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DmsErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/startWorkflows/{objaddress}": {
+      "put": {
+        "tags": [
+          "/startWorkflows"
+        ],
+        "summary": "Laufweg starten",
+        "operationId": "StartWorkflow",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          },
+          {
+            "name": "objaddress",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StartWorkflowDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "success"
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DmsErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/procedures/{objaddress}": {
+      "get": {
+        "tags": [
+          "/procedures"
+        ],
+        "summary": "Vorgang lesen",
+        "operationId": "ReadProcedure",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          },
+          {
+            "name": "objaddress",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadProcedureResponseDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten."
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "/procedures"
+        ],
+        "summary": "Vorgang ändern",
+        "operationId": "UpdateProcedure",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          },
+          {
+            "name": "objaddress",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProcedureDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DmsObjektResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten."
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/procedures": {
+      "post": {
+        "tags": [
+          "/procedures"
+        ],
+        "summary": "Vorgang anlegen",
+        "operationId": "CreateProcedure",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProcedureDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DmsObjektResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten."
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/procedures/complete": {
+      "post": {
+        "tags": [
+          "/procedures"
+        ],
+        "summary": "Anlegen eines kompletten Vorgangs",
+        "operationId": "CreateCompleteProcedure",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCompleteProcedureRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateCompleteProcedureResponseDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten."
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/proceduresFromTemplate": {
+      "post": {
+        "tags": [
+          "/proceduresFromTemplate"
+        ],
+        "summary": "Erzeugen von Vorgängen auf Basis einer Vorgangsvorlage",
+        "operationId": "CreateProcedureFromTemplate",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProcedureFromTemplateRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateProcedureFromTemplateResponseDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten."
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreateFileDTO": {
+        "required": [
+          "apentry"
+        ],
+        "type": "object",
+        "properties": {
+          "shortname": {
+            "type": "string",
+            "description": "Titel",
+            "example": "2016 Anträge Firma XY"
+          },
+          "filesubj": {
+            "type": "string",
+            "description": "          Betreff (mehrzeilig)\n          Mehrzeilige Felder werden mit Zeilenumbrüchen oder HTML Kodierung &#10; in Abfragen unterstützt.\n",
+            "example": "Alle Anträge der Firma XY aus dem Jahr 2016"
+          },
+          "objterms": {
+            "type": "string",
+            "description": "Schlagworte, Angabe der Schlagworte getrennt mit „;“. Kein Semikola am Ende angeben.",
+            "example": "Firma XY; Anträge; Anträge 2016"
+          },
+          "accdef": {
+            "type": "string",
+            "description": "Zugriffsdefinition\nEindeutiger Name der Zugriffsdefinition. z.B.:\n• Zugriffsdefinition für Schriftgutobjekte (allgemein lesbar)\n• Zugriffsdefinition für Schriftgutobjekte der Organisationseinheit\n• Zugriffsdefinition für Schriftgutobjekte der Organisationseinheit und Zentralregistratur\n• Zugriffsdefinition für Schriftgutobjekte des Eigentümers\nHinweis: Hierbei kann die gewünschte Zugriffsdefinition der Akte gesetzt werden. Wenn kein Wert übergeben wird, wird die auf dem Aktenplaneintrag hinterlegte Zugriffsdefinition initialisiert.",
+            "example": "Zugriffsdefinition für Schriftgutobjekte (allgemein lesbar)"
+          },
+          "apentry": {
+            "type": "string",
+            "description": "Aktenplankennzeichen Objekt-ID",
+            "example": "COO.1.2301.1.683"
+          },
+          "fileruntimefrom": {
+            "type": "string",
+            "description": "Laufzeitbeginn",
+            "format": "date-time",
+            "example": "2017-01-13T17:09:42.411+01:00"
+          },
+          "fileruntimetill": {
+            "type": "string",
+            "description": "Laufzeitende",
+            "format": "date-time",
+            "example": "2017-01-13T17:09:42.411+01:00"
+          },
+          "fileouobj": {
+            "type": "string",
+            "description": "Objekt-ID (COO-Adresse) der aktenführenden Organisationseinheit.\nAls Organisationseinheit der Akte wird die Organisationseinheit des darüber liegenden Aktenplankennzeichens gesetzt.\nSofern keine Organisationseinheit auf dem Aktenplankennzeichen definiert ist, wird die Organisationseinheit der ersten Rolle des Benutzers verwendet.",
+            "example": "COO.1.2300.1.847"
+          },
+          "procedureaccdef": {
+            "type": "string",
+            "description": "Zugriffsdefinition für Vorgänge\nEindeutiger Name der Zugriffsdefinition. z.B.:\n• Zugriffsdefinition für Schriftgutobjekte (allgemein lesbar)\n• Zugriffsdefinition für Schriftgutobjekte der Organisationseinheit\n• Zugriffsdefinition für Schriftgutobjekte der Organisationseinheit und Zentralregistratur\n• Zugriffsdefinition für Schriftgutobjekte des Eigentümers\nÜber diese Eigenschaft wird definiert welche Zugriffsdefinition beim Anlegen eines neuen Vorgangs verwendet wird.",
+            "example": "Zugriffsdefinition für Schriftgutobjekte der Organisationseinheit"
+          }
+        }
+      },
+      "CreateObjectAndImportToInboxDTO": {
+        "required": [
+          "objaddress"
+        ],
+        "type": "object",
+        "properties": {
+          "objaddress": {
+            "type": "string",
+            "description": "Objekt-ID (COO-Adresse) des Postkorb",
+            "example": "COO.1.2302.1.8"
+          },
+          "filesubj": {
+            "type": "array",
+            "description": "Betreff für die Datei",
+            "items": {
+              "type": "array",
+              "description": "Betreff für die Datei",
+              "items": {
+                "type": "string",
+                "description": "Betreff für die Datei"
+              }
+            }
+          }
+        },
+        "description": "Parameter, die den Postkorb beschreiben"
+      },
+      "UpdateOutgoingRequestDTO": {
+        "type": "object",
+        "properties": {
+          "shortname": {
+            "type": "string",
+            "description": "Titel",
+            "example": "2016 Anträge Firma XY"
+          },
+          "filesubj": {
+            "type": "string",
+            "description": "          Betreff (mehrzeilig)\n          Mehrzeilige Felder werden mit Zeilenumbrüchen oder HTML Kodierung &#10; in Abfragen unterstützt.\n",
+            "example": "Alle Anträge der Firma XY aus dem Jahr 2016"
+          },
+          "objterms": {
+            "type": "string",
+            "description": "Schlagworte, Angabe der Schlagworte getrennt mit „;“. Kein Semikola am Ende angeben.",
+            "example": "Firma XY; Anträge; Anträge 2016"
+          },
+          "accdef": {
+            "type": "string",
+            "description": "        Zugriffsdefinition\n        Eindeutiger Name der Zugriffsdefinition. z.B.:\n        • Zugriffsdefinition für Schriftgutobjekte (allgemein lesbar)\n        • Zugriffsdefinition für Schriftgutobjekte der Organisationseinheit\n        • Zugriffsdefinition für Schriftgutobjekte der Organisationseinheit und Zentralregistratur\n        • Zugriffsdefinition für Schriftgutobjekte des Eigentümers\n",
+            "example": "Zugriffsdefinition für Schriftgutobjekte (allgemein lesbar)"
+          },
+          "referredincoming": {
+            "type": "string",
+            "description": "      Bezug zu Eingang\n      Bei Bedarf kann die COO-Adresse des Eingangs geändert werden,\n      damit ein direkter Bezug zwischen Ein- und Ausgang hergestellt werden kann.\n",
+            "example": "COO.1.2301.1.1042441"
+          },
+          "outgoingdate": {
+            "type": "string",
+            "description": "Termin (Datum/Uhrzeit)",
+            "format": "date-time",
+            "example": "2016-10-26T18:48:01+01:00"
+          },
+          "incattachments": {
+            "type": "string",
+            "description": "sonstige Anlagen",
+            "example": "Ausfüllhilfe Antrag auf Baugenehmigung"
+          }
+        },
+        "description": "Parameter die den Ausgang spezifizieren"
+      },
+      "ArrayOfstring": {
+        "type": "object",
+        "properties": {
+          "string": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "SearchObjNameAnfrageDTO": {
+        "required": [
+          "objclass",
+          "searchstring"
+        ],
+        "type": "object",
+        "properties": {
+          "searchstring": {
+            "type": "string",
+            "description": "Suchstring für Objektname",
+            "example": "Test*"
+          },
+          "objclass": {
+            "type": "string",
+            "description": "Referenz der Objektklasse\n\n• Aktenplan COOELAK@1.1001:Fileplan\n\n• Aktenplaneintrag COOELAK@1.1001:SubjectArea\n\n• Ausgang COOELAK@1.1001:Outgoing\n\n• AutoCAD Zeichnung FSCAUTOCAD@1.1001:Drawing\n\n• Benutzer COOSYSTEM@1.1:User\n\n• Bericht FSCAREXT@1.1001:Report\n\n• Bild FSCWEBCONT@1.1001:ImageObject\n\n• Dokumentkategorie FSCFOLIO@1.1001:DocumentCategory\n\n• Dokumenttyp COOELAK@1.1001:Subject\n\n• Dokument  COOELAK@1.1001:SubFileDocument\n\n(bei Angabe dieser Objektklasse, sollten Eingangs-, und Ausgangsdokumente angezeigt werden)\n\n• E-Mail (Microsoft Office Outlook) COOMAPI@1.1:MailObject\n\n• E-Mail (MIME) FSCMIME@1.1001:MIMEObject\n\n• Eingang COOELAK@1.1001:Incoming\n\n• Freemind Mindmap CFGMUENCHEN@15.1700:FreemindMindmap\n\n• Frist ELAKGOV@1.1001:Deadline\n\n• GIF-Objekt FSCWEBCONT@1.1001:GIFObject\n\n• Hewlett Packard Graphic Language CFGMUENCHEN@15.1700:HPGraphicLanguage\n\n• Inhalt (erweitert) CFGMUENCHEN@15.1700:GenericContent\n\n• Inhalt (unbekannter Typ) GENCONT@1.1:ContentObject\n\n• JPEG-Objekt FSCWEBCONT@1.1001:JPEGObject\n\n• Kostenstelle CFGMUENCHEN@15.1700:CostCenter\n\n• Medieninhalt FSCDIGITALASSET@1.1001:DigitalAsset\n\n• Microsoft Excel-Arbeitsblatt COOMSOFFICE@1.1:ExcelObject\n\n• Microsoft PowerPoint-Präsentation COOMSOFFICE@1.1:PowerPointObject\n\n• Microsoft Project-Objekt COOMSPROJECT@1.1001:MSProject\n\n• Microsoft Visio-Zeichnung VISIO@1.1:VisioObject\n\n• Microsoft Word-Objekt COOMSOFFICE@1.1:WinWordObject\n\n• OpenDocument Formel FSCOOFFICE@1.1001:OOorgMathObject\n\n• OpenOffice.org Vorlage CFGMUENCHEN@15.1700:OOorgTemplateObject\n\n• Ordner COODESK@1.1:Folder\n\n• Organisation FSCFOLIO@1.1001:Organisation\n\n• Organisationseinheit COOSYSTEM@1.1:Group\n\n• PDF-Dokument FSCACROBAT@1.1:PDFObject\n\n• Person FSCFOLIO@1.1001:Person\n\n• Personenakte CFGMUENCHEN@15.1700:PersonalSubjectAreaFile\n\n• PNG-Objekt FSCWEBCONT@1.1001:PNGObject\n\n• Postkorb FSCVGOV@1.1001:Inbox\n\n• Präsentation FSCOOFFICE@1.1001:OOorgPresObject\n\n• Projektordner COOELAK@1.1001:ProjectFolder\n\n• Rechnungsposition CFGMUENCHEN@15.1700:InvoiceItem\n\n• Rich Text Format CFGMUENCHEN@15.1700:RichTextFormat\n\n• Sachakte DEPRECONFIG@15.1001:SubjectAreaFile\n\n• Schlagwort FSCTERM@1.1001:Term\n\n• Schmierzettel ELAKGOV@1.1001:FileMemo\n\n• Schriftstück COOSYSTEM@1.1:ContentObject\n\n• Serena OpenProj Projekt CFGMUENCHEN@15.1700:SerenaOpenProj\n\n• Suchordner COOQBOL@1.1:GenericStoredQBOL\n\n• Tabelle FSCOOFFICE@1.1001:OOorgCalcObject\n\n• Teamroom FSCTEAMROOM@1.1001:TeamRoom\n\n• Text-Dokument NOTE@1.1:NoteObject\n\n• Textbaustein COOAR@1.1:BasicTextModuleEx_Web\n\n• Textdokument FSCOOFFICE@1.1001:OOorgTextObject\n\n• TIFF-Objekt FSCWEBCONT@1.1001:TIFFObject\n\n• Verteiler COOELAK@1.1001:DistributionList\n\n• Verteilerliste COOWF@1.1:ParticipantInstance\n\n• Vorgang DEPRECONFIG@15.1001:Procedure\n\n• Vorlagenkategorie COOTC@1.1001:TemplateCategory\n\n• XDOMEA Paket FSCGOVXMLDE@1.1001:XDOMEAPackage\n\n• Zeichnung FSCOOFFICE@1.1001:OOorgDrawObject\n\n• Zip-Archiv WINZIP@1.1001:WinZipObject\n\n(Alle Objekte von Objektklassen, nach denen ein Sachbearbeiter suchen kann.)\n",
+            "example": "FSCACROBAT@1.1:PDF Object"
+          },
+          "reference": {
+            "type": "string",
+            "description": "Referenz des Fachdatum",
+            "example": "data_dognumber"
+          },
+          "value": {
+            "type": "string",
+            "description": "Wert des Fachdatum",
+            "example": "458965"
+          }
+        }
+      },
+      "SearchApentryResponseDTO": {
+        "type": "object",
+        "properties": {
+          "giobjecttype": {
+            "type": "array",
+            "description": "Auflistung aller Objekte, auf die der Suchstring zutrifft.\nRückgabe der Eigenschaften, die im Datentyp GIObjectType definiert sind.",
+            "items": {
+              "$ref": "#/components/schemas/Objektreferenz"
+            }
+          }
+        }
+      },
+      "UpdateContentObjectAntwortDTO": {
+        "type": "object",
+        "properties": {
+          "contentobjid": {
+            "type": "string",
+            "description": "Objekt-ID (COO-Adresse) des ersetzten Schriftstücks",
+            "example": "COO.1.2301.1.1042466"
+          },
+          "contentobjname": {
+            "type": "string",
+            "description": "Objektname des ersetzten Schriftstücks",
+            "example": "LHM Schreiben Extern vom 11.11.2016 v101"
+          },
+          "objid": {
+            "type": "string",
+            "description": "Zugehöriges Dokument, Objekt-ID (COO-Adresse) des Dokuments, in dem das Schriftstück ersetzt worden ist.",
+            "example": "COO.1.2301.1.1042465"
+          },
+          "objname": {
+            "type": "string",
+            "description": "Objektname des Dokuments, in dem das Schriftstück ersetzt worden ist.",
+            "example": "Ausgangsschreiben zum Antrag auf Baugenehmigung Firma Mustermann (0010 A20 011-4-0006-0006)"
+          }
+        }
+      },
+      "UpdateOutgoingRequestBodyDTO": {
+        "required": [
+          "params"
+        ],
+        "type": "object",
+        "properties": {
+          "params": {
+            "$ref": "#/components/schemas/UpdateOutgoingRequestDTO"
+          },
+          "giattachmenttype": {
+            "type": "array",
+            "description": "Liste der Objektadressen und Namen der Schriftstücke im Dokument",
+            "items": {
+              "type": "string",
+              "format": "binary"
+            }
+          }
+        }
+      },
+      "ReadContentObjectResponseDTO": {
+        "type": "object",
+        "properties": {
+          "referrednumber": {
+            "type": "string",
+            "description": "Objekt-ID (COO-Adresse) des zugehörigen Dokuments",
+            "example": "COO.1.2301.1.1042465"
+          },
+          "giattachmenttype": {
+            "$ref": "#/components/schemas/AttachmentType"
+          }
+        }
+      },
+      "CreateProcedureDTO": {
+        "required": [
+          "referrednumber"
+        ],
+        "type": "object",
+        "properties": {
+          "shortname": {
+            "type": "string",
+            "description": "Titel",
+            "example": "2016 Anträge Firma XY"
+          },
+          "filesubj": {
+            "type": "string",
+            "description": "          Betreff (mehrzeilig)\n          Mehrzeilige Felder werden mit Zeilenumbrüchen oder HTML Kodierung &#10; in Abfragen unterstützt.\n",
+            "example": "Alle Anträge der Firma XY aus dem Jahr 2016"
+          },
+          "objterms": {
+            "type": "string",
+            "description": "Schlagworte, Angabe der Schlagworte getrennt mit „;“. Kein Semikola am Ende angeben.",
+            "example": "Firma XY; Anträge; Anträge 2016"
+          },
+          "accdef": {
+            "type": "string",
+            "description": "Zugriffsdefinition\nEindeutiger Name der Zugriffsdefinition. z.B.:\n• Zugriffsdefinition für Schriftgutobjekte (allgemein lesbar)\n• Zugriffsdefinition für Schriftgutobjekte der Organisationseinheit\n• Zugriffsdefinition für Schriftgutobjekte der Organisationseinheit und Zentralregistratur\n• Zugriffsdefinition für Schriftgutobjekte des Eigentümers\nHinweis: Hierbei kann die gewünschte Zugriffsdefinition der Akte gesetzt werden. Wenn kein Wert übergeben wird, wird die auf dem Aktenplaneintrag hinterlegte Zugriffsdefinition initialisiert.",
+            "example": "Zugriffsdefinition für Schriftgutobjekte (allgemein lesbar)"
+          },
+          "fileruntimefrom": {
+            "type": "string",
+            "description": "Laufzeitbeginn",
+            "format": "date-time",
+            "example": "2017-01-13T17:09:42.411+01:00"
+          },
+          "fileruntimetill": {
+            "type": "string",
+            "description": "Laufzeitende",
+            "format": "date-time",
+            "example": "2017-01-13T17:09:42.411+01:00"
+          },
+          "procremark": {
+            "type": "string",
+            "description": "Bemerkung für Prozessverantwortliche",
+            "example": "Warte auf Rückmeldung"
+          },
+          "referrednumber": {
+            "type": "string",
+            "description": "Objekt-ID (COO-Adresse) der Sachakte",
+            "example": "COO.1.2301.1.1042406"
+          },
+          "filetype": {
+            "type": "string",
+            "description": "  Art des Vorgangs\n  Einer der drei kann beim Anlegen eines Vorgangs übergeben werden:\n  • Elektronisch\n  • Papier\n  • Hybrid.\n  Wird ein falscher Wert angegeben, wird eine Fehlermeldung zurückgegeben:\n  Status -1 und \"Art des Vorgangs\" enthält einen ungültigen Wert.“\n  Wenn kein Wert eingetragen wird, wird „Elektronisch“ hinterlegt.\n",
+            "example": "Elektronisch"
+          }
+        }
+      },
+      "BusinessObjectReference": {
+        "type": "object",
+        "properties": {
+          "objname": {
+            "type": "string"
+          },
+          "objaddress": {
+            "type": "string"
+          },
+          "objclass": {
+            "type": "string"
+          },
+          "objcreatedat": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "objcreatedby": {
+            "$ref": "#/components/schemas/ArrayOfstring"
+          },
+          "objmodifiedat": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "objchangedby": {
+            "$ref": "#/components/schemas/ArrayOfstring"
+          },
+          "objowner": {
+            "type": "string"
+          },
+          "objou": {
+            "type": "string"
+          },
+          "fileextension": {
+            "type": "string"
+          },
+          "contsize": {
+            "type": "string"
+          }
+        },
+        "description": "Liste der Dokumente mit Metadaten eines Vorgangs auslesen",
+        "example": "BusinessObjectType"
+      },
+      "CreateInternatRequestDTO": {
+        "required": [
+          "params"
+        ],
+        "type": "object",
+        "properties": {
+          "params": {
+            "$ref": "#/components/schemas/CreateInternalBodyParams"
+          },
+          "giattachmenttype": {
+            "type": "array",
+            "description": "Liste der Objektadressen und Namen der Schriftstücke im Dokument.",
+            "items": {
+              "type": "string",
+              "format": "binary"
+            }
+          }
+        }
+      },
+      "CreateCompleteProcedureBodyParams": {
+        "required": [
+          "file"
+        ],
+        "type": "object",
+        "properties": {
+          "file": {
+            "type": "string",
+            "description": "Objekt-ID (COO-Adresse) der Sachakte",
+            "example": "COO.1.2301.1.683"
+          },
+          "shortnameprocedure": {
+            "type": "string",
+            "description": "Titel",
+            "example": "2016 Anträge Firma XY"
+          },
+          "shortnamedocument": {
+            "type": "string",
+            "description": "Titel",
+            "example": "2016 Anträge Firma XY"
+          }
+        },
+        "description": "Parameter, die den kompletten Vorgang spezifizieren"
+      },
+      "CreateProcedureFromTemplateResponseDTO": {
+        "type": "object",
+        "properties": {
+          "objid": {
+            "type": "string",
+            "description": "Objekt-ID des erzeugten Vorgangs",
+            "example": "COO.1.2301.1.1042432"
+          },
+          "objname": {
+            "type": "string",
+            "description": "Name des erzeugten Vorgangs",
+            "example": "2016 Anträge Firma XY"
+          }
+        }
+      },
+      "ReadSubjectAreaFileAntwortDTO": {
+        "type": "object",
+        "properties": {
+          "giobjecttype": {
+            "type": "array",
+            "description": "Vorgänge\nListe der Vorgänge der Akte",
+            "example": [
+              {
+                "name": "Beispielname",
+                "id": "COO.2150.9151.1.1206000"
+              }
+            ],
+            "items": {
+              "$ref": "#/components/schemas/Objektreferenz"
+            }
+          }
+        }
+      },
+      "UpdateBusinessDataValueDTO": {
+        "required": [
+          "reference"
+        ],
+        "type": "object",
+        "properties": {
+          "reference": {
+            "type": "string",
+            "description": "Referenz des Fachdatum",
+            "example": "data_dognumber"
+          },
+          "value": {
+            "type": "string",
+            "description": "Wert des Fachdatum",
+            "example": "458965"
+          }
+        }
+      },
+      "ReadFileResponseDTO": {
+        "required": [
+          "apentry"
+        ],
+        "type": "object",
+        "properties": {
+          "shortname": {
+            "type": "string",
+            "description": "Titel",
+            "example": "2016 Anträge Firma XY"
+          },
+          "filesubj": {
+            "type": "string",
+            "description": "          Betreff (mehrzeilig)\n          Mehrzeilige Felder werden mit Zeilenumbrüchen oder HTML Kodierung &#10; in Abfragen unterstützt.\n",
+            "example": "Alle Anträge der Firma XY aus dem Jahr 2016"
+          },
+          "objterms": {
+            "type": "string",
+            "description": "Schlagworte, Angabe der Schlagworte getrennt mit „;“. Kein Semikola am Ende angeben.",
+            "example": "Firma XY; Anträge; Anträge 2016"
+          },
+          "accdef": {
+            "type": "string",
+            "description": "Zugriffsdefinition\nEindeutiger Name der Zugriffsdefinition. z.B.:\n• Zugriffsdefinition für Schriftgutobjekte (allgemein lesbar)\n• Zugriffsdefinition für Schriftgutobjekte der Organisationseinheit\n• Zugriffsdefinition für Schriftgutobjekte der Organisationseinheit und Zentralregistratur\n• Zugriffsdefinition für Schriftgutobjekte des Eigentümers\nHinweis: Hierbei kann die gewünschte Zugriffsdefinition der Akte gesetzt werden. Wenn kein Wert übergeben wird, wird die auf dem Aktenplaneintrag hinterlegte Zugriffsdefinition initialisiert.",
+            "example": "Zugriffsdefinition für Schriftgutobjekte (allgemein lesbar)"
+          },
+          "apentry": {
+            "type": "string",
+            "description": "Aktenplankennzeichen Objekt-ID",
+            "example": "COO.1.2301.1.683"
+          },
+          "fileruntimefrom": {
+            "type": "string",
+            "description": "Laufzeitbeginn",
+            "format": "date-time",
+            "example": "2017-01-13T17:09:42.411+01:00"
+          },
+          "fileruntimetill": {
+            "type": "string",
+            "description": "Laufzeitende",
+            "format": "date-time",
+            "example": "2017-01-13T17:09:42.411+01:00"
+          },
+          "fileouobj": {
+            "type": "string",
+            "description": "Objekt-ID (COO-Adresse) der aktenführenden Organisationseinheit.\nAls Organisationseinheit der Akte wird die Organisationseinheit des darüber liegenden Aktenplankennzeichens gesetzt.\nSofern keine Organisationseinheit auf dem Aktenplankennzeichen definiert ist, wird die Organisationseinheit der ersten Rolle des Benutzers verwendet.",
+            "example": "COO.1.2300.1.847"
+          },
+          "procedureaccdef": {
+            "type": "string",
+            "description": "Zugriffsdefinition für Vorgänge\nEindeutiger Name der Zugriffsdefinition. z.B.:\n• Zugriffsdefinition für Schriftgutobjekte (allgemein lesbar)\n• Zugriffsdefinition für Schriftgutobjekte der Organisationseinheit\n• Zugriffsdefinition für Schriftgutobjekte der Organisationseinheit und Zentralregistratur\n• Zugriffsdefinition für Schriftgutobjekte des Eigentümers\nÜber diese Eigenschaft wird definiert welche Zugriffsdefinition beim Anlegen eines neuen Vorgangs verwendet wird.",
+            "example": "Zugriffsdefinition für Schriftgutobjekte der Organisationseinheit"
+          },
+          "objname": {
+            "type": "string",
+            "description": "Aktenzeichen",
+            "example": "0010 A20 011-2016 Anträge Firma XY-4"
+          },
+          "giobjecttype": {
+            "type": "array",
+            "description": "Vorgänge\nListe der Vorgänge der Akte",
+            "example": [
+              {
+                "name": "Beispielname",
+                "id": "COO.2150.9151.1.1206000"
+              }
+            ],
+            "items": {
+              "$ref": "#/components/schemas/Objektreferenz"
+            }
+          }
+        }
+      },
+      "CreateCompleteFileBodyParams": {
+        "type": "object",
+        "properties": {
+          "apentry": {
+            "type": "string",
+            "description": "Objekt-ID der Betreffseinheit",
+            "example": "COO.1.2301.1.683"
+          },
+          "shortnamefile": {
+            "type": "string",
+            "description": "Titel",
+            "example": "2016 Anträge Firma XY"
+          },
+          "shortnameprocedure": {
+            "type": "string",
+            "description": "Titel",
+            "example": "2016 Anträge Firma XY"
+          },
+          "shortnamedocument": {
+            "type": "string",
+            "description": "Titel",
+            "example": "2016 Anträge Firma XY"
+          },
+          "fileouobj": {
+            "type": "string",
+            "description": "Objekt-ID (COO-Adresse) der Aktenführenden Organisationseinheit.\nAls Organisationseinheit der Sachakte wird die Organisationseinheit des darüber liegenden Aktenplankennzeichens gesetzt.\nSofern keine Organisationseinheit auf dem Aktenplankennzeichen definiert ist, wird die Organisationseinheit der Rolle des Benutzers verwendet.\n",
+            "example": "COO.1.2300.1.847"
+          }
+        },
+        "description": "Parameter, die die komplette Akte beschreiben"
+      },
+      "CreateObjectAndImportToInboxResponseDTO": {
+        "type": "object",
+        "properties": {
+          "listcontents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MetadataReferenz"
+            }
+          }
+        }
+      },
+      "CreateIncomingRequestBodyDTO": {
+        "required": [
+          "params"
+        ],
+        "type": "object",
+        "properties": {
+          "params": {
+            "$ref": "#/components/schemas/CreateIncomingBasisAnfrageDTO"
+          },
+          "giattachmenttype": {
+            "type": "array",
+            "description": "        Schriftstücke\n        Schriftstücke können über diesen Aufruf nicht geändert bzw. ersetzt werden.\n        Neue Schriftstücke können bei Bedarf (zum Beispiel zum nachträglichen Hinzufügen\n        von Anhängen vor dem Postversand) über diesen Aufruf hinzugefügt werden.\n",
+            "items": {
+              "type": "string",
+              "format": "binary"
+            }
+          }
+        }
+      },
+      "MetadataReferenz": {
+        "type": "object",
+        "properties": {
+          "objaddress": {
+            "type": "string"
+          },
+          "filename": {
+            "type": "string"
+          },
+          "fileextension": {
+            "type": "string"
+          },
+          "objclass": {
+            "type": "string"
+          },
+          "contsize": {
+            "type": "string"
+          },
+          "objcreatedby": {
+            "$ref": "#/components/schemas/ArrayOfstring"
+          },
+          "objcreatedat": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "objchangedby": {
+            "$ref": "#/components/schemas/ArrayOfstring"
+          },
+          "objmodifiedat": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "AddAddresseeRequestDTO": {
+        "type": "object",
+        "properties": {
+          "addrdate": {
+            "type": "string",
+            "description": "Briefdatum des Objektes",
+            "format": "date-time"
+          },
+          "addrtransmedia": {
+            "type": "string",
+            "description": "    Versandart für den jeweiligen Adressaten\n    Folgende Werte sind möglich:\n    • Papier\n    • E-Fax\n    • E-Mail\n    • XML-Dokument\n    • Intern\n    Wenn kein Wert übertragen wird, soll Papier eingetragen werden.\n",
+            "example": "Papier"
+          },
+          "addrorgname": {
+            "type": "string",
+            "description": "Organisationsname",
+            "example": "Staatskanzlei Bayern"
+          },
+          "addrtitle": {
+            "type": "string",
+            "description": "Titel",
+            "example": "Dr."
+          },
+          "addrfirstname": {
+            "type": "string",
+            "description": "Vorname",
+            "example": "Thomas"
+          },
+          "addrname": {
+            "type": "string",
+            "description": "Nachname",
+            "example": "Mayer"
+          },
+          "addrstreet": {
+            "type": "string",
+            "description": "Straße",
+            "example": "Maximilianstraße"
+          },
+          "addrstreetnumber": {
+            "type": "string",
+            "description": "Hausnummer",
+            "example": "3"
+          },
+          "addrzipcode": {
+            "type": "string",
+            "description": "Postleitzahl",
+            "example": "80200"
+          },
+          "addrcity": {
+            "type": "string",
+            "description": "Ort",
+            "example": "München"
+          },
+          "addrcountry": {
+            "type": "string",
+            "description": "Land",
+            "example": "Deutschland"
+          },
+          "addremail": {
+            "type": "string",
+            "description": "E-Mail-Adresse",
+            "example": "staatskanzlei@muenchen.de"
+          },
+          "addradditional5": {
+            "type": "string",
+            "description": "E-Fax",
+            "example": "00498524885"
+          }
+        }
+      },
+      "UpdateFileDTO": {
+        "type": "object",
+        "properties": {
+          "shortname": {
+            "type": "string",
+            "description": "Titel",
+            "example": "2016 Anträge Firma XY"
+          },
+          "filesubj": {
+            "type": "string",
+            "description": "          Betreff (mehrzeilig)\n          Mehrzeilige Felder werden mit Zeilenumbrüchen oder HTML Kodierung &#10; in Abfragen unterstützt.\n",
+            "example": "Alle Anträge der Firma XY aus dem Jahr 2016"
+          },
+          "objterms": {
+            "type": "string",
+            "description": "Schlagworte, Angabe der Schlagworte getrennt mit „;“. Kein Semikola am Ende angeben.",
+            "example": "Firma XY; Anträge; Anträge 2016"
+          },
+          "fileruntimefrom": {
+            "type": "string",
+            "description": "Laufzeitbeginn",
+            "format": "date-time",
+            "example": "2017-01-13T17:09:42.411+01:00"
+          },
+          "fileruntimetill": {
+            "type": "string",
+            "description": "Laufzeitende",
+            "format": "date-time",
+            "example": "2017-01-13T17:09:42.411+01:00"
+          },
+          "filearchivetimeOffltdeadline": {
+            "type": "string",
+            "description": "            Eindeutiger Name des Frist-Komponentenobjekt.\n            Bei der Auswahl des jeweiligen Komponentenobjekte muss beachtet werden, dass der Name die im Objekt\n            enthaltenen Einstellungen wiederspiegelt. Aktuell sind im München-Standard folgende Werte vorhanden:\n                     • 1 Jahr\n                     • 1 Monat\n                     • 1 Tag\n                     • 1 Woche\n                     • 10 Jahre\n                     • 15 Jahre\n                     • 20 Jahre\n                     • 3 Jahre\n                     • 3 Monate\n                     • 30 Jahre\n                     • 5 Jahre\n                     • 6 Monate\n                     • 7 Jahre\n",
+            "example": "10 Jahre"
+          },
+          "filelifetimeOffltdeadline": {
+            "type": "string",
+            "description": "        Eindeutiger Name des Frist-Komponentenobjekt.\n        Bei der Auswahl des jeweiligen Komponentenobjekte muss beachtet werden, dass der Name die im Objekt\n        enthaltenen Einstellungen wiederspiegelt. Aktuell sind im München-Standard folgende Werte vorhanden:\n        • 1 Jahr\n        • 1 Monat\n        • 1 Tag\n        • 1 Woche\n        • 10 Jahre\n        • 15 Jahre\n        • 20 Jahre\n        • 3 Jahre\n        • 3 Monate\n        • 30 Jahre\n        • 5 Jahre\n        • 6 Monate\n        • 7 Jahre\n",
+            "example": "10 Jahre"
+          },
+          "offltdispstate": {
+            "type": "string",
+            "description": "Gewünschte Aussonderungsart,\n• „DISPSTATE_ARCHIVE“ - für „A - Archivwürdig“\n• „DISPSTATE_TRANSFER“ - für „Transfer“\n• „DISPSTATE_DESTROY“ - für „V - Vernichten“\n• „DISPSTATE_TRANSFER_NO_EVIDENCE“ für „Sammlungsgut“\n• „DISPSTATE_DM_B“ für „B - Bewerten“",
+            "example": "DISPSTATE_ARCHIVE"
+          },
+          "procedureaccdef": {
+            "type": "string",
+            "description": "Zugriffsdefinition für Vorgänge\nEindeutiger Name der Zugriffsdefinition. z.B.:\n• Zugriffsdefinition für Schriftgutobjekte (allgemein lesbar)\n• Zugriffsdefinition für Schriftgutobjekte der Organisationseinheit\n• Zugriffsdefinition für Schriftgutobjekte der Organisationseinheit und Zentralregistratur\n• Zugriffsdefinition für Schriftgutobjekte des Eigentümers\nÜber diese Eigenschaft wird definiert welche Zugriffsdefinition beim Anlegen eines neuen Vorgangs verwendet wird.",
+            "example": "Zugriffsdefinition für Schriftgutobjekte der Organisationseinheit"
+          }
+        }
+      },
+      "CreateOutgoingRequestBodyDTO": {
+        "required": [
+          "params"
+        ],
+        "type": "object",
+        "properties": {
+          "params": {
+            "$ref": "#/components/schemas/CreateOutgoingAnfrageDTO"
+          },
+          "giattachmenttype": {
+            "type": "array",
+            "description": "Liste der Objektadressen und Namen der Schriftstücke im Dokument.",
+            "items": {
+              "type": "string",
+              "format": "binary"
+            }
+          }
+        }
+      },
+      "UpdateProcedureDTO": {
+        "type": "object",
+        "properties": {
+          "shortname": {
+            "type": "string",
+            "description": "Titel",
+            "example": "2016 Anträge Firma XY"
+          },
+          "filesubj": {
+            "type": "string",
+            "description": "          Betreff (mehrzeilig)\n          Mehrzeilige Felder werden mit Zeilenumbrüchen oder HTML Kodierung &#10; in Abfragen unterstützt.\n",
+            "example": "Alle Anträge der Firma XY aus dem Jahr 2016"
+          },
+          "objterms": {
+            "type": "string",
+            "description": "Schlagworte, Angabe der Schlagworte getrennt mit „;“. Kein Semikola am Ende angeben.",
+            "example": "Firma XY; Anträge; Anträge 2016"
+          },
+          "accdef": {
+            "type": "string",
+            "description": "Zugriffsdefinition\nEindeutiger Name der Zugriffsdefinition. z.B.:\n• Zugriffsdefinition für Schriftgutobjekte (allgemein lesbar)\n• Zugriffsdefinition für Schriftgutobjekte der Organisationseinheit\n• Zugriffsdefinition für Schriftgutobjekte der Organisationseinheit und Zentralregistratur\n• Zugriffsdefinition für Schriftgutobjekte des Eigentümers\nHinweis: Hierbei kann die gewünschte Zugriffsdefinition der Akte gesetzt werden. Wenn kein Wert übergeben wird, wird die auf dem Aktenplaneintrag hinterlegte Zugriffsdefinition initialisiert.",
+            "example": "Zugriffsdefinition für Schriftgutobjekte (allgemein lesbar)"
+          },
+          "fileruntimefrom": {
+            "type": "string",
+            "description": "Laufzeitbeginn",
+            "format": "date-time",
+            "example": "2017-01-13T17:09:42.411+01:00"
+          },
+          "fileruntimetill": {
+            "type": "string",
+            "description": "Laufzeitende",
+            "format": "date-time",
+            "example": "2017-01-13T17:09:42.411+01:00"
+          },
+          "procremark": {
+            "type": "string",
+            "description": "Bemerkung für Prozessverantwortliche",
+            "example": "Warte auf Rückmeldung"
+          },
+          "filetype": {
+            "type": "string",
+            "description": "  Art des Vorgangs\n  Einer der drei kann beim Anlegen eines Vorgangs übergeben werden:\n  • Elektronisch\n  • Papier\n  • Hybrid.\n  Sofern hier ein falscher Wert oder kein Wert angegeben wird,\n  ändert sich der bestehende Wert des Vorgangs nicht.\n  Dies hat keine Auswirkung auf die weiteren zu ändernden Metadaten.\n",
+            "example": "Elektronisch"
+          },
+          "filearchivetimeOffltdeadline": {
+            "type": "string",
+            "description": "Archivierung",
+            "example": "10 Jahre"
+          },
+          "filelifetimeOffltdeadline": {
+            "type": "string",
+            "description": "Lebenszeit der Akte",
+            "example": "10 Jahre"
+          },
+          "offltdispstate": {
+            "type": "string",
+            "description": "Gewünschte Aussonderungsart,• „DISPSTATE_ARCHIVE“ - für „ A - Archivwürdig“\n• „DISPSTATE_TRANSFER“ - für„Transfer“\n• „DISPSTATE_DESTROY“ - für „ V - Vernichten“\n• „DISPSTATE_TRANSFER_NO_EVIDENCE“ für „ Sammlungsgut“\n• „DISPSTATE_DM_B“ für „ B - Bewerten“",
+            "example": "DISPSTATE_ARCHIVE"
+          }
+        }
+      },
+      "StartWorkflowDTO": {
+        "required": [
+          "workflowpattern"
+        ],
+        "type": "object",
+        "properties": {
+          "workflowpattern": {
+            "type": "string",
+            "description": "COO-Adresse der Muster für Verfügung\nAnmerkung: Titel ist nicht eindeutig, da es im System mehrere „Muster für Verfügung“ mit dem gleichen Namen/Titel gibt.",
+            "example": "COO.1.1001.1.6485"
+          }
+        }
+      },
+      "CreateOutgoingAnfrageDTO": {
+        "required": [
+          "referrednumber"
+        ],
+        "type": "object",
+        "properties": {
+          "shortname": {
+            "type": "string",
+            "description": "Titel",
+            "example": "2016 Anträge Firma XY"
+          },
+          "filesubj": {
+            "type": "string",
+            "description": "          Betreff (mehrzeilig)\n          Mehrzeilige Felder werden mit Zeilenumbrüchen oder HTML Kodierung &#10; in Abfragen unterstützt.\n",
+            "example": "Alle Anträge der Firma XY aus dem Jahr 2016"
+          },
+          "objterms": {
+            "type": "string",
+            "description": "Schlagworte, Angabe der Schlagworte getrennt mit „;“. Kein Semikola am Ende angeben.",
+            "example": "Firma XY; Anträge; Anträge 2016"
+          },
+          "accdef": {
+            "type": "string",
+            "description": "Zugriffsdefinition\nEindeutiger Name der Zugriffsdefinition. z.B.:\n• Zugriffsdefinition für Schriftgutobjekte (allgemein lesbar)\n• Zugriffsdefinition für Schriftgutobjekte der Organisationseinheit\n• Zugriffsdefinition für Schriftgutobjekte der Organisationseinheit und Zentralregistratur\n• Zugriffsdefinition für Schriftgutobjekte des Eigentümers\nHinweis: Hierbei kann die gewünschte Zugriffsdefinition der Akte gesetzt werden. Wenn kein Wert übergeben wird, wird die auf dem Aktenplaneintrag hinterlegte Zugriffsdefinition initialisiert.",
+            "example": "Zugriffsdefinition für Schriftgutobjekte (allgemein lesbar)"
+          },
+          "referrednumber": {
+            "type": "string",
+            "description": "Objekt-ID (COO-Adresse) des Vorgangs\nWenn kein Vorgang angegeben wird, soll das erzeugte Ausgangsdokument am Schreibtisch des Benutzers\nabgelegt werden.\n",
+            "example": "COO.1.2301.1.1042432"
+          },
+          "referredincoming": {
+            "type": "string",
+            "description": "Bezug zu Eingang\nBei Bedarf kann die COO-Adresse des Eingangs angegeben werden,\ndamit ein direkter Bezug zwischen Ein- und Ausgang hergestellt werden kann.\n",
+            "example": "COO.1.2301.1.1042441"
+          },
+          "outgoingdate": {
+            "type": "string",
+            "description": "Termin (Datum/Uhrzeit)",
+            "format": "date-time"
+          },
+          "subfiletype": {
+            "type": "string",
+            "description": "Dokumenttyp\nPlausibilitätsprüfung: Der Name eines im System vorhandenen Dokumenttyps muss angegeben werden.\nEine dazugehörige Vorlage (doctemplate) muss nicht verwendet werden. Es können auch finalisierte\nSchriftstücke der Fachanwendung über GiAttachmentType übertragen und verwendet werden.\n",
+            "example": "Test Dokumenttyp"
+          },
+          "doctemplate": {
+            "type": "string",
+            "description": "Vorlage\nDer Name einer im System vorhandenen Vorlage kann angegeben werden.\nEs kann der Name einer Vorlage angegeben werden.\nIn dieser Vorlage können beispielsweise Metadaten automatisiert über DocProperty\nausgegeben werden.\nDie angegebene Vorlage muss im angegebenen Dokumenttyp enthalten sein.\nAlternativ können finalisierte Schriftstücke auch über GiAttachmentType übertragen werden.\n",
+            "example": "LHM Schreiben Extern"
+          },
+          "incattachments": {
+            "type": "string",
+            "description": "Sonstige Anlagen",
+            "example": "Ausfüllhilfe Antrag auf Baugenehmigung"
+          }
+        },
+        "description": "Parameter, die den Ausgang spezifizieren"
+      },
+      "CreateCompleteProcedureResponseDTO": {
+        "type": "object",
+        "properties": {
+          "objidprocedure": {
+            "type": "string",
+            "description": "Objekt-ID (COO-Adresse) des erzeugten/gefundenen Vorgangs",
+            "example": "COO.1.2301.1.1042406"
+          },
+          "objnameprocedure": {
+            "type": "string",
+            "description": "Objektname des erzeugten/gefundenen Vorgangs",
+            "example": "0010 A20 011-2016 Anträge Firma XY-4"
+          },
+          "objiddocument": {
+            "type": "string",
+            "description": "Objekt-ID (COO-Adresse) des erzeugten/gefundenen Dokuments",
+            "example": "COO.1.2301.1.1042406"
+          },
+          "objnamedocument": {
+            "type": "string",
+            "description": "Objektname des erzeugten/gefundenen",
+            "example": "0010 A20 011-2016 Anträge Firma XY-4"
+          },
+          "objidcontent": {
+            "type": "string",
+            "description": "Objekt-ID (COO-Adresse) des erzeugten/gefundenen Schrifstücks",
+            "example": "COO.1.2301.1.1042406"
+          },
+          "objnamecontent": {
+            "type": "string",
+            "description": "Objektname des erzeugten/gefundenen Schrifstücks",
+            "example": "0010 A20 011-2016 Anträge Firma XY-4"
+          }
+        }
+      },
+      "ReadContentObjectMetaDataAntwortDTO": {
+        "type": "object",
+        "properties": {
+          "referrednumber": {
+            "type": "string",
+            "description": "Objekt-ID (COO-Adresse) des zugehörigen Dokuments",
+            "example": "COO.1.2301.1.1042432"
+          },
+          "gimetadatatype": {
+            "$ref": "#/components/schemas/MetadataReferenz"
+          }
+        }
+      },
+      "ReadOutgoingAntwortDTO": {
+        "type": "object",
+        "properties": {
+          "shortname": {
+            "type": "string",
+            "description": "Titel",
+            "example": "2016 Anträge Firma XY"
+          },
+          "filesubj": {
+            "type": "string",
+            "description": "          Betreff (mehrzeilig)\n          Mehrzeilige Felder werden mit Zeilenumbrüchen oder HTML Kodierung &#10; in Abfragen unterstützt.\n",
+            "example": "Alle Anträge der Firma XY aus dem Jahr 2016"
+          },
+          "objterms": {
+            "type": "string",
+            "description": "Schlagworte, Angabe der Schlagworte getrennt mit „;“. Kein Semikola am Ende angeben.",
+            "example": "Firma XY; Anträge; Anträge 2016"
+          },
+          "accdef": {
+            "type": "string",
+            "description": "Zugriffsdefinition\nEindeutiger Name der Zugriffsdefinition. z.B.:\n• Zugriffsdefinition für Schriftgutobjekte (allgemein lesbar)\n• Zugriffsdefinition für Schriftgutobjekte der Organisationseinheit\n• Zugriffsdefinition für Schriftgutobjekte der Organisationseinheit und Zentralregistratur\n• Zugriffsdefinition für Schriftgutobjekte des Eigentümers\nHinweis: Hierbei kann die gewünschte Zugriffsdefinition der Akte gesetzt werden. Wenn kein Wert übergeben wird, wird die auf dem Aktenplaneintrag hinterlegte Zugriffsdefinition initialisiert.",
+            "example": "Zugriffsdefinition für Schriftgutobjekte (allgemein lesbar)"
+          },
+          "objname": {
+            "type": "string",
+            "description": "Ausgangskennzeichen",
+            "example": "Ausgangsschreiben zum Antrag auf Baugenehmigung Firma Mustermann (0010 A20011-4-0006-0006)"
+          },
+          "referrednumber": {
+            "type": "string",
+            "description": "Objekt-ID (COO-Adresse) des Vorgangs",
+            "example": "COO.1.2301.1.1042432"
+          },
+          "referredincoming": {
+            "type": "string",
+            "description": "Bezug zu Eingang",
+            "example": "COO.1.2301.1.1042441"
+          },
+          "outgoingdate": {
+            "type": "string",
+            "description": "Termin (Datum/Uhrzeit)",
+            "format": "date-time",
+            "example": "2016-10-26T18:16:29+01:00"
+          },
+          "subfiletype": {
+            "type": "string",
+            "description": "Dokumenttyp",
+            "example": "Vorlagen"
+          },
+          "incattachments": {
+            "type": "string",
+            "description": "Sonstige Anlagen",
+            "example": "Ausfüllhilfe Antrag auf Baugenehmigung"
+          },
+          "gimetadatatype": {
+            "type": "array",
+            "description": "Datei",
+            "example": {
+              "objaddress": "COO.1.2301.1.1041875",
+              "filename": "Antrag auf Baugenehmigung",
+              "fileextension": "pdf",
+              "objclass": "PDF-Dokument",
+              "contsize": "243",
+              "objcreatedby": {
+                "string": [
+                  "musterfraum"
+                ]
+              },
+              "objcreatedat": "2018-07-23T08:59:52+01:00",
+              "objchangedby": {
+                "string": [
+                  "mustermannm"
+                ]
+              },
+              "objmodifiedat": "2018-07-23T09:23:52+01:00"
+            },
+            "items": {
+              "$ref": "#/components/schemas/MetadataReferenz"
+            }
+          },
+          "searchalso": {
+            "type": "string",
+            "description": "Keine Funktion",
+            "example": "Bescheide Firma Mustermann 2015"
+          },
+          "businessapp": {
+            "type": "string",
+            "description": "Businessapp",
+            "example": "businessapp"
+          }
+        }
+      },
+      "UpdateIncomingAntwortDTO": {
+        "type": "object",
+        "properties": {
+          "objid": {
+            "type": "string",
+            "description": "Objekt-ID (COO-Adresse) des Objekts",
+            "example": "COO.1.2301.1.1042441"
+          },
+          "objname": {
+            "type": "string",
+            "description": "Objektname des Objekts",
+            "example": "Eingangspost vom 21.10.2016 (0010 A20 011-4-0006-0001)"
+          },
+          "giobjecttype": {
+            "type": "array",
+            "description": "Liste der Objektadressen und Namen\nder Schriftstücke im Dokument.\n",
+            "items": {
+              "$ref": "#/components/schemas/Objektreferenz"
+            }
+          }
+        }
+      },
+      "ReadDocumentObjectsAntwortDTO": {
+        "type": "object",
+        "properties": {
+          "giobjecttype": {
+            "type": "array",
+            "description": "Vorgänge\nListe der Vorgänge der Akte",
+            "example": [
+              {
+                "name": "Beispielname",
+                "id": "COO.2150.9151.1.1206000"
+              }
+            ],
+            "items": {
+              "$ref": "#/components/schemas/Objektreferenz"
+            }
+          }
+        }
+      },
+      "DmsErrorResponse": {
+        "type": "object",
+        "properties": {
+          "fehlerQuelle": {
+            "type": "string",
+            "enum": [
+              "INTERN",
+              "DMS"
+            ]
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "text": {
+            "type": "string"
+          }
+        }
+      },
+      "UpdateOutgoingResponseDTO": {
+        "type": "object",
+        "properties": {
+          "objid": {
+            "type": "string",
+            "description": "Object-ID",
+            "example": "COO.1.2301.1.1042465"
+          },
+          "objname": {
+            "type": "string",
+            "description": "Objektname des Objekts",
+            "example": "Ausgangsschreiben zum Antrag\nauf Baugenehmigung Firma\nMustermann\n(0010 A20 011-4-0006-0006)\n"
+          },
+          "giobjecttype": {
+            "type": "array",
+            "description": "Liste der Objektadressen und Namen\nder Schriftstücke im Dokument.\n",
+            "items": {
+              "$ref": "#/components/schemas/Objektreferenz"
+            }
+          }
+        }
+      },
+      "ReadProcedureResponseDTO": {
+        "required": [
+          "referrednumber"
+        ],
+        "type": "object",
+        "properties": {
+          "shortname": {
+            "type": "string",
+            "description": "Titel",
+            "example": "2016 Anträge Firma XY"
+          },
+          "filesubj": {
+            "type": "string",
+            "description": "          Betreff (mehrzeilig)\n          Mehrzeilige Felder werden mit Zeilenumbrüchen oder HTML Kodierung &#10; in Abfragen unterstützt.\n",
+            "example": "Alle Anträge der Firma XY aus dem Jahr 2016"
+          },
+          "objterms": {
+            "type": "string",
+            "description": "Schlagworte, Angabe der Schlagworte getrennt mit „;“. Kein Semikola am Ende angeben.",
+            "example": "Firma XY; Anträge; Anträge 2016"
+          },
+          "accdef": {
+            "type": "string",
+            "description": "Zugriffsdefinition\nEindeutiger Name der Zugriffsdefinition. z.B.:\n• Zugriffsdefinition für Schriftgutobjekte (allgemein lesbar)\n• Zugriffsdefinition für Schriftgutobjekte der Organisationseinheit\n• Zugriffsdefinition für Schriftgutobjekte der Organisationseinheit und Zentralregistratur\n• Zugriffsdefinition für Schriftgutobjekte des Eigentümers\nHinweis: Hierbei kann die gewünschte Zugriffsdefinition der Akte gesetzt werden. Wenn kein Wert übergeben wird, wird die auf dem Aktenplaneintrag hinterlegte Zugriffsdefinition initialisiert.",
+            "example": "Zugriffsdefinition für Schriftgutobjekte (allgemein lesbar)"
+          },
+          "fileruntimefrom": {
+            "type": "string",
+            "description": "Laufzeitbeginn",
+            "format": "date-time",
+            "example": "2017-01-13T17:09:42.411+01:00"
+          },
+          "fileruntimetill": {
+            "type": "string",
+            "description": "Laufzeitende",
+            "format": "date-time",
+            "example": "2017-01-13T17:09:42.411+01:00"
+          },
+          "procremark": {
+            "type": "string",
+            "description": "Bemerkung für Prozessverantwortliche",
+            "example": "Warte auf Rückmeldung"
+          },
+          "referrednumber": {
+            "type": "string",
+            "description": "Objekt-ID (COO-Adresse) der Sachakte",
+            "example": "COO.1.2301.1.1042406"
+          },
+          "filetype": {
+            "type": "string",
+            "description": "  Art des Vorgangs\n  Einer der drei fest definierten Werte:\n  • Elektronisch\n  • Papier\n  • Hybrid.\n",
+            "example": "Elektronisch"
+          },
+          "objname": {
+            "type": "string",
+            "description": "Vorgangskennzeichen",
+            "example": "Anfrage Baugenehmigung (0010 A20 011-4-0006)"
+          },
+          "objdocstate": {
+            "type": "string",
+            "description": "Status",
+            "example": "In Bearbeitung"
+          },
+          "bostate": {
+            "type": "string",
+            "description": "Bearbeitungsstatus",
+            "example": "Erstellt"
+          },
+          "objowngroup": {
+            "type": "string",
+            "description": "Objektname der zuständigen OE",
+            "example": "SG A1 0001 (Sachgebiet A1 0001)"
+          },
+          "giobjecttype": {
+            "type": "array",
+            "description": "Auflistung aller Objekte, auf die der Suchstring zutrifft.",
+            "example": [
+              {
+                "name": "Beispielname",
+                "id": "COO.2150.9151.1.1206000"
+              }
+            ],
+            "items": {
+              "$ref": "#/components/schemas/Objektreferenz"
+            }
+          }
+        }
+      },
+      "CreateIncomingAntwortDTO": {
+        "type": "object",
+        "properties": {
+          "objid": {
+            "type": "string",
+            "description": "Objekt-ID (COO-Adresse) des erzeugten Objekts"
+          },
+          "objname": {
+            "type": "string",
+            "description": "Objektname des erzeugten Objekts"
+          },
+          "giobjecttype": {
+            "type": "array",
+            "description": "Auflistung aller Objekte, auf die der Suchstring zutrifft.\nRückgabe der Eigenschaften, die im Datentyp GIObjectType definiert sind.\n",
+            "items": {
+              "$ref": "#/components/schemas/Objektreferenz"
+            }
+          }
+        }
+      },
+      "UpdateIncomingRequestBodyDTO": {
+        "required": [
+          "params"
+        ],
+        "type": "object",
+        "properties": {
+          "params": {
+            "$ref": "#/components/schemas/UpdateIncomingAnfrageDTO"
+          },
+          "giattachmenttype": {
+            "type": "array",
+            "description": "                    Schriftstücke\n                    Schriftstücke können über diesen Aufruf nicht geändert bzw. ersetzt werden.\n                    Neue Schriftstücke können bei Bedarf (zum Beispiel zum nachträglichen Hinzufügen von Anhängen\n                    vor dem Postversand) über diesen Aufruf hinzugefügt werden.\n",
+            "items": {
+              "type": "string",
+              "format": "binary"
+            }
+          }
+        }
+      },
+      "AttachmentType": {
+        "type": "object",
+        "properties": {
+          "fileName": {
+            "type": "string"
+          },
+          "fileExtention": {
+            "type": "string"
+          },
+          "fileContent": {
+            "type": "string"
+          },
+          "fileContsize": {
+            "type": "string"
+          },
+          "filesubj": {
+            "$ref": "#/components/schemas/ArrayOfstring"
+          }
+        }
+      },
+      "SetDisposalScheduleDateAntwortDTO": {
+        "type": "object",
+        "properties": {
+          "objid": {
+            "type": "string",
+            "description": "Objekt-ID (COO-Adresse) des Objekts",
+            "example": "COO.1.2301.1.1042441"
+          },
+          "objname": {
+            "type": "string",
+            "description": "Objektname des Objekts",
+            "example": "Eingangspost vom 21.10.2016 (0010 A20 011-4-0006-0001)"
+          }
+        }
+      },
+      "CreateInternalBodyParams": {
+        "type": "object",
+        "properties": {
+          "referrednumber": {
+            "type": "string",
+            "description": "    Objekt-ID (COO-Adresse) des Vorgangs\n    Zugehöriger Vorgang (COOELAK@1.1001:referrednumber)\n    Wenn kein Vorgang angegeben wird, soll das erzeugte interne Dokument am Schreibtisch des Benutzers abgelegt werden.\n",
+            "example": "COO.1.2301.1.1042432"
+          },
+          "shortname": {
+            "type": "string",
+            "description": "Titel",
+            "example": "Ausgangsschreiben zum Antrag auf Baugenehmigung Firma"
+          },
+          "accdef": {
+            "type": "string",
+            "description": "        Zugriffsdefinition \n\n        Eindeutiger Name der Zugriffsdefinition. z.B.: \n\n• Zugriffsdefinition für Schriftgutobjekte (allgemein lesbar) \n\n• Zugriffsdefinition für Schriftgutobjekte der Organisationseinheit \n\n• Zugriffsdefinition für Schriftgutobjekte der Organisationseinheit und Zentralregistratur \n\n• Zugriffsdefinition für Schriftgutobjekte des Eigentümers",
+            "example": "Zugriffsdefinition für Schriftgutobjekte (allgemein lesbar)"
+          },
+          "deliverydate": {
+            "type": "string",
+            "description": "Datum",
+            "format": "date-time"
+          },
+          "filesubj": {
+            "type": "string",
+            "description": "Betreff\nMehrzeilige Felder werden mit Zeilenumbrüchen oder HTML Kodierung &#10; in Abfragen unterstützt.",
+            "example": "Rückfrage zum Antrag auf Baugenehmigung bzgl. Bebauungsplan"
+          },
+          "subfiletype": {
+            "type": "string",
+            "description": "Dokumenttyp\nPlausibilitätsprüfung: Der Name eines im System vorhandenen Dokumenttyps muss angegeben werden.\nEine dazugehörige Vorlage (doctemplate) muss nicht verwendet werden.\nEs können auch finalisierte Schriftstücke der Fachanwendung über GiAttachmentType übertragen und verwendet werden.",
+            "example": "Vorlagen"
+          },
+          "doctemplate": {
+            "type": "string",
+            "description": "Vorlage\nDer Name einer im System vorhandenen Vorlage kann angegeben werden.\nEs kann der Name einer Vorlage angegeben werden. In dieser Vorlage können beispielsweise Metadaten automatisiert über DocProperty ausgegeben werden.\nDie angegebene Vorlage muss im angegebenen Dokumenttyp enthalten sein.\nAlternativ können finalisierte Schriftstücke auch über GiAttachmentType übertragen werden.",
+            "example": "LHM Schreiben Extern"
+          },
+          "incattachments": {
+            "type": "string",
+            "description": "Sonstige Anlagen",
+            "example": "Ausfüllhile Antrag auf Baugenehmigung"
+          },
+          "objterms": {
+            "type": "string",
+            "description": "Schlagworte",
+            "example": "Firma XY; Anträge; Anträge 2016"
+          }
+        },
+        "description": "Parameter, das Interne Dokument spezifizieren"
+      },
+      "UpdateAccessDefinitionObjectAnfrageDTO": {
+        "required": [
+          "objaccdef"
+        ],
+        "type": "object",
+        "properties": {
+          "objaccdef": {
+            "type": "string",
+            "description": "Objektname Einer Zugriffsdefinition",
+            "example": "Zugriffsdefinition für Schriftgutobjekte des Eigentümers"
+          },
+          "authinheritance": {
+            "type": "integer",
+            "description": "Rechtevererbung\n\nMögliche Werte: null,0,1,2\n\n0 oder leer (null): Die Rechtevererbung aus dem Standardprodukt wird verwendet.\nDer neue Wert wird rekursiv gesetzt in Abhängigkeit von den jeweiligen aktuell gesetzten\nWerten der untergeordneten Objekte.\n\n1: Änderung der Zugriffsdefinition auf dem Objekt und rekursive Vererbung auf alle untergeordneten Objekte\nunabhängig von den jeweiligen aktuell gesetzten Werten der untergeordneten Objekte.\n\n2: Änderung der Zugriffsdefinition nur auf dem Objekt\n\nHinweis: Beim übergeben des Werts 1 auf einer Sachakte vererbt sich die Zugriffsdefinition auf alle in der\nAkte enthaltenen Vorgänge und wieder auf alle Dokumente, die in den Vorgängen enthalten sind.\nBei einer großen Anzahl von untergeordneten Objekten kann es zu Abbrüchen aufgrund Objektsperren\noder durch Timeouts kommen.\n",
+            "format": "int32",
+            "example": 1
+          }
+        }
+      },
+      "CreateContentObjectRequestBodyDTO": {
+        "required": [
+          "params"
+        ],
+        "type": "object",
+        "properties": {
+          "params": {
+            "$ref": "#/components/schemas/CreateContentObjectAnfrageDTO"
+          },
+          "giattachmenttype": {
+            "type": "array",
+            "description": "Liste der Objektadressen und Namen der Schriftstücke im Dokument.",
+            "items": {
+              "type": "string",
+              "format": "binary"
+            }
+          }
+        }
+      },
+      "UpdateContentObjectDTO": {
+        "type": "object",
+        "properties": {
+          "filesubj": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "UpdateIncomingAnfrageDTO": {
+        "type": "object",
+        "properties": {
+          "shortname": {
+            "type": "string",
+            "description": "Titel",
+            "example": "2016 Anträge Firma XY"
+          },
+          "filesubj": {
+            "type": "string",
+            "description": "          Betreff (mehrzeilig)\n          Mehrzeilige Felder werden mit Zeilenumbrüchen oder HTML Kodierung &#10; in Abfragen unterstützt.\n",
+            "example": "Alle Anträge der Firma XY aus dem Jahr 2016"
+          },
+          "objterms": {
+            "type": "string",
+            "description": "Schlagworte, Angabe der Schlagworte getrennt mit „;“. Kein Semikola am Ende angeben.",
+            "example": "Firma XY; Anträge; Anträge 2016"
+          },
+          "accdef": {
+            "type": "string",
+            "description": "Zugriffsdefinition\nEindeutiger Name der Zugriffsdefinition. z.B.:\n• Zugriffsdefinition für Schriftgutobjekte (allgemein lesbar)\n• Zugriffsdefinition für Schriftgutobjekte der Organisationseinheit\n• Zugriffsdefinition für Schriftgutobjekte der Organisationseinheit und Zentralregistratur\n• Zugriffsdefinition für Schriftgutobjekte des Eigentümers\nHinweis: Hierbei kann die gewünschte Zugriffsdefinition der Akte gesetzt werden. Wenn kein Wert übergeben wird, wird die auf dem Aktenplaneintrag hinterlegte Zugriffsdefinition initialisiert.",
+            "example": "Zugriffsdefinition für Schriftgutobjekte (allgemein lesbar)"
+          },
+          "foreignnr": {
+            "type": "string",
+            "description": "Fremdes Geschäftszeichen",
+            "example": "A2016-10-2016-Landeshauptstadt-München"
+          },
+          "delivery": {
+            "type": "string",
+            "description": "Eingangsdatum des Objekts",
+            "format": "date-time"
+          },
+          "documentremarks": {
+            "type": "string",
+            "description": "Dokumentbezogene Hinweise",
+            "example": "Antrag auf Baugenehmigung"
+          },
+          "incattachments": {
+            "type": "string",
+            "description": "Sonstige Anlagen",
+            "example": "Bebauungsplan"
+          }
+        },
+        "description": "Parameter, die den Eingang spezifizieren"
+      },
+      "CreateIncomingFromInboxRequestDTO": {
+        "required": [
+          "contentid",
+          "inboxid"
+        ],
+        "type": "object",
+        "properties": {
+          "inboxid": {
+            "type": "string",
+            "description": "Objekt-ID (COO-Adresse) des Postkorbs",
+            "example": "COO.1.2301.4.191"
+          },
+          "referrednumber": {
+            "type": "string",
+            "description": "Objekt-ID (COO-Adresse) des Vorgangs",
+            "example": "COO.1.2301.1.1042432"
+          },
+          "contentid": {
+            "type": "string",
+            "description": "COO-Adressse eines Schriftstücks aus dem Postkorb",
+            "example": "COO.1.2301.1.1042446"
+          },
+          "shortname": {
+            "type": "string",
+            "description": "Titel",
+            "example": "Eingangspost vom 21.10.2016"
+          },
+          "foreignnr": {
+            "type": "string",
+            "description": "Fremdes Geschäftszeichen",
+            "example": "A2016-10-2016-Landeshauptstadt-München"
+          },
+          "filesubj": {
+            "type": "string",
+            "description": "Betreff",
+            "example": "Schreiben der Firma Mustermann bezüglich Beantragung Baugenehmigung"
+          },
+          "documentremarks": {
+            "type": "string",
+            "description": "Dokumentbezogene Hinweise",
+            "example": "Antrag auf Baugenehmigung"
+          },
+          "incattachments": {
+            "type": "string",
+            "description": "Sonstige Anlagen",
+            "example": "Bebauungsplan"
+          },
+          "objterms": {
+            "type": "string",
+            "description": "Schlagworte",
+            "example": "Firma XY; Anträge; Anträge 2016"
+          }
+        }
+      },
+      "CreateCompleteFileResponseDTO": {
+        "type": "object",
+        "properties": {
+          "objidfile": {
+            "type": "string",
+            "description": "Objekt-ID der erzeugten/gefundenen Sachakte",
+            "example": "COO.1.2301.1.1042406"
+          },
+          "objnamefile": {
+            "type": "string",
+            "description": "Objektname der erzeugten/gefundenen Sachakte",
+            "example": "0010 A20 011-2016 Anträge Firma XY-4"
+          },
+          "objidprocedure": {
+            "type": "string",
+            "description": "Objekt-ID des erzeugten/gefundenen Vorgangs",
+            "example": "COO.1.2301.1.1042406"
+          },
+          "objnameprocedure": {
+            "type": "string",
+            "description": "Objektname des erzeugten/gefundenen Vorgangs",
+            "example": "0010 A20 011-2016 Anträge Firma XY-4"
+          },
+          "objiddocument": {
+            "type": "string",
+            "description": "Objekt-ID des erzeugten/gefundenen Dokuments",
+            "example": "COO.1.2301.1.1042406"
+          },
+          "objnamedocument": {
+            "type": "string",
+            "description": "Objektname des erzeugten/gefundenen Dokuments",
+            "example": "0010 A20 011-2016 Anträge Firma XY-4"
+          },
+          "objidcontent": {
+            "type": "string",
+            "description": "Objekt-ID des erzeugten/gefundenen Schriftstücks",
+            "example": "COO.1.2301.1.1042406"
+          },
+          "objnamecontent": {
+            "type": "string",
+            "description": "Objektname des erzeugten/gefundenen Schriftstücks",
+            "example": "0010 A20 011-2016 Anträge Firma XY-4"
+          }
+        }
+      },
+      "ReadApentryAntwortDTO": {
+        "type": "object",
+        "properties": {
+          "giobjecttype": {
+            "type": "array",
+            "description": "Vorgänge\nListe der Vorgänge der Akte",
+            "example": [
+              {
+                "name": "Beispielname",
+                "id": "COO.2150.9151.1.1206000"
+              }
+            ],
+            "items": {
+              "$ref": "#/components/schemas/Objektreferenz"
+            }
+          }
+        }
+      },
+      "SetSignatureRequestDTO": {
+        "required": [
+          "signaturetype"
+        ],
+        "type": "object",
+        "properties": {
+          "signaturetype": {
+            "type": "string",
+            "description": "COO-Adresse der Unterschriftenart\nAnmerkung: Titel ist nicht eindeutig, da es im System mehrere Unterschriftenarten mit dem gleichen Namen/Titel gibt.",
+            "example": "COO.1.1001.1.6485"
+          },
+          "remark": {
+            "type": "string",
+            "description": "Bemerkung zur Unterschrift",
+            "example": "String"
+          }
+        }
+      },
+      "SetDisposalScheduleDateAnfrageDTO": {
+        "required": [
+          "offltscheduled"
+        ],
+        "type": "object",
+        "properties": {
+          "offltscheduled": {
+            "type": "string",
+            "description": "Datum bei der vorgesehenen Aufbewahrungsfrist bei Aufbewahrung",
+            "format": "date-time"
+          }
+        }
+      },
+      "CreateContentObjectAntwortDTO": {
+        "type": "object",
+        "properties": {
+          "objid": {
+            "type": "string",
+            "description": "Objekt-ID (COO-Adresse) des erzeugten Schrifstückes.",
+            "example": "COO.1.2301.1.1042465"
+          }
+        }
+      },
+      "CreateOutgoingAntwortDTO": {
+        "type": "object",
+        "properties": {
+          "objid": {
+            "type": "string",
+            "description": "Objekt-ID (COO-Adresse) des erzeugten Ausgangs.",
+            "example": "COO.1.2301.1.1042465"
+          },
+          "objname": {
+            "type": "string",
+            "description": "Objektname des angelegten Ausgangdokuments",
+            "example": "Ausgangsschreiben zum Antrag auf Baugenehmigung Firma Mustermann (0010 A20 011-4-0006-0006)"
+          },
+          "giobjecttype": {
+            "type": "array",
+            "description": "Liste der Objektadressen und Namen der Schriftstücke im Dokument.",
+            "items": {
+              "$ref": "#/components/schemas/Objektreferenz"
+            }
+          }
+        }
+      },
+      "CreateInternalResponseDTO": {
+        "type": "object",
+        "properties": {
+          "objid": {
+            "type": "string",
+            "description": "Objekt-ID (COO-Adresse) des erzeugten internen Dokuments.",
+            "example": "COO.1.2301.1.1042465"
+          },
+          "objname": {
+            "type": "string",
+            "description": "Objektname des erzeugten internen Dokuments",
+            "example": "Internes Dokument zum Antrag auf Baugenehmigung Firma Mustermann (0010 A20 011-4-0006-0006)"
+          },
+          "giobjecttype": {
+            "type": "array",
+            "description": "Liste der Objektadressen und Namen der Schriftstücke im Dokument.",
+            "items": {
+              "$ref": "#/components/schemas/Objektreferenz"
+            }
+          }
+        }
+      },
+      "Objektreferenz": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          }
+        },
+        "description": "Vorgänge\nListe der Vorgänge der Akte",
+        "example": [
+          {
+            "name": "Beispielname",
+            "id": "COO.2150.9151.1.1206000"
+          }
+        ]
+      },
+      "ReadDocumentObjectMetaDataResponseDTO": {
+        "type": "object",
+        "properties": {
+          "businessobjecttype": {
+            "type": "array",
+            "description": "Liste der Dokumente mit Metadaten eines Vorgangs auslesen",
+            "example": "BusinessObjectType",
+            "items": {
+              "$ref": "#/components/schemas/BusinessObjectReference"
+            }
+          }
+        }
+      },
+      "CreateIncomingBasisAnfrageDTO": {
+        "type": "object",
+        "properties": {
+          "shortname": {
+            "type": "string",
+            "description": "Titel",
+            "example": "2016 Anträge Firma XY"
+          },
+          "filesubj": {
+            "type": "string",
+            "description": "          Betreff (mehrzeilig)\n          Mehrzeilige Felder werden mit Zeilenumbrüchen oder HTML Kodierung &#10; in Abfragen unterstützt.\n",
+            "example": "Alle Anträge der Firma XY aus dem Jahr 2016"
+          },
+          "objterms": {
+            "type": "string",
+            "description": "Schlagworte, Angabe der Schlagworte getrennt mit „;“. Kein Semikola am Ende angeben.",
+            "example": "Firma XY; Anträge; Anträge 2016"
+          },
+          "accdef": {
+            "type": "string",
+            "description": "Zugriffsdefinition\nEindeutiger Name der Zugriffsdefinition. z.B.:\n• Zugriffsdefinition für Schriftgutobjekte (allgemein lesbar)\n• Zugriffsdefinition für Schriftgutobjekte der Organisationseinheit\n• Zugriffsdefinition für Schriftgutobjekte der Organisationseinheit und Zentralregistratur\n• Zugriffsdefinition für Schriftgutobjekte des Eigentümers\nHinweis: Hierbei kann die gewünschte Zugriffsdefinition der Akte gesetzt werden. Wenn kein Wert übergeben wird, wird die auf dem Aktenplaneintrag hinterlegte Zugriffsdefinition initialisiert.",
+            "example": "Zugriffsdefinition für Schriftgutobjekte (allgemein lesbar)"
+          },
+          "referrednumber": {
+            "type": "string",
+            "description": "Objekt-ID (COO-Adresse) des Vorgangs",
+            "example": "COO.1.2301.1.1042432"
+          },
+          "useou": {
+            "type": "boolean",
+            "description": "Der Wert wird nur ausgelesen wenn (referrednumber == NULL) d.h. keine Vorgangszuordnung stattfindet.\nWenn true, wird die Aktivität „Neuer Eingang“ an die OE (ohne Benutzer vorgeschrieben).\nWenn kein Wert (oder false) übermittelt wird, wird die direkte Vorschreibung an den Benutzer durchgeführt.\n",
+            "example": false
+          },
+          "delivery": {
+            "type": "string",
+            "description": "Eingangsdatum des Objekts",
+            "format": "date-time"
+          },
+          "foreignnr": {
+            "type": "string",
+            "description": "Fremdes Geschäftszeichen",
+            "example": "A2016-10-2016-Landeshauptstadt-München"
+          },
+          "documentremarks": {
+            "type": "string",
+            "description": "Dokumentbezogene Hinweise",
+            "example": "Antrag auf Baugenehmigung"
+          },
+          "incattachments": {
+            "type": "string",
+            "description": "Sonstige Anlagen",
+            "example": "Bebauungsplan"
+          }
+        },
+        "description": "Parameter, die den Eingang spezifizieren"
+      },
+      "SearchObjNameAntwortDTO": {
+        "type": "object",
+        "properties": {
+          "giobjecttype": {
+            "type": "array",
+            "description": "Auflistung aller Objekte, auf die der Suchstring zutrifft.",
+            "example": [
+              {
+                "name": "Beispielname",
+                "id": "COO.2150.9151.1.1206000"
+              }
+            ],
+            "items": {
+              "$ref": "#/components/schemas/Objektreferenz"
+            }
+          }
+        }
+      },
+      "CreateProcedureFromTemplateRequestDTO": {
+        "required": [
+          "referrednumber",
+          "template"
+        ],
+        "type": "object",
+        "properties": {
+          "referrednumber": {
+            "type": "string",
+            "description": "COO-Addresse der Akte",
+            "example": "COO.1.2300.1.847"
+          },
+          "template": {
+            "type": "string",
+            "description": "COO-Addresse der Vorlage",
+            "example": "COO.1.2300.1.73641"
+          }
+        }
+      },
+      "SearchApentryDTO": {
+        "type": "object",
+        "properties": {
+          "basenr": {
+            "type": "string",
+            "description": "Aktenplankennzeichen",
+            "example": "A1 01 01 01 01"
+          },
+          "subjareaspecreference": {
+            "type": "string",
+            "description": "Ableitung",
+            "example": "Ableitung1"
+          }
+        }
+      },
+      "CreateCompleteFileRequestDTO": {
+        "required": [
+          "params"
+        ],
+        "type": "object",
+        "properties": {
+          "params": {
+            "$ref": "#/components/schemas/CreateCompleteFileBodyParams"
+          },
+          "giattachmenttype": {
+            "type": "array",
+            "description": "Liste der Objektadressen und Namen der Schriftstücke im Dokument",
+            "items": {
+              "type": "string",
+              "format": "binary"
+            }
+          }
+        }
+      },
+      "CreateObjectAndImportToInboxRequestDTO": {
+        "required": [
+          "params"
+        ],
+        "type": "object",
+        "properties": {
+          "params": {
+            "$ref": "#/components/schemas/CreateObjectAndImportToInboxDTO"
+          },
+          "giattachmenttype": {
+            "type": "array",
+            "description": "Liste der Objektadressen und Namen der Schriftstücke im Dokument.",
+            "items": {
+              "type": "string",
+              "format": "binary"
+            }
+          }
+        }
+      },
+      "ReadProcedureObjectsAntwortDTO": {
+        "type": "object",
+        "properties": {
+          "giobjecttype": {
+            "type": "array",
+            "description": "Vorgänge\nListe der Vorgänge der Akte",
+            "example": [
+              {
+                "name": "Beispielname",
+                "id": "COO.2150.9151.1.1206000"
+              }
+            ],
+            "items": {
+              "$ref": "#/components/schemas/Objektreferenz"
+            }
+          }
+        }
+      },
+      "CreateContentObjectAnfrageDTO": {
+        "type": "object",
+        "properties": {
+          "referrednumber": {
+            "type": "string",
+            "description": "Objekt-ID (COO-Adresse) des zugehörigen Dokuments",
+            "example": "COO.1.2301.1.1042432"
+          },
+          "filesubj": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "description": "Parameter, die das  Schriftstück beschreiben"
+      },
+      "CreateCompleteProcedureRequestDTO": {
+        "required": [
+          "params"
+        ],
+        "type": "object",
+        "properties": {
+          "params": {
+            "$ref": "#/components/schemas/CreateCompleteProcedureBodyParams"
+          },
+          "giattachmenttype": {
+            "type": "array",
+            "description": "Liste der Objektadressen und Namen der Schriftstücke im Dokument.",
+            "items": {
+              "type": "string",
+              "format": "binary"
+            }
+          }
+        }
+      },
+      "ReadSubjectAreaObjectsAntwortDTO": {
+        "type": "object",
+        "properties": {
+          "giobjecttype": {
+            "type": "array",
+            "description": "Vorgänge\nListe der Vorgänge der Akte",
+            "example": [
+              {
+                "name": "Beispielname",
+                "id": "COO.2150.9151.1.1206000"
+              }
+            ],
+            "items": {
+              "$ref": "#/components/schemas/Objektreferenz"
+            }
+          }
+        }
+      },
+      "ReAssignObjectDTO": {
+        "required": [
+          "newtarget"
+        ],
+        "type": "object",
+        "properties": {
+          "newtarget": {
+            "type": "string",
+            "description": "COO-Adresse des neuen darüberliegenden Objektes (Betreffseinheit oder Akte)",
+            "example": "COO.1.2302.1.76"
+          },
+          "newoe": {
+            "type": "string",
+            "description": "COO-Adresse der Organisationseinheit",
+            "example": "COO.1.23.10.8854"
+          }
+        }
+      },
+      "UpdateContentObjectRequestBodyDTO": {
+        "required": [
+          "giattachmenttype"
+        ],
+        "type": "object",
+        "properties": {
+          "params": {
+            "$ref": "#/components/schemas/UpdateContentObjectDTO"
+          },
+          "giattachmenttype": {
+            "type": "string",
+            "description": "Liste der Objektadressen und Namen der Schriftstücke im Dokument",
+            "format": "binary"
+          }
+        }
+      },
+      "DmsObjektResponse": {
+        "type": "object",
+        "properties": {
+          "objid": {
+            "type": "string"
+          },
+          "objname": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateSubjectAreaUnitAnfrageDTO": {
+        "required": [
+          "basenr",
+          "objaddress"
+        ],
+        "type": "object",
+        "properties": {
+          "objaddress": {
+            "type": "string",
+            "description": "Objekt-ID (COO-Adresse) des übergeordneten Aktenplaneintrags",
+            "example": "COO.1.2302.1.8"
+          },
+          "basenr": {
+            "type": "string",
+            "description": "Aktenplankennzeichen der Betreffseinheit",
+            "example": "0001 B10 000"
+          },
+          "subjareaspecreference": {
+            "type": "string",
+            "description": "Ableitung",
+            "example": "1"
+          },
+          "shortterm": {
+            "type": "string",
+            "description": "Kurzbezeichnung",
+            "example": "Betreffseinheit B"
+          },
+          "subjarchiveschedule": {
+            "type": "string",
+            "description": "Transferfrist",
+            "example": "10 Jahre"
+          },
+          "subjschedule": {
+            "type": "string",
+            "description": "Aufbewahrungsfrist",
+            "example": "10 Jahre"
+          },
+          "subjdispstate": {
+            "type": "string",
+            "description": "Aussonderungsart",
+            "example": "A – Archivwürdig"
+          },
+          "fileaccessdefinition": {
+            "type": "string",
+            "description": "Zugriffsdefinition für untergeordnete Akten",
+            "example": "allgemein bearbeitbar"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "basicAuthSecurityDefintion": {
+        "type": "http",
+        "description": "This API uses Basic Auth flow. [More info](https://api.example.com/docs/auth)",
+        "scheme": "basic"
+      }
+    }
+  }
+}

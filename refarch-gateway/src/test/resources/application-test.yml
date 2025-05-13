@@ -1,22 +1,21 @@
-wiremock:
-  server:
-    port: 0
-    https-port: -1
-
 spring:
-  # muenchen.de realm is used by default so that the SpringContext can be initialized upon running the tests. Change to your own dev realm if available
-  realm: muenchen.de
-
-  # spring cloud gateway config
   cloud:
     gateway:
       routes:
-        - id: sso
-          uri: https://ssotest.muenchen.de/
+        - id: public-backend
+          uri: http://localhost:${wiremock.server.port}/
           predicates:
-            - Path=/api/sso/userinfo
+            - Path=/public/api/refarch-gateway-backend-service/**
           filters:
-            - RewritePath=/api/sso/userinfo, /auth/realms/${spring.realm}/protocol/openid-connect/userinfo
+            - RewritePath=/public/api/refarch-gateway-backend-service/(?<urlsegments>.*), /$\{urlsegments}
+            - RemoveResponseHeader=WWW-Authenticate
+        - id: clients-backend
+          uri: http://localhost:${wiremock.server.port}/
+          predicates:
+            - Path=/clients/api/refarch-gateway-backend-service/**
+          filters:
+            - RewritePath=/clients/api/refarch-gateway-backend-service/(?<urlsegments>.*), /$\{urlsegments}
+            - RemoveResponseHeader=WWW-Authenticate
         - id: backend
           uri: http://localhost:${wiremock.server.port}/
           predicates:
@@ -25,19 +24,7 @@ spring:
             - RewritePath=/api/refarch-gateway-backend-service/(?<urlsegments>.*), /$\{urlsegments}
             - RemoveResponseHeader=WWW-Authenticate
 
-  # security config
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: https://sso.muenchen.de/auth/realms/${spring.realm}
-      client:
-        provider:
-          keycloak:
-            issuer-uri: https://sso.muenchen.de/auth/realms/${spring.realm}
-        registration:
-          keycloak:
-            client-id: refarch-gateway
-            client-secret:
-
-info.appswitcher.url: https://test-url-appswitcher.muenchen.de
+wiremock:
+  server:
+    port: 0
+    https-port: -1
