@@ -40,4 +40,4 @@ jobs:
           REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           export IMAGE_TAGS="${IMAGE_RAW_TAGS//$'\n'/,}"
-          mvn -f ./refarch-gateway/pom.xml -Pci,build-native-image spring-boot:build-image
+          mvn -f ./refarch-gateway/pom.xml -Pci,build-native-image,publish-image spring-boot:build-image
