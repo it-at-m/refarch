@@ -381,6 +381,7 @@
                                     <NO_PROXY>${env.NO_PROXY}</NO_PROXY>
                                     <BP_HEALTH_CHECKER_ENABLED>true</BP_HEALTH_CHECKER_ENABLED>
                                 </env>
+                                <verboseLogging>true</verboseLogging>
                                 <builder>paketobuildpacks/builder-jammy-base</builder>
                                 <buildpacks>
                                     <buildpack>urn:cnb:builder:paketo-buildpacks/java</buildpack>
