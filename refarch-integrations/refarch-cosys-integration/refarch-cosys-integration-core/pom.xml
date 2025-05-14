@@ -42,12 +42,6 @@
 
         <dependency>
             <groupId>de.muenchen.refarch</groupId>
-            <artifactId>refarch-s3-integration-client-core</artifactId>
-            <version>${project.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>de.muenchen.refarch</groupId>
             <artifactId>refarch-cosys-integration-client</artifactId>
             <version>${project.version}</version>
         </dependency>

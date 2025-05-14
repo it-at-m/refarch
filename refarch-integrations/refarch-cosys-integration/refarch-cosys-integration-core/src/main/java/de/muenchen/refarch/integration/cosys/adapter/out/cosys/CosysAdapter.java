@@ -5,10 +5,11 @@ import de.muenchen.refarch.integration.cosys.application.port.out.GenerateDocume
 import de.muenchen.refarch.integration.cosys.configuration.CosysConfiguration;
 import de.muenchen.refarch.integration.cosys.domain.exception.CosysException;
 import de.muenchen.refarch.integration.cosys.domain.model.GenerateDocument;
-import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatusCode;
 import reactor.core.publisher.Mono;
 
@@ -30,34 +31,26 @@ public class CosysAdapter implements GenerateDocumentOutPort {
      * @return the generated document
      */
     @Override
-    public Mono<byte[]> generateCosysDocument(final GenerateDocument generateDocument) throws CosysException {
-        try {
-            return this.generationApi.generatePdfWithResponseSpec(
-                    generateDocument.guid(),
-                    generateDocument.client(),
-                    generateDocument.role(),
-                    FileUtils.createFile(DATA_FILE_NAME, generateDocument.variables().toString().getBytes(StandardCharsets.UTF_8)),
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    false,
-                    FileUtils.createFile(MERGE_FILE_NAME, this.configuration.getMergeOptions()),
-                    null,
-                    null)
-                    .onStatus(HttpStatusCode::is5xxServerError,
-                            response -> response.bodyToMono(byte[].class)
-                                    .flatMap(body -> Mono.error(new CosysException(DOC_GEN_EXCEPTION_MESSAGE))))
-                    .onStatus(HttpStatusCode::is4xxClientError,
-                            response -> response.bodyToMono(byte[].class)
-                                    .flatMap(body -> Mono.error(new CosysException(DOC_GEN_EXCEPTION_MESSAGE))))
-                    .bodyToMono(byte[].class);
-
-        } catch (final IOException ex) {
-            log.error(DOC_GEN_EXCEPTION_MESSAGE, ex);
-            throw new CosysException(DOC_GEN_EXCEPTION_MESSAGE, ex);
-        }
+    public Mono<InputStream> generateCosysDocument(final GenerateDocument generateDocument) {
+        return this.generationApi.generatePdfWithResponseSpec(
+                generateDocument.guid(),
+                generateDocument.client(),
+                generateDocument.role(),
+                new ByteArrayResource(generateDocument.variables().toString().getBytes(StandardCharsets.UTF_8)),
+                null,
+                null,
+                null,
+                null,
+                null,
+                false,
+                new ByteArrayResource(this.configuration.getMergeOptions()),
+                null,
+                null)
+                .onStatus(HttpStatusCode::is5xxServerError,
+                        response -> Mono.error(new CosysException(DOC_GEN_EXCEPTION_MESSAGE)))
+                .onStatus(HttpStatusCode::is4xxClientError,
+                        response -> Mono.error(new CosysException(DOC_GEN_EXCEPTION_MESSAGE)))
+                .bodyToMono(InputStream.class);
     }
 
 }

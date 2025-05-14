@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.muenchen.refarch.integration.cosys.application.port.out.GenerateDocumentOutPort;
 import de.muenchen.refarch.integration.cosys.domain.exception.CosysException;
 import de.muenchen.refarch.integration.cosys.domain.model.GenerateDocument;
+import java.io.InputStream;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,8 +20,8 @@ public class ExampleController {
     private final GenerateDocumentOutPort generateDocumentOutPort;
 
     @PostMapping("/test/document")
-    public ResponseEntity<byte[]> testCreateCosysDocument() throws CosysException {
-        final byte[] file = this.generateDocumentOutPort.generateCosysDocument(this.generateDocument()).block();
+    public ResponseEntity<InputStream> testCreateCosysDocument() throws CosysException {
+        final InputStream file = this.generateDocumentOutPort.generateCosysDocument(this.generateDocument()).block();
         return ResponseEntity.ok(file);
     }
 

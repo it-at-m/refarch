@@ -1,6 +1,6 @@
 # CoSys Integration
 
-Integration for creating documents with [coSys](https://www.cib.de/cosys/). Uses [s3-integration](./s3.md) for file handling.
+Integration for creating documents with [coSys](https://www.cib.de/cosys/).
 
 ## Modules
 
@@ -13,7 +13,6 @@ The following graph shows the relationships between the various modules and how 
 ```mermaid
 flowchart RL
     example --> starter --> core --> client
-    core --> s3-client
 ```
 
 ## Usage
@@ -27,9 +26,6 @@ flowchart RL
     </dependency>
 </dependencies>
 ```
-
-Additionally, a specific `s3-integration-*-client-starter` is required as dependency, because S3 is used for file handling.
-See [according documentation](./s3.md#usage).
 
 ## Configuration
 
@@ -60,17 +56,10 @@ spring:
             issuer-uri: https://sso.example.com/auth/realms/refarch
             user-info-uri: ${spring.security.oauth2.client.provider.sso.issuer-uri}/protocol/openid-connect/userinfo
             jwk-set-uri: ${spring.security.oauth2.client.provider.sso.issuer-uri}/protocol/openid-connect/certs
-            # used for RequestResponseLoggingFilter in s3-rest-service
-            # only required if filter is explicitly enabled
-            user-name-attribute: user_name
         registration:
           cosys:
             provider: sso
             authorization-grant-type: client_credentials
             client-id: refarch_client
             client-secret: client_secret_123
-            # profile required for username used in s3-rest-service RequestResponseLoggingFilter
-            # openid required for user info endpoint used in s3-rest-service JwtUserInfoAuthenticationConverter
-            # both scopes are only required if the according functions are explicitly used
-            scope: profile, openid
 ```

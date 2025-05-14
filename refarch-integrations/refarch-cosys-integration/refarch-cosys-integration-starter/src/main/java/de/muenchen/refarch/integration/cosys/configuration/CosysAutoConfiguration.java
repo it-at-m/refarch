@@ -4,15 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.muenchen.refarch.integration.cosys.ApiClient;
 import de.muenchen.refarch.integration.cosys.adapter.out.cosys.CosysAdapter;
-import de.muenchen.refarch.integration.cosys.adapter.out.s3.S3Adapter;
 import de.muenchen.refarch.integration.cosys.api.GenerationApi;
 import de.muenchen.refarch.integration.cosys.application.port.in.CreateDocumentInPort;
 import de.muenchen.refarch.integration.cosys.application.port.out.GenerateDocumentOutPort;
-import de.muenchen.refarch.integration.cosys.application.port.out.SaveFileToStorageOutPort;
 import de.muenchen.refarch.integration.cosys.application.usecase.CreateDocumentUseCase;
-import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFileRepository;
-import de.muenchen.refarch.integration.s3.client.repository.transfer.S3FileTransferRepository;
-import de.muenchen.refarch.integration.s3.client.service.FileValidationService;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -88,18 +83,8 @@ public class CosysAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public CreateDocumentInPort getCreateDocumentInPort(final SaveFileToStorageOutPort saveFileToStorageOutPort,
-            final GenerateDocumentOutPort generateDocumentOutPort) {
-        return new CreateDocumentUseCase(saveFileToStorageOutPort, generateDocumentOutPort);
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public SaveFileToStorageOutPort getSaveFileToStorageOutPort(
-            final S3FileTransferRepository s3FileTransferRepository,
-            final DocumentStorageFileRepository documentStorageFileRepository,
-            final FileValidationService fileValidationService) {
-        return new S3Adapter(s3FileTransferRepository, documentStorageFileRepository, fileValidationService);
+    public CreateDocumentInPort getCreateDocumentInPort(final GenerateDocumentOutPort generateDocumentOutPort) {
+        return new CreateDocumentUseCase(generateDocumentOutPort);
     }
 
     @Bean

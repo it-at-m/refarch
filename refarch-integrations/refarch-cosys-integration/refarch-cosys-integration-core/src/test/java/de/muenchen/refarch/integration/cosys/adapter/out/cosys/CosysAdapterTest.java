@@ -1,5 +1,6 @@
 package de.muenchen.refarch.integration.cosys.adapter.out.cosys;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -9,12 +10,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.muenchen.refarch.integration.cosys.api.GenerationApi;
 import de.muenchen.refarch.integration.cosys.configuration.CosysConfiguration;
-import de.muenchen.refarch.integration.cosys.domain.exception.CosysException;
 import de.muenchen.refarch.integration.cosys.domain.model.GenerateDocument;
-import java.io.File;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.springframework.core.io.AbstractResource;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
@@ -24,15 +26,16 @@ class CosysAdapterTest {
     private final CosysAdapter cosysAdapter = new CosysAdapter(configuration, generationApi);
 
     @Test
-    void testGenerateCosysDocumentSuccess() throws IOException, CosysException {
+    @SuppressWarnings("PMD.CloseResource")
+    void testGenerateCosysDocumentSuccess() throws IOException {
         // given
         final GenerateDocument generateDocument = generateDocument();
-        final byte[] response = "Response".getBytes();
+        final InputStream responseBody = new ByteArrayInputStream("Response".getBytes());
         final WebClient.ResponseSpec responseSpecMock = mock(WebClient.ResponseSpec.class);
         when(responseSpecMock.onStatus(any(), any())).thenReturn(responseSpecMock);
-        when(responseSpecMock.bodyToMono(byte[].class)).thenReturn(Mono.just(response));
-        final ArgumentCaptor<File> dataFileCaptor = ArgumentCaptor.forClass(File.class);
-        final ArgumentCaptor<File> mergeFileCaptor = ArgumentCaptor.forClass(File.class);
+        when(responseSpecMock.bodyToMono(InputStream.class)).thenReturn(Mono.just(responseBody));
+        final ArgumentCaptor<AbstractResource> dataFileCaptor = ArgumentCaptor.forClass(AbstractResource.class);
+        final ArgumentCaptor<AbstractResource> mergeFileCaptor = ArgumentCaptor.forClass(AbstractResource.class);
 
         when(generationApi.generatePdfWithResponseSpec(any(), any(), any(), dataFileCaptor.capture(), any(), any(), any(), any(), any(), any(),
                 mergeFileCaptor.capture(), any(), any()))
@@ -41,10 +44,11 @@ class CosysAdapterTest {
         when(configuration.getMergeOptions()).thenReturn("mergedata".getBytes());
 
         //when
-        cosysAdapter.generateCosysDocument(generateDocument);
+        final InputStream response = cosysAdapter.generateCosysDocument(generateDocument).block();
 
         //then
-
+        assert response != null;
+        assertEquals("Response", new String(response.readAllBytes()));
         verify(generationApi).generatePdfWithResponseSpec(
                 generateDocument.guid(),
                 generateDocument.client(),
