@@ -379,7 +379,14 @@
                                     <HTTP_PROXY>${env.HTTP_PROXY}</HTTP_PROXY>
                                     <HTTPS_PROXY>${env.HTTPS_PROXY}</HTTPS_PROXY>
                                     <NO_PROXY>${env.NO_PROXY}</NO_PROXY>
+                                    <BP_HEALTH_CHECKER_ENABLED>true</BP_HEALTH_CHECKER_ENABLED>
                                 </env>
+                                <builder>paketobuildpacks/builder-jammy-base</builder>
+                                <buildpacks>
+                                    <buildpack>urn:cnb:builder:paketo-buildpacks/java</buildpack>
+                                    <buildpack>urn:cnb:builder:paketo-buildpacks/native-image</buildpack>
+                                    <buildpack>docker.io/paketobuildpacks/health-checker</buildpack>
+                                </buildpacks>
                             </image>
                         </configuration>
                         <executions>
