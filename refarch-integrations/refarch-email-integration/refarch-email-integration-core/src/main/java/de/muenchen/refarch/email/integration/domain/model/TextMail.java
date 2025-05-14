@@ -19,8 +19,8 @@ public class TextMail extends BasicMail {
     private final String body;
 
     public TextMail(final String receivers, final String receiversCc, final String receiversBcc, final String subject, final String body, final String replyTo,
-            final List<String> filePaths) {
-        super(receivers, receiversCc, receiversBcc, subject, replyTo, filePaths);
+            final List<Attachment> attachments) {
+        super(receivers, receiversCc, receiversBcc, subject, replyTo, attachments);
         this.body = body;
     }
 

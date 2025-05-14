@@ -24,9 +24,9 @@ public class TemplateMail extends BasicMail {
     private final Map<String, Object> content;
 
     public TemplateMail(final String receivers, final String receiversCc, final String receiversBcc, final String subject, final String replyTo,
-            final List<String> filePaths,
+            final List<Attachment> attachments,
             final String template, final Map<String, Object> content) {
-        super(receivers, receiversCc, receiversBcc, subject, replyTo, filePaths);
+        super(receivers, receiversCc, receiversBcc, subject, replyTo, attachments);
         this.template = template;
         this.content = content;
     }
