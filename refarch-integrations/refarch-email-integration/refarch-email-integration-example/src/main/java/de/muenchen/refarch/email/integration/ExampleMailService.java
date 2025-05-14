@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,8 +21,7 @@ public class ExampleMailService {
     private final SendMailInPort sendMailInPort;
 
     public void testSendMail() {
-        try (InputStream file = this.getClass().getResourceAsStream("/files/test-pdf.pdf")) {
-            assert file != null;
+        try (InputStream file = new ClassPathResource("/files/test-pdf.pdf").getInputStream()) {
             final Attachment attachment = new Attachment("test-pdf.pdf", new ByteArrayDataSource(file, "application/pdf"));
             final TextMail mail = new TextMail(
                     "test.receiver@muenchen.de",
@@ -39,8 +39,7 @@ public class ExampleMailService {
     }
 
     public void testSendMailTemplate() {
-        try (InputStream file = this.getClass().getResourceAsStream("/files/test-pdf.pdf")) {
-            assert file != null;
+        try (InputStream file = new ClassPathResource("/files/test-pdf.pdf").getInputStream()) {
             final Attachment attachment = new Attachment("test-pdf.pdf", new ByteArrayDataSource(file, "application/pdf"));
             final TemplateMail mail = new TemplateMail(
                     "test.receiver@muenchen.de",

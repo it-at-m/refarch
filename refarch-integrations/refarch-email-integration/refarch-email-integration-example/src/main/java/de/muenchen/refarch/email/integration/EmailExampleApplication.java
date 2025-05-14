@@ -9,12 +9,12 @@ import org.springframework.context.event.EventListener;
 
 @SpringBootApplication
 @RequiredArgsConstructor
-public class EmailJavaExampleApplication {
+public class EmailExampleApplication {
     private final ExampleMailService exampleMailService;
     private final ApplicationContext context;
 
     public static void main(final String[] args) {
-        SpringApplication.run(EmailJavaExampleApplication.class, args);
+        SpringApplication.run(EmailExampleApplication.class, args);
     }
 
     @EventListener(ApplicationReadyEvent.class)
