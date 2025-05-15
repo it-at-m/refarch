@@ -42,7 +42,9 @@ public class MailAutoConfiguration {
         final Properties props = mailSender.getJavaMailProperties();
         props.putAll(this.mailProperties.getProperties());
         mailSender.setJavaMailProperties(props);
-        mailSender.testConnection();
+        if (customMailProperties.isTestConnection()) {
+            mailSender.testConnection();
+        }
         return mailSender;
     }
 

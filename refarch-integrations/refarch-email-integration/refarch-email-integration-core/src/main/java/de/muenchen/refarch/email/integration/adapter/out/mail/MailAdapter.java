@@ -71,7 +71,11 @@ public class MailAdapter implements MailOutPort {
         // logo
         if (logoPath != null) {
             final Resource logo = this.getRessourceFromClassPath(logoPath);
-            helper.addInline("logo", logo);
+            if (logo.exists()) {
+                helper.addInline("logo", logo);
+            } else {
+                log.warn("Logo resource '{}' not found – sending mail without logo", logoPath);
+            }
         }
 
         this.mailSender.send(mimeMessage);

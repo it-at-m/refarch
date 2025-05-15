@@ -6,6 +6,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 @ConfigurationProperties(prefix = "refarch.mail")
 public class CustomMailProperties {
+    /**
+     * If connection to mail server should be tested on startup.
+     */
+    private boolean testConnection = true;
 
     /**
      * Sender mail address.
