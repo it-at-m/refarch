@@ -6,10 +6,6 @@ Integration for sending text and HTML mails with attachments. Uses [s3-integrati
 
 The modules follow the [default naming convention](./index.md#naming-conventions).
 
-### Dependency graph
-
-The following graph shows the relationships between the various modules and how they interact and rely on each other.
-
 ## Usage
 
 ```xml
