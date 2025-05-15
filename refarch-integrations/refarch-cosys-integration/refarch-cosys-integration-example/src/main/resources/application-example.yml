@@ -5,28 +5,14 @@ spring:
         provider:
           sso:
             issuer-uri: https://sso.example.com/auth/realms/refarch
-            user-info-uri: ${spring.security.oauth2.client.provider.sso.issuer-uri}/protocol/openid-connect/userinfo
-            jwk-set-uri: ${spring.security.oauth2.client.provider.sso.issuer-uri}/protocol/openid-connect/certs
         registration:
           cosys:
             provider: sso
             authorization-grant-type: client_credentials
             client-id: local
             client-secret: client_secret
-          s3:
-            provider: sso
-            authorization-grant-type: client_credentials
-            client-id: local
-            client-secret: client_secret
-
-server:
-  port: 8093
 
 refarch:
-  s3:
-    client:
-      document-storage-url: http://localhost:8086
-      enable-security: true
   cosys:
     url: https://cosys.example.com/cosys-eai/rest
     merge:
