@@ -37,5 +37,5 @@ public class BasicMail {
     /**
      * List of attachment paths.
      */
-    private List<String> filePaths;
+    private List<Attachment> attachments;
 }
