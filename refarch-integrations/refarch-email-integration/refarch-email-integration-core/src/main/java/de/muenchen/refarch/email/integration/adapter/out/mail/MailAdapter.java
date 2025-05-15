@@ -37,27 +37,12 @@ public class MailAdapter implements MailOutPort {
 
     @Override
     public void sendMail(final Mail mail, final String logoPath) throws MessagingException {
-        final MimeMessage mimeMessage = this.mailSender.createMimeMessage();
-
-        mimeMessage.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mail.receivers()));
-
-        if (mail.hasReceiversCc()) {
-            mimeMessage.setRecipients(Message.RecipientType.CC, InternetAddress.parse(mail.receiversCc()));
-        }
-        if (mail.hasReceiversBcc()) {
-            mimeMessage.setRecipients(Message.RecipientType.BCC, InternetAddress.parse(mail.receiversBcc()));
-        }
-
-        if (mail.hasReplyTo()) {
-            mimeMessage.setReplyTo(InternetAddress.parse(mail.replyTo()));
-        } else if (defaultReplyToAddress != null) {
-            mimeMessage.setReplyTo(InternetAddress.parse(defaultReplyToAddress));
-        }
-
+        final MimeMessage mimeMessage = constructMimeMessage(mail);
         final MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, StandardCharsets.UTF_8.name());
 
         helper.setSubject(mail.subject());
         helper.setText(mail.body(), mail.htmlBody());
+
         // use custom sender
         helper.setFrom(mail.hasSender() ? mail.sender() : this.fromAddress);
 
@@ -80,6 +65,26 @@ public class MailAdapter implements MailOutPort {
 
         this.mailSender.send(mimeMessage);
         log.info("Mail {} sent to {}.", mail.subject(), mail.receivers());
+    }
+
+    private MimeMessage constructMimeMessage(final Mail mail) throws MessagingException {
+        final MimeMessage mimeMessage = this.mailSender.createMimeMessage();
+
+        mimeMessage.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mail.receivers()));
+
+        if (mail.hasReceiversCc()) {
+            mimeMessage.setRecipients(Message.RecipientType.CC, InternetAddress.parse(mail.receiversCc()));
+        }
+        if (mail.hasReceiversBcc()) {
+            mimeMessage.setRecipients(Message.RecipientType.BCC, InternetAddress.parse(mail.receiversBcc()));
+        }
+
+        if (mail.hasReplyTo()) {
+            mimeMessage.setReplyTo(InternetAddress.parse(mail.replyTo()));
+        } else if (defaultReplyToAddress != null) {
+            mimeMessage.setReplyTo(InternetAddress.parse(defaultReplyToAddress));
+        }
+        return mimeMessage;
     }
 
     @Override
