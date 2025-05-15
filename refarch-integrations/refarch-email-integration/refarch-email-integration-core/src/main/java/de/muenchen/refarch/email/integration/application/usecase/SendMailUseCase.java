@@ -1,20 +1,17 @@
 package de.muenchen.refarch.email.integration.application.usecase;
 
 import de.muenchen.refarch.email.integration.application.port.in.SendMailInPort;
-import de.muenchen.refarch.email.integration.application.port.out.LoadMailAttachmentOutPort;
 import de.muenchen.refarch.email.integration.application.port.out.MailOutPort;
 import de.muenchen.refarch.email.integration.domain.exception.TemplateError;
 import de.muenchen.refarch.email.integration.domain.model.BasicMail;
+import de.muenchen.refarch.email.integration.domain.model.Mail;
 import de.muenchen.refarch.email.integration.domain.model.TemplateMail;
 import de.muenchen.refarch.email.integration.domain.model.TextMail;
-import de.muenchen.refarch.email.model.FileAttachment;
-import de.muenchen.refarch.email.model.Mail;
 import freemarker.template.TemplateException;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,24 +22,26 @@ import org.springframework.validation.annotation.Validated;
 @RequiredArgsConstructor
 @Validated
 public class SendMailUseCase implements SendMailInPort {
-
-    private final LoadMailAttachmentOutPort loadAttachmentOutPort;
     private final MailOutPort mailOutPort;
 
-    /**
-     * Send a mail.
-     *
-     * @param mail mail that is sent
-     */
     @Override
     public void sendMailWithText(@Valid final TextMail mail) {
-        final Mail mailModel = createMail(mail, mail.getBody(), false);
+        this.sendMailWithText(mail, null);
+    }
 
-        this.sendMail(mailModel, null);
+    @Override
+    public void sendMailWithText(@Valid final TextMail mail, final String logoPath) {
+        final Mail mailModel = createMail(mail, mail.getBody(), false);
+        this.sendMail(mailModel, logoPath);
     }
 
     @Override
     public void sendMailWithTemplate(@Valid final TemplateMail mail) {
+        this.sendMailWithTemplate(mail, null);
+    }
+
+    @Override
+    public void sendMailWithTemplate(@Valid final TemplateMail mail, final String logoPath) {
         // get body from template
         try {
             final Map<String, Object> content = new HashMap<>(mail.getContent());
@@ -50,7 +49,7 @@ public class SendMailUseCase implements SendMailInPort {
 
             final Mail mailModel = createMail(mail, body, true);
 
-            this.sendMail(mailModel, "templates/email-logo.png");
+            this.sendMail(mailModel, logoPath);
 
         } catch (IOException ioException) {
             throw new TemplateError("The template " + mail.getTemplate() + " could not be loaded", ioException);
@@ -60,9 +59,6 @@ public class SendMailUseCase implements SendMailInPort {
     }
 
     private Mail createMail(final BasicMail mail, final String body, final boolean htmlBody) {
-        // load Attachments
-        final List<FileAttachment> attachments = loadAttachmentOutPort.loadAttachments(mail.getFilePaths());
-
         // send mail
         return new Mail(
                 mail.getReceivers(),
@@ -73,7 +69,7 @@ public class SendMailUseCase implements SendMailInPort {
                 htmlBody,
                 null,
                 mail.getReplyTo(),
-                attachments);
+                mail.getAttachments());
     }
 
     private void sendMail(final Mail mailModel, final String logoPath) {

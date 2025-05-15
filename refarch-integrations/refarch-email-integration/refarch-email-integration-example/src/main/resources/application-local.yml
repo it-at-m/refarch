@@ -1,0 +1,14 @@
+spring:
+  mail:
+    host: localhost
+    port: 1025
+    username: test@muenchen.de
+    password: secret
+
+server:
+  port: 8087
+
+refarch:
+  mail:
+    from-address: test@muenchen.de
+    default-reply-to-address: no_reply@muenchen.de

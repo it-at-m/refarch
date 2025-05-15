@@ -12,13 +12,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import de.muenchen.refarch.email.integration.application.port.in.SendMailInPort;
-import de.muenchen.refarch.email.integration.application.port.out.LoadMailAttachmentOutPort;
 import de.muenchen.refarch.email.integration.application.port.out.MailOutPort;
 import de.muenchen.refarch.email.integration.domain.exception.TemplateError;
+import de.muenchen.refarch.email.integration.domain.model.Attachment;
+import de.muenchen.refarch.email.integration.domain.model.Mail;
 import de.muenchen.refarch.email.integration.domain.model.TemplateMail;
 import de.muenchen.refarch.email.integration.domain.model.TextMail;
-import de.muenchen.refarch.email.model.FileAttachment;
-import de.muenchen.refarch.email.model.Mail;
 import freemarker.template.TemplateException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.util.ByteArrayDataSource;
@@ -31,8 +30,8 @@ import org.springframework.mail.MailSendException;
 
 class SendMailUseCaseTest {
 
-    private final LoadMailAttachmentOutPort loadMailAttachmentOutPort = mock(LoadMailAttachmentOutPort.class);
     private final MailOutPort mailOutPort = mock(MailOutPort.class);
+    private final Attachment attachment = new Attachment("file.pdf", new ByteArrayDataSource("Content".getBytes(), "application/pdf"));
     private final TextMail mail = new TextMail(
             "mailReceiver1@muenchen.de,mailReceiver2@muenchen.de",
             "receiverCC@muenchen.de",
@@ -40,21 +39,29 @@ class SendMailUseCaseTest {
             "Test Mail",
             "This is a test mail",
             "test@muenchen.de",
-            List.of("folder/file.txt"));
+            List.of());
+    private final TextMail mailWithAttachment = new TextMail(
+            "mailReceiver1@muenchen.de,mailReceiver2@muenchen.de",
+            "receiverCC@muenchen.de",
+            "receiverBCC@muenchen.de",
+            "Test Mail",
+            "This is a test mail",
+            "test@muenchen.de",
+            List.of(attachment));
     private final TemplateMail templateMail = new TemplateMail(
             "mailReceiver1@muenchen.de,mailReceiver2@muenchen.de",
             "receiverCC@muenchen.de",
             "receiverBCC@muenchen.de",
             "Test Mail",
             "test@muenchen.de",
-            List.of("folder/file.txt"),
+            List.of(),
             "template",
             Map.of("mail", Map.of()));
     private SendMailInPort sendMailInPort;
 
     @BeforeEach
     void setUp() {
-        this.sendMailInPort = new SendMailUseCase(loadMailAttachmentOutPort, mailOutPort);
+        this.sendMailInPort = new SendMailUseCase(mailOutPort);
     }
 
     @Test
@@ -75,10 +82,7 @@ class SendMailUseCaseTest {
 
     @Test
     void sendMailWithAttachments() throws MessagingException {
-        final FileAttachment fileAttachment = new FileAttachment("test.txt", new ByteArrayDataSource("Anhang Inhalt".getBytes(), "text/plain"));
-        when(loadMailAttachmentOutPort.loadAttachments(List.of("folder/file.txt"))).thenReturn(List.of(fileAttachment));
-
-        sendMailInPort.sendMailWithText(mail);
+        sendMailInPort.sendMailWithText(mailWithAttachment);
         final Mail mailOutModel = new Mail(
                 mail.getReceivers(),
                 mail.getReceiversCc(),
@@ -88,7 +92,7 @@ class SendMailUseCaseTest {
                 false,
                 null,
                 mail.getReplyTo(),
-                List.of(fileAttachment));
+                List.of(attachment));
         verify(mailOutPort).sendMail(mailOutModel, null);
     }
 
@@ -101,7 +105,7 @@ class SendMailUseCaseTest {
     @Test
     void sendMailWithTemplate() throws MessagingException, TemplateException, IOException {
         when(mailOutPort.getBodyFromTemplate(anyString(), anyMap())).thenReturn("generated body");
-        sendMailInPort.sendMailWithTemplate(templateMail);
+        sendMailInPort.sendMailWithTemplate(templateMail, "templates/email-logo.png");
         final Mail mailOutModel = new Mail(
                 mail.getReceivers(),
                 mail.getReceiversCc(),

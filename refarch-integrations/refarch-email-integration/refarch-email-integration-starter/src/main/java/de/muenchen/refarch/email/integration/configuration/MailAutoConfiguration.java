@@ -1,45 +1,72 @@
 package de.muenchen.refarch.email.integration.configuration;
 
-import de.muenchen.refarch.email.api.EmailApi;
 import de.muenchen.refarch.email.integration.adapter.out.mail.MailAdapter;
-import de.muenchen.refarch.email.integration.adapter.out.s3.S3Adapter;
 import de.muenchen.refarch.email.integration.application.port.in.SendMailInPort;
-import de.muenchen.refarch.email.integration.application.port.out.LoadMailAttachmentOutPort;
 import de.muenchen.refarch.email.integration.application.port.out.MailOutPort;
 import de.muenchen.refarch.email.integration.application.usecase.SendMailUseCase;
-import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFileRepository;
-import de.muenchen.refarch.integration.s3.client.repository.DocumentStorageFolderRepository;
-import de.muenchen.refarch.integration.s3.client.service.FileValidationService;
+import jakarta.mail.MessagingException;
+import java.util.Properties;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.mail.MailProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
-@Configuration
+@AutoConfiguration
 @RequiredArgsConstructor
-@EnableConfigurationProperties({ MailProperties.class })
+@EnableConfigurationProperties({ MailProperties.class, CustomMailProperties.class })
 public class MailAutoConfiguration {
+    private final MailProperties mailProperties;
+    private final CustomMailProperties customMailProperties;
 
+    /**
+     * Configures the {@link JavaMailSender}
+     *
+     * @return configured JavaMailSender
+     */
     @Bean
     @ConditionalOnMissingBean
-    public SendMailInPort getSendMailPathsInPort(final LoadMailAttachmentOutPort loadAttachmentPort, final MailOutPort mailOutPort) {
-        return new SendMailUseCase(loadAttachmentPort, mailOutPort);
+    public JavaMailSender getJavaMailSender() throws MessagingException {
+        final JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        mailSender.setHost(this.mailProperties.getHost());
+        mailSender.setPort(this.mailProperties.getPort());
+        mailSender.setProtocol(this.mailProperties.getProtocol());
+        mailSender.setUsername(this.mailProperties.getUsername());
+        mailSender.setPassword(this.mailProperties.getPassword());
+
+        final Properties props = mailSender.getJavaMailProperties();
+        props.putAll(this.mailProperties.getProperties());
+        mailSender.setJavaMailProperties(props);
+        if (customMailProperties.isTestConnection()) {
+            mailSender.testConnection();
+        }
+        return mailSender;
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public LoadMailAttachmentOutPort getLoadMailAttachmentPort(
-            final DocumentStorageFileRepository documentStorageFileRepository,
-            final DocumentStorageFolderRepository documentStorageFolderRepository,
-            final FileValidationService fileValidationService) {
-        return new S3Adapter(documentStorageFileRepository, documentStorageFolderRepository, fileValidationService);
+    public FreeMarkerConfigurer freemarkerConfig() {
+        final FreeMarkerConfigurer freeMarkerConfigurer = new FreeMarkerConfigurer();
+        freeMarkerConfigurer.setTemplateLoaderPath("classpath:templates/");
+        return freeMarkerConfigurer;
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public MailOutPort getMailPort(final EmailApi emailApi) {
-        return new MailAdapter(emailApi);
+    public SendMailInPort getSendMailPathsInPort(final MailOutPort mailOutPort) {
+        return new SendMailUseCase(mailOutPort);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public MailOutPort getMailPort(final ResourceLoader resourceLoader, final JavaMailSender javaMailSender,
+            final FreeMarkerConfigurer freeMarkerConfigurer) {
+        return new MailAdapter(javaMailSender, resourceLoader, freeMarkerConfigurer, this.customMailProperties.getFromAddress(),
+                this.customMailProperties.getDefaultReplyToAddress());
     }
 }
