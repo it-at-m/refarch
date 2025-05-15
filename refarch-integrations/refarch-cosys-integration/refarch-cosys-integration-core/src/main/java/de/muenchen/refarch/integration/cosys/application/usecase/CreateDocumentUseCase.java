@@ -15,9 +15,9 @@ public class CreateDocumentUseCase implements CreateDocumentInPort {
     private final GenerateDocumentOutPort generateDocumentOutPort;
 
     /**
-     * Generate a document in Cosys and save it in S3 using file context and path.
+     * Generate a document in Cosys and return it as an InputStream.
      *
-     * @param generateDocument Data for generating documents
+     * @param generateDocument Data for generating document.
      */
     @Override
     public InputStream createDocument(@Valid final GenerateDocument generateDocument) throws CosysException {

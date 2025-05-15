@@ -22,13 +22,13 @@ public class ExampleController {
 
     private final GenerateDocumentOutPort generateDocumentOutPort;
 
-    @PostMapping(value = "/test/document", produces = MediaType.APPLICATION_PDF_VALUE)
+    @PostMapping(value = "/test/document", produces = { MediaType.APPLICATION_PDF_VALUE, MediaType.APPLICATION_JSON_VALUE })
+    @SuppressWarnings("PMD.CloseResource")
     public ResponseEntity<InputStreamResource> testCreateCosysDocument() throws CosysException, IOException {
-        try (InputStream pdfContent = this.generateDocumentOutPort.generateCosysDocument(this.generateDocument()).block()) {
-            assert pdfContent != null;
-            final InputStreamResource fileResource = new InputStreamResource(pdfContent);
-            return ResponseEntity.ok(fileResource);
-        }
+        final InputStream pdfContent = this.generateDocumentOutPort.generateCosysDocument(this.generateDocument()).block();
+        assert pdfContent != null;
+        final InputStreamResource fileResource = new InputStreamResource(pdfContent);
+        return ResponseEntity.ok(fileResource);
     }
 
     private GenerateDocument generateDocument() {
