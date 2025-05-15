@@ -12,9 +12,6 @@ spring:
             client-id: local
             client-secret: client_secret
 
-server:
-  port: 8093
-
 refarch:
   cosys:
     url: https://cosys.example.com/cosys-eai/rest
