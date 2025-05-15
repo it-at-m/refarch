@@ -1,6 +1,5 @@
 package de.muenchen.refarch.integration.cosys.configuration;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.muenchen.refarch.integration.cosys.ApiClient;
 import de.muenchen.refarch.integration.cosys.adapter.out.cosys.CosysAdapter;
@@ -32,20 +31,17 @@ public class CosysAutoConfiguration {
     private final CosysProperties cosysProperties;
 
     @Bean
-    public CosysConfiguration cosysConfiguration() throws JsonProcessingException {
+    public CosysConfiguration cosysConfiguration() {
         final CosysConfiguration cosysConfiguration = new CosysConfiguration();
         cosysConfiguration.setUrl(this.cosysProperties.getUrl());
 
         final Map<String, String> mergeOptions = new HashMap<>();
+        mergeOptions.put("--datafile", this.cosysProperties.getMerge().getDatafile());
         mergeOptions.put("--input-language", this.cosysProperties.getMerge().getInputLanguage());
         mergeOptions.put("--output-language", this.cosysProperties.getMerge().getOutputLanguage());
         mergeOptions.put("--keep-fields", this.cosysProperties.getMerge().getKeepFields());
         mergeOptions.put("-@1", "");
-
-        final ObjectMapper objectMapper = new ObjectMapper();
-        final String json = objectMapper.writeValueAsString(mergeOptions);
-
-        cosysConfiguration.setMergeOptions(json.getBytes());
+        cosysConfiguration.setMergeOptions(mergeOptions);
 
         return cosysConfiguration;
     }
@@ -89,7 +85,10 @@ public class CosysAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public GenerateDocumentOutPort getGenerateDocumentOutPort(final CosysConfiguration cosysConfiguration, final GenerationApi generationApi) {
-        return new CosysAdapter(cosysConfiguration, generationApi);
+    public GenerateDocumentOutPort getGenerateDocumentOutPort(
+            final CosysConfiguration cosysConfiguration,
+            final GenerationApi generationApi,
+            final ObjectMapper objectMapper) {
+        return new CosysAdapter(cosysConfiguration, generationApi, objectMapper);
     }
 }

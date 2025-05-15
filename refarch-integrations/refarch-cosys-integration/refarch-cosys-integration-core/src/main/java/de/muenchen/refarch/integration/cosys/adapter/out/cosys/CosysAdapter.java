@@ -1,5 +1,7 @@
 package de.muenchen.refarch.integration.cosys.adapter.out.cosys;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import de.muenchen.refarch.integration.cosys.api.GenerationApi;
 import de.muenchen.refarch.integration.cosys.application.port.out.GenerateDocumentOutPort;
 import de.muenchen.refarch.integration.cosys.configuration.CosysConfiguration;
@@ -9,7 +11,8 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.AbstractResource;
+import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpStatusCode;
 import reactor.core.publisher.Mono;
 
@@ -17,12 +20,11 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class CosysAdapter implements GenerateDocumentOutPort {
 
-    public static final String DATA_FILE_NAME = "data";
-    public static final String MERGE_FILE_NAME = "merge";
     public static final String DOC_GEN_EXCEPTION_MESSAGE = "Document could not be created.";
 
     private final CosysConfiguration configuration;
     private final GenerationApi generationApi;
+    private final ObjectMapper objectMapper;
 
     /**
      * Generate a Document in Cosys
@@ -32,25 +34,42 @@ public class CosysAdapter implements GenerateDocumentOutPort {
      */
     @Override
     public Mono<InputStream> generateCosysDocument(final GenerateDocument generateDocument) {
+        final AbstractResource data = new NamedByteArrayResource(generateDocument.variables().toString().getBytes(StandardCharsets.UTF_8), "data.json");
+        final AbstractResource mergeOptions = this.getMergeOptions();
         return this.generationApi.generatePdfWithResponseSpec(
                 generateDocument.guid(),
                 generateDocument.client(),
                 generateDocument.role(),
-                new ByteArrayResource(generateDocument.variables().toString().getBytes(StandardCharsets.UTF_8)),
+                data,
                 null,
                 null,
                 null,
                 null,
                 null,
                 false,
-                new ByteArrayResource(this.configuration.getMergeOptions()),
+                mergeOptions,
                 null,
                 null)
                 .onStatus(HttpStatusCode::is5xxServerError,
                         response -> Mono.error(new CosysException(DOC_GEN_EXCEPTION_MESSAGE)))
                 .onStatus(HttpStatusCode::is4xxClientError,
                         response -> Mono.error(new CosysException(DOC_GEN_EXCEPTION_MESSAGE)))
-                .bodyToMono(InputStream.class);
+                .bodyToMono(DataBuffer.class).map(DataBuffer::asInputStream);
+    }
+
+    private AbstractResource getMergeOptions() {
+        final AbstractResource mergeOptions;
+        if (this.configuration.getMergeOptions() != null) {
+            try {
+                final String mergeOptionsString = objectMapper.writeValueAsString(this.configuration.getMergeOptions());
+                mergeOptions = new NamedByteArrayResource(mergeOptionsString.getBytes(), "merge.json");
+            } catch (final JsonProcessingException e) {
+                throw new IllegalArgumentException("Cosys merge options are not valid.", e);
+            }
+        } else {
+            mergeOptions = null;
+        }
+        return mergeOptions;
     }
 
 }
