@@ -56,6 +56,8 @@ public class SecurityConfiguration {
                                 "/actuator/health/readiness",
                                 "/actuator/info",
                                 "/actuator/metrics",
+                                "/actuator/sbom",
+                                "/actuator/sbom/application",
                                 "/public/**")
                         .permitAll()
                         // only authenticated
