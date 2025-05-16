@@ -42,5 +42,16 @@
         "name": "producerIndex"
       }
     ]
+  },
+  {
+    "condition": {
+      "typeReachable": "com.hazelcast.internal.partition.impl.MigrationStats"
+    },
+    "name": "com.hazelcast.internal.partition.impl.MigrationStats",
+    "methods": [
+      {
+        "name": "getElapsedDestinationCommitTimeNanoseconds"
+      }
+    ]
   }
 ]
