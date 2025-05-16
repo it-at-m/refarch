@@ -37,7 +37,7 @@ jobs:
         env:
           IMAGE_NAME: ghcr.io/${{ github.repository }}/refarch-gateway-native
           IMAGE_RAW_TAGS: ${{ steps.meta.outputs.tags }}
-          NATIVE_SPRING_PROFILES: keycloak-k8s
+          NATIVE_SPRING_PROFILES: hazelcast-k8s
           REGISTRY_USER: ${{ github.repository_owner }}
           REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
