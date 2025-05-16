@@ -10,7 +10,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.event.EventListener;
 
-@SpringBootApplication()
+@SpringBootApplication
 @RequiredArgsConstructor
 @EnableConfigurationProperties(DmsExampleProperties.class)
 @SuppressWarnings("PMD.UseUtilityClass")
