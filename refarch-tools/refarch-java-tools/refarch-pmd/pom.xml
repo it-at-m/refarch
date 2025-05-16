@@ -5,7 +5,7 @@
     <parent>
         <groupId>de.muenchen.refarch</groupId>
         <artifactId>refarch-tools</artifactId>
-        <version>1.2.3</version>
+        <version>1.2.4-SNAPSHOT</version>
     </parent>
 
     <groupId>de.muenchen.refarch.tools</groupId>
