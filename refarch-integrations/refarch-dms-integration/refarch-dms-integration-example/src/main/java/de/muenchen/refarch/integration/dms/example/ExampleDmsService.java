@@ -21,7 +21,7 @@ public class ExampleDmsService {
     private final DmsExampleProperties dmsExampleProperties;
     private final CreateDocumentInPort createDocumentInPort;
 
-    void testCreateDocument() throws IOException, DmsException {
+    public void testCreateDocument() throws IOException, DmsException {
         try (InputStream file = new ClassPathResource("/files/test-pdf.pdf").getInputStream()) {
             final LocalDate date = LocalDate.now();
             final Content content = new Content("pdf", "Example ContentObject", file.readAllBytes());
