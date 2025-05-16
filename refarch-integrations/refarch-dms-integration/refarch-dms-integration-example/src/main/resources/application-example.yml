@@ -2,6 +2,7 @@ refarch:
   dms:
     fabasoft:
       businessapp: refarch-example
+      url:
       ui-url:
       username:
       password:
