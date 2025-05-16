@@ -19,10 +19,8 @@
     </properties>
 
     <modules>
-        <module>refarch-email</module>
         <module>refarch-email-integration-core</module>
         <module>refarch-email-integration-starter</module>
-        <module>refarch-email-integration-rest-example</module>
-        <module>refarch-email-integration-java-example</module>
+        <module>refarch-email-integration-example</module>
     </modules>
 </project>

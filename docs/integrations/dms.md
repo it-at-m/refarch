@@ -1,6 +1,6 @@
 # DMS Integration
 
-Integration for CRUD operations on a dms system in specific fabasoft. Uses [s3-integration](./s3.md) for file handling.
+Integration for CRUD operations on a dms system in specific fabasoft.
 
 ## Modules
 
@@ -19,7 +19,6 @@ The following graph shows the relationships between the various modules and how 
 ```mermaid
 flowchart RL
     starter --> core --> fabasoft-soap-api
-    core --> s3-client
     fabasoft-soap-mock-service --> fabasoft-soap-mock --> fabasoft-soap-api
     fabasoft-rest-api
 ```
@@ -35,9 +34,6 @@ flowchart RL
     </dependency>
 </dependencies>
 ```
-
-Additionally, a specific `s3-integration-*-client-starter` is required as dependency, because S3 is used for file handling.
-See [according documentation](./s3.md#usage).
 
 ## Configuration
 
