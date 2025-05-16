@@ -204,11 +204,15 @@
             <plugin>
                 <groupId>org.cyclonedx</groupId>
                 <artifactId>cyclonedx-maven-plugin</artifactId>
-                <configuration>
-                    <projectType>library</projectType>
-                    <outputName>library.cdx</outputName>
-                    <skipNotDeployed>false</skipNotDeployed>
-                </configuration>
+                <executions>
+                    <execution>
+                        <configuration>
+                            <projectType>library</projectType>
+                            <outputName>library.cdx</outputName>
+                            <skipNotDeployed>true</skipNotDeployed>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <!-- Testing -->
