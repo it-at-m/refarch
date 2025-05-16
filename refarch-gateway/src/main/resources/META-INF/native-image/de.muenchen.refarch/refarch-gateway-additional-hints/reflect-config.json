@@ -12,14 +12,7 @@
   },
   {
     "name": "com.hazelcast.internal.cluster.Versions",
-    "fields": [
-      {
-        "name": "V5_4"
-      },
-      {
-        "name": "V5_5"
-      }
-    ]
+    "allPublicFields": true
   },
   {
     "condition": {
