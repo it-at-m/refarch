@@ -205,9 +205,13 @@
             <plugin>
                 <groupId>org.cyclonedx</groupId>
                 <artifactId>cyclonedx-maven-plugin</artifactId>
-                <configuration>
-                    <skipNotDeployed>false</skipNotDeployed>
-                </configuration>
+                <executions>
+                    <execution>
+                        <configuration>
+                            <skipNotDeployed>false</skipNotDeployed>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <!-- Testing -->
