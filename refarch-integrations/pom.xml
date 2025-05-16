@@ -209,7 +209,7 @@
                         <configuration>
                             <projectType>library</projectType>
                             <outputName>library.cdx</outputName>
-                            <skipNotDeployed>true</skipNotDeployed>
+                            <skipNotDeployed>false</skipNotDeployed>
                         </configuration>
                     </execution>
                 </executions>
