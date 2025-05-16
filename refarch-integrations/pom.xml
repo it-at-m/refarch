@@ -352,6 +352,8 @@
                             <excludeArtifacts>
                                 <!-- Exclude services -->
                                 <artifact>refarch-s3-integration-rest-service</artifact>
+                                <artifact>refarch-cosys-integration-example</artifact>
+                                <artifact>refarch-dms-integration-example</artifact>
                             </excludeArtifacts>
                         </configuration>
                     </plugin>

@@ -1,0 +1,11 @@
+refarch:
+  dms:
+    fabasoft:
+      businessapp: refarch-example
+      url:
+      ui-url:
+      username:
+      password:
+    example:
+      username:
+      target-procedure-coo:
