@@ -19,14 +19,4 @@
         <module>refarch-dms-integration-fabasoft-rest-api</module>
         <module>refarch-dms-integration-starter</module>
     </modules>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>de.muenchen.refarch</groupId>
-                <artifactId>refarch-s3-integration-client-core</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 </project>
