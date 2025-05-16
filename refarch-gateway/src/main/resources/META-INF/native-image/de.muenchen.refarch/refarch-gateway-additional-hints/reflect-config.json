@@ -49,5 +49,16 @@
     },
     "name": "com.hazelcast.internal.partition.impl.MigrationStats",
     "allPublicMethods": true
+  },
+  {
+    "condition": {
+      "typeReachable": "com.hazelcast.internal.networking.nio.NioOutboundPipeline"
+    },
+    "name": "com.hazelcast.internal.networking.nio.NioOutboundPipeline",
+    "methods": [
+      {
+        "name": "idleTimeMillis"
+      }
+    ]
   }
 ]
