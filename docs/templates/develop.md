@@ -267,7 +267,7 @@ The allowed licenses can be viewed in the [Munich Open Source documentation](htt
 
 The templates provide a workflow for validating checklist status in a PR description and the PR discussion. To merge a PR, all checklist items must be ticked off by the PR creator.
 
-The templates by default ship with a [PR template](./organize.html#pull-request-template), which makes use of a checklist.
+The templates by default ship with a [PR template](./organize#pull-request-template), which makes use of a checklist.
 
 ::: info Information
 If some of the PR checklist items are not relevant for your PR, you should adjust the checklist inside the PR description to the specific PR changes.
@@ -334,3 +334,98 @@ You definitely don't want that, as we are super nitpicky when it comes to code q
 :::
 
 To learn more about the CODEOWNERS file, please check the official [GitHub documentation](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners).
+
+## Internationalization (i18n)
+
+The `refarch-frontend` template use [Vue I18n](https://vue-i18n.intlify.dev/) by default to allow easy addition of multiple languages.
+Currently, the template only provides the `i18n` mechanism to centralize the definition of text content in different languages and move raw text out of the Vue components.
+The feature to allow easy switching of languages for the end user will be implemented in the future.
+
+::: info Information
+If you don't want to use i18n in your application, you can either:
+
+- **Completely remove i18n** by removing the following dependencies: `@intlify/unplugin-vue-i18n`, `vue-i18n` and `@intlify/eslint-plugin-vue-i18n` and removing the `plugins/i18n.ts` file.
+
+  (**Note**: Some manual corrections might still be necessary)
+
+- **Soften the requirements for incremental adoption** by disabling linting rule [@intlify/vue-i18n/no-raw-text](https://eslint-plugin-vue-i18n.intlify.dev/rules/no-raw-text.html) inside the ESLint configuration file
+
+  (**Note**: This allows to mix raw text in Vue components with texts maintained in locale files)
+  :::
+
+More information on how reference the translation file contents in your Vue components can be found in the official VueI18n documentation.
+We suggest to use the [Composition API style](https://vue-i18n.intlify.dev/guide/advanced/composition.html), as it matches the general use of Composition API when developing with Vue.
+
+### Adding a new language
+
+The template only provides the `de` (German) locale by default. To add a new language to the application, the following steps need to be done:
+
+1. Add the translation file (JSON-based) to the `locales` folder
+2. Import the translation file in the `plugins/i18n.ts` file
+3. (Optional) If using Vuetify, import the pre-defined Vuetify translations
+4. Extend the `messages` object to contain the new language key combining Vuetify-based and own translations, e.g.
+
+```javascript
+const messages = {
+  en: {
+    $vuetify: {
+      ...enVuetify,
+    },
+    ...enApp,
+  },
+};
+```
+
+::: danger Important
+Each `.json` file should have the same structure and the translation keys should be provided in all files.
+Otherwise, some parts of your application will fall back to the default language (`de`).
+Also, always use the correct ISO-639-1 code for your language.
+:::
+
+### Key Naming Conventions
+
+We recommend a certain structure and set of conventions to help keep translations organized, consistent, and easy to maintain.
+
+1. **camelCase Keys**
+   - Use lowerCamelCase for individual keys, e.g. `home.header`, `app.name.full`.
+   - This convention aligns with lint rules and keeps keys visually distinct from normal text.
+2. **Hierarchical Grouping**
+
+   - Organize keys by feature or component, using multiple nested levels for clarity.
+   - Example:
+
+     ```json
+     {
+       "home": {
+         "header": "Welcome!",
+         "paragraph": "Some text here..."
+       }
+     }
+     ```
+
+3. **Consistent Section Prefixes**
+   - Maintain distinct top-level sections: e.g. `common`, `app`, `views`, `components`, `domain`, etc.
+   - This consistency makes it easier to quickly locate strings in a large codebase.
+
+### Section Organization Guidelines
+
+1. `common`: For frequent, repeated terms like “yes”/“no” or action verbs like “close,” “save,” “cancel.”
+2. `app`: For global application-related strings (e.g., brand name, headers).
+3. `views`: For text used within specific pages/views (e.g., views.home.header).
+4. `components`: For text that appears in reusable UI components.
+5. `domain`: For translating domain-specific objects, like database fields or business entities.
+
+### Special Character Handling
+
+- When using special or reserved JSON characters (e.g. `"`, `{`), ensure they are properly quoted if needed.
+- Complex strings may require double quotes to avoid parsing or lint errors, for example:
+
+  ```json
+  {
+    "name": {
+      "full": "@:app.name.part1@:app.name.part2"
+    }
+  }
+  ```
+
+- If you need placeholders in strings, consider using interpolation features offered by vue-i18n (e.g., `{item} saved.`).
