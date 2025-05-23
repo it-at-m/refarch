@@ -337,7 +337,7 @@ To learn more about the CODEOWNERS file, please check the official [GitHub docum
 
 ## Internationalization (i18n)
 
-The `refarch-frontend` template use [Vue I18n](https://vue-i18n.intlify.dev/) by default to allow easy addition of multiple languages.
+The `refarch-frontend` template uses [Vue I18n](https://vue-i18n.intlify.dev/) by default to allow easy addition of multiple languages.
 Currently, the template only provides the `i18n` mechanism to centralize the definition of text content in different languages and move raw text out of the Vue components.
 The feature to allow easy switching of languages for the end user will be implemented in the future.
 
