@@ -2,6 +2,96 @@
   "types": [
     {
       "name": "org.springframework.session.MapSession"
+    },
+    {
+      "name": "java.time.Instant"
+    },
+    {
+      "name": "java.time.Duration"
+    },
+    {
+      "name": "java.util.HashMap"
+    },
+    {
+      "name": "java.time.Ser"
+    },
+    {
+      "name": "org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest"
+    },
+    {
+      "name": "java.util.Collections$UnmodifiableMap"
+    },
+    {
+      "name": "java.util.LinkedHashMap"
+    },
+    {
+      "name": "org.springframework.security.oauth2.core.AuthorizationGrantType"
+    },
+    {
+      "name": "org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationResponseType"
+    },
+    {
+      "name": "java.util.HashSet"
+    },
+    {
+      "name": "java.util.LinkedHashSet"
+    },
+    {
+      "name": "org.springframework.security.oauth2.client.OAuth2AuthorizedClient"
+    },
+    {
+      "name": "org.springframework.security.oauth2.core.AbstractOAuth2Token"
+    },
+    {
+      "name": "org.springframework.security.oauth2.core.OAuth2AccessToken"
+    },
+    {
+      "name": "org.springframework.security.oauth2.core.OAuth2AccessToken$TokenType"
+    },
+    {
+      "name": "org.springframework.security.oauth2.client.registration.ClientRegistration"
+    },
+    {
+      "name": "org.springframework.security.oauth2.core.ClientAuthenticationMethod"
+    },
+    {
+      "name": "org.springframework.security.oauth2.client.registration.ClientRegistration$ProviderDetails"
+    },
+    {
+      "name": "net.minidev.json.JSONObject"
+    },
+    {
+      "name": "com.nimbusds.oauth2.sdk.util.OrderedJSONObject"
+    },
+    {
+      "name": "org.springframework.security.oauth2.client.registration.ClientRegistration$ProviderDetails$UserInfoEndpoint"
+    },
+    {
+      "name": "org.springframework.security.oauth2.core.AuthenticationMethod"
+    },
+    {
+      "name": "org.springframework.security.oauth2.core.OAuth2RefreshToken"
+    },
+    {
+      "name": "org.springframework.security.oauth2.core.user.OAuth2UserAuthority"
+    },
+    {
+      "name": "org.springframework.security.oauth2.core.oidc.user.OidcUserAuthority"
+    },
+    {
+      "name": "java.net.URL"
+    },
+    {
+      "name": "org.springframework.security.oauth2.core.oidc.OidcIdToken"
+    },
+    {
+      "name": "org.springframework.security.oauth2.core.oidc.OidcUserInfo"
+    },
+    {
+      "name": "org.springframework.security.oauth2.core.user.DefaultOAuth2User"
+    },
+    {
+      "name": "org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser"
     }
   ],
   "lambdaCapturingTypes": [
