@@ -52,7 +52,6 @@ When using Podman, make sure to configure the host-gateway correctly by setting 
 in `/etc/containers/containers.conf` and use the User-Mode-Networking.
 :::
 
-
 ::: danger IMPORTANT
 If for some reason you cannot add health checks to a container (this might be the case when a barebone base image is used and the container does not have tools like `curl` or `wget`)
 you need to set `skip-no-healthcheck: true` as described in the [CI/CD documentation](https://github.com/it-at-m/lhm_actions/blob/main/docs/actions.md#action-dockercompose-healthcheck) in order for the CI/CD to pass.
