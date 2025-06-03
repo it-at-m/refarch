@@ -48,7 +48,7 @@ The health of the development stack is automatically validated in GitHub CI/CD u
 :::
 
 ::: info Information
-When using Podman, make sure to configure the host-gateway correctly by setting `host_containers_internal_ip = "192.168.127.254"` 
+When using Podman, make sure to configure the host-gateway correctly by setting `host_containers_internal_ip = "192.168.127.254"`
 in `/etc/containers/containers.conf` and use the User-Mode-Networking.
 :::
 
