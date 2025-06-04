@@ -253,7 +253,7 @@ Code Rabbit is free to use for open-source projects. If you are developing a pro
 
 ### CodeQL
 
-**CodeQL** is a GitHub tool for discovering vulnerabilities and code smells in code. More details can be found [here](https://codeql.github.com/).
+**CodeQL** is a GitHub tool for discovering vulnerabilities and code smells in code. More details can be found on the [official CodeQL website](https://codeql.github.com/).
 
 The template enables CodeQL for Pull Requests and configures CodeQL to only scan for Java and JavaScript/TypeScript/Vue files by default.
 For further information on how to change the configuration, please check out the documentation of the related custom [GitHub workflow](https://github.com/it-at-m/.github/blob/main/workflow-templates/codeql.yaml).
@@ -292,7 +292,7 @@ More information about Rulesets can be found in the [official GitHub documentati
 
 ::: danger IMPORTANT
 Note that the tools mentioned above (CodeRabbit, CodeQL, Dependency Review) are optional by default and are not required to pass when a PR should be merged.
-We strongly encourage you to enable the status checks for those tools before being able to merge a PR. More information about status checks can be found [here](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/about-status-checks).
+We strongly encourage you to enable the status checks for those tools before being able to merge a PR. More information about status checks can be found in the [official GitHub documentation](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/about-status-checks).
 Status checks are configurable as part of the rulesets.
 :::
 
