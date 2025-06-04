@@ -357,7 +357,7 @@ If you don't want to use i18n in your application, you can either:
 - **Soften the requirements for incremental adoption** by disabling linting rule [@intlify/vue-i18n/no-raw-text](https://eslint-plugin-vue-i18n.intlify.dev/rules/no-raw-text.html) inside the ESLint configuration file
 
   (**Note**: This allows mixing raw text in Vue components with texts maintained in locale files)
-  :::
+:::
 
 More information on how to reference the translation file contents in your Vue components can be found in the official VueI18n documentation.
 We suggest using the [Composition API style](https://vue-i18n.intlify.dev/guide/advanced/composition.html), as it matches the general use of Composition API when developing with Vue.
