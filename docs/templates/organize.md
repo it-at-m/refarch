@@ -15,7 +15,7 @@ Additionally, labels indicate the priority of issues, for example, `Medium`.
 There are also labels that specify the type of issue, like `Documentation`.
 
 We highly recommend using labels to maintain a clear structure.
-You can view all our current labels [here](https://github.com/it-at-m/refarch-templates/labels) for inspiration.
+You can view all our current labels on the [GitHub repository's label page](https://github.com/it-at-m/refarch-templates/labels) for inspiration.
 For more information on how to set up labels for your own project, please check the official [GitHub documentation](https://docs.github.com/en/issues/using-labels-and-milestones-to-track-work/managing-labels).
 
 Your project labels are also utilized for [Automatic Labeling](#automatic-labeling).
