@@ -18,7 +18,7 @@ can be used as well.
 
 ::: danger IMPORTANT
 If you are developing locally, you will need to have Docker or Podman installed on your system and the stack running at all times.
-Also make sure you have `keycloak` in your hosts file.
+Also make sure to have `keycloak` in your `hosts` file.
 :::
 
 Inside the `stack` folder, you will find a `docker-compose.yml` file that will spin up everything needed for local development.
@@ -49,7 +49,7 @@ The health of the development stack is automatically validated in GitHub CI/CD u
 
 ::: info Information
 When using Podman, make sure to configure the host-gateway correctly by setting `host_containers_internal_ip = "192.168.127.254"`
-in `/etc/containers/containers.conf` and use the User-Mode-Networking.
+in `/etc/containers/containers.conf` and use the [User-Mode-Networking](https://docs.podman.io/en/v4.7.2/markdown/podman-machine-set.1.html#user-mode-networking).
 :::
 
 ::: danger IMPORTANT
