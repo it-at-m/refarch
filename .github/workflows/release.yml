@@ -39,7 +39,7 @@ jobs:
     steps:
       - name: Maven build and release
         id: maven-release-step
-        uses: it-at-m/lhm_actions/action-templates/actions/action-maven-release@a7d25dbabec2057695f865169fdc411d475d4667 # v1.0.19
+        uses: it-at-m/lhm_actions/action-templates/actions/action-maven-release@9767179088fd2e344d1a24c17404ab809a60f1b6 # v1.0.20
         with:
           app-path: ${{ inputs.module }}
           releaseVersion: ${{ inputs.release-version }}
@@ -59,7 +59,7 @@ jobs:
       packages: write
     steps:
       - name: Build and push image
-        uses: it-at-m/lhm_actions/action-templates/actions/action-build-image@a7d25dbabec2057695f865169fdc411d475d4667 # v1.0.19
+        uses: it-at-m/lhm_actions/action-templates/actions/action-build-image@9767179088fd2e344d1a24c17404ab809a60f1b6 # v1.0.20
         with:
           registry-username: ${{ github.actor }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
@@ -83,7 +83,7 @@ jobs:
             path: ./refarch-integrations/refarch-s3-integration/refarch-s3-integration-rest/refarch-s3-integration-rest-service
     steps:
       - name: Build and push images
-        uses: it-at-m/lhm_actions/action-templates/actions/action-build-image@a7d25dbabec2057695f865169fdc411d475d4667 # v1.0.19
+        uses: it-at-m/lhm_actions/action-templates/actions/action-build-image@9767179088fd2e344d1a24c17404ab809a60f1b6 # v1.0.20
         with:
           registry-username: ${{ github.actor }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
@@ -103,7 +103,7 @@ jobs:
     steps:
       - name: Create GitHub Release
         id: create_release
-        uses: it-at-m/lhm_actions/action-templates/actions/action-create-github-release@a7d25dbabec2057695f865169fdc411d475d4667 # v1.0.19
+        uses: it-at-m/lhm_actions/action-templates/actions/action-create-github-release@9767179088fd2e344d1a24c17404ab809a60f1b6 # v1.0.20
         with:
           tag-name: "${{ inputs.module }}_${{ github.event.inputs.release-version }}"
           generate-release-notes: true

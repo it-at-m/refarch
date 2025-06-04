@@ -13,11 +13,12 @@ Key technologies used in the templates include:
 
 ### Docker
 
-[Docker](https://www.docker.com/) is used to run a local development stack including all necessary services.
+[Docker](https://www.docker.com/) is used to run a local development stack including all necessary services. Alternatively [Podman](https://podman.io)
+can be used as well.
 
 ::: danger IMPORTANT
-If you are developing locally, you will need to have Docker installed on your system and the stack running at all times.
-Also make sure you have `kubernetes.docker.internal` in your hosts file. This should normally be done automatically by the Docker installation.
+If you are developing locally, you will need to have Docker or Podman installed on your system and the stack running at all times.
+Also make sure to have `keycloak` in your `hosts` file.
 :::
 
 Inside the `stack` folder, you will find a `docker-compose.yml` file that will spin up everything needed for local development.
@@ -44,6 +45,11 @@ If you add new containers to your development stack, please make sure those imag
 If they don't, you can add [own healthchecks](https://docs.docker.com/reference/compose-file/services/#healthcheck) in your `docker-compose.yml` file.
 The health checks make sure your containers are starting properly and are healthy throughout usage.
 The health of the development stack is automatically validated in GitHub CI/CD using the provided/manually added healthchecks.
+:::
+
+::: info Information
+When using Podman, make sure to configure the host-gateway correctly by setting `host_containers_internal_ip = "192.168.127.254"`
+in `/etc/containers/containers.conf` and use the [User-Mode-Networking](https://docs.podman.io/en/v4.7.2/markdown/podman-machine-set.1.html#user-mode-networking).
 :::
 
 ::: danger IMPORTANT
