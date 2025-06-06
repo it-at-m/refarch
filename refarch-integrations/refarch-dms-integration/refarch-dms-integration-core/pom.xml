@@ -8,6 +8,7 @@
     </parent>
 
     <artifactId>refarch-dms-integration-core</artifactId>
+    <name>refarch-dms-integration-core</name>
 
     <dependencies>
         <!-- Spring -->

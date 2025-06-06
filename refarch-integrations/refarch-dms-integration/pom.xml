@@ -9,6 +9,7 @@
     </parent>
 
     <artifactId>refarch-dms-integration</artifactId>
+    <name>refarch-dms-integration</name>
     <version>2.1.0-SNAPSHOT</version>
     <description>RefArch DMS integration</description>
     <packaging>pom</packaging>

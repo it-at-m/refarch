@@ -8,6 +8,7 @@
     </parent>
 
     <artifactId>refarch-dms-integration-example</artifactId>
+    <name>refarch-dms-integration-example</name>
 
     <dependencies>
         <dependency>
