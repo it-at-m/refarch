@@ -32,7 +32,7 @@ const vitepressConfig = defineConfig({
           },
           {
             text: "Security",
-            link: "/cross-cutting-concepts/security"
+            link: "/cross-cutting-concepts/security",
           },
           { text: "Tools", link: "/cross-cutting-concepts/tools" },
         ],
@@ -53,9 +53,7 @@ const vitepressConfig = defineConfig({
       { text: "Overview", link: "/overview", items: [] },
       {
         text: "Components",
-        items: [
-          { text: "API Gateway", link: "/gateway" },
-        ]
+        items: [{ text: "API Gateway", link: "/gateway" }],
       },
       {
         text: "Templates",
@@ -81,7 +79,10 @@ const vitepressConfig = defineConfig({
       {
         text: "Cross-Cutting Concepts",
         items: [
-          { text: "CI/CD", link: "https://github.com/it-at-m/lhm_actions/blob/main/docs/actions.md" },
+          {
+            text: "CI/CD",
+            link: "https://github.com/it-at-m/lhm_actions/blob/main/docs/actions.md",
+          },
           { text: "Security", link: "/cross-cutting-concepts/security" },
           { text: "Tools", link: "/cross-cutting-concepts/tools" },
         ],
