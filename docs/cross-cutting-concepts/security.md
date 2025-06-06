@@ -17,7 +17,7 @@ The following sections will describe how to disable the SBOM endpoint in the var
 The API Gateway is built using [cyclonedx-maven-plugin](https://github.com/CycloneDX/cyclonedx-maven-plugin) and the generated SBOM file is exposed via the Spring-provided [SBOM actuator endpoint](https://docs.spring.io/spring-boot/api/rest/actuator/sbom.html).
 
 To disable the exposure the endpoint must be disabled through runtime configuration.
-This can be easily achieved by e.g. setting the environment variable `MANAGEMENT_ENDPOINT_SBOM_ACCESS` to `none` to alter the underlying Spring property.
+This can be easily achieved by e.g. setting the environment variable `MANAGEMENT_ENDPOINT_SBOM_ACCESS` to `none` or alter the underlying Spring property.
 
 ### Java-based templates
 
