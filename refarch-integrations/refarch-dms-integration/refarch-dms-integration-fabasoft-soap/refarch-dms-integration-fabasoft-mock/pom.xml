@@ -8,6 +8,7 @@
     </parent>
 
     <artifactId>refarch-dms-integration-fabasoft-mock</artifactId>
+    <name>refarch-dms-integration-fabasoft-mock</name>
 
     <dependencies>
         <dependency>

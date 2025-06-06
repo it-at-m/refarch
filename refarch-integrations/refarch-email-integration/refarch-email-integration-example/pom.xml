@@ -8,6 +8,8 @@
     </parent>
 
     <artifactId>refarch-email-integration-example</artifactId>
+    <name>refarch-email-integration-example</name>
+
     <dependencies>
         <dependency>
             <groupId>de.muenchen.refarch</groupId>

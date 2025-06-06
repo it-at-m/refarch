@@ -8,6 +8,7 @@
     </parent>
 
     <artifactId>refarch-cosys-integration-client</artifactId>
+    <name>refarch-cosys-integration-client</name>
 
     <properties>
         <openapi-generator-maven-plugin.version>7.13.0</openapi-generator-maven-plugin.version>
