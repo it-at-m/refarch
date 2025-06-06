@@ -23,8 +23,11 @@ hero:
       text: ⤴ CI/CD
       link: https://github.com/it-at-m/lhm_actions/blob/main/docs/actions.md
     - theme: alt
+      text: Security
+      link: /cross-cutting-concepts/security
+    - theme: alt
       text: Tools
-      link: /tools
+      link: /cross-cutting-concepts/tools
     - theme: alt
       text: Contribute to the project
       link: /contribute
