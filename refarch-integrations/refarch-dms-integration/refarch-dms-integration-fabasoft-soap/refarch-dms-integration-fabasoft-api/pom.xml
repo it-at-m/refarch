@@ -8,6 +8,7 @@
     </parent>
 
     <artifactId>refarch-dms-integration-fabasoft-api</artifactId>
+    <name>refarch-dms-integration-fabasoft-api</name>
 
     <properties>
         <cxf-codegen-plugin.version>4.1.2</cxf-codegen-plugin.version>

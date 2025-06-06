@@ -10,6 +10,7 @@
 
 
     <artifactId>refarch-s3-integration-java</artifactId>
+    <name>refarch-s3-integration-java</name>
     <version>2.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 

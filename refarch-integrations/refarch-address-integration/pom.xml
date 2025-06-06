@@ -9,6 +9,7 @@
     </parent>
 
     <artifactId>refarch-address-integration</artifactId>
+    <name>refarch-address-integration</name>
     <description>Integration of the address service</description>
     <packaging>pom</packaging>
 

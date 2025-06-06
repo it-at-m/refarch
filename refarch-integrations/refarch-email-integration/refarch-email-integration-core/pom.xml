@@ -8,6 +8,7 @@
     </parent>
 
     <artifactId>refarch-email-integration-core</artifactId>
+    <name>refarch-email-integration-core</name>
 
     <dependencies>
         <dependency>

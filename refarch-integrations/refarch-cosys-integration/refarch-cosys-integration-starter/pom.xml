@@ -8,6 +8,7 @@
     </parent>
 
     <artifactId>refarch-cosys-integration-starter</artifactId>
+    <name>refarch-cosys-integration-starter</name>
 
     <dependencies>
         <dependency>

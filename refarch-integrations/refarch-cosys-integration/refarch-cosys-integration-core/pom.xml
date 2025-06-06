@@ -8,6 +8,7 @@
     </parent>
 
     <artifactId>refarch-cosys-integration-core</artifactId>
+    <name>refarch-cosys-integration-core</name>
 
     <properties>
         <httpmime.version>4.5.14</httpmime.version>
