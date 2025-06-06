@@ -166,7 +166,7 @@ inside the `<profile>` block and adjust it as needed:
 </properties>
 ```
 
-For existing projects you need to add in the pom.xml
+Also, make sure the `pom.xml` file contains the following content inside the `<eclipse>` section of the `spotless-maven-plugin` configuration:
 
 ```xml
 <p2Mirrors>
