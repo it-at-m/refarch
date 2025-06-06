@@ -8,7 +8,7 @@ All services developed with the [templates](/overview#Templates), as well as all
 
 This can be a problem for closed-source projects using any of the RefArch components, as it exposes information about the software dependencies and might thus lead to expose of critical CVEs.
 
-More information about SBOMs in general and the [CycloneDX](https://cyclonedx.org/) format we use can be found in the [official CycloneDX documentation](https://cyclonedx.org/specification/overview/).
+More information about SBOMs in general and the [CycloneDX](https://cyclonedx.org/) format we use, can be found in the [official CycloneDX documentation](https://cyclonedx.org/specification/overview/).
 
 The following sections will describe how to disable the SBOM endpoint in the various components.
 
