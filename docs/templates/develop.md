@@ -147,7 +147,7 @@ Issues reported by the PMD and SpotBugs are currently not auto-fixable so you st
 The tools are configured through the respective configuration files or configuration sections inside the `pom.xml`
 
 - Spotless: `pom.xml` and using a [centralized configuration](https://github.com/it-at-m/itm-java-codeformat)
-- PMD: `pom.xml` and using centralized configuration (more information in [Tools](../tools#pmd))
+- PMD: `pom.xml` and using centralized configuration (more information in [Tools](/cross-cutting-concepts/tools#pmd))
 - SpotBugs: `pom.xml` and `spotbugs-exclude-rules.xml` (configuration part of the templates)
 
 ::: danger IMPORTANT
@@ -225,10 +225,10 @@ The configuration in the `application.yml` file (inside the `appswitcher-server`
 
 [Renovate](https://docs.renovatebot.com/) is used to keep your dependencies up to date.
 
-The templates by default make use of a centralized configuration we provide for RefArch-based projects. More information can be found in [Tools](../tools#renovate).
+The templates by default make use of a centralized configuration we provide for RefArch-based projects. More information can be found in [Tools](/cross-cutting-concepts/tools#renovate).
 
 ::: danger IMPORTANT
-To make full use of the provided configuration additional setup is needed, so please check out the corresponding [Tools documentation](../tools#renovate).
+To make full use of the provided configuration additional setup is needed, so please check out the corresponding [Tools documentation](/cross-cutting-concepts/tools#renovate).
 :::
 
 ## Pull Requests
