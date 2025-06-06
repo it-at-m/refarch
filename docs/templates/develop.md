@@ -166,6 +166,17 @@ inside the `<profile>` block and adjust it as needed:
 </properties>
 ```
 
+For existing projects you need to add in the pom.xml
+
+```xml
+<p2Mirrors>
+    <p2Mirror>
+        <prefix>https://download.eclipse.org</prefix>
+            <url>https://${p2.username}:${p2.password}@${p2.mirror}</url>
+        </p2Mirror>
+</p2Mirrors>
+```
+
 :::
 
 ::: details it@M internal configuration
