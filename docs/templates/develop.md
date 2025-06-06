@@ -166,6 +166,17 @@ inside the `<profile>` block and adjust it as needed:
 </properties>
 ```
 
+Also, make sure the `pom.xml` file contains the following content inside the `<eclipse>` section of the `spotless-maven-plugin` configuration:
+
+```xml
+<p2Mirrors>
+    <p2Mirror>
+        <prefix>https://download.eclipse.org</prefix>
+            <url>https://${p2.username}:${p2.password}@${p2.mirror}</url>
+        </p2Mirror>
+</p2Mirrors>
+```
+
 :::
 
 ::: details it@M internal configuration
