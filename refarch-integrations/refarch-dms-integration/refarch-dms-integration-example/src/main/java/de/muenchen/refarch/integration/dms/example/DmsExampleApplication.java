@@ -13,7 +13,6 @@ import org.springframework.context.event.EventListener;
 @SpringBootApplication
 @RequiredArgsConstructor
 @EnableConfigurationProperties(DmsExampleProperties.class)
-@SuppressWarnings("PMD.UseUtilityClass")
 public class DmsExampleApplication {
     private final ExampleDmsService exampleDmsService;
     private final ApplicationContext context;
