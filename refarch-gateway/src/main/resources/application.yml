@@ -5,18 +5,20 @@ spring:
     web-application-type: reactive
   cloud:
     gateway:
-      globalcors:
-        cors-configurations:
-          '[/public/**]':
-            allowedOriginPatterns: ${ALLOWED_ORIGINS_PUBLIC}
-          '[/clients/**]':
-            allowedOriginPatterns: ${ALLOWED_ORIGINS_CLIENTS}
-            allowedHeaders: "*"
-            allowCredentials: true
-      default-filters:
-        - RemoveRequestHeader=cookie
-        - RemoveRequestHeader=x-xsrf-token
-        - TokenRelay=
+      server:
+        webflux:
+          globalcors:
+            cors-configurations:
+              '[/public/**]':
+                allowedOriginPatterns: ${ALLOWED_ORIGINS_PUBLIC}
+              '[/clients/**]':
+                allowedOriginPatterns: ${ALLOWED_ORIGINS_CLIENTS}
+                allowedHeaders: "*"
+                allowCredentials: true
+          default-filters:
+            - RemoveRequestHeader=cookie
+            - RemoveRequestHeader=x-xsrf-token
+            - TokenRelay=
 
 server:
   error:
