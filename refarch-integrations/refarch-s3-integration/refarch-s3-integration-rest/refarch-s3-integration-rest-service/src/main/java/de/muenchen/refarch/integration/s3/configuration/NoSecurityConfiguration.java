@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 
 @Configuration
 @Profile("no-security")
@@ -20,7 +20,7 @@ public class NoSecurityConfiguration {
     public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
         http
                 .headers(customizer -> customizer.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
-                .authorizeHttpRequests(requests -> requests.requestMatchers(AntPathRequestMatcher.antMatcher("/**"))
+                .authorizeHttpRequests(requests -> requests.requestMatchers(PathPatternRequestMatcher.withDefaults().matcher("/**"))
                         .permitAll()
                         .requestMatchers(PathRequest.toH2Console()).permitAll()
                         .anyRequest()
