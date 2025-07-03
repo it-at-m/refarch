@@ -1,28 +1,30 @@
 spring:
   cloud:
     gateway:
-      routes:
-        - id: public-backend
-          uri: http://localhost:${wiremock.server.port}/
-          predicates:
-            - Path=/public/api/refarch-gateway-backend-service/**
-          filters:
-            - RewritePath=/public/api/refarch-gateway-backend-service/(?<urlsegments>.*), /$\{urlsegments}
-            - RemoveResponseHeader=WWW-Authenticate
-        - id: clients-backend
-          uri: http://localhost:${wiremock.server.port}/
-          predicates:
-            - Path=/clients/api/refarch-gateway-backend-service/**
-          filters:
-            - RewritePath=/clients/api/refarch-gateway-backend-service/(?<urlsegments>.*), /$\{urlsegments}
-            - RemoveResponseHeader=WWW-Authenticate
-        - id: backend
-          uri: http://localhost:${wiremock.server.port}/
-          predicates:
-            - Path=/api/refarch-gateway-backend-service/**
-          filters:
-            - RewritePath=/api/refarch-gateway-backend-service/(?<urlsegments>.*), /$\{urlsegments}
-            - RemoveResponseHeader=WWW-Authenticate
+      server:
+        webflux:
+          routes:
+            - id: public-backend
+              uri: http://localhost:${wiremock.server.port}/
+              predicates:
+                - Path=/public/api/refarch-gateway-backend-service/**
+              filters:
+                - RewritePath=/public/api/refarch-gateway-backend-service/(?<urlsegments>.*), /$\{urlsegments}
+                - RemoveResponseHeader=WWW-Authenticate
+            - id: clients-backend
+              uri: http://localhost:${wiremock.server.port}/
+              predicates:
+                - Path=/clients/api/refarch-gateway-backend-service/**
+              filters:
+                - RewritePath=/clients/api/refarch-gateway-backend-service/(?<urlsegments>.*), /$\{urlsegments}
+                - RemoveResponseHeader=WWW-Authenticate
+            - id: backend
+              uri: http://localhost:${wiremock.server.port}/
+              predicates:
+                - Path=/api/refarch-gateway-backend-service/**
+              filters:
+                - RewritePath=/api/refarch-gateway-backend-service/(?<urlsegments>.*), /$\{urlsegments}
+                - RemoveResponseHeader=WWW-Authenticate
 
 wiremock:
   server:

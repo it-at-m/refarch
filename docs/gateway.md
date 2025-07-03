@@ -44,13 +44,15 @@ spring:
     active: local,hazelcast-local # see section profiles
   cloud:
     gateway:
-      routes:
-        - id: backend
-          uri: http://backend-service:8080/
-          predicates:
-            - "Path=/api/backend-service/**"
-          filters:
-            - RewritePath=/api/backend-service/(?<urlsegments>.*), /$\{urlsegments}
+      server:
+        webflux:
+          routes:
+            - id: backend
+              uri: http://backend-service:8080/
+              predicates:
+                - "Path=/api/backend-service/**"
+              filters:
+                - RewritePath=/api/backend-service/(?<urlsegments>.*), /$\{urlsegments}
 refarch:
   hazelcast:
     service-name: # Kubernetes service name for when using profile `hazelcast-k8s`
@@ -58,7 +60,7 @@ refarch:
     csrf-whitelisted: # List of routes to disable CSRF protection for (optional)
       - /example/**
 
-# Aliases for `spring.cloud.gateway.globalcors.cors-configurations` to allow configuration via environment variables, as the used glob patterns can't be used there
+# Aliases for `spring.cloud.gateway.server.webflux.globalcors.cors-configurations` to allow configuration via environment variables, as the used glob patterns can't be used there
 ALLOWED_ORIGINS_PUBLIC: https://*.example.com,http://localhost:* # List of URIs allowed as origin for public routes (optional)
 ALLOWED_ORIGINS_CLIENTS: https://*.example.com,http://localhost:* # List of URIs allowed as origin for client routes (optional)
 ```
