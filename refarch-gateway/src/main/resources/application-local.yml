@@ -7,7 +7,7 @@ spring:
         webflux:
           routes:
             - id: sso
-              uri: http://kubernetes.docker.internal:8100/
+              uri: http://keycloak:8100/
               predicates:
                 - "Path=/api/sso/userinfo"
               filters:
@@ -27,7 +27,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://kubernetes.docker.internal:8100/auth/realms/local_realm
+          issuer-uri: http://keycloak:8100/auth/realms/local_realm
       client:
         provider:
           sso:
