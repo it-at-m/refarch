@@ -233,15 +233,13 @@ public class FabasoftAdapter implements
         switch (type) {
         case EINGEHEND:
             this.updateIncomingDocument(documentCOO, contents, user);
-            return;
+            break;
         case AUSGEHEND:
             this.updateOutgoingDocument(documentCOO, contents, user);
-            return;
+            break;
         case INTERN:
             this.updateInternalDocument(documentCOO, contents, user);
-            return;
-        default:
-            throw new AssertionError("must not happen");
+            break;
         }
     }
 
