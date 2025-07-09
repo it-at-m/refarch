@@ -62,8 +62,7 @@ public class GlobalAuthenticationErrorFilter implements GlobalFilter, Ordered {
              *         the body given by the parameter.
              */
             @Override
-            @NonNull
-            public Mono<Void> writeWith(@NonNull final Publisher<? extends DataBuffer> body) {
+            @NonNull public Mono<Void> writeWith(@NonNull final Publisher<? extends DataBuffer> body) {
                 final HttpStatusCode responseHttpStatus = getDelegate().getStatusCode();
                 if (body instanceof Flux<? extends DataBuffer> flux && responseHttpStatus.equals(httpStatus)) {
                     final DataBufferFactory dataBufferFactory = response.bufferFactory();

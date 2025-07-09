@@ -20,8 +20,7 @@ public class CreatePresignedUrlsUseCase implements CreatePresignedUrlsInPort {
     private final int presignedUrlExpiresInMinutes;
 
     @Override
-    @NonNull
-    public List<PresignedUrl> createPresignedUrls(@Valid final CreatePresignedUrlEvent event) throws FileSystemAccessException {
+    @NonNull public List<PresignedUrl> createPresignedUrls(@Valid final CreatePresignedUrlEvent event) throws FileSystemAccessException {
         return this.fileHandlingService.getPresignedUrls(
                 List.of(event.path().split(PATH_DELIMITER)),
                 Method.valueOf(event.action()),

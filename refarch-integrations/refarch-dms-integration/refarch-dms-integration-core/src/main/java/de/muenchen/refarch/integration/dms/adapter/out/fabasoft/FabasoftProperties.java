@@ -13,21 +13,15 @@ import org.springframework.validation.annotation.Validated;
 @ConfigurationProperties(prefix = "refarch.dms.fabasoft")
 public class FabasoftProperties {
 
-    @NotBlank
-    private String url;
+    @NotBlank private String url;
 
-    @NotBlank
-    private String username;
+    @NotBlank private String username;
 
-    @NotBlank
-    private String password;
+    @NotBlank private String password;
 
-    @NotBlank
-    private String businessapp;
+    @NotBlank private String businessapp;
 
-    @NotBlank
-    private String uiUrl;
+    @NotBlank private String uiUrl;
 
-    @NotNull
-    private Boolean enableMtom;
+    @NotNull private Boolean enableMtom;
 }

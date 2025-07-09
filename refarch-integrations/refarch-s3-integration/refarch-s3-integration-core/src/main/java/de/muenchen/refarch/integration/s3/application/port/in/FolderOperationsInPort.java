@@ -18,8 +18,7 @@ public interface FolderOperationsInPort {
      * @return list of files in folder.
      * @throws FileSystemAccessException on access errors.
      */
-    @NonNull
-    FilesInFolder getAllFilesInFolderRecursively(@NonNull String pathToFolder) throws FileSystemAccessException;
+    @NonNull FilesInFolder getAllFilesInFolderRecursively(@NonNull String pathToFolder) throws FileSystemAccessException;
 
     /**
      * Retrieves a list of metadata for files in a folder.
@@ -28,8 +27,7 @@ public interface FolderOperationsInPort {
      * @return list of metadata for files in folder.
      * @throws FileSystemAccessException on access errors.
      */
-    @NonNull
-    FilesMetadataInFolder getMetadataOfAllFilesInFolderRecursively(@NonNull String pathToFolder) throws FileSystemAccessException;
+    @NonNull FilesMetadataInFolder getMetadataOfAllFilesInFolderRecursively(@NonNull String pathToFolder) throws FileSystemAccessException;
 
     /**
      * Retrieves the sizes of all files within a specified folder.

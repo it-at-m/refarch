@@ -56,8 +56,7 @@ public class GlobalBackend5xxTo400Mapper implements GlobalFilter, Ordered {
         final ServerHttpResponseDecorator decoratedResponse = new ServerHttpResponseDecorator(response) {
 
             @Override
-            @NonNull
-            public Mono<Void> writeWith(@NonNull final Publisher<? extends DataBuffer> body) {
+            @NonNull public Mono<Void> writeWith(@NonNull final Publisher<? extends DataBuffer> body) {
                 final HttpStatusCode responseHttpStatus = getDelegate().getStatusCode();
 
                 final Flux<? extends DataBuffer> flux = (Flux<? extends DataBuffer>) body;
