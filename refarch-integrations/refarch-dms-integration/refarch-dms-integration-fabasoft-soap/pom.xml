@@ -8,6 +8,7 @@
     </parent>
 
     <artifactId>refarch-dms-integration-fabasoft-soap</artifactId>
+    <name>refarch-dms-integration-fabasoft-soap</name>
     <packaging>pom</packaging>
 
     <dependencies>

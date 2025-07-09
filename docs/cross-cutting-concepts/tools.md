@@ -3,12 +3,12 @@
 For better developer experience, the RefArch provides configuration presets for different tools.
 
 These different configurations are described in the following.
-The tools itself are described in [Develop](./templates/develop).
+The tools itself are described in [Develop](/templates/develop).
 
 ## PMD
 
 The `refarch-pmd` Java module provides a default ruleset for [PMD](https://pmd.github.io/) which is used for code linting.
-The module code can be found [here](https://github.com/it-at-m/refarch/tree/main/refarch-tools/refarch-java-tools/refarch-pmd) and the specific ruleset configuration [here](https://github.com/it-at-m/refarch/blob/main/refarch-tools/refarch-java-tools/refarch-pmd/src/main/resources/refarch-pmd-ruleset.xml).
+The module code can be found in the [`refarch-pmd` directory](https://github.com/it-at-m/refarch/tree/main/refarch-tools/refarch-java-tools/refarch-pmd) and the specific ruleset configuration inside the [`resources` subdirectory](https://github.com/it-at-m/refarch/blob/main/refarch-tools/refarch-java-tools/refarch-pmd/src/main/resources/refarch-pmd-ruleset.xml).
 
 All available rules can be found in [the according PMD documentation](https://docs.pmd-code.org/latest/pmd_rules_java.html).
 
@@ -69,7 +69,7 @@ However, to finish the onboarding process of Renovate, you need to open a PR for
 This PR then has to be merged manually once.
 After that's done Renovate will start opening PRs automatically.
 
-If you have configured [CODEOWNERS](./templates/develop#codeowners) for your project and require CODEOWNER approval inside your [ruleset](./templates/develop#github-rulesets),
+If you have configured [CODEOWNERS](/templates/develop#codeowners) for your project and require CODEOWNER approval inside your [ruleset](/templates/develop#github-rulesets),
 you need to configure bypass rules to make auto-merging possible.
 This can be achieved by adding the Renovate bot account to the [bypass list](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/creating-rulesets-for-a-repository#granting-bypass-permissions-for-your-branch-or-tag-ruleset).
 :::

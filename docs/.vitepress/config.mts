@@ -30,7 +30,11 @@ const vitepressConfig = defineConfig({
             text: "CI/CD",
             link: "https://github.com/it-at-m/lhm_actions/blob/main/docs/actions.md",
           },
-          { text: "Tools", link: "/tools" },
+          {
+            text: "Security",
+            link: "/cross-cutting-concepts/security",
+          },
+          { text: "Tools", link: "/cross-cutting-concepts/tools" },
         ],
       },
       { text: "Contribute", link: "/contribute" },
@@ -46,8 +50,11 @@ const vitepressConfig = defineConfig({
       },
     ],
     sidebar: [
-      { text: "Overview", link: "/overview" },
-      { text: "API Gateway", link: "/gateway" },
+      { text: "Overview", link: "/overview", items: [] },
+      {
+        text: "Components",
+        items: [{ text: "API Gateway", link: "/gateway" }],
+      },
       {
         text: "Templates",
         link: "/templates/",
@@ -70,10 +77,16 @@ const vitepressConfig = defineConfig({
         ],
       },
       {
-        text: "CI/CD",
-        link: "https://github.com/it-at-m/lhm_actions/blob/main/docs/actions.md",
+        text: "Cross-Cutting Concepts",
+        items: [
+          {
+            text: "CI/CD",
+            link: "https://github.com/it-at-m/lhm_actions/blob/main/docs/actions.md",
+          },
+          { text: "Security", link: "/cross-cutting-concepts/security" },
+          { text: "Tools", link: "/cross-cutting-concepts/tools" },
+        ],
       },
-      { text: "Tools", link: "/tools" },
     ],
     outline: {
       level: "deep",

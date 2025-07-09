@@ -147,7 +147,7 @@ Issues reported by the PMD and SpotBugs are currently not auto-fixable so you st
 The tools are configured through the respective configuration files or configuration sections inside the `pom.xml`
 
 - Spotless: `pom.xml` and using a [centralized configuration](https://github.com/it-at-m/itm-java-codeformat)
-- PMD: `pom.xml` and using centralized configuration (more information in [Tools](../tools#pmd))
+- PMD: `pom.xml` and using centralized configuration (more information in [Tools](/cross-cutting-concepts/tools#pmd))
 - SpotBugs: `pom.xml` and `spotbugs-exclude-rules.xml` (configuration part of the templates)
 
 ::: danger IMPORTANT
@@ -164,6 +164,17 @@ inside the `<profile>` block and adjust it as needed:
     <p2.password>my_token_or_password</p2.password>
     <p2.mirror>registry.example.com/mycustomp2mirror/</p2.mirror>
 </properties>
+```
+
+Also, make sure the `pom.xml` file contains the following content inside the `<eclipse>` section of the `spotless-maven-plugin` configuration:
+
+```xml
+<p2Mirrors>
+    <p2Mirror>
+        <prefix>https://download.eclipse.org</prefix>
+            <url>https://${p2.username}:${p2.password}@${p2.mirror}</url>
+        </p2Mirror>
+</p2Mirrors>
 ```
 
 :::
@@ -225,10 +236,10 @@ The configuration in the `application.yml` file (inside the `appswitcher-server`
 
 [Renovate](https://docs.renovatebot.com/) is used to keep your dependencies up to date.
 
-The templates by default make use of a centralized configuration we provide for RefArch-based projects. More information can be found in [Tools](../tools#renovate).
+The templates by default make use of a centralized configuration we provide for RefArch-based projects. More information can be found in [Tools](/cross-cutting-concepts/tools#renovate).
 
 ::: danger IMPORTANT
-To make full use of the provided configuration additional setup is needed, so please check out the corresponding [Tools documentation](../tools#renovate).
+To make full use of the provided configuration additional setup is needed, so please check out the corresponding [Tools documentation](/cross-cutting-concepts/tools#renovate).
 :::
 
 ## Pull Requests
@@ -253,7 +264,7 @@ Code Rabbit is free to use for open-source projects. If you are developing a pro
 
 ### CodeQL
 
-**CodeQL** is a GitHub tool for discovering vulnerabilities and code smells in code. More details can be found [here](https://codeql.github.com/).
+**CodeQL** is a GitHub tool for discovering vulnerabilities and code smells in code. More details can be found on the [official CodeQL website](https://codeql.github.com/).
 
 The template enables CodeQL for Pull Requests and configures CodeQL to only scan for Java and JavaScript/TypeScript/Vue files by default.
 For further information on how to change the configuration, please check out the documentation of the related custom [GitHub workflow](https://github.com/it-at-m/.github/blob/main/workflow-templates/codeql.yaml).
@@ -273,7 +284,7 @@ The allowed licenses can be viewed in the [Munich Open Source documentation](htt
 
 The templates provide a workflow for validating checklist status in a PR description and the PR discussion. To merge a PR, all checklist items must be ticked off by the PR creator.
 
-The templates by default ship with a [PR template](./organize.html#pull-request-template), which makes use of a checklist.
+The templates by default ship with a [PR template](./organize#pull-request-template), which makes use of a checklist.
 
 ::: info Information
 If some of the PR checklist items are not relevant for your PR, you should adjust the checklist inside the PR description to the specific PR changes.
@@ -292,7 +303,7 @@ More information about Rulesets can be found in the [official GitHub documentati
 
 ::: danger IMPORTANT
 Note that the tools mentioned above (CodeRabbit, CodeQL, Dependency Review) are optional by default and are not required to pass when a PR should be merged.
-We strongly encourage you to enable the status checks for those tools before being able to merge a PR. More information about status checks can be found [here](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/about-status-checks).
+We strongly encourage you to enable the status checks for those tools before being able to merge a PR. More information about status checks can be found in the [official GitHub documentation](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/about-status-checks).
 Status checks are configurable as part of the rulesets.
 :::
 
@@ -340,3 +351,99 @@ You definitely don't want that, as we are super nitpicky when it comes to code q
 :::
 
 To learn more about the CODEOWNERS file, please check the official [GitHub documentation](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners).
+
+## Internationalization (i18n)
+
+The `refarch-frontend` template uses [Vue I18n](https://vue-i18n.intlify.dev/) by default to allow easy addition of multiple languages.
+Currently, the template only provides the `i18n` mechanism to centralize the definition of text content in different languages and move raw text out of the Vue components.
+The feature to allow easy switching of languages for the end user will be implemented in the future.
+
+::: info Information
+If you don't want to use i18n in your application, you can either:
+
+- **Completely remove i18n** by removing the following dependencies: `@intlify/unplugin-vue-i18n`, `vue-i18n` and `@intlify/eslint-plugin-vue-i18n` and removing the `plugins/i18n.ts` file.
+
+  (**Note**: Some manual corrections might still be necessary)
+
+- **Soften the requirements for incremental adoption** by disabling linting rule [@intlify/vue-i18n/no-raw-text](https://eslint-plugin-vue-i18n.intlify.dev/rules/no-raw-text.html) inside the ESLint configuration file
+
+  (**Note**: This allows mixing raw text in Vue components with texts maintained in locale files)
+
+:::
+
+More information on how to reference the translation file contents in your Vue components can be found in the official VueI18n documentation.
+We suggest using the [Composition API style](https://vue-i18n.intlify.dev/guide/advanced/composition.html), as it matches the general use of Composition API when developing with Vue.
+
+### Adding a new language
+
+The template only provides the `de` (German) locale by default. To add a new language to the application, the following steps need to be done:
+
+1. Add the translation file (JSON-based) to the `locales` folder
+2. Import the translation file in the `plugins/i18n.ts` file
+3. (Optional) If using Vuetify, import the pre-defined Vuetify translations
+4. Extend the `messages` object to contain the new language key combining Vuetify-based and own translations, e.g.
+
+```javascript
+const messages = {
+  en: {
+    $vuetify: {
+      ...enVuetify,
+    },
+    ...enApp,
+  },
+};
+```
+
+::: danger Important
+Each `.json` file should have the same structure and the translation keys should be provided in all files.
+Otherwise, some parts of your application will fall back to the default language (`de`).
+Also, always use the correct ISO-639-1 code for your language.
+:::
+
+### Key Naming Conventions
+
+We recommend a certain structure and set of conventions to help keep translations organized, consistent, and easy to maintain.
+
+1. **camelCase Keys**
+   - Use lowerCamelCase for individual keys, e.g. `home.header`, `app.name.full`.
+   - This convention aligns with lint rules and keeps keys visually distinct from normal text.
+2. **Hierarchical Grouping**
+
+   - Organize keys by feature or component, using multiple nested levels for clarity.
+   - Example:
+
+     ```json
+     {
+       "home": {
+         "header": "Welcome!",
+         "paragraph": "Some text here..."
+       }
+     }
+     ```
+
+3. **Consistent Section Prefixes**
+   - Maintain distinct top-level sections: e.g. `common`, `app`, `views`, `components`, `domain`, etc.
+   - This consistency makes it easier to quickly locate strings in a large codebase.
+
+### Section Organization Guidelines
+
+1. `common`: For frequent, repeated terms like “yes”/“no” or action verbs like “close,” “save,” “cancel.”
+2. `app`: For global application-related strings (e.g., brand name, headers).
+3. `views`: For text used within specific pages/views (e.g., views.home.header).
+4. `components`: For text that appears in reusable UI components.
+5. `domain`: For translating domain-specific objects, like database fields or business entities.
+
+### Special Character Handling
+
+- When using special or reserved JSON characters (e.g. `"`, `{`), ensure they are properly quoted if needed.
+- Complex strings may require double quotes to avoid parsing or lint errors, for example:
+
+  ```json
+  {
+    "name": {
+      "full": "@:app.name.part1@:app.name.part2"
+    }
+  }
+  ```
+
+- If you need placeholders in strings, consider using interpolation features offered by vue-i18n (e.g., `{item} saved.`).
