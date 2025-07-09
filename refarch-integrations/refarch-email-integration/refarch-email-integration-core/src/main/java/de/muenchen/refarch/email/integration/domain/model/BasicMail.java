@@ -11,8 +11,7 @@ public class BasicMail {
     /**
      * Receiver addresses of the mail, comma separated.
      */
-    @NotBlank(message = "No receivers given")
-    private String receivers;
+    @NotBlank(message = "No receivers given") private String receivers;
 
     /**
      * CC-Receiver addresses of the mail, comma separated.
@@ -27,8 +26,7 @@ public class BasicMail {
     /**
      * Subject of the mail.
      */
-    @NotBlank(message = "No subject given")
-    private String subject;
+    @NotBlank(message = "No subject given") private String subject;
 
     /**
      * Reply to address

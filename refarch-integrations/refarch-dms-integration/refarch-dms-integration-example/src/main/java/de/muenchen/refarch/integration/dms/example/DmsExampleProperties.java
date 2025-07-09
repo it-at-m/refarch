@@ -11,8 +11,6 @@ import org.springframework.validation.annotation.Validated;
 @Setter
 @Validated
 public class DmsExampleProperties {
-    @NotBlank
-    private String username;
-    @NotBlank
-    private String targetProcedureCoo;
+    @NotBlank private String username;
+    @NotBlank private String targetProcedureCoo;
 }

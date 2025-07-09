@@ -69,8 +69,7 @@ public class FolderOperationsUseCase implements FolderOperationsInPort {
      * @return the paths to the files within the folder and subfolder.
      * @throws FileSystemAccessException if the S3 storage cannot be accessed.
      */
-    @NotNull
-    @Override
+    @NotNull @Override
     public FilesInFolder getAllFilesInFolderRecursively(@NotNull final String pathToFolder) throws FileSystemAccessException {
         final String pathToFolderWithSeparatorAtTheEnd = addPathSeparatorToTheEnd(pathToFolder);
         final Set<String> filePathsInFolder = this.s3OutPort.getFilePathsFromFolder(pathToFolderWithSeparatorAtTheEnd);
@@ -85,8 +84,7 @@ public class FolderOperationsUseCase implements FolderOperationsInPort {
      * @return the metadata of the files within the folder and subfolder.
      * @throws FileSystemAccessException if the S3 storage cannot be accessed.
      */
-    @NotNull
-    @Override
+    @NotNull @Override
     public FilesMetadataInFolder getMetadataOfAllFilesInFolderRecursively(@NotNull final String pathToFolder) throws FileSystemAccessException {
         final String pathToFolderWithSeparatorAtTheEnd = addPathSeparatorToTheEnd(pathToFolder);
         final List<FileMetadata> filePathsInFolder = this.s3OutPort.getMetadataOfFilesFromFolder(pathToFolderWithSeparatorAtTheEnd);

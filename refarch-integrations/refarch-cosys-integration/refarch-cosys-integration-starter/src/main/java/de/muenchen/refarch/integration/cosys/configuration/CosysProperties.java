@@ -15,29 +15,22 @@ import org.springframework.validation.annotation.Validated;
 @ConfigurationProperties(prefix = "refarch.cosys")
 public class CosysProperties {
 
-    @NotNull
-    @Valid
-    @NestedConfigurationProperty
+    @NotNull @Valid @NestedConfigurationProperty
     private MergeProperties merge;
 
-    @NotBlank
-    private String url;
+    @NotBlank private String url;
 
     @Getter
     @Setter
     public static class MergeProperties {
 
-        @NotBlank
-        private String datafile;
+        @NotBlank private String datafile;
 
-        @NotBlank
-        private String inputLanguage;
+        @NotBlank private String inputLanguage;
 
-        @NotBlank
-        private String outputLanguage;
+        @NotBlank private String outputLanguage;
 
-        @NotBlank
-        private String keepFields;
+        @NotBlank private String keepFields;
 
     }
 }

@@ -14,14 +14,12 @@ public class TemplateMail extends BasicMail {
     /**
      * Template of the mail.
      */
-    @NotBlank(message = "No template given")
-    private final String template;
+    @NotBlank(message = "No template given") private final String template;
 
     /**
      * Bottom body of the mail.
      */
-    @NotEmpty(message = "No content given")
-    private final Map<String, Object> content;
+    @NotEmpty(message = "No content given") private final Map<String, Object> content;
 
     public TemplateMail(final String receivers, final String receiversCc, final String receiversBcc, final String subject, final String replyTo,
             final List<Attachment> attachments,
