@@ -14,7 +14,7 @@
     <properties>
         <openapi-generator-maven-plugin.version>7.7.0</openapi-generator-maven-plugin.version>
 
-        <tika.version>3.2.0</tika.version>
+        <tika.version>3.2.1</tika.version>
         <jackson-databind-nullable.version>0.2.6</jackson-databind-nullable.version>
     </properties>
 
