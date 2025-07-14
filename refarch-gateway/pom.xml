@@ -65,7 +65,7 @@
         <maven-release-plugin.version>3.1.1</maven-release-plugin.version>
 
         <!-- Utility -->
-        <apache-commons-lang.version>3.17.0</apache-commons-lang.version>
+        <apache-commons-lang.version>3.18.0</apache-commons-lang.version>
         <refarch-tools.version>1.2.0</refarch-tools.version>
 
         <!-- Additional required dependencies -->
