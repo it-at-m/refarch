@@ -12,7 +12,6 @@ import org.springframework.validation.annotation.Validated;
 @ConfigurationProperties(prefix = "refarch.address")
 public class AddressServiceIntegrationProperties {
 
-    @NotBlank
-    private String url;
+    @NotBlank private String url;
 
 }

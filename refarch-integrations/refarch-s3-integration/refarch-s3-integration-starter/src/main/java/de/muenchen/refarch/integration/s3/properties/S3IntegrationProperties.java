@@ -13,20 +13,15 @@ import org.springframework.validation.annotation.Validated;
 @ConfigurationProperties(prefix = "refarch.s3")
 public class S3IntegrationProperties {
 
-    @NotBlank
-    private String url;
+    @NotBlank private String url;
 
-    @NotBlank
-    private String accessKey;
+    @NotBlank private String accessKey;
 
-    @NotBlank
-    private String secretKey;
+    @NotBlank private String secretKey;
 
-    @NotBlank
-    private String bucketName;
+    @NotBlank private String bucketName;
 
-    @NotNull
-    private Boolean initialConnectionTest = true;
+    @NotNull private Boolean initialConnectionTest = true;
 
     private int presignedUrlExpiresInMinutes = 7 * 24 * 60; // 7 days
 }

@@ -1,6 +1,9 @@
 package de.muenchen.refarch.gateway.filter;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static de.muenchen.refarch.gateway.TestConstants.SPRING_TEST_PROFILE;
 
 import com.github.tomakehurst.wiremock.http.HttpHeader;
@@ -34,7 +37,6 @@ class GlobalBackend5xxTo400MapperTest {
     @Test
     @WithMockUser
     void backendError500() {
-
         stubFor(get(urlEqualTo("/remote"))
                 .willReturn(aResponse()
                         .withStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())
@@ -56,7 +58,6 @@ class GlobalBackend5xxTo400MapperTest {
     @Test
     @WithMockUser
     void backendError200() {
-
         stubFor(get(urlEqualTo("/remote"))
                 .willReturn(aResponse()
                         .withStatus(HttpStatus.OK.value())
