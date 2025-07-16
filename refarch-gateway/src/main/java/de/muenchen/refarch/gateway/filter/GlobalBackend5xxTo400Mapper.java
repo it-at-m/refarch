@@ -47,7 +47,6 @@ public class GlobalBackend5xxTo400Mapper implements GlobalFilter, Ordered {
 
     @Override
     public Mono<Void> filter(final ServerWebExchange exchange, final GatewayFilterChain chain) {
-        final String emptyJsonObject = "{}";
         final ServerHttpResponse response = exchange.getResponse();
         final ServerHttpRequest request = exchange.getRequest();
         final DataBufferFactory dataBufferFactory = response.bufferFactory();
