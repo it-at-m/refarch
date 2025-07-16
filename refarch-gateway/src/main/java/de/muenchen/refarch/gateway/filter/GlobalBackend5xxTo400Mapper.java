@@ -3,7 +3,6 @@ package de.muenchen.refarch.gateway.filter;
 import java.nio.charset.StandardCharsets;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ObjectUtils;
 import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -59,10 +58,7 @@ public class GlobalBackend5xxTo400Mapper implements GlobalFilter, Ordered {
             @NonNull public Mono<Void> writeWith(@NonNull final Publisher<? extends DataBuffer> body) {
                 final HttpStatusCode responseHttpStatus = getDelegate().getStatusCode();
 
-                final Flux<? extends DataBuffer> flux = (Flux<? extends DataBuffer>) body;
-
-                if (body instanceof Flux && responseHttpStatus.is5xxServerError()) {
-
+                if (body instanceof Flux<? extends DataBuffer> flux && responseHttpStatus != null && responseHttpStatus.is5xxServerError()) {
                     return super.writeWith(flux.buffer().map(
                             // replace old body represented by dataBuffer by the new one
 
@@ -80,11 +76,11 @@ public class GlobalBackend5xxTo400Mapper implements GlobalFilter, Ordered {
                                 if (map5xxTo400) {
                                     getDelegate().setStatusCode(HttpStatus.BAD_REQUEST);
                                     newDataBuffer = dataBufferFactory.wrap(
-                                            ObjectUtils.getIfNull(GENERIC_ERROR_400, emptyJsonObject).getBytes(StandardCharsets.UTF_8));
+                                            GENERIC_ERROR_400.getBytes(StandardCharsets.UTF_8));
                                 } else {
                                     getDelegate().setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
                                     newDataBuffer = dataBufferFactory.wrap(
-                                            ObjectUtils.getIfNull(GENERIC_ERROR_500, emptyJsonObject).getBytes(StandardCharsets.UTF_8));
+                                            GENERIC_ERROR_500.getBytes(StandardCharsets.UTF_8));
                                 }
 
                                 getDelegate().getHeaders().setContentLength(newDataBuffer.readableByteCount());

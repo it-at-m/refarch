@@ -3,7 +3,6 @@ package de.muenchen.refarch.gateway.filter;
 import java.nio.charset.StandardCharsets;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ObjectUtils;
 import org.reactivestreams.Publisher;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -44,12 +43,8 @@ public class GlobalAuthenticationErrorFilter implements GlobalFilter, Ordered {
     @Override
     public Mono<Void> filter(final ServerWebExchange exchange, final GatewayFilterChain chain) {
         log.debug("Check for authentication errors");
-        final HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
-        final String newResponseBody = GENERIC_AUTHENTICATION_ERROR;
-        final String emptyJsonObject = "{}";
 
         final ServerHttpResponse response = exchange.getResponse();
-
         final ServerHttpResponseDecorator decoratedResponse = new ServerHttpResponseDecorator(response) {
 
             /**
@@ -64,12 +59,12 @@ public class GlobalAuthenticationErrorFilter implements GlobalFilter, Ordered {
             @Override
             @NonNull public Mono<Void> writeWith(@NonNull final Publisher<? extends DataBuffer> body) {
                 final HttpStatusCode responseHttpStatus = getDelegate().getStatusCode();
-                if (body instanceof Flux<? extends DataBuffer> flux && responseHttpStatus.equals(httpStatus)) {
+                if (body instanceof Flux<? extends DataBuffer> flux && responseHttpStatus != null && responseHttpStatus.equals(HttpStatus.UNAUTHORIZED)) {
                     final DataBufferFactory dataBufferFactory = response.bufferFactory();
                     final DataBuffer newDataBuffer = dataBufferFactory.wrap(
-                            ObjectUtils.getIfNull(newResponseBody, emptyJsonObject).getBytes(StandardCharsets.UTF_8));
+                            GENERIC_AUTHENTICATION_ERROR.getBytes(StandardCharsets.UTF_8));
 
-                    log.debug("Response from upstream {} get new response body: {}", httpStatus, newResponseBody);
+                    log.debug("Response from upstream {} get new response body: {}", HttpStatus.UNAUTHORIZED, GENERIC_AUTHENTICATION_ERROR);
                     getDelegate().getHeaders().setContentLength(newDataBuffer.readableByteCount());
                     getDelegate().getHeaders().setContentType(MediaType.APPLICATION_JSON);
 
