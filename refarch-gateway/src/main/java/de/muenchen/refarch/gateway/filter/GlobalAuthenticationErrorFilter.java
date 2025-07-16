@@ -67,7 +67,7 @@ public class GlobalAuthenticationErrorFilter implements GlobalFilter, Ordered {
                 if (body instanceof Flux<? extends DataBuffer> flux && responseHttpStatus.equals(httpStatus)) {
                     final DataBufferFactory dataBufferFactory = response.bufferFactory();
                     final DataBuffer newDataBuffer = dataBufferFactory.wrap(
-                            ObjectUtils.defaultIfNull(newResponseBody, emptyJsonObject).getBytes(StandardCharsets.UTF_8));
+                            ObjectUtils.getIfNull(newResponseBody, emptyJsonObject).getBytes(StandardCharsets.UTF_8));
 
                     log.debug("Response from upstream {} get new response body: {}", httpStatus, newResponseBody);
                     getDelegate().getHeaders().setContentLength(newDataBuffer.readableByteCount());

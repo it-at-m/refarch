@@ -80,11 +80,11 @@ public class GlobalBackend5xxTo400Mapper implements GlobalFilter, Ordered {
                                 if (map5xxTo400) {
                                     getDelegate().setStatusCode(HttpStatus.BAD_REQUEST);
                                     newDataBuffer = dataBufferFactory.wrap(
-                                            ObjectUtils.defaultIfNull(GENERIC_ERROR_400, emptyJsonObject).getBytes(StandardCharsets.UTF_8));
+                                            ObjectUtils.getIfNull(GENERIC_ERROR_400, emptyJsonObject).getBytes(StandardCharsets.UTF_8));
                                 } else {
                                     getDelegate().setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
                                     newDataBuffer = dataBufferFactory.wrap(
-                                            ObjectUtils.defaultIfNull(GENERIC_ERROR_500, emptyJsonObject).getBytes(StandardCharsets.UTF_8));
+                                            ObjectUtils.getIfNull(GENERIC_ERROR_500, emptyJsonObject).getBytes(StandardCharsets.UTF_8));
                                 }
 
                                 getDelegate().getHeaders().setContentLength(newDataBuffer.readableByteCount());
