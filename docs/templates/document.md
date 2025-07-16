@@ -7,6 +7,16 @@ Those are further explained below.
 Please make sure you worked through the corresponding [Getting Started](./getting-started#documentation) instructions before proceeding.
 :::
 
+## Code-focused documentation
+
+To support code understandability for developers it's useful to document the code using mechanisms like [Javadoc](https://www.oracle.com/de/technical-resources/articles/java/javadoc-tool.html), [TSDoc](https://tsdoc.org/) or respective tools for other programming languages.
+This also improves developer experience when using tools like IDEs.
+
+Additionally, it's recommended to document developed APIs using standards like [OpenAPI](https://www.openapis.org/).
+We provide OpenAPI support for documenting APIs out of the box. This is further described in [our OpenAPI documentation page](/cross-cutting-concepts/openapi).
+
+The rest of this page will focus on code-decoupled documentation.
+
 ## README.md
 
 The `README.md` acts as an entrypoint to your GitHub repository and thus should have the most important information about your repository.
