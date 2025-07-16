@@ -71,7 +71,7 @@ Example:
 /**
  * This text is used as a description for the following request.
  * @param someId describes the path variable used for this request.
- * @return explains the return value of the request.f
+ * @return explains the return value of the request.
  */
 @GetMapping("{someId}")
 @ResponseStatus(HttpStatus.OK)
