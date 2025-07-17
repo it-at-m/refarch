@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.data.Percentage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -103,7 +102,7 @@ class LogbackJsonLoggingTest {
 
     private static Throwable genExceptionStack(final Throwable root, final int index) {
         if (index > 0) {
-            return new IllegalArgumentException("stackmessage-#%d: (%s)".formatted(index, StringUtils.repeat("abcd ", 20)), genExceptionStack(root, index - 1));
+            return new IllegalArgumentException("stackmessage-#%d: (%s)".formatted(index, "abcd ".repeat(20)), genExceptionStack(root, index - 1));
         } else {
             return root;
         }
