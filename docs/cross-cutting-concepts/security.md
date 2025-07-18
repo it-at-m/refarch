@@ -55,12 +55,16 @@ During this mapping the roles are prefixed with `ROLE_`, which Spring Security e
 ::: warning Custom Plugin
 Currently this implementation relies on a custom Keycloak plugin which maps the Keycloak authorization permission into the
 `authorities` claim of the user info endpoint. Also, the plugin needs to be activated per client by adding a mapper.
+
+_The plugin will be made available as open source code in the near future._
 :::
 
 The second implementation uses permissions for authorization and retrieves them from the `authorities` claim exposed by the user-info endpoint.
 The resolved permissions are cached (default 1 minute).
 
+::: info
 Because roles are the default in the templates, permission-based authorization must be explicitly enabled via the `userinfo-authorities` Spring profile.
+:::
 
 ### User attributes
 
