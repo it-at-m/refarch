@@ -29,7 +29,7 @@ This e.g. means using [defined claims](https://www.iana.org/assignments/jwt/jwt.
 Authorization is only done in the backend leveraging [Spring Securities authorization features](https://docs.spring.io/spring-security/reference/servlet/authorization/index.html).
 In specific, we use [Method Security](https://docs.spring.io/spring-security/reference/servlet/authorization/method-security.html) which allows fine-grained access control on method level via specific security annotations.
 
-These annotation check against the authorities (scopes, permissions, roles) a user has. These are extracted from the JWT provided for authentication.
+These annotations check the authorities (scopes, permissions, roles) a user has. These are extracted from the JWT provided for authentication.
 A so-called authorities converter specifies how the authorities are extracted from the JWT.
 
 OAuth 2.0 and OpenID Connect don't specify any authorization for applications themselves, so following authorities converters are coupled to our used identity provider Keycloak.
@@ -38,7 +38,7 @@ In general, they should work with other identity providers (e.g. by configuring 
 The backend template provides two implementations which are described in the following.
 
 ::: info Suggested implementation
-In contrast to permissions, roles are a more common supported concept in OAuth 2.0 and OpenID Connection identity providers.
+In contrast to permissions, roles are a more commonly supported concept in OAuth 2.0 and OpenID Connect identity providers.
 Therefore, for higher interoperability roles should be used and are also the default in the templates.
 
 Once an application has decided on one or the other, it's perfectly fine to remove the unneeded implementation or switch the default.
@@ -64,8 +64,8 @@ Because roles are the default in the templates, permission-based authorization m
 
 ### User attributes
 
-In some application further information for a user is required.
-For that case there a multiple scopes which append the needed information to the JWT.
+Some applications require additional user information.
+In that case, there are multiple scopes that append the necessary information to the JWT.
 
 - `profile`: Default OpenID scope which adds e.g. `preferred_username`, `given_name`, `family_name` and `name` claims
 - `email`: Default OpenID scope which adds `email` claim
@@ -78,7 +78,7 @@ This is done by checking if the client is contained in the `aud` claim, but this
 See [Spring](https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/jwt.html#_supplying_audiences) and
 [Keycloak](https://www.keycloak.org/docs/latest/server_admin/#_audience_resolve) docs.
 
-See bellow the according configuration for the backend.
+See below for the corresponding backend configuration.
 
 ```yaml
 spring:
