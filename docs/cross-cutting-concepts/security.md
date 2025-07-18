@@ -64,7 +64,7 @@ As the default in the templates are roles the usage of permissions are enabled v
 
 ### User attributes
 
-In some application further information for a user is required. 
+In some application further information for a user is required.
 For that case there a multiple scopes which append the needed information to the JWT.
 
 - `profile`: Default OpenID scope which adds e.g. `preferred_username`, `given_name`, `family_name` and `name` claims
@@ -75,7 +75,7 @@ For that case there a multiple scopes which append the needed information to the
 
 For further security the backend can validate that the token has explicitly been issued to the wanted client.
 This is done by checking if the client is contained in the `aud` claim, but this requires a mapper.
-See [Spring](https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/jwt.html#_supplying_audiences) and 
+See [Spring](https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/jwt.html#_supplying_audiences) and
 [Keycloak](https://www.keycloak.org/docs/latest/server_admin/#_audience_resolve) docs.
 
 See bellow the according configuration for the backend.
