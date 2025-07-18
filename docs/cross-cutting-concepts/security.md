@@ -17,7 +17,7 @@ flowchart LR
 
 For authentication and authorization the RefArch uses OAuth 2.0 and OpenID Connect.
 The authentication between the clients and the API gateway can be different depending on client and request type (see [Routing](../gateway.md#routing)).
-Between the API gateway and the backend the traffic is always authenticated with JWTs.
+The traffic between API gateway and the backend is always authenticated with JWTs.
 
 ::: info
 Our base principle for authentication and authorization is to follow the specifications of JWT and OAuth 2.0 as close as possible.
@@ -39,7 +39,7 @@ The backend template provides two implementations which are described in the fol
 
 ::: info Suggested implementation
 In contrast to permissions, roles are a more commonly supported concept in OAuth 2.0 and OpenID Connect identity providers.
-Therefore, for higher interoperability roles should be used and are also the default in the templates.
+Therefore, roles offer higher interoperability and are the suggested option. Roles are used by default in the templates.
 
 Once an application has decided on one or the other, it's perfectly fine to remove the unneeded implementation or switch the default.
 :::
@@ -47,7 +47,7 @@ Once an application has decided on one or the other, it's perfectly fine to remo
 #### Keycloak roles (Default)
 
 Keycloak comes with a built in `roles` scope and corresponding realm mapper, which maps all client roles to the `resource_access.<client id>.roles` claim.
-The provided authorities converter implementation takes this claim and maps it to Spring authorities.
+The provided authorities converter implementation (`KeycloakRolesAuthoritiesConverter.java`) takes this claim and maps it to Spring authorities.
 During this mapping the roles are prefixed with `ROLE_`, which Spring Security expects to interpret a granted authority as role.
 
 #### Keycloak permissions
@@ -59,7 +59,7 @@ Currently this implementation relies on a custom Keycloak plugin which maps the 
 _The plugin will be made available as open source code in the near future._
 :::
 
-The second implementation uses permissions for authorization and retrieves them from the `authorities` claim exposed by the user-info endpoint.
+This implementation (`UserInfoAuthoritiesConverter.java`) uses permissions for authorization and retrieves them from the `authorities` claim exposed by the user-info endpoint.
 The resolved permissions are cached (default 1 minute).
 
 ::: info
@@ -77,7 +77,7 @@ In that case, there are multiple scopes that append the necessary information to
 
 ### Client validation
 
-For further security the backend can validate that the token has explicitly been issued to the wanted client.
+For further security the backend can validate if the token has been explicitly issued for the desired client.
 This is done by checking if the client is contained in the `aud` claim, but this requires a mapper.
 See [Spring](https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/jwt.html#_supplying_audiences) and
 [Keycloak](https://www.keycloak.org/docs/latest/server_admin/#_audience_resolve) docs.
