@@ -40,6 +40,8 @@ The backend template provides two implementations which are described in the fol
 ::: info Suggested implementation
 In contrast to permissions, roles are a more common supported concept in OAuth 2.0 and OpenID Connection identity providers.
 Therefore, for higher interoperability roles should be used and are also the default in the templates.
+
+When an application has decided on one or the other, it's totally ok to remove the unneeded one or switch the default.
 :::
 
 #### Keycloak roles (Default)
@@ -62,15 +64,31 @@ As the default in the templates are roles the usage of permissions are enabled v
 
 ### User attributes
 
-Scopes 
+In some application further information for a user is required. 
+For that case there a multiple scopes which append the needed information to the JWT.
 
-- `profile`: 
-- `email`: 
-- `lhm-core`: 
+- `profile`: Default OpenID scope which adds e.g. `preferred_username`, `given_name`, `family_name` and `name` claims
+- `email`: Default OpenID scope which adds `email` claim
+- `lhm-core`: LHM custom scope which adds **TBD**
 
 ### Client validation
 
-- audience check
+For further security the backend can validate that the token has explicitly been issued to the wanted client.
+This is done by checking if the client is contained in the `aud` claim, but this requires a mapper.
+See [Spring](https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/jwt.html#_supplying_audiences) and 
+[Keycloak](https://www.keycloak.org/docs/latest/server_admin/#_audience_resolve) docs.
+
+See bellow the according configuration for the backend.
+
+```yaml
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          audiences:
+            - <client id>
+```
 
 ## Disable SBOM Exposing
 
