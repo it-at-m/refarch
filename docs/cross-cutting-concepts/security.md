@@ -21,7 +21,7 @@ Between the API gateway and the backend the traffic is always authenticated with
 
 ::: info
 Our base principle for authentication and authorization is to follow the specifications of JWT and OAuth 2.0 as close as possible.
-This e.g. means using [defined claims](https://www.iana.org/assignments/jwt/jwt.xhtml) and Keycloak default scopes where ever possible instead of introducing new ones.
+This e.g. means using [defined claims](https://www.iana.org/assignments/jwt/jwt.xhtml) and Keycloak default scopes wherever possible instead of introducing new ones.
 :::
 
 ### Authorization
@@ -30,7 +30,7 @@ Authorization is only done in the backend leveraging [Spring Securities authoriz
 In specific, we use [Method Security](https://docs.spring.io/spring-security/reference/servlet/authorization/method-security.html) which allows fine-grained access control on method level via specific security annotations.
 
 These annotation check against the authorities (scopes, permissions, roles) a user has. These are extracted from the JWT provided for authentication.
-A so-called authorities converter specifies how the authorities are extract from the JWT.
+A so-called authorities converter specifies how the authorities are extracted from the JWT.
 
 OAuth 2.0 and OpenID Connect don't specify any authorization for applications themselves, so following authorities converters are coupled to our used identity provider Keycloak.
 In general, they should work with other identity providers (e.g. by configuring a mapper) but are not tested.
@@ -41,14 +41,14 @@ The backend template provides two implementations which are described in the fol
 In contrast to permissions, roles are a more common supported concept in OAuth 2.0 and OpenID Connection identity providers.
 Therefore, for higher interoperability roles should be used and are also the default in the templates.
 
-When an application has decided on one or the other, it's totally ok to remove the unneeded one or switch the default.
+Once an application has decided on one or the other, it's perfectly fine to remove the unneeded implementation or switch the default.
 :::
 
 #### Keycloak roles (Default)
 
 Keycloak comes with a built in `roles` scope and corresponding realm mapper, which maps all client roles to the `resource_access.<client id>.roles` claim.
 The provided authorities converter implementation takes this claim and maps it to Spring authorities.
-During this mapping the roles are prefixed with `ROLES_` which tells Spring that these are roles.
+During this mapping the roles are prefixed with `ROLE_`, which Spring Security expects to interpret a granted authority as role.
 
 #### Keycloak permissions
 
@@ -57,10 +57,10 @@ Currently this implementation relies on a custom Keycloak plugin which maps the 
 `authorities` claim of the user info endpoint. Also, the plugin needs to be activated per client by adding a mapper.
 :::
 
-The second implementation use permissions for authorization and use the user info endpoint for loading them out of the `authorities` claim.
-These loaded permissions are cached (default 1m).
+The second implementation uses permissions for authorization and retrieves them from the `authorities` claim exposed by the user-info endpoint.
+The resolved permissions are cached (default 1 minute).
 
-As the default in the templates are roles the usage of permissions are enabled via the profile `userinfo-authorities`.
+Because roles are the default in the templates, permission-based authorization must be explicitly enabled via the `userinfo-authorities` Spring profile.
 
 ### User attributes
 
