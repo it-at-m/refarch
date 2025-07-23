@@ -1,4 +1,8 @@
 spring:
+  application:
+    name: "@project.artifactId@"
+    group: "@project.groupId@"
+    version: "@project.version@"
   security:
     oauth2:
       client:
@@ -11,6 +15,13 @@ spring:
             authorization-grant-type: client_credentials
             client-id: local
             client-secret: client_secret
+
+logging:
+  include-application-group: false # disabled because application group is only relevant when deployed
+  level:
+    root: INFO
+    de.muenchen.refarch: DEBUG
+    org.springframework.web: DEBUG
 
 refarch:
   cosys:

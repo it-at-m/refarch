@@ -3,14 +3,6 @@ spring:
     name: "@project.artifactId@"
     group: "@project.groupId@"
     version: "@project.version@"
-  mail:
-    host: localhost
-    port: 1025
-    username: test@muenchen.de
-    password: secret
-
-server:
-  port: 8087
 
 logging:
   include-application-group: false # disabled because application group is only relevant when deployed
@@ -20,6 +12,13 @@ logging:
     org.springframework.web: DEBUG
 
 refarch:
-  mail:
-    from-address: test@muenchen.de
-    default-reply-to-address: no_reply@muenchen.de
+  dms:
+    fabasoft:
+      businessapp: refarch-example
+      url:
+      ui-url:
+      username:
+      password:
+    example:
+      username:
+      target-procedure-coo:
