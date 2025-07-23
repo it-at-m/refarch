@@ -1,8 +1,8 @@
 spring:
   application:
-    name: @project.artifactId@
-    group: @project.groupId@
-    version: @project.version@
+    name: "@project.artifactId@"
+    group: "@project.groupId@"
+    version: "@project.version@"
   security:
     oauth2:
       client:
