@@ -36,8 +36,11 @@ const vitepressConfig = defineConfig({
           },
           { text: "Tools", link: "/cross-cutting-concepts/tools" },
           { text: "OpenAPI", link: "/cross-cutting-concepts/openapi" },
-          { text: "Known Issues", link: "/support/known-issues" },
         ],
+      },
+      {
+        text: "Support",
+        items: [{ text: "Known Issues", link: "/support/known-issues" }],
       },
       { text: "Contribute", link: "/contribute" },
       {

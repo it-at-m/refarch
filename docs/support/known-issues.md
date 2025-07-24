@@ -29,9 +29,9 @@ If not feel free to open a new one.
 
 #### Timeout on SSO misconfiguration or audience claim mismatch
 
-When the configured SSO URLs in the `refarch-backend` and API gateway do not match, trying to access a secured endpoint in the backend via the API gateway results in a timout.
+When the configured SSO URLs in the `refarch-backend` and API gateway do not match, accessing a secured endpoint in the backend via the API gateway results in a timeout.
 
-The same behaviour occurs when the names of the expected audience claims do not match.
+The same behavior occurs when the names of the expected audience claims do not match.
 
 In both cases this is a configuration-error and thus should not occur in a working real-case scenario.
 
