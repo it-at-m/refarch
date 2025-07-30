@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "DMS REST API",
-    "version": "1.2"
+    "version": "1.2.2"
   },
   "servers": [
     {
@@ -27,6 +27,9 @@
     },
     {
       "name": "/subjectAreaUnits"
+    },
+    {
+      "name": "/subjectArea"
     },
     {
       "name": "/businessDataValue"
@@ -86,13 +89,13 @@
       "name": "/searchObjNames"
     },
     {
+      "name": "/procedures"
+    },
+    {
       "name": "setSignatureObjects"
     },
     {
       "name": "/startWorkflows"
-    },
-    {
-      "name": "/procedures"
     },
     {
       "name": "/proceduresFromTemplate"
@@ -896,6 +899,101 @@
           },
           "400": {
             "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten."
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/subjectArea/{objaddress}": {
+      "put": {
+        "tags": [
+          "/subjectArea"
+        ],
+        "summary": "Aktenplaneintrag ändern",
+        "operationId": "UpdateSubjectArea",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          },
+          {
+            "name": "objaddress",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSubjectAreaRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "success"
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DmsErrorResponse"
+                }
+              }
+            }
           },
           "500": {
             "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
@@ -3068,6 +3166,93 @@
         ]
       }
     },
+    "/files/search": {
+      "post": {
+        "tags": [
+          "/files"
+        ],
+        "summary": "Suche nach Akten",
+        "operationId": "SearchFile",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchFileRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchFileResponseDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten."
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
     "/searchObjNames/search": {
       "post": {
         "tags": [
@@ -3134,6 +3319,93 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/SearchObjNameAntwortDTO"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Falscher oder fehlender technischer Nutzer."
+          },
+          "400": {
+            "description": "Aufruf ans DMS ist gescheitert. Im Body sind Details enthalten."
+          },
+          "500": {
+            "description": "Ein unerwarteter Fehler innerhalb der EAI ist aufgetreten."
+          }
+        },
+        "security": [
+          {
+            "basicAuthSecurityDefintion": []
+          }
+        ]
+      }
+    },
+    "/procedures/search": {
+      "post": {
+        "tags": [
+          "/procedures"
+        ],
+        "summary": "Suche nach Vorgängen",
+        "operationId": "SearchProcedure",
+        "parameters": [
+          {
+            "name": "x-anwendung",
+            "in": "header",
+            "description": "Aufrufende Fachanwendung",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "SWH"
+          },
+          {
+            "name": "userlogin",
+            "in": "header",
+            "description": "Übergabe des Benutzer-Logins, von deren Berechtigung die Aktion durchgeführt werden soll.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "max.mustermann"
+          },
+          {
+            "name": "joboe",
+            "in": "header",
+            "description": "COO-ID der Organisationseinheit des Nutzers",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "COO.1.2300.1.847"
+          },
+          {
+            "name": "jobposition",
+            "in": "header",
+            "description": "Rolle, in der der Nutzer handelt",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "DocumentManager"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchProcedureRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchProcedureResponseDTO"
                 }
               }
             }
@@ -3956,9 +4228,40 @@
           "giobjecttype": {
             "type": "array",
             "description": "Auflistung aller Objekte, auf die der Suchstring zutrifft.\nRückgabe der Eigenschaften, die im Datentyp GIObjectType definiert sind.",
+            "example": [
+              {
+                "objname": "Beispielname",
+                "objaddress": "COO.2150.9151.1.1206000"
+              }
+            ],
             "items": {
               "$ref": "#/components/schemas/Objektreferenz"
             }
+          }
+        }
+      },
+      "SearchFileRequestDTO": {
+        "type": "object",
+        "properties": {
+          "apentry": {
+            "type": "string",
+            "description": "COO-Adresse des Aktenplankennzeichen",
+            "example": "COO.1.2300.1.847"
+          },
+          "filereference": {
+            "type": "string",
+            "description": "Geschäftszeichen",
+            "example": "A1 01 01 01 01/00010"
+          },
+          "objmlname": {
+            "type": "string",
+            "description": "Name",
+            "example": "Akte1"
+          },
+          "filesubj": {
+            "type": "string",
+            "description": "Betreff",
+            "example": "Betreff der Akte"
           }
         }
       },
@@ -4182,8 +4485,8 @@
             "description": "Vorgänge\nListe der Vorgänge der Akte",
             "example": [
               {
-                "name": "Beispielname",
-                "id": "COO.2150.9151.1.1206000"
+                "objname": "Beispielname",
+                "objaddress": "COO.2150.9151.1.1206000"
               }
             ],
             "items": {
@@ -4273,13 +4576,44 @@
             "description": "Vorgänge\nListe der Vorgänge der Akte",
             "example": [
               {
-                "name": "Beispielname",
-                "id": "COO.2150.9151.1.1206000"
+                "objname": "Beispielname",
+                "objaddress": "COO.2150.9151.1.1206000"
               }
             ],
             "items": {
               "$ref": "#/components/schemas/Objektreferenz"
             }
+          }
+        }
+      },
+      "SearchFileResponseDTO": {
+        "type": "object",
+        "properties": {
+          "giobjecttype": {
+            "type": "array",
+            "description": "Auflistung aller Objekte, auf die der Suchstring zutrifft.\nRückgabe der Eigenschaften, die im Datentyp GIObjectType definiert sind.",
+            "example": [
+              {
+                "objname": "Beispielname",
+                "objaddress": "COO.2150.9151.1.1206000"
+              }
+            ],
+            "items": {
+              "$ref": "#/components/schemas/Objektreferenz"
+            }
+          }
+        }
+      },
+      "UpdateSubjectAreaRequestDTO": {
+        "required": [
+          "subjareascope"
+        ],
+        "type": "object",
+        "properties": {
+          "subjareascope": {
+            "type": "string",
+            "description": " Der neue Aktenplaneintragstyp.\n Folgende Werte sind möglich:\n • Hauptgruppe\n • Obergruppe\n • Gruppe\n • Untergruppe\n • Betreffseinheit.\n Eine änderung darf nur erfolgen wenn aktenplaneintragstyp leer ist.\n",
+            "example": "\"subjareascope\": \"Betreffseinheit\""
           }
         }
       },
@@ -4809,6 +5143,12 @@
           "giobjecttype": {
             "type": "array",
             "description": "Liste der Objektadressen und Namen\nder Schriftstücke im Dokument.\n",
+            "example": [
+              {
+                "objname": "Beispielname",
+                "objaddress": "COO.2150.9151.1.1206000"
+              }
+            ],
             "items": {
               "$ref": "#/components/schemas/Objektreferenz"
             }
@@ -4823,8 +5163,8 @@
             "description": "Vorgänge\nListe der Vorgänge der Akte",
             "example": [
               {
-                "name": "Beispielname",
-                "id": "COO.2150.9151.1.1206000"
+                "objname": "Beispielname",
+                "objaddress": "COO.2150.9151.1.1206000"
               }
             ],
             "items": {
@@ -4868,6 +5208,12 @@
           "giobjecttype": {
             "type": "array",
             "description": "Liste der Objektadressen und Namen\nder Schriftstücke im Dokument.\n",
+            "example": [
+              {
+                "objname": "Beispielname",
+                "objaddress": "COO.2150.9151.1.1206000"
+              }
+            ],
             "items": {
               "$ref": "#/components/schemas/Objektreferenz"
             }
@@ -4952,8 +5298,8 @@
             "description": "Auflistung aller Objekte, auf die der Suchstring zutrifft.",
             "example": [
               {
-                "name": "Beispielname",
-                "id": "COO.2150.9151.1.1206000"
+                "objname": "Beispielname",
+                "objaddress": "COO.2150.9151.1.1206000"
               }
             ],
             "items": {
@@ -4976,6 +5322,30 @@
           "giobjecttype": {
             "type": "array",
             "description": "Auflistung aller Objekte, auf die der Suchstring zutrifft.\nRückgabe der Eigenschaften, die im Datentyp GIObjectType definiert sind.\n",
+            "example": [
+              {
+                "objname": "Beispielname",
+                "objaddress": "COO.2150.9151.1.1206000"
+              }
+            ],
+            "items": {
+              "$ref": "#/components/schemas/Objektreferenz"
+            }
+          }
+        }
+      },
+      "SearchProcedureResponseDTO": {
+        "type": "object",
+        "properties": {
+          "giobjecttype": {
+            "type": "array",
+            "description": "Auflistung aller Objekte, auf die der Suchstring zutrifft.\nRückgabe der Eigenschaften, die im Datentyp GIObjectType definiert sind.",
+            "example": [
+              {
+                "objname": "Beispielname",
+                "objaddress": "COO.2150.9151.1.1206000"
+              }
+            ],
             "items": {
               "$ref": "#/components/schemas/Objektreferenz"
             }
@@ -5289,8 +5659,8 @@
             "description": "Vorgänge\nListe der Vorgänge der Akte",
             "example": [
               {
-                "name": "Beispielname",
-                "id": "COO.2150.9151.1.1206000"
+                "objname": "Beispielname",
+                "objaddress": "COO.2150.9151.1.1206000"
               }
             ],
             "items": {
@@ -5356,6 +5726,12 @@
           "giobjecttype": {
             "type": "array",
             "description": "Liste der Objektadressen und Namen der Schriftstücke im Dokument.",
+            "example": [
+              {
+                "objname": "Beispielname",
+                "objaddress": "COO.2150.9151.1.1206000"
+              }
+            ],
             "items": {
               "$ref": "#/components/schemas/Objektreferenz"
             }
@@ -5378,6 +5754,12 @@
           "giobjecttype": {
             "type": "array",
             "description": "Liste der Objektadressen und Namen der Schriftstücke im Dokument.",
+            "example": [
+              {
+                "objname": "Beispielname",
+                "objaddress": "COO.2150.9151.1.1206000"
+              }
+            ],
             "items": {
               "$ref": "#/components/schemas/Objektreferenz"
             }
@@ -5387,18 +5769,18 @@
       "Objektreferenz": {
         "type": "object",
         "properties": {
-          "name": {
+          "objname": {
             "type": "string"
           },
-          "id": {
+          "objaddress": {
             "type": "string"
           }
         },
         "description": "Vorgänge\nListe der Vorgänge der Akte",
         "example": [
           {
-            "name": "Beispielname",
-            "id": "COO.2150.9151.1.1206000"
+            "objname": "Beispielname",
+            "objaddress": "COO.2150.9151.1.1206000"
           }
         ]
       },
@@ -5479,8 +5861,8 @@
             "description": "Auflistung aller Objekte, auf die der Suchstring zutrifft.",
             "example": [
               {
-                "name": "Beispielname",
-                "id": "COO.2150.9151.1.1206000"
+                "objname": "Beispielname",
+                "objaddress": "COO.2150.9151.1.1206000"
               }
             ],
             "items": {
@@ -5569,8 +5951,8 @@
             "description": "Vorgänge\nListe der Vorgänge der Akte",
             "example": [
               {
-                "name": "Beispielname",
-                "id": "COO.2150.9151.1.1206000"
+                "objname": "Beispielname",
+                "objaddress": "COO.2150.9151.1.1206000"
               }
             ],
             "items": {
@@ -5623,13 +6005,38 @@
             "description": "Vorgänge\nListe der Vorgänge der Akte",
             "example": [
               {
-                "name": "Beispielname",
-                "id": "COO.2150.9151.1.1206000"
+                "objname": "Beispielname",
+                "objaddress": "COO.2150.9151.1.1206000"
               }
             ],
             "items": {
               "$ref": "#/components/schemas/Objektreferenz"
             }
+          }
+        }
+      },
+      "SearchProcedureRequestDTO": {
+        "type": "object",
+        "properties": {
+          "referrednumber": {
+            "type": "string",
+            "description": "COO-Adresse der Akte",
+            "example": "COO.1.2300.1.847"
+          },
+          "filereference": {
+            "type": "string",
+            "description": "Geschäftszeichen",
+            "example": "A1 01 01 01 01/00010/0001"
+          },
+          "objmlname": {
+            "type": "string",
+            "description": "Name",
+            "example": "Vorgang 1"
+          },
+          "filesubj": {
+            "type": "string",
+            "description": "Betreff",
+            "example": "Betreff des Vorgangs"
           }
         }
       },
