@@ -4,6 +4,6 @@
     "github>it-at-m/refarch//refarch-tools/refarch-renovate/refarch-renovate-config.json5",
   ],
   "lockFileMaintenance": {
-    enabled: true,
+    "enabled": true,
   }
 }
