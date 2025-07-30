@@ -408,7 +408,6 @@ We recommend a certain structure and set of conventions to help keep translation
    - Use lowerCamelCase for individual keys, e.g. `home.header`, `app.name.full`.
    - This convention aligns with lint rules and keeps keys visually distinct from normal text.
 2. **Hierarchical Grouping**
-
    - Organize keys by feature or component, using multiple nested levels for clarity.
    - Example:
 
