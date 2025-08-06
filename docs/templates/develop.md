@@ -155,7 +155,7 @@ Spotless downloads additional P2 dependencies from `download.eclipse.org`
 to make use of the Eclipse JDT tooling required for formatting the Java code.
 You might not be able to access `download.eclipse.org` from your machine directly.
 This can be the case when you are behind a proxy or want to use a company internal P2 mirror.
-To make the setup work in this case, you need to add the following XML to your `settings.xml` file
+To make the setup work in this case, add the following XML content to the Maven `settings.xml` file
 inside the `<profile>` block and adjust it as needed:
 
 ```xml
@@ -166,14 +166,24 @@ inside the `<profile>` block and adjust it as needed:
 </properties>
 ```
 
-Also, make sure the `pom.xml` file contains the following content inside the `<eclipse>` section of the `spotless-maven-plugin` configuration:
+Additionally, the following properties have to be added to the `pom.xml` file to provide default values when no custom `settings.xml` is used (e.g. execution in CI environments)
+
+```xml
+<properties>
+    <p2.username/>
+    <p2.password/>
+    <p2.mirror>download.eclipse.org</p2.mirror>
+</properties>
+```
+
+To use the custom properties for the actual P2 mirror configuration, add the following content inside the `<eclipse>` section of the `spotless-maven-plugin` configuration:
 
 ```xml
 <p2Mirrors>
     <p2Mirror>
         <prefix>https://download.eclipse.org</prefix>
-            <url>https://${p2.username}:${p2.password}@${p2.mirror}</url>
-        </p2Mirror>
+        <url>https://${p2.username}:${p2.password}@${p2.mirror}</url>
+    </p2Mirror>
 </p2Mirrors>
 ```
 
