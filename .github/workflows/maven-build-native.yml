@@ -19,8 +19,10 @@ jobs:
           - profile: hazelcast-local
           - profile: no-security
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: build native image
-        uses: ../actions/build-spring-image
+        uses: ./.github/actions/build-spring-image
         with:
           app-path: refarch-gateway
           maven-profiles: ci,native,build-native-image,publish-image
