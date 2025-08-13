@@ -2,6 +2,98 @@
 
 This page informs about certain security related topics.
 
+## Auth
+
+```mermaid
+flowchart LR
+    gw[API Gateway]
+    c([Client])
+    c -->|Cookie| gw
+    c -->|JWT| gw
+    gw --> f[Frontend]
+    gw --> wc[Web Component]
+    gw -->|JWT| b[Backend]
+```
+
+For authentication and authorization the RefArch uses OAuth 2.0 and OpenID Connect.
+The authentication between the clients and the API gateway can be different depending on client and request type (see [Routing](../gateway.md#routing)).
+The traffic between API gateway and the backend is always authenticated with JWTs.
+
+::: info
+Our base principle for authentication and authorization is to follow the specifications of JWT and OAuth 2.0 as close as possible.
+This e.g. means using [defined claims](https://www.iana.org/assignments/jwt/jwt.xhtml) and Keycloak default scopes wherever possible instead of introducing new ones.
+:::
+
+### Authorization
+
+Authorization is only done in the backend leveraging [Spring Securities authorization features](https://docs.spring.io/spring-security/reference/servlet/authorization/index.html).
+In specific, we use [Method Security](https://docs.spring.io/spring-security/reference/servlet/authorization/method-security.html) which allows fine-grained access control on method level via specific security annotations.
+
+These annotations check the authorities (scopes, permissions, roles) a user has. These are extracted from the JWT provided for authentication.
+A so-called authorities converter specifies how the authorities are extracted from the JWT.
+
+OAuth 2.0 and OpenID Connect don't specify any authorization for applications themselves, so following authorities converters are coupled to our used identity provider Keycloak.
+In general, they should work with other identity providers (e.g. by configuring a mapper) but are not tested.
+
+The backend template provides two implementations which are described in the following.
+
+::: info Suggested implementation
+In contrast to permissions, roles are a more commonly supported concept in OAuth 2.0 and OpenID Connect identity providers.
+Therefore, roles offer higher interoperability and are the suggested option. Roles are used by default in the templates.
+
+Once an application has decided on one or the other, it's perfectly fine to remove the unneeded implementation or switch the default.
+:::
+
+#### Keycloak roles (Default)
+
+Keycloak comes with a built in `roles` scope and corresponding realm mapper, which maps all client roles to the `resource_access.<client id>.roles` claim.
+The provided authorities converter implementation (`KeycloakRolesAuthoritiesConverter.java`) takes this claim and maps it to Spring authorities.
+During this mapping the roles are prefixed with `ROLE_`, which Spring Security expects to interpret a granted authority as role.
+
+#### Keycloak permissions
+
+::: warning Custom Plugin
+Currently this implementation relies on a custom Keycloak plugin which maps the Keycloak authorization permission into the
+`authorities` claim of the user info endpoint. Also, the plugin needs to be activated per client by adding a mapper.
+
+_The plugin will be made available as open source code in the near future._
+:::
+
+This implementation (`UserInfoAuthoritiesConverter.java`) uses permissions for authorization and retrieves them from the `authorities` claim exposed by the user-info endpoint.
+The resolved permissions are cached (default 1 minute).
+
+::: info
+Because roles are the default in the templates, permission-based authorization must be explicitly enabled via the `userinfo-authorities` Spring profile.
+:::
+
+### User attributes
+
+Some applications require additional user information.
+In that case, there are multiple scopes that append the necessary information to the JWT.
+
+- `profile`: Default OpenID scope which adds e.g. `preferred_username`, `given_name`, `family_name` and `name` claims
+- `email`: Default OpenID scope which adds `email` claim
+- `lhm-core`: LHM custom scope which adds **TBD**
+
+### Client validation
+
+For further security the backend can validate if the token has been explicitly issued for the desired client.
+This is done by checking if the client is contained in the `aud` claim, but this requires a mapper.
+See [Spring](https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/jwt.html#_supplying_audiences) and
+[Keycloak](https://www.keycloak.org/docs/latest/server_admin/#_audience_resolve) docs.
+
+See below for the corresponding backend configuration.
+
+```yaml
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          audiences:
+            - <client id>
+```
+
 ## Disable SBOM Exposing
 
 All services developed with the [templates](/overview#Templates), as well as all ready-to-use components like the [API Gateway](/overview#api-gateway) expose a SBOM (Software Bill of Materials) endpoint at `/actuator/sbom/application` by default.
