@@ -19,33 +19,15 @@ jobs:
           - profile: hazelcast-local
           - profile: no-security
     steps:
-      - name: Checkout code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - name: Set up JDK
-        uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
+      - name: build native image
+        uses: ../actions/build-spring-image
         with:
-          java-version: "21"
-          distribution: "temurin"
-          cache: "maven"
-          cache-dependency-path: "./refarch-gateway/pom.xml"
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ghcr.io/${{ github.repository }}/refarch-gateway-native
-          tags: |
-            type=raw,value=dev-${{ matrix.profile }}
-      - name: Build with Maven
+          app-path: refarch-gateway
+          maven-profiles: ci,native,build-native-image,publish-image
+          registry-username: ${{ github.actor }}
+          registry-password: ${{ secrets.GITHUB_TOKEN }}
+          image-name: refarch-gateway-native-${{ matrix.profile }}
+          image-tags: |
+            type=raw,value=dev
         env:
-          IMAGE_NAME: ghcr.io/${{ github.repository }}/refarch-gateway-native
-          IMAGE_RAW_TAGS: ${{ steps.meta.outputs.tags }}
           NATIVE_SPRING_PROFILES: ${{ matrix.profile }}
-          REGISTRY_USER: ${{ github.repository_owner }}
-          REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          export IMAGE_TAGS="${IMAGE_RAW_TAGS//$'\n'/,}"
-          mvn -f ./refarch-gateway/pom.xml -Pci,native,build-native-image,publish-image spring-boot:build-image
