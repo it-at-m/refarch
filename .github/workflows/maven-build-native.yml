@@ -12,6 +12,12 @@ jobs:
     permissions:
       contents: read
       packages: write
+    strategy:
+      matrix:
+        include:
+          - profile: hazelcast-k8s
+          - profile: hazelcast-local
+          - profile: no-security
     steps:
       - name: Checkout code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -32,12 +38,12 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}/refarch-gateway-native
           tags: |
-            type=raw,value=dev-k8s
+            type=raw,value=dev-${{ matrix.profile }}
       - name: Build with Maven
         env:
           IMAGE_NAME: ghcr.io/${{ github.repository }}/refarch-gateway-native
           IMAGE_RAW_TAGS: ${{ steps.meta.outputs.tags }}
-          NATIVE_SPRING_PROFILES: hazelcast-k8s
+          NATIVE_SPRING_PROFILES: ${{ matrix.profile }}
           REGISTRY_USER: ${{ github.repository_owner }}
           REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
