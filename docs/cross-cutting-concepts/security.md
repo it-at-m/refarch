@@ -133,10 +133,10 @@ management:
 ### Node-based templates
 
 The SBOM file is generated using [cyclonedx-node-npm](https://github.com/CycloneDX/cyclonedx-node-npm) and directly integrated into the `npm run build` script.
-It's placed inside the `dist` folder together will all other static resources and then served via the nginx server at runtime of the Docker image through a custom defined endpoint.
+It's placed inside the `dist` folder together will all other static resources and then served via the nginx server at runtime of the OCI image through a custom defined endpoint.
 
 To disable the exposure the behaviour of the nginx server has to be altered.
-This can be easily achieved by removing the following content from the file `sbom.conf` in the `docker/nginx` directory of the corresponding template.
+This can be easily achieved by removing the following content from the file `sbom.conf` in the `image/nginx` directory of the corresponding template.
 
 ```text
 location /actuator/sbom/application {
