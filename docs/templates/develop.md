@@ -13,7 +13,7 @@ Key technologies used in the templates include:
 
 ### Container Engine
 
-[Podman](https://podman.io) is suggested to run a local development stack including all necessary services. Alternatively [Docker](https://www.docker.com/)
+[Podman](https://podman.io) is suggested for running the local development stack including all necessary services. Alternatively [Docker](https://www.docker.com/)
 can be used as well.
 
 ::: danger IMPORTANT
