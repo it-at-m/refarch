@@ -55,6 +55,9 @@
       "name": "org.springframework.security.oauth2.client.registration.ClientRegistration"
     },
     {
+      "name": "org.springframework.security.oauth2.client.registration.ClientRegistration$ClientSettings"
+    },
+    {
       "name": "org.springframework.security.oauth2.core.ClientAuthenticationMethod"
     },
     {
