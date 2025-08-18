@@ -4,6 +4,9 @@
       "name": "org.springframework.session.MapSession"
     },
     {
+      "name": "java.lang.Boolean"
+    },
+    {
       "name": "java.time.Instant"
     },
     {
