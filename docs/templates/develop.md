@@ -11,21 +11,21 @@ Please make sure you worked through the corresponding [Getting Started](./gettin
 
 Key technologies used in the templates include:
 
-### Docker
+### Container Engine
 
-[Docker](https://www.docker.com/) is used to run a local development stack including all necessary services. Alternatively [Podman](https://podman.io)
+[Podman](https://podman.io) is suggested for running the local development stack including all necessary services. Alternatively [Docker](https://www.docker.com/)
 can be used as well.
 
 ::: danger IMPORTANT
-If you are developing locally, you will need to have Docker or Podman installed on your system and the stack running at all times.
+If you are developing locally, you will need to have Podman or Docker installed on your system and the stack running at all times.
 Also make sure to have `keycloak` in your `hosts` file.
 :::
 
 Inside the `stack` folder, you will find a `docker-compose.yml` file that will spin up everything needed for local development.
-You can spin up the stack by using the integrated Docker features of your favorite IDE, by using a dedicated Docker UI
-or by executing the command `docker compose up -d` from within the `stack` folder.
+You can spin up the stack by using the integrated container features of your favorite IDE, by using a dedicated UI
+or by executing the command `podman compose up -d` or `docker compose up -d` from within the `stack` folder.
 
-Stack components (as Docker Images):
+Stack components (as OCI images):
 
 - [Keycloak](https://www.keycloak.org/): Keycloak instance as a local SSO provider
 - [Keycloak Migration](https://mayope.github.io/keycloakmigration/): Migration tool to set up the local SSO provider by executing scripts upon startup, configured via `.yml` files in `stack/keycloak/migration`
@@ -89,7 +89,7 @@ Instead of compiling and running the application using the commands above, you c
 
 By default, two different Spring profiles are provided to run the application:
 
-- `local`: Uses the local Docker stack to run the application and provides useful logging information while developing
+- `local`: Uses the local container stack to run the application and provides useful logging information while developing
 - `no-security`: Disables all security mechanisms
 
 ### Component libraries
@@ -155,7 +155,7 @@ Spotless downloads additional P2 dependencies from `download.eclipse.org`
 to make use of the Eclipse JDT tooling required for formatting the Java code.
 You might not be able to access `download.eclipse.org` from your machine directly.
 This can be the case when you are behind a proxy or want to use a company internal P2 mirror.
-To make the setup work in this case, you need to add the following XML to your `settings.xml` file
+To make the setup work in this case, add the following XML content to the Maven `settings.xml` file
 inside the `<profile>` block and adjust it as needed:
 
 ```xml
@@ -166,14 +166,24 @@ inside the `<profile>` block and adjust it as needed:
 </properties>
 ```
 
-Also, make sure the `pom.xml` file contains the following content inside the `<eclipse>` section of the `spotless-maven-plugin` configuration:
+Additionally, the following properties have to be added to the `pom.xml` file to provide default values when no custom `settings.xml` is used (e.g. execution in CI environments)
+
+```xml
+<properties>
+    <p2.username/>
+    <p2.password/>
+    <p2.mirror>download.eclipse.org</p2.mirror>
+</properties>
+```
+
+To use the custom properties for the actual P2 mirror configuration, add the following content inside the `<eclipse>` section of the `spotless-maven-plugin` configuration:
 
 ```xml
 <p2Mirrors>
     <p2Mirror>
         <prefix>https://download.eclipse.org</prefix>
-            <url>https://${p2.username}:${p2.password}@${p2.mirror}</url>
-        </p2Mirror>
+        <url>https://${p2.username}:${p2.password}@${p2.mirror}</url>
+    </p2Mirror>
 </p2Mirrors>
 ```
 
@@ -225,7 +235,7 @@ For more information about how to work with Flyway, checkout its [Getting Starte
 
 The [App Switcher](https://github.com/it-at-m/appswitcher-server) is a feature accessible from the app bar in the frontend.
 
-While developing, this is especially useful to access useful development tools tied to the local Docker stack.
+While developing, this is especially useful to access useful development tools tied to the local container stack.
 This includes the Keycloak management UI, pgAdmin to check the application database and a possibility to open Vue DevTools in a separate browser tab.
 
 ::: info Information
