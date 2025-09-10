@@ -10,6 +10,9 @@
     ":label(Type: Dependency)", // custom label for PRs created by Renovatebot
     ":semanticCommits", // enabled semantic commits in PR titles
   ],
+  "lockFileMaintenance": {
+    "enabled": true,
+  },
   "packageRules": [
     {
       "description": "Disable automerge for patch-level updates when pre-release version",
