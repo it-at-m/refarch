@@ -62,4 +62,6 @@ For ease of use, we prefer the use of GitHubs CI/CD capabilities using workflows
 By default, the documentation is deployed whenever a push to the `main` branch occurs, but you can adjust the workflow file to your needs.
 For further information about CI/CD-related topics, please check out the documentation for our [custom actions and workflows](https://github.com/it-at-m/.github).
 
-To make the workflow work, you also need to enable GitHub pages for your repository and select "GitHub Actions" as source. Please check of the official [GitHub Pages documentation](https://pages.github.com/) for further information.
+::: danger IMPORTANT
+To run this workflow, you must enable GitHub Pages for your repository and set the source to "GitHub Actions." For step-by-step instructions, see the official [GitHub documentation](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site#publishing-with-a-custom-github-actions-workflow).
+:::
