@@ -290,22 +290,6 @@ This is enabled by default when using the templates. To learn more about the Dep
 
 The allowed licenses can be viewed in the [Munich Open Source documentation](https://opensource.muenchen.de/licenses.html#integration-in-in-house-developments).
 
-### Require PR checklist
-
-The templates provide a workflow for validating checklist status in a PR description and the PR discussion. To merge a PR, all checklist items must be ticked off by the PR creator.
-
-The templates by default ship with a [PR template](./organize#pull-request-template), which makes use of a checklist.
-
-::: info Information
-If some of the PR checklist items are not relevant for your PR, you should adjust the checklist inside the PR description to the specific PR changes.
-If you want to disable the feature completely, you need to remove the file `.github/workflows/pr-checklist.yml`.
-:::
-
-::: danger IMPORTANT
-This functionality conflicts with the [Finishing touches](https://docs.coderabbit.ai/finishing-touches/docstrings/) feature of CodeRabbit. That's why this feature of CodeRabbit is disabled inside its configuration file by default.
-If you don't use "Require PR checklist" you can re-enable this functionality by altering the `.coderabbit.yaml` file.
-:::
-
 ### GitHub Rulesets
 
 It is recommended to review the rulesets for pushing and merging in the GitHub repository. Depending on the project's branching strategy, some branches should be protected to prevent force pushes and merging without approval.
