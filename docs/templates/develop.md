@@ -276,11 +276,15 @@ Code Rabbit is free to use for open-source projects. If you are developing a pro
 
 **CodeQL** is a GitHub tool for discovering vulnerabilities and code smells in code. More details can be found on the [official CodeQL website](https://codeql.github.com/).
 
-The template enables CodeQL for Pull Requests and configures CodeQL to only scan for Java and JavaScript/TypeScript/Vue files by default.
-For further information on how to change the configuration, please check out the documentation of the related custom [GitHub workflow](https://github.com/it-at-m/.github/blob/main/workflow-templates/codeql.yaml).
+The template provides a workflow to enable CodeQL for Pull Requests and configures CodeQL to only scan for Java and JavaScript/TypeScript/Vue files by default.
+For further information on how to change the workflow configuration, please check out the documentation of the related custom [GitHub workflow](https://github.com/it-at-m/.github/blob/main/workflow-templates/codeql.yaml).
+
+::: info Information
+If you are using Java-based projects inside your repository, you need to add those to the `java-build-path` variable pointing to the directory of the `pom.xml` files.
+:::
 
 ::: danger IMPORTANT
-If you are using Java-based projects inside your repository, you need to add those to the `java-build-path` variable pointing to the directory of the `pom.xml` files.
+For the provided CodeQL workflow to run properly, the ‘Advanced Setup’ for CodeQL must be enabled. This is described in the corresponding [GitHub documentation](https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/configuring-advanced-setup-for-code-scanning#configuring-advanced-setup-for-code-scanning-with-codeql). Administrator rights on the repository are required for setup.
 :::
 
 ### Dependency Review
