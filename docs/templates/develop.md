@@ -276,11 +276,15 @@ Code Rabbit is free to use for open-source projects. If you are developing a pro
 
 **CodeQL** is a GitHub tool for discovering vulnerabilities and code smells in code. More details can be found on the [official CodeQL website](https://codeql.github.com/).
 
-The template enables CodeQL for Pull Requests and configures CodeQL to only scan for Java and JavaScript/TypeScript/Vue files by default.
-For further information on how to change the configuration, please check out the documentation of the related custom [GitHub workflow](https://github.com/it-at-m/.github/blob/main/workflow-templates/codeql.yaml).
+The template provides a workflow to enable CodeQL for Pull Requests and configures CodeQL to only scan for Java and JavaScript/TypeScript/Vue files by default.
+For further information on how to change the workflow configuration, please check out the documentation of the related custom [GitHub workflow](https://github.com/it-at-m/.github/blob/main/workflow-templates/codeql.yaml).
+
+::: info Information
+If you are using Java-based projects inside your repository, you need to add those to the `java-build-path` variable pointing to the directory of the `pom.xml` files.
+:::
 
 ::: danger IMPORTANT
-If you are using Java-based projects inside your repository, you need to add those to the `java-build-path` variable pointing to the directory of the `pom.xml` files.
+For the provided CodeQL workflow to run properly, the ‘Advanced Setup’ for CodeQL must be enabled. This is described in the corresponding [GitHub documentation](https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/configuring-advanced-setup-for-code-scanning#configuring-advanced-setup-for-code-scanning-with-codeql). Administrator rights on the repository are required for setup.
 :::
 
 ### Dependency Review
@@ -289,22 +293,6 @@ To ensure that only dependencies with approved licenses are included, a [global 
 This is enabled by default when using the templates. To learn more about the Dependency Review feature itself, please check the official [GitHub documentation](https://docs.github.com/en/code-security/supply-chain-security/understanding-your-software-supply-chain/about-dependency-review).
 
 The allowed licenses can be viewed in the [Munich Open Source documentation](https://opensource.muenchen.de/licenses.html#integration-in-in-house-developments).
-
-### Require PR checklist
-
-The templates provide a workflow for validating checklist status in a PR description and the PR discussion. To merge a PR, all checklist items must be ticked off by the PR creator.
-
-The templates by default ship with a [PR template](./organize#pull-request-template), which makes use of a checklist.
-
-::: info Information
-If some of the PR checklist items are not relevant for your PR, you should adjust the checklist inside the PR description to the specific PR changes.
-If you want to disable the feature completely, you need to remove the file `.github/workflows/pr-checklist.yml`.
-:::
-
-::: danger IMPORTANT
-This functionality conflicts with the [Finishing touches](https://docs.coderabbit.ai/finishing-touches/docstrings/) feature of CodeRabbit. That's why this feature of CodeRabbit is disabled inside its configuration file by default.
-If you don't use "Require PR checklist" you can re-enable this functionality by altering the `.coderabbit.yaml` file.
-:::
 
 ### GitHub Rulesets
 
