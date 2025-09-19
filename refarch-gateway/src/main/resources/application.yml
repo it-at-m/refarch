@@ -18,6 +18,7 @@ spring:
                 allowedOriginPatterns: ${ALLOWED_ORIGINS_CLIENTS}
                 allowedHeaders: "*"
                 allowCredentials: true
+                allowedMethods: "*"
           default-filters:
             - RemoveRequestHeader=cookie
             - RemoveRequestHeader=x-xsrf-token
