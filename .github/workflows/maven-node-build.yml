@@ -26,16 +26,16 @@ jobs:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - if: ${{ hashFiles(format('./{0}/package.json', matrix.app-path)) != null }}
         id: node
-        uses: it-at-m/lhm_actions/action-templates/actions/action-npm-build@9767179088fd2e344d1a24c17404ab809a60f1b6 # v1.0.20
+        uses: it-at-m/lhm_actions/action-templates/actions/action-npm-build@691ffa2542ed7cc1c53c416d22ace9a153d5152f # v1.0.21
         with:
           app-path: "${{ matrix.app-path }}"
       - if: ${{ hashFiles(format('./{0}/pom.xml', matrix.app-path)) != null }}
         id: maven
-        uses: it-at-m/lhm_actions/action-templates/actions/action-maven-build@9767179088fd2e344d1a24c17404ab809a60f1b6 # v1.0.20
+        uses: it-at-m/lhm_actions/action-templates/actions/action-maven-build@691ffa2542ed7cc1c53c416d22ace9a153d5152f # v1.0.21
         with:
           app-path: "${{ matrix.app-path }}"
       - if: github.ref == 'refs/heads/main' && matrix.build-image
-        uses: it-at-m/lhm_actions/action-templates/actions/action-build-image@9767179088fd2e344d1a24c17404ab809a60f1b6 # v1.0.20
+        uses: it-at-m/lhm_actions/action-templates/actions/action-build-image@691ffa2542ed7cc1c53c416d22ace9a153d5152f # v1.0.21
         with:
           path: "${{ matrix.app-path }}"
           image-name: "${{ matrix.app-path }}"
