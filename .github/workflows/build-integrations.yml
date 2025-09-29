@@ -17,7 +17,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
       - name: Maven build
-        uses: it-at-m/lhm_actions/action-templates/actions/action-maven-build@9767179088fd2e344d1a24c17404ab809a60f1b6 # v1.0.20
+        uses: it-at-m/lhm_actions/action-templates/actions/action-maven-build@691ffa2542ed7cc1c53c416d22ace9a153d5152f # v1.0.21
         id: maven-build-step
         with:
           app-path: refarch-integrations
@@ -35,7 +35,7 @@ jobs:
             path: ./refarch-integrations/refarch-s3-integration/refarch-s3-integration-rest/refarch-s3-integration-rest-service
     steps:
       - name: Build and push image
-        uses: it-at-m/lhm_actions/action-templates/actions/action-build-image@9767179088fd2e344d1a24c17404ab809a60f1b6 # v1.0.20
+        uses: it-at-m/lhm_actions/action-templates/actions/action-build-image@691ffa2542ed7cc1c53c416d22ace9a153d5152f # v1.0.21
         with:
           registry-username: ${{ github.actor }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
