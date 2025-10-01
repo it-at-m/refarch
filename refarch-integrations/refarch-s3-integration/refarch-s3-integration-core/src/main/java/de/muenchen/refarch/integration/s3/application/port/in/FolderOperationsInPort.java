@@ -4,7 +4,7 @@ import de.muenchen.refarch.integration.s3.domain.exception.FileSystemAccessExcep
 import de.muenchen.refarch.integration.s3.domain.model.FileSizesInFolder;
 import de.muenchen.refarch.integration.s3.domain.model.FilesInFolder;
 import de.muenchen.refarch.integration.s3.domain.model.FilesMetadataInFolder;
-import org.springframework.lang.NonNull;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * Describes operations on a folder.
@@ -18,7 +18,7 @@ public interface FolderOperationsInPort {
      * @return list of files in folder.
      * @throws FileSystemAccessException on access errors.
      */
-    @NonNull FilesInFolder getAllFilesInFolderRecursively(@NonNull String pathToFolder) throws FileSystemAccessException;
+    @NotNull FilesInFolder getAllFilesInFolderRecursively(@NotNull String pathToFolder) throws FileSystemAccessException;
 
     /**
      * Retrieves a list of metadata for files in a folder.
@@ -27,7 +27,7 @@ public interface FolderOperationsInPort {
      * @return list of metadata for files in folder.
      * @throws FileSystemAccessException on access errors.
      */
-    @NonNull FilesMetadataInFolder getMetadataOfAllFilesInFolderRecursively(@NonNull String pathToFolder) throws FileSystemAccessException;
+    @NotNull FilesMetadataInFolder getMetadataOfAllFilesInFolderRecursively(@NotNull String pathToFolder) throws FileSystemAccessException;
 
     /**
      * Retrieves the sizes of all files within a specified folder.
@@ -37,7 +37,7 @@ public interface FolderOperationsInPort {
      *         in bytes.
      * @throws FileSystemAccessException on access errors.
      */
-    FileSizesInFolder getAllFileSizesInFolderRecursively(@NonNull String pathToFolder) throws FileSystemAccessException;
+    FileSizesInFolder getAllFileSizesInFolderRecursively(@NotNull String pathToFolder) throws FileSystemAccessException;
 
-    void deleteFolder(@NonNull String pathToFolder) throws FileSystemAccessException;
+    void deleteFolder(@NotNull String pathToFolder) throws FileSystemAccessException;
 }
