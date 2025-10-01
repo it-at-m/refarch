@@ -1,8 +1,7 @@
 package de.muenchen.refarch.gateway.filter;
 
-import java.nio.charset.StandardCharsets;
-
 import jakarta.validation.constraints.NotNull;
+import java.nio.charset.StandardCharsets;
 import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Value;
