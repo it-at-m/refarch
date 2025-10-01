@@ -4,8 +4,8 @@ import de.muenchen.refarch.integration.s3.domain.exception.FileSystemAccessExcep
 import de.muenchen.refarch.integration.s3.domain.model.CreatePresignedUrlEvent;
 import de.muenchen.refarch.integration.s3.domain.model.PresignedUrl;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
-import org.springframework.lang.NonNull;
 
 public interface CreatePresignedUrlsInPort {
     /**
@@ -16,5 +16,5 @@ public interface CreatePresignedUrlsInPort {
      * @throws FileSystemAccessException on S3 errors.
      * @throws jakarta.validation.ConstraintViolationException if the request is not valid.
      */
-    @NonNull List<PresignedUrl> createPresignedUrls(@Valid CreatePresignedUrlEvent event) throws FileSystemAccessException;
+    @NotNull List<PresignedUrl> createPresignedUrls(@Valid CreatePresignedUrlEvent event) throws FileSystemAccessException;
 }
