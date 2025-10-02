@@ -1,11 +1,11 @@
 package de.muenchen.refarch.integration.s3.configuration.nfcconverter;
 
+import jakarta.validation.constraints.NotNull;
 import java.io.CharArrayReader;
 import java.io.IOException;
 import java.io.Reader;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Wrapper for readers that performs an NFC conversion.

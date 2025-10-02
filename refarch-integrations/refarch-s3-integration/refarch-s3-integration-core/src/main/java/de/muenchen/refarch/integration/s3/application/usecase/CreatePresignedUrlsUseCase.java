@@ -6,9 +6,9 @@ import de.muenchen.refarch.integration.s3.domain.model.CreatePresignedUrlEvent;
 import de.muenchen.refarch.integration.s3.domain.model.PresignedUrl;
 import io.minio.http.Method;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.lang.NonNull;
 import org.springframework.validation.annotation.Validated;
 
 @RequiredArgsConstructor
@@ -20,7 +20,7 @@ public class CreatePresignedUrlsUseCase implements CreatePresignedUrlsInPort {
     private final int presignedUrlExpiresInMinutes;
 
     @Override
-    @NonNull public List<PresignedUrl> createPresignedUrls(@Valid final CreatePresignedUrlEvent event) throws FileSystemAccessException {
+    @NotNull public List<PresignedUrl> createPresignedUrls(@Valid final CreatePresignedUrlEvent event) throws FileSystemAccessException {
         return this.fileHandlingService.getPresignedUrls(
                 List.of(event.path().split(PATH_DELIMITER)),
                 Method.valueOf(event.action()),

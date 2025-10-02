@@ -1,7 +1,7 @@
 package de.muenchen.refarch.gateway.filter;
 
+import jakarta.validation.constraints.NotNull;
 import java.nio.charset.StandardCharsets;
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Publisher;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -57,7 +57,7 @@ public class GlobalAuthenticationErrorFilter implements GlobalFilter, Ordered {
              *         the body given by the parameter.
              */
             @Override
-            @NonNull public Mono<Void> writeWith(@NonNull final Publisher<? extends DataBuffer> body) {
+            @NotNull public Mono<Void> writeWith(@NotNull final Publisher<? extends DataBuffer> body) {
                 final HttpStatusCode responseHttpStatus = getDelegate().getStatusCode();
                 if (body instanceof Flux<? extends DataBuffer> flux && responseHttpStatus != null && responseHttpStatus.equals(HttpStatus.UNAUTHORIZED)) {
                     final DataBufferFactory dataBufferFactory = response.bufferFactory();
