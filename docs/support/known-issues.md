@@ -11,7 +11,7 @@ If not feel free to open a new one.
 
 ### "Origin not allowed" but configured
 
-By providing default CORS configuration for `/public/**` and `/clients/**` routes (to support configuration via environment variables), 
+By providing default CORS configuration for `/public/**` and `/clients/**` routes (to support configuration via environment variables),
 this default one can take precedence over custom configuration.
 This leads to deployment specific configuration (setting e.g. `/**`) not being applied for `/public/**` and `/clients/**` routes.
 
@@ -20,13 +20,13 @@ See [gateway configuration section](../gateway.md#configuration).
 
 ### Duplicate CORS headers
 
-If an underlying service (e.g. frontend) already sends an `Access-Control-Allow-Origin` header and the gateway is also 
+If an underlying service (e.g. frontend) already sends an `Access-Control-Allow-Origin` header and the gateway is also
 configured to set one (e.g. via `ALLOWED_ORIGINS_PUBLIC` see [Gateway Configuration](../gateway.md#configuration)) the browser
 blocks the according request with `CORS Error: The 'Access-Control-Allow-Origin' header contains multiple values '...', but only one is allowed`.
 
 The easiest and best fix is to not set the header in the underlying service and leave that up to the gateway.
 
-Besides that this is also a known "issue" of the gateway which can 
+Besides that this is also a known "issue" of the gateway which can
 be fixed by adding the `DedupeResponseHeader` filter (see [according docs](https://docs.spring.io/spring-cloud-gateway/reference/spring-cloud-gateway-server-webflux/gatewayfilter-factories/deduperesponseheader-factory.html)).
 
 ## refarch-backend
@@ -45,5 +45,3 @@ In both cases this is a configuration-error and thus should not occur in a worki
 
 If the frontend is showing a white page and reloading infinitely, this is because of the logic to enforce a users re-login if the session expired.
 See [according code](https://github.com/it-at-m/refarch-templates/blob/main/refarch-frontend/src/api/fetch-utils.ts#L87-L116)
-
-
