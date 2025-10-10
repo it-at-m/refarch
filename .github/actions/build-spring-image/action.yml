@@ -1,0 +1,70 @@
+name: build-spring-image
+description: Build an image via springs included image build
+
+inputs:
+  java-version:
+    description: "Java version to use for the build"
+    default: "21"
+  app-path:
+    description: "Path to the project’s pom.xml file"
+    required: true
+  maven-profiles:
+    description: "Profiles to run the maven cmd with"
+    required: true
+  spring-profiles:
+    description: "Spring profiles to run with"
+    default: ""
+  registry:
+    description: "Image registry to push image to"
+    default: ghcr.io
+  registry-username:
+    description: "Username to authenticate against image registry"
+    required: true
+  registry-password:
+    description: "Password to authenticate against image registry"
+    required: true
+  image-name:
+    description: "Name to give the image"
+    required: true
+  image-tags:
+    description: "Tags to tag image with"
+    default: |
+      type=raw,value=latest
+  image-labels:
+    description: "Labels to add to image"
+    default: |
+      org.opencontainers.image.description=See ${{ github.server_url }}/${{ github.repository }}
+
+runs:
+  using: composite
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+    - name: Set up JDK
+      uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
+      with:
+        java-version: ${{ inputs.java-version }}
+        distribution: "temurin"
+        cache: "maven"
+        cache-dependency-path: "./${{ inputs.app-path }}/pom.xml"
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v3
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+    - name: Extract metadata (tags, labels) for Docker
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: "${{ inputs.registry }}/${{ github.repository }}/${{ inputs.image-name }}"
+        tags: ${{ inputs.image-tags }}
+        labels: ${{ inputs.image-labels }}
+    - name: Build with Maven
+      shell: bash
+      env:
+        IMAGE_NAME: ${{ inputs.registry }}/${{ github.repository }}/${{ inputs.image-name }}
+        IMAGE_RAW_TAGS: ${{ steps.meta.outputs.tags }}
+        REGISTRY_USER: ${{ inputs.registry-username }}
+        REGISTRY_TOKEN: ${{ inputs.registry-password }}
+      run: |
+        export IMAGE_TAGS="${IMAGE_RAW_TAGS//$'\n'/,}"
+        mvn -f ./${{ inputs.app-path }}/pom.xml -P${{ inputs.maven-profiles }} spring-boot:build-image
