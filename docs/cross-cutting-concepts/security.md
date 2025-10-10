@@ -96,7 +96,7 @@ spring:
 
 ## Disable SBOM Exposing
 
-All services developed with the [templates](/overview#Templates), as well as all ready-to-use components like the [API Gateway](/overview#api-gateway) expose a SBOM (Software Bill of Materials) endpoint at `/actuator/sbom/application` by default.
+All services developed with the [templates](../overview.md#templates), as well as all ready-to-use components like the [API Gateway](../overview.md#api-gateway) expose a SBOM (Software Bill of Materials) endpoint at `/actuator/sbom/application` by default.
 
 This can be a problem for closed-source projects using any of the RefArch components, as it exposes information about the software dependencies and might thus lead to expose of critical CVEs.
 
