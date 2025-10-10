@@ -43,7 +43,7 @@ In both cases this is a configuration-error and thus should not occur in a worki
 
 ### Refresh loop (local only)
 
-If the frontend is showing a white page and reloading infinitely, this is because the session expired but the frontend 
-is called directly instead through the gateway. To fix this behaviour the frontend needs to be called through the 
+If the frontend is showing a white page and reloading infinitely, this is because the session expired but the frontend
+is called directly instead through the gateway. To fix this behaviour the frontend needs to be called through the
 gateway to allow the re-authentication to take place.
 See [according code](https://github.com/it-at-m/refarch-templates/blob/main/refarch-frontend/src/api/fetch-utils.ts#L87-L116)
