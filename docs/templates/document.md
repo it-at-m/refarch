@@ -4,7 +4,7 @@ The templates include various tools and best practices to help you with document
 Those are further explained below.
 
 ::: danger IMPORTANT
-Please make sure you worked through the corresponding [Getting Started](./getting-started#documentation) instructions before proceeding.
+Please make sure you worked through the corresponding [Getting Started](./getting-started.md#documentation) instructions before proceeding.
 :::
 
 ## Code-focused documentation
@@ -13,7 +13,7 @@ To support code understandability for developers it's useful to document the cod
 This also improves developer experience when using tools like IDEs.
 
 Additionally, it's recommended to document developed APIs using standards like [OpenAPI](https://www.openapis.org/).
-We provide OpenAPI support for documenting APIs out of the box. This is further described in [our OpenAPI documentation page](/cross-cutting-concepts/openapi).
+We provide OpenAPI support for documenting APIs out of the box. This is further described in [our OpenAPI documentation page](../cross-cutting-concepts/openapi.md).
 
 The rest of this page will focus on code-decoupled documentation.
 
