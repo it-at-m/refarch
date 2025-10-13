@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: "@project.artifactId@"
+    group: "@project.groupId@"
+    version: "@project.version@"
+  security:
+    oauth2:
+      client:
+        provider:
+          s3:
+            issuer-uri: http://keycloak:8100/auth/realms/local_realm
+        registration:
+          s3:
+            provider: s3
+            authorization-grant-type: client_credentials
+            client-id: local
+            client-secret: client_secret
+
+server:
+  port: 8087
+
+logging:
+  include-application-group: false # disabled because application group is only relevant when deployed
+  level:
+    root: INFO
+    de.muenchen.refarch: DEBUG
+    org.springframework.web: DEBUG
+
+refarch:
+ s3:
+   # java
+   bucket-name: test-bucket
+   access-key: minio
+   secret-key: Test1234
+   url: http://localhost:9000
+   # rest
+   api-base-url: http://localhost:8086
