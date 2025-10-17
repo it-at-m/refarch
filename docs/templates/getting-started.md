@@ -89,7 +89,7 @@ When running with the `local` profile, text-based logging is used (instead of JS
 
 ### Prerequisites
 
-- Node.js 22 LTS (`22.11.x` - `22.x.x`)
+- Node.js 22 LTS (`22.19.x` - `22.x.x`)
 - Container engine
 
 ### Configure templates
@@ -106,7 +106,7 @@ Congratulations, the Frontend/WebComponent is now ready to use.
 
 ### Prerequisites
 
-- Node.js 22 LTS (`22.11.x` - `22.x.x`)
+- Node.js 22 LTS (`22.19.x` - `22.x.x`)
 
 ### Configure documentation
 
