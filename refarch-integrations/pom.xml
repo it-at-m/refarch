@@ -64,7 +64,7 @@
         <maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
 
         <!-- Testing -->
-        <jacoco.version>0.8.13</jacoco.version>
+        <jacoco.version>0.8.14</jacoco.version>
 
         <!-- Utility -->
         <mapstruct.version>1.6.3</mapstruct.version>
