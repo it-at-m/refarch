@@ -14,7 +14,7 @@ The RefArch consists of two service types the API gateway (with included fronten
 This requires each project to maintain their own gateway although most of them don't modify anything and use the default
 functionality. This leads to multiple LCMs efforts and inconsistent solutions / implementations for the same problem.
 
-This ADR describes the decision if the gateway and frontend should be seperated.
+This ADR describes the decision if the gateway and frontend should be separated.
 
 ### Decision
 
