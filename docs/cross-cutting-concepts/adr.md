@@ -18,8 +18,8 @@ This ADR describes the decision if the gateway and frontend should be seperated.
 
 ### Decision
 
-The API gateway and the frontend should be seperated. This brings multiple advantages like central LCM, consistent
-implementations and frontend independent usage (e.g. web components instead of frontend).
+The API gateway and the frontend should be separated. This brings multiple advantages like central LCM, consistent
+implementations and frontend-independent usage (e.g. web components instead of frontend).
 
 The frontend will be deployed as additional service, while using static building and nginx.
 
