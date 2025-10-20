@@ -128,3 +128,36 @@ For the gateway image this can be done with `JAVA_OPTS_APPEND`.
 
 For running Hazelcast with profile `hazelcast-k8s` in Kubernetes port `5701` needs to be accessible.
 This need to be configured for the Service and Deployment.
+
+## Migration Guide
+
+Main change: seperated centrally maintained gateway -> separate image for frontend
+
+### Can i migrate
+
+If the gateway was never modified -> yes
+
+To be sure check if any custom filter where added.
+If yes there is still a possibility to migrate by either using an existing feature (e.g. client routes) or if the feature
+could be useful for other applications by contributing it to the centralized gateway.
+
+### Migrate
+
+The migration consists of two parts: extracting the frontend and using the centrallized gateway
+
+#### Frontend
+
+- Extract the frontend code into a separate repo or folder (in a mono repo)
+- Copy `Dockerfile` and nginx config `docker/nginx/` from [`refarch-frontend`](https://github.com/it-at-m/refarch-templates/tree/main/refarch-frontend) template
+- Adopt and configure `maven-node-build.yml` and `npm-release.yml` GitHub Actions workflows, see [`.github`](https://github.com/it-at-m/refarch-templates/tree/main/.github/workflows)
+  - For internal GitLab migration see [according docs](https://git.muenchen.de/ccse/cicd/docs-gitlab-runner/-/blob/main-2.x/Migration.adoc?ref_type=heads#user-content-migration-refarch-api-gateway-integriertes-frontend-eigener-service-f%C3%BCr-frontend)
+
+#### Gateway
+
+For local development adopt the [development stack](./templates/develop.md#container-engine) including the gateway from
+the RefArch templates. Changing of the routes might be required to match the previous setup by modifying the environment
+variables inside the Docker compose file.
+
+For deploying the central Gateway use the according container image and compare your working config with the `application.yml`,
+`application-local.yml` (inside [gateway code `resources` folder](https://github.com/it-at-m/refarch/tree/main/refarch-gateway/src/main/resources))
+and [configuration section](#configuration) to find properties which need to be migrated.
