@@ -137,13 +137,13 @@ Main change: seperated centrally maintained gateway -> separate image for fronte
 
 If the gateway was never modified -> yes
 
-To be sure check if any custom filter where added.
+To be sure check if any custom filters were added.
 If yes there is still a possibility to migrate by either using an existing feature (e.g. client routes) or if the feature
 could be useful for other applications by contributing it to the centralized gateway.
 
 ### Migrate
 
-The migration consists of two parts: extracting the frontend and using the centrallized gateway
+The migration consists of two parts: extracting the frontend and using the centralized gateway
 
 #### Frontend
 
@@ -154,10 +154,10 @@ The migration consists of two parts: extracting the frontend and using the centr
 
 #### Gateway
 
-For local development adopt the [development stack](./templates/develop.md#container-engine) including the gateway from
+For local development adopt the [development stack](./templates/develop.md#container-engine) (containing the gateway) from
 the RefArch templates. Changing of the routes might be required to match the previous setup by modifying the environment
 variables inside the Docker compose file.
 
-For deploying the central Gateway use the according container image and compare your working config with the `application.yml`,
+For deploying the central Gateway use the [according container image](#usage) and compare your working config with the `application.yml`,
 `application-local.yml` (inside [gateway code `resources` folder](https://github.com/it-at-m/refarch/tree/main/refarch-gateway/src/main/resources))
 and [configuration section](#configuration) to find properties which need to be migrated.
