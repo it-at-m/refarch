@@ -86,7 +86,7 @@ const vitepressConfig = defineConfig({
         items: [
           {
             text: "Architecture Decision Records",
-            link: "/cross-cutting-concepts/adr"
+            link: "/cross-cutting-concepts/adr",
           },
           {
             text: "CI/CD",
