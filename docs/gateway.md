@@ -131,7 +131,7 @@ This need to be configured for the Service and Deployment.
 
 ## Migration Guide
 
-Main change: seperated centrally maintained gateway -> separate image for frontend
+Main change: separated centrally maintained gateway -> separate image for frontend
 
 ### Can i migrate
 
