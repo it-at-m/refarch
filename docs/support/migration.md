@@ -10,8 +10,8 @@ Main change: separated centrally maintained gateway -> separate image for fronte
 
 In general the migration can be done if the gateway was never modified (e.g. some custom filters).
 
-Even if some changes where introduces there is the possibility to migrate, by either switching to some other already
-included feature (e.g. client routes) or by contributing the changes to the central gateway if they can be also useful
+Even if some changes were introduces there is the possibility to migrate, by either switching to some other already
+included feature (e.g. [client routes](../gateway.md#routing)) or by contributing the changes to the central gateway if they can also be useful
 for other projects.
 
 ### Steps
