@@ -40,7 +40,10 @@ const vitepressConfig = defineConfig({
       },
       {
         text: "Support",
-        items: [{ text: "Known Issues", link: "/support/known-issues" }],
+        items: [
+          { text: "Known Issues", link: "/support/known-issues" },
+          { text: "Migration", link: "/support/migration" },
+        ],
       },
       { text: "Contribute", link: "/contribute" },
       {
@@ -103,6 +106,10 @@ const vitepressConfig = defineConfig({
           {
             text: "Known Issues",
             link: "/support/known-issues",
+          },
+          {
+            text: "Migration",
+            link: "/support/migration",
           },
         ],
       },
