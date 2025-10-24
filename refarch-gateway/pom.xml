@@ -65,7 +65,7 @@
         <refarch-tools.version>1.2.0</refarch-tools.version>
 
         <!-- Additional required dependencies -->
-        <hazelcast.version>5.5.0</hazelcast.version>
+        <hazelcast.version>5.6.0</hazelcast.version>
 
         <!-- Spotless P2 Mirror configuration (e.g. required when using company internal registry -->
         <p2.username /> <!-- must be empty, override via Maven settings.xml if needed -->
