@@ -88,6 +88,10 @@ const vitepressConfig = defineConfig({
         text: "Cross-Cutting Concepts",
         items: [
           {
+            text: "Architecture Decision Records",
+            link: "/cross-cutting-concepts/adr",
+          },
+          {
             text: "CI/CD",
             link: "https://github.com/it-at-m/lhm_actions/blob/main/docs/actions.md",
           },
