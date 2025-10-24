@@ -1,4 +1,4 @@
-# ADR002 - No additional auth sources beside OpenId Connect
+# ADR002 - No additional auth sources besides OpenID Connect
 
 State: accepted
 
