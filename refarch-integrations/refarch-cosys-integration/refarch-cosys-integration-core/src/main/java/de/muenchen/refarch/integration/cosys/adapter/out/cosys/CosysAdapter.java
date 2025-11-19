@@ -62,7 +62,7 @@ public class CosysAdapter implements GenerateDocumentOutPort {
         if (this.configuration.getMergeOptions() != null) {
             try {
                 final String mergeOptionsString = objectMapper.writeValueAsString(this.configuration.getMergeOptions());
-                mergeOptions = new NamedByteArrayResource(mergeOptionsString.getBytes(), "merge.json");
+                mergeOptions = new NamedByteArrayResource(mergeOptionsString.getBytes(StandardCharsets.UTF_8), "merge.json");
             } catch (final JsonProcessingException e) {
                 throw new IllegalArgumentException("Cosys merge options are not valid.", e);
             }

@@ -14,6 +14,7 @@ import de.muenchen.refarch.integration.dms.domain.model.Content;
 import de.muenchen.refarch.integration.dms.domain.model.Document;
 import de.muenchen.refarch.integration.dms.domain.model.DocumentResponse;
 import de.muenchen.refarch.integration.dms.domain.model.DocumentType;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,7 @@ class CreateDocumentUseCaseTest {
 
     @Test
     void createDocument() throws DmsException {
-        final Content content = new Content("extension", "name", "content".getBytes());
+        final Content content = new Content("extension", "name", "content".getBytes(StandardCharsets.UTF_8));
         final LocalDate testDate = LocalDate.parse("2023-12-01");
         final String docCoo = "documentCOO";
         final String user = "user";
