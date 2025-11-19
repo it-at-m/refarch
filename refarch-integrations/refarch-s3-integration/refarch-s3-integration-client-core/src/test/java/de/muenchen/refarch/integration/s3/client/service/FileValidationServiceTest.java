@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import de.muenchen.refarch.integration.s3.client.domain.model.SupportedFileExtensions;
 import de.muenchen.refarch.integration.s3.client.exception.NoFileTypeException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,7 +44,7 @@ class FileValidationServiceTest {
 
     @Test
     void testDetectFileType() {
-        final byte[] fileContent = "Hello, universe!".getBytes();
+        final byte[] fileContent = "Hello, universe!".getBytes(StandardCharsets.UTF_8);
         assertEquals("text/plain", fileValidationService.detectFileType(fileContent));
     }
 

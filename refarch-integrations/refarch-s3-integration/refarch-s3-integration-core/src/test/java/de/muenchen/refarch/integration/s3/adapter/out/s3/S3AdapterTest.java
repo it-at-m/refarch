@@ -32,10 +32,10 @@ import org.mockito.quality.Strictness;
 @MockitoSettings(strictness = Strictness.LENIENT)
 class S3AdapterTest {
 
-    private final static String S3_URL = "http://localhost:9000";
-    private final static String FILE_PATH = "test/image.png";
-    private final static List<Method> ACTIONS = List.of(Method.GET, Method.POST, Method.PUT, Method.DELETE);
-    private final static int EXPIRES_IN_MINUTES = 5;
+    private static final String S3_URL = "http://localhost:9000";
+    private static final String FILE_PATH = "test/image.png";
+    private static final List<Method> ACTIONS = List.of(Method.GET, Method.POST, Method.PUT, Method.DELETE);
+    private static final int EXPIRES_IN_MINUTES = 5;
     private S3Adapter s3Adapter;
     @Mock
     private MinioClient client;

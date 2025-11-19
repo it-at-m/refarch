@@ -14,6 +14,7 @@ import jakarta.xml.soap.SOAPBody;
 import jakarta.xml.soap.SOAPMessage;
 import java.io.ByteArrayOutputStream;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.util.function.Predicate;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -55,7 +56,7 @@ public final class WiremockWsdlUtility {
             throw new RuntimeException(String.format("Exception trying to serialize [%s] to a SOAP envelope", object), e);
         }
 
-        return byteArrayOutputStream.toString();
+        return byteArrayOutputStream.toString(StandardCharsets.UTF_8);
     }
 
     /**
