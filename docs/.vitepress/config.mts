@@ -40,7 +40,10 @@ const vitepressConfig = defineConfig({
       },
       {
         text: "Support",
-        items: [{ text: "Known Issues", link: "/support/known-issues" }],
+        items: [
+          { text: "Known Issues", link: "/support/known-issues" },
+          { text: "Migration", link: "/support/migration" },
+        ],
       },
       { text: "Contribute", link: "/contribute" },
       {
@@ -85,6 +88,10 @@ const vitepressConfig = defineConfig({
         text: "Cross-Cutting Concepts",
         items: [
           {
+            text: "Architecture Decision Records",
+            link: "/cross-cutting-concepts/adr",
+          },
+          {
             text: "CI/CD",
             link: "https://github.com/it-at-m/lhm_actions/blob/main/docs/actions.md",
           },
@@ -99,6 +106,10 @@ const vitepressConfig = defineConfig({
           {
             text: "Known Issues",
             link: "/support/known-issues",
+          },
+          {
+            text: "Migration",
+            link: "/support/migration",
           },
         ],
       },

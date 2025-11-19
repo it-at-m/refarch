@@ -12,9 +12,9 @@
     <name>refarch-s3-integration-rest-client</name>
 
     <properties>
-        <openapi-generator-maven-plugin.version>7.16.0</openapi-generator-maven-plugin.version>
+        <openapi-generator-maven-plugin.version>7.17.0</openapi-generator-maven-plugin.version>
 
-        <jackson-databind-nullable.version>0.2.7</jackson-databind-nullable.version>
+        <jackson-databind-nullable.version>0.2.8</jackson-databind-nullable.version>
     </properties>
 
     <dependencies>
