@@ -14,6 +14,7 @@ import de.muenchen.refarch.integration.dms.domain.exception.DmsException;
 import de.muenchen.refarch.integration.dms.domain.model.Content;
 import de.muenchen.refarch.integration.dms.domain.model.DocumentResponse;
 import de.muenchen.refarch.integration.dms.domain.model.DocumentType;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
@@ -28,7 +29,7 @@ class UpdateDocumentUseCaseTest {
     @Test
     void updateDocument() throws DmsException {
 
-        final Content content = new Content("extension", "name", "content".getBytes());
+        final Content content = new Content("extension", "name", "content".getBytes(StandardCharsets.UTF_8));
 
         final String docCoo = "documentCOO";
         final String user = "user";

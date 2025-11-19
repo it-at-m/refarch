@@ -48,6 +48,7 @@ import de.muenchen.refarch.integration.dms.domain.model.Metadata;
 import de.muenchen.refarch.integration.dms.domain.model.Procedure;
 import de.muenchen.refarch.integration.dms.fabasoft.mock.FabasoftClientFactory;
 import de.muenchen.refarch.integration.dms.fabasoft.mock.WiremockWsdlUtility;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -60,7 +61,7 @@ class FabasoftAdapterTest {
 
     public static final String USER = "user";
     public static final String OBJID = "1234567890";
-    public static final byte[] CONTENT = "content".getBytes();
+    public static final byte[] CONTENT = "content".getBytes(StandardCharsets.UTF_8);
     public static final String NAME = "name";
     public static final String EXTENSION = "extension";
     public static final String DOCUMENT_COO = "documentCOO";
