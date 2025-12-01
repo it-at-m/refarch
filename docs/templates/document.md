@@ -67,5 +67,5 @@ To run this workflow, you must enable GitHub Pages for your repository and set t
 :::
 
 ::: info Information
-If your documentation is hosted under a repository sub path on GitHub Pages (e.g. `https://username.github.io/my-repo/`), make sure to set the `base` property in your VitePress `config.mts`. Without this, asset URLs may point to the root path and result in 404 errors.
+If your documentation is hosted under a sub path (e.g. on GitHub Pages `https://username.github.io/my-repo/`), make sure to set the `base` property in your VitePress `config.mts`. Without this, asset URLs may point to the root path and result in 404 errors.
 :::
