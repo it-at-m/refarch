@@ -65,3 +65,7 @@ For further information about CI/CD-related topics, please check out the documen
 ::: danger IMPORTANT
 To run this workflow, you must enable GitHub Pages for your repository and set the source to "GitHub Actions." For step-by-step instructions, see the official [GitHub documentation](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site#publishing-with-a-custom-github-actions-workflow).
 :::
+
+::: info Information
+If your documentation is hosted under a repository sub path on GitHub Pages (e.g. `https://username.github.io/my-repo/`), make sure to set the `base` property in your VitePress `config.mts`. Without this, asset URLs may point to the root path and result in 404 errors.
+:::
