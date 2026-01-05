@@ -72,7 +72,7 @@
         <refarch-tools.version>1.2.0</refarch-tools.version>
 
         <!-- Additional required dependencies -->
-        <springdoc-openapi.version>2.8.14</springdoc-openapi.version>
+        <springdoc-openapi.version>2.8.15</springdoc-openapi.version>
 
         <!-- Spotless P2 Mirror configuration (e.g. required when using company internal registry -->
         <p2.username /> <!-- must be empty, override via Maven settings.xml if needed -->
