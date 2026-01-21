@@ -33,6 +33,6 @@ nbdist/
 /stack/minio/*
 !/stack/minio/.gitkeep
 
-# Additional
-$(pwd)
+# Node
+node_modules
 

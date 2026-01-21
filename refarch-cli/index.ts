@@ -1,0 +1,245 @@
+#!/usr/bin/env node
+import { cpSync, renameSync, rmSync } from "fs";
+
+import { confirm, input, select, Separator } from "@inquirer/prompts";
+import { replaceInFileSync } from "replace-in-file";
+
+enum applications {
+  FRONTEND = "frontend",
+  BACKEND = "backend",
+  EAI = "eai",
+}
+const EXIT = "exit";
+let keepStack = true;
+let keepDocs = true;
+let hasJavaApplicationBeenGenerated = false;
+
+/**
+ * Starting-point for the Projekt configuration.
+ * Depending on the value of the select, an interactive CLI will be shown
+ */
+async function projectConfiguration() {
+  await select({
+    message: "Select Project you want to generate with enter",
+    choices: [
+      { name: applications.FRONTEND, value: applications.FRONTEND },
+      { name: applications.BACKEND, value: applications.BACKEND },
+      { name: applications.EAI, value: applications.EAI },
+      { name: EXIT, value: EXIT },
+      new Separator(),
+    ],
+  }).then(async (result: string) => {
+    switch (result) {
+      case applications.EAI:
+        await generateJavaInteractiveCli(applications.EAI);
+        break;
+      case applications.BACKEND:
+        await generateJavaInteractiveCli(applications.BACKEND);
+        break;
+      case applications.FRONTEND:
+        await generateFrontendInteractiveCli();
+        break;
+    }
+    if (result != EXIT) {
+      await projectConfiguration();
+    } else {
+      await generateDefaultCliForDocsAndStack();
+    }
+  });
+}
+
+/**
+ * interactive CLI for the inputs, needed to generate the backend or eai
+ * @param application - java application that should be generated
+ */
+async function generateJavaInteractiveCli(application: string) {
+  hasJavaApplicationBeenGenerated = true;
+  const groupId = await input({
+    message:
+      "Define value for property groupId (should match expression '^de\\.muenchen\\.[a-z0-9]+(\\.[a-z0-9]+)*$'): ",
+    validate(value) {
+      const pass = value.match(/^de\.muenchen\.[a-z0-9]+(\.[a-z0-9]+)*$/g);
+      return pass ? true : "GroupId name not valid";
+    },
+    required: true,
+  });
+  const artifactId = await input({
+    message: "Define value for property artifactId:",
+    required: true,
+    validate(value: string) {
+      const pass = value.match(/([a-z-])+/g);
+      return pass
+        ? true
+        : "ArtifactId name not valid (should match expression '^de\\.muenchen\\.[a-z0-9]+(\\.[a-z0-9]+)*$'): ";
+    },
+  });
+  const packageName = await input({
+    message: "Define value for property package:",
+    default: groupId,
+    validate(value: string) {
+      const pass = value.match(/^de\.muenchen\.[a-z0-9]+(\.[a-z0-9]+)*$/g);
+      return pass ? true : "Package name not valid";
+    },
+    required: true,
+  });
+  if (application == applications.BACKEND) {
+    generateBackend(packageName, groupId, artifactId);
+  } else if (application == applications.EAI) {
+    generateEAI(packageName, groupId, artifactId);
+  }
+}
+
+/**
+ * Generates a new BACKEND package with the provided package name, groupId and artifactId.
+ * The function copies the existing `refarch-backend` folder to a new folder named `<artifactId>`.
+ * It then performs string replacements on the Java files and pom.xml file within the new folder
+ * to update the package name, groupId, and artifactId.
+ *
+ * @param packageName - The new package name to use for the Java files.
+ * @param groupId - The new groupId to use for the pom.xml file.
+ * @param artifactId - The new artifactId to use for the pom.xml file and the name of the new folder
+ */
+function generateBackend(
+  packageName: string,
+  groupId: string,
+  artifactId: string
+) {
+  cpSync("refarch-backend", "refarch-backend-copy", {
+    recursive: true,
+  });
+  const replacements = [
+    {
+      files: "refarch-backend-copy/src/main/java/de/muenchen/refarch/**/*.java",
+      from: /de.muenchen.refarch/g,
+      to: `${packageName}`,
+    },
+    {
+      files: "refarch-backend-copy/pom.xml",
+      from: [
+        "<groupId>de.muenchen.refarch</groupId>",
+        "<artifactId>refarch-backend</artifactId>",
+        "<name>refarch_backend</name>",
+      ],
+      to: [
+        `<groupId>${groupId}</groupId>`,
+        `<artifactId>${artifactId}</artifactId>`,
+        `<name>${artifactId}</name>`,
+      ],
+    },
+  ];
+  replacements.map((options) => replaceInFileSync(options));
+  renameSync("refarch-backend-copy", `${artifactId}`);
+  const packageNameWithSlashes = packageName.replace(/\./g, "/");
+
+  renameSync(
+    `${artifactId}/src/main/java/de/muenchen/refarch`,
+    `${artifactId}/src/main/java/${packageNameWithSlashes}`
+  );
+}
+
+async function generateFrontendInteractiveCli() {
+  const name = await input({
+    message: "Define value for property name:",
+    required: true,
+    validate(value: string) {
+      const pass = value.match(/([a-z-])+/g);
+      return pass ? true : "Name not valid";
+    },
+  });
+  generateFrontend(name);
+}
+
+/**
+ * Generates a new FRONTEND directory with the provided name
+ * The function copies the existing `refarch-frontend` folder to a new folder named `<name>`.
+ * It then performs string replacements in the package.json and package-lock.json to update the name
+ *
+ * @param name - The new name to use for the application
+ */
+function generateFrontend(name: string) {
+  cpSync("refarch-frontend", "refarch-frontend-copy", {
+    recursive: true,
+  });
+  const replacements = {
+    files: [
+      "refarch-frontend-copy/package.json",
+      "refarch-frontend-copy/package-lock.json",
+    ],
+    from: /refarch-frontend/g,
+    to: `${name}`,
+  };
+  replaceInFileSync(replacements);
+  renameSync("refarch-frontend-copy", `${name}`);
+}
+
+/**
+ * Generates a new EAI package with the provided package name, groupId and artifactId.
+ * The function copies the existing `refarch-eai` folder to a new folder named `<artifactId>`.
+ * It then performs string replacements on the Java files and pom.xml file within the new folder
+ * to update the package name, groupId, and artifactId.
+ *
+ * @param  packageName - The new package name to use for the Java files.
+ * @param  groupId - The new groupId to use for the pom.xml file.
+ * @param  artifactId - The new artifactId to use for the pom.xml file and the name of the new folder
+ */
+function generateEAI(packageName: string, groupId: string, artifactId: string) {
+  cpSync("refarch-eai", "refarch-eai-copy", { recursive: true });
+  const replacements = [
+    {
+      files: "refarch-eai-copy/src/main/java/de/muenchen/refarch/**/*.java",
+      from: /de.muenchen.refarch/g,
+      to: `${packageName}`,
+    },
+    {
+      files: "refarch-eai-copy/pom.xml",
+      from: [
+        "<groupId>de.muenchen.refarch</groupId>",
+        "<artifactId>refarch-eai</artifactId>",
+        "<name>refarch_eai</name>",
+      ],
+      to: [
+        `<groupId>${groupId}</groupId>`,
+        `<artifactId>${artifactId}</artifactId>`,
+        `<name>${artifactId}</name>`,
+      ],
+    },
+  ];
+  replacements.map((options) => replaceInFileSync(options));
+  renameSync("refarch-eai-copy", `${artifactId}`);
+  const packageNameWithSlashes = packageName.replace(/\./g, "/");
+  renameSync(
+    `${artifactId}/src/main/java/de/muenchen/refarch`,
+    `${artifactId}/src/main/java/${packageNameWithSlashes}`
+  );
+}
+
+/**
+ *  generated the interactive CLI for choosing, if the Docs and Stack folder should be kept
+ */
+async function generateDefaultCliForDocsAndStack() {
+  keepDocs = await confirm({ message: "Want to keep the Docs folder" });
+  keepStack = await confirm({ message: "Want to keep the Stack folder" });
+  cleanup();
+}
+
+/**
+ * remove the templates for the frontend, backend and eai.
+ * remove the shared files if no java-application got generated
+ * remove the docs and stack depending on the user input
+ */
+function cleanup() {
+  if (!keepDocs) {
+    rmSync("docs", { recursive: true });
+  }
+  if (!keepStack) {
+    rmSync("stack", { recursive: true });
+  }
+  if (!hasJavaApplicationBeenGenerated) {
+    rmSync("shared-files", { recursive: true });
+  }
+  rmSync("refarch-eai", { recursive: true });
+  rmSync("refarch-backend", { recursive: true });
+  rmSync("refarch-frontend", { recursive: true });
+}
+
+export default projectConfiguration();
