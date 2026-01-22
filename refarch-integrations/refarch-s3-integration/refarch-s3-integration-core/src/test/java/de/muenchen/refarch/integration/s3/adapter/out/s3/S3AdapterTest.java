@@ -211,11 +211,13 @@ class S3AdapterTest {
     }
 
     @Test
+    @SuppressWarnings("PMD.CloseResource")
     void testGetFileContent() throws S3Exception, IOException {
         final FileReference ref = new FileReference(BUCKET, PATH);
-        final InputStream response = new ByteArrayInputStream("test".getBytes(Charset.defaultCharset()));
-        when(s3Client.getObject(any(GetObjectRequest.class))).thenReturn((ResponseInputStream<GetObjectResponse>) response);
-        assertEquals("test", new String(adapter.getFileContent(ref).readAllBytes()));
+        final InputStream stream = new ByteArrayInputStream("test".getBytes(Charset.defaultCharset()));
+        final ResponseInputStream<GetObjectResponse> response = new ResponseInputStream<>(GetObjectResponse.builder().build(), stream);
+        when(s3Client.getObject(any(GetObjectRequest.class))).thenReturn(response);
+        assertEquals("test", new String(adapter.getFileContent(ref).readAllBytes(), Charset.defaultCharset()));
         verify(s3Client).getObject(any(GetObjectRequest.class));
     }
 

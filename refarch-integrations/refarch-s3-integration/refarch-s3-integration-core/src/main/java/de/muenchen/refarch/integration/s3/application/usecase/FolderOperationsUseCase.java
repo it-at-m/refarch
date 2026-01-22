@@ -17,7 +17,13 @@ public class FolderOperationsUseCase implements FolderOperationsInPort {
 
     @Override
     public List<FileMetadata> getFilesInFolder(final String bucket, final String pathToFolder, final boolean recursive) throws S3Exception {
-        final List<FileMetadata> all = s3OutPort.getFilesWithPrefix(bucket, pathToFolder, 1000, null);
+        return getFilesInFolder(bucket, pathToFolder, recursive, 1000, null);
+    }
+
+    @Override
+    public List<FileMetadata> getFilesInFolder(final String bucket, final String pathToFolder, final boolean recursive, final int maxKeys, final String marker)
+            throws S3Exception {
+        final List<FileMetadata> all = s3OutPort.getFilesWithPrefix(bucket, pathToFolder, maxKeys, marker);
         if (recursive) {
             return all;
         }
