@@ -88,13 +88,13 @@ public class S3IntegrationAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public S3Adapter s3Adapter(final S3Mapper s3Mapper, final S3Client s3Client, final S3Presigner s3Presigner) {
+    public S3OutPort s3Adapter(final S3Mapper s3Mapper, final S3Client s3Client, final S3Presigner s3Presigner) {
         return new S3Adapter(s3Mapper, s3Client, s3Presigner);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public FileOperationsInPort fileOperationsInPort(final S3Adapter s3Adapter) {
+    public FileOperationsInPort fileOperationsInPort(final S3OutPort s3Adapter) {
         return new FileOperationsUseCase(s3Adapter);
     }
 

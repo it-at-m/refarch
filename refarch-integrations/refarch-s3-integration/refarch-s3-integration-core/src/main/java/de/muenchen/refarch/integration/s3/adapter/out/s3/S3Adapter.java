@@ -84,7 +84,7 @@ public class S3Adapter implements S3OutPort {
                     .key(fileReference.path()).build());
             return s3Mapper.toDomain(response, fileReference.path());
         } catch (final SdkException e) {
-            throw new S3Exception("Error while downloading %s".formatted(fileReference), e);
+            throw new S3Exception("Error while retrieving metadata for %s".formatted(fileReference), e);
         }
     }
 

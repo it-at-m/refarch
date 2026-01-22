@@ -22,6 +22,6 @@ public class S3ExampleApplication {
     @EventListener(ApplicationReadyEvent.class)
     public void sendTestMail() throws Exception {
         this.exampleService.testS3();
-        SpringApplication.exit(context);
+        System.exit(SpringApplication.exit(context));
     }
 }

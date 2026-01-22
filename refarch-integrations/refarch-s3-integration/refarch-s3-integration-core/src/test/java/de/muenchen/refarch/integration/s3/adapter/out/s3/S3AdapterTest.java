@@ -15,6 +15,8 @@ import de.muenchen.refarch.integration.s3.domain.model.FileReference;
 import de.muenchen.refarch.integration.s3.domain.model.PresignedUrl;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.nio.charset.Charset;
@@ -27,10 +29,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.HeadObjectRequest;
 import software.amazon.awssdk.services.s3.model.HeadObjectResponse;
 import software.amazon.awssdk.services.s3.model.ListObjectsRequest;
@@ -207,10 +211,11 @@ class S3AdapterTest {
     }
 
     @Test
-    void testGetFileContent() throws S3Exception {
+    void testGetFileContent() throws S3Exception, IOException {
         final FileReference ref = new FileReference(BUCKET, PATH);
-        when(s3Client.getObject(any(GetObjectRequest.class))).thenReturn(null);
-        assertThat(adapter.getFileContent(ref)).isNull();
+        final InputStream response = new ByteArrayInputStream("test".getBytes(Charset.defaultCharset()));
+        when(s3Client.getObject(any(GetObjectRequest.class))).thenReturn((ResponseInputStream<GetObjectResponse>) response);
+        assertEquals("test", new String(adapter.getFileContent(ref).readAllBytes()));
         verify(s3Client).getObject(any(GetObjectRequest.class));
     }
 
