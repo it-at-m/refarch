@@ -45,11 +45,11 @@ public class S3IntegrationProperties {
      * Whether to use path-style access (e.g., http://endpoint/bucket/object) instead of
      * virtual-hosted-style access (e.g., http://bucket.endpoint/object). Defaults to {@code true}.
      */
-    private Boolean pathStyleAccessEnabled = true;
+    private boolean pathStyleAccessEnabled = true;
 
     /**
      * Whether to perform a connectivity check to the configured S3 endpoint during application startup.
      * Defaults to {@code true}. Must not be {@code null}.
      */
-    @NotNull private Boolean initialConnectionTest = true;
+    @NotNull private boolean initialConnectionTest = true;
 }
