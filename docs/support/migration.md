@@ -35,15 +35,15 @@ For deploying the central Gateway use the [according container image](../gateway
 `application-local.yml` (inside [gateway code `resources` folder](https://github.com/it-at-m/refarch/tree/main/refarch-gateway/src/main/resources))
 and [configuration section](../gateway.md#configuration) to find properties which need to be migrated.
 
-# S3-Integration v3
+## S3-Integration v3
 
-## Removed without replacement
+### Removed without replacement
 
 - separate s3 service (image: `refarch/s3-integration-rest-service`)
 - file size and type validation
 - delete folder method
 
-## Migrate
+### Migrate
 
 - Replace `DocumentStorageFileRepository` with `FileOperationsInPort`
   - Some methods were merged
