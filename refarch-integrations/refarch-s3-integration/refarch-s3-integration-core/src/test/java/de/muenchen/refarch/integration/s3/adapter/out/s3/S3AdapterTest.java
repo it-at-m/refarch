@@ -18,6 +18,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.time.Instant;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -127,7 +128,7 @@ class S3AdapterTest {
     @Test
     void saveFile_file_putsObject() throws Exception {
         final FileReference ref = new FileReference(BUCKET, PATH);
-        final File tmp = File.createTempFile("s3-test", ".bin");
+        final File tmp = Files.createTempFile("s3-test", ".bin").toFile();
         tmp.deleteOnExit();
 
         adapter.saveFile(ref, tmp);

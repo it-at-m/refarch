@@ -22,6 +22,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.time.Duration;
 import java.time.Instant;
 import org.junit.jupiter.api.BeforeEach;
@@ -88,7 +89,7 @@ class FileOperationsUseCaseTest {
     @Test
     void saveFile_fromFile() throws Exception {
         final FileReference ref = new FileReference(BUCKET, PATH);
-        final File tmp = File.createTempFile("s3-usecase", ".bin");
+        final File tmp = Files.createTempFile("s3-usecase", ".bin").toFile();
         tmp.deleteOnExit();
         useCase.saveFile(ref, tmp);
         verify(s3OutPort).saveFile(ref, tmp);
