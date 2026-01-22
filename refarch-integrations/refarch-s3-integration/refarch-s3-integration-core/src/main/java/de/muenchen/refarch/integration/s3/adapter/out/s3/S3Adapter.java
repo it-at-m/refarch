@@ -7,6 +7,7 @@ import de.muenchen.refarch.integration.s3.domain.model.FileReference;
 import de.muenchen.refarch.integration.s3.domain.model.PresignedUrl;
 import java.io.File;
 import java.io.InputStream;
+import java.net.URL;
 import java.time.Duration;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignReques
 
 @RequiredArgsConstructor
 @Slf4j
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 public class S3Adapter implements S3OutPort {
     private final S3Mapper s3Mapper;
     private final S3Client s3Client;
@@ -65,7 +67,7 @@ public class S3Adapter implements S3OutPort {
     }
 
     @Override
-    public void saveFile(final FileReference fileReference, final InputStream content, long contentLength) throws S3Exception {
+    public void saveFile(final FileReference fileReference, final InputStream content, final long contentLength) throws S3Exception {
         saveFile(fileReference, RequestBody.fromInputStream(content, contentLength));
     }
 
@@ -89,8 +91,7 @@ public class S3Adapter implements S3OutPort {
     @Override
     public PresignedUrl getPresignedUrl(final FileReference fileReference, final PresignedUrl.Action action, final Duration lifetime) throws S3Exception {
         try {
-            final java.net.URL url;
-            switch (action) {
+            final URL url = switch (action) {
             case GET -> {
                 final GetObjectRequest getObjectRequest = GetObjectRequest.builder()
                         .bucket(fileReference.bucket())
@@ -100,7 +101,7 @@ public class S3Adapter implements S3OutPort {
                         .getObjectRequest(getObjectRequest)
                         .signatureDuration(lifetime)
                         .build();
-                url = s3Presigner.presignGetObject(presignRequest).url();
+                yield s3Presigner.presignGetObject(presignRequest).url();
             }
             case PUT -> {
                 final PutObjectRequest putObjectRequest = PutObjectRequest.builder()
@@ -111,7 +112,7 @@ public class S3Adapter implements S3OutPort {
                         .putObjectRequest(putObjectRequest)
                         .signatureDuration(lifetime)
                         .build();
-                url = s3Presigner.presignPutObject(presignRequest).url();
+                yield s3Presigner.presignPutObject(presignRequest).url();
             }
             case DELETE -> {
                 final DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
@@ -122,7 +123,7 @@ public class S3Adapter implements S3OutPort {
                         .deleteObjectRequest(deleteObjectRequest)
                         .signatureDuration(lifetime)
                         .build();
-                url = s3Presigner.presignDeleteObject(presignRequest).url();
+                yield s3Presigner.presignDeleteObject(presignRequest).url();
             }
             case HEAD -> {
                 final HeadObjectRequest headObjectRequest = HeadObjectRequest.builder()
@@ -133,10 +134,9 @@ public class S3Adapter implements S3OutPort {
                         .headObjectRequest(headObjectRequest)
                         .signatureDuration(lifetime)
                         .build();
-                url = s3Presigner.presignHeadObject(presignRequest).url();
+                yield s3Presigner.presignHeadObject(presignRequest).url();
             }
-            default -> throw new IllegalArgumentException("Unsupported presigned URL action: " + action);
-            }
+            };
             return new PresignedUrl(url, fileReference.path(), action);
         } catch (final SdkException e) {
             throw new S3Exception("Error while creating presigned URL for %s with action %s".formatted(fileReference, action), e);

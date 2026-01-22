@@ -10,13 +10,11 @@ import de.muenchen.refarch.integration.s3.application.usecase.FileOperationsUseC
 import de.muenchen.refarch.integration.s3.application.usecase.FolderOperationsUseCase;
 import de.muenchen.refarch.integration.s3.domain.model.FileMetadata;
 import de.muenchen.refarch.integration.s3.domain.model.FileReference;
-import de.muenchen.refarch.integration.s3.domain.model.PresignedUrl;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeAll;
@@ -45,7 +43,7 @@ class S3InPortsE2ETest {
     private static final String BUCKET = "test-bucket";
 
     @Container
-    private static final GenericContainer<?> minio = new GenericContainer<>("quay.io/minio/minio:RELEASE.2025-09-07T16-13-09Z")
+    private static final GenericContainer<?> MINIO = new GenericContainer<>("quay.io/minio/minio:RELEASE.2025-09-07T16-13-09Z")
             .withEnv("MINIO_ROOT_USER", ACCESS_KEY)
             .withEnv("MINIO_ROOT_PASSWORD", SECRET_KEY)
             .withCommand("server", "/data", "--console-address", ":9001")
@@ -55,8 +53,9 @@ class S3InPortsE2ETest {
     private FolderOperationsInPort folderOps;
 
     @BeforeAll
+    @SuppressWarnings("PMD.CloseResource")
     void setUp() {
-        final String endpoint = "http://" + minio.getHost() + ":" + minio.getMappedPort(9000);
+        final String endpoint = "http://" + MINIO.getHost() + ":" + MINIO.getMappedPort(9000);
         final Region region = Region.US_EAST_1;
 
         final S3Configuration s3cfg = S3Configuration.builder().pathStyleAccessEnabled(true).build();
@@ -87,7 +86,7 @@ class S3InPortsE2ETest {
     }
 
     @Test
-    void test(@TempDir Path tempDir) throws Exception {
+    void test(@TempDir final Path tempDir) throws Exception {
         final String prefix = "e2e/";
         final String key = prefix + UUID.randomUUID();
         final FileReference ref = new FileReference(BUCKET, key);
@@ -118,7 +117,7 @@ class S3InPortsE2ETest {
         assertThat(fileOps.fileExists(ref2)).isTrue();
 
         // Presigned URL (GET) and download
-        final PresignedUrl pre = fileOps.getPresignedUrl(ref2, PresignedUrl.Action.GET, Duration.ofMinutes(2));
+        //        final PresignedUrl pre = fileOps.getPresignedUrl(ref2, PresignedUrl.Action.GET, Duration.ofMinutes(2));
         //        try (InputStream is = pre.url().openStream()) {
         //            final String s = new String(is.readAllBytes(), StandardCharsets.UTF_8);
         //            assertThat(s).isEqualTo("filecontent");

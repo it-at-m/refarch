@@ -1,13 +1,14 @@
 package de.muenchen.refarch.integration.s3.configuration;
 
+import de.muenchen.refarch.integration.s3.adapter.out.s3.S3Adapter;
 import de.muenchen.refarch.integration.s3.adapter.out.s3.S3Mapper;
 import de.muenchen.refarch.integration.s3.application.port.in.FileOperationsInPort;
 import de.muenchen.refarch.integration.s3.application.port.in.FolderOperationsInPort;
 import de.muenchen.refarch.integration.s3.application.port.out.S3OutPort;
 import de.muenchen.refarch.integration.s3.application.usecase.FileOperationsUseCase;
 import de.muenchen.refarch.integration.s3.application.usecase.FolderOperationsUseCase;
-import de.muenchen.refarch.integration.s3.adapter.out.s3.S3Adapter;
 import de.muenchen.refarch.integration.s3.properties.S3IntegrationProperties;
+import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -16,11 +17,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
-import software.amazon.awssdk.services.s3.S3Configuration;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.S3Configuration;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
-
-import java.net.URI;
 
 @Configuration
 @RequiredArgsConstructor
@@ -40,8 +39,7 @@ public class S3IntegrationAutoConfiguration {
         final StaticCredentialsProvider creds = StaticCredentialsProvider.create(
                 AwsBasicCredentials.create(
                         s3IntegrationProperties.getAccessKey(),
-                        s3IntegrationProperties.getSecretKey()
-                ));
+                        s3IntegrationProperties.getSecretKey()));
 
         return S3Client.builder()
                 .endpointOverride(URI.create(s3IntegrationProperties.getUrl()))
@@ -56,8 +54,7 @@ public class S3IntegrationAutoConfiguration {
         final StaticCredentialsProvider creds = StaticCredentialsProvider.create(
                 AwsBasicCredentials.create(
                         s3IntegrationProperties.getAccessKey(),
-                        s3IntegrationProperties.getSecretKey()
-                ));
+                        s3IntegrationProperties.getSecretKey()));
 
         return S3Presigner.builder()
                 .endpointOverride(URI.create(s3IntegrationProperties.getUrl()))

@@ -17,6 +17,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.nio.charset.Charset;
 import java.time.Instant;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,8 +48,12 @@ import software.amazon.awssdk.services.s3.presigner.model.PresignedPutObjectRequ
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
 
 @ExtendWith(MockitoExtension.class)
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 class S3AdapterTest {
 
+    public static final String BUCKET = "bucket";
+    public static final String PATH = "path";
+    public static final String S3_EXCEPTION_MESSAGE = "boom";
     private final S3Mapper s3Mapper = new S3Mapper();
     @Mock
     private S3Client s3Client;
@@ -63,8 +68,8 @@ class S3AdapterTest {
     }
 
     @Test
-    void fileExists_returnsTrue_whenHeadSucceeds() throws S3Exception {
-        final FileReference ref = new FileReference("bucket", "path");
+    void fileExists_true_whenHeadSucceeds() throws S3Exception {
+        final FileReference ref = new FileReference(BUCKET, PATH);
         when(s3Client.headObject(any(HeadObjectRequest.class))).thenReturn(
                 HeadObjectResponse.builder()
                         .eTag("etag")
@@ -72,47 +77,47 @@ class S3AdapterTest {
                         .lastModified(Instant.now())
                         .build());
 
-        boolean exists = adapter.fileExists(ref);
+        final boolean exists = adapter.fileExists(ref);
         assertThat(exists).isTrue();
     }
 
     @Test
-    void fileExists_returnsFalse_whenNoSuchKey() throws S3Exception {
-        final FileReference ref = new FileReference("bucket", "path");
+    void fileExists_false_whenNoSuchKey() throws S3Exception {
+        final FileReference ref = new FileReference(BUCKET, PATH);
         when(s3Client.headObject(any(HeadObjectRequest.class)))
                 .thenThrow(NoSuchKeyException.builder().message("not found").build());
 
-        boolean exists = adapter.fileExists(ref);
+        final boolean exists = adapter.fileExists(ref);
         assertThat(exists).isFalse();
     }
 
     @Test
     void fileExists_throwsDomainException_onSdkError() {
-        final FileReference ref = new FileReference("bucket", "path");
+        final FileReference ref = new FileReference(BUCKET, PATH);
         when(s3Client.headObject(any(HeadObjectRequest.class)))
-                .thenThrow(software.amazon.awssdk.services.s3.model.S3Exception.builder().message("boom").build());
+                .thenThrow(software.amazon.awssdk.services.s3.model.S3Exception.builder().message(S3_EXCEPTION_MESSAGE).build());
 
         assertThrows(S3Exception.class, () -> adapter.fileExists(ref));
     }
 
     @Test
     void saveFile_inputStream_putsObject() throws S3Exception {
-        final FileReference ref = new FileReference("bucket", "path");
-        final byte[] content = "hello".getBytes();
+        final FileReference ref = new FileReference(BUCKET, PATH);
+        final byte[] content = "hello".getBytes(Charset.defaultCharset());
 
         adapter.saveFile(ref, new ByteArrayInputStream(content), content.length);
 
-        ArgumentCaptor<PutObjectRequest> requestCaptor = ArgumentCaptor.forClass(PutObjectRequest.class);
-        ArgumentCaptor<RequestBody> bodyCaptor = ArgumentCaptor.forClass(RequestBody.class);
+        final ArgumentCaptor<PutObjectRequest> requestCaptor = ArgumentCaptor.forClass(PutObjectRequest.class);
+        final ArgumentCaptor<RequestBody> bodyCaptor = ArgumentCaptor.forClass(RequestBody.class);
         verify(s3Client).putObject(requestCaptor.capture(), bodyCaptor.capture());
-        assertEquals("bucket", requestCaptor.getValue().bucket());
-        assertEquals("path", requestCaptor.getValue().key());
+        assertEquals(BUCKET, requestCaptor.getValue().bucket());
+        assertEquals(PATH, requestCaptor.getValue().key());
     }
 
     @Test
     void saveFile_inputStream_throwsDomainException_onSdkError() {
-        final FileReference ref = new FileReference("bucket", "path");
-        final byte[] content = "hello".getBytes();
+        final FileReference ref = new FileReference(BUCKET, PATH);
+        final byte[] content = "hello".getBytes(Charset.defaultCharset());
         doThrow(software.amazon.awssdk.services.s3.model.S3Exception.builder().message("fail").build())
                 .when(s3Client).putObject(any(PutObjectRequest.class), any(RequestBody.class));
 
@@ -121,70 +126,70 @@ class S3AdapterTest {
 
     @Test
     void saveFile_file_putsObject() throws Exception {
-        final FileReference ref = new FileReference("bucket", "path");
+        final FileReference ref = new FileReference(BUCKET, PATH);
         final File tmp = File.createTempFile("s3-test", ".bin");
         tmp.deleteOnExit();
 
         adapter.saveFile(ref, tmp);
 
-        ArgumentCaptor<PutObjectRequest> requestCaptor = ArgumentCaptor.forClass(PutObjectRequest.class);
+        final ArgumentCaptor<PutObjectRequest> requestCaptor = ArgumentCaptor.forClass(PutObjectRequest.class);
         verify(s3Client).putObject(requestCaptor.capture(), any(RequestBody.class));
-        assertEquals("bucket", requestCaptor.getValue().bucket());
-        assertEquals("path", requestCaptor.getValue().key());
+        assertEquals(BUCKET, requestCaptor.getValue().bucket());
+        assertEquals(PATH, requestCaptor.getValue().key());
     }
 
     @Test
-    void getFileMetadata_returnsMappedValue() throws S3Exception {
-        final FileReference ref = new FileReference("bucket", "path");
+    void testGetFileMetadata() throws S3Exception {
+        final FileReference ref = new FileReference(BUCKET, PATH);
         final Instant now = Instant.now();
-        HeadObjectResponse hdr = HeadObjectResponse.builder()
+        final HeadObjectResponse hdr = HeadObjectResponse.builder()
                 .eTag("etag")
                 .contentLength(10L)
                 .lastModified(now)
                 .build();
         when(s3Client.headObject(any(HeadObjectRequest.class))).thenReturn(hdr);
 
-        FileMetadata result = adapter.getFileMetadata(ref);
-        assertThat(result.path()).isEqualTo("path");
+        final FileMetadata result = adapter.getFileMetadata(ref);
+        assertThat(result.path()).isEqualTo(PATH);
         assertThat(result.contentLength()).isEqualTo(10L);
         assertThat(result.eTag()).isEqualTo("etag");
         assertThat(result.lastModified()).isEqualTo(now);
     }
 
     @Test
-    void getFileMetadata_throwsDomainException_onSdkError() {
-        final FileReference ref = new FileReference("bucket", "path");
+    void testGetFileMetadata_throwsDomainException_onSdkError() {
+        final FileReference ref = new FileReference(BUCKET, PATH);
         when(s3Client.headObject(any(HeadObjectRequest.class)))
-                .thenThrow(software.amazon.awssdk.services.s3.model.S3Exception.builder().message("boom").build());
+                .thenThrow(software.amazon.awssdk.services.s3.model.S3Exception.builder().message(S3_EXCEPTION_MESSAGE).build());
 
         assertThrows(S3Exception.class, () -> adapter.getFileMetadata(ref));
     }
 
     @Test
-    void getPresignedUrl_forGetPutDeleteHead() throws S3Exception, MalformedURLException {
-        final FileReference ref = new FileReference("bucket", "key");
+    void testGetPresignedUrl_forGetPutDeleteHead() throws S3Exception, MalformedURLException {
+        final FileReference ref = new FileReference(BUCKET, PATH);
         final URI uri = URI.create("https://example.com/url");
 
-        PresignedGetObjectRequest mockGet = mock(PresignedGetObjectRequest.class);
+        final PresignedGetObjectRequest mockGet = mock(PresignedGetObjectRequest.class);
         when(mockGet.url()).thenReturn(uri.toURL());
         when(s3Presigner.presignGetObject((GetObjectPresignRequest) any())).thenReturn(mockGet);
 
-        PresignedPutObjectRequest mockPut = mock(PresignedPutObjectRequest.class);
+        final PresignedPutObjectRequest mockPut = mock(PresignedPutObjectRequest.class);
         when(mockPut.url()).thenReturn(uri.toURL());
         when(s3Presigner.presignPutObject((PutObjectPresignRequest) any())).thenReturn(mockPut);
 
-        PresignedDeleteObjectRequest mockDelete = mock(PresignedDeleteObjectRequest.class);
+        final PresignedDeleteObjectRequest mockDelete = mock(PresignedDeleteObjectRequest.class);
         when(mockDelete.url()).thenReturn(uri.toURL());
         when(s3Presigner.presignDeleteObject((DeleteObjectPresignRequest) any())).thenReturn(mockDelete);
 
-        PresignedHeadObjectRequest mockHead = mock(PresignedHeadObjectRequest.class);
+        final PresignedHeadObjectRequest mockHead = mock(PresignedHeadObjectRequest.class);
         when(mockHead.url()).thenReturn(uri.toURL());
         when(s3Presigner.presignHeadObject((HeadObjectPresignRequest) any())).thenReturn(mockHead);
 
-        PresignedUrl getUrl = adapter.getPresignedUrl(ref, PresignedUrl.Action.GET, java.time.Duration.ofMinutes(1));
-        PresignedUrl putUrl = adapter.getPresignedUrl(ref, PresignedUrl.Action.PUT, java.time.Duration.ofMinutes(1));
-        PresignedUrl delUrl = adapter.getPresignedUrl(ref, PresignedUrl.Action.DELETE, java.time.Duration.ofMinutes(1));
-        PresignedUrl headUrl = adapter.getPresignedUrl(ref, PresignedUrl.Action.HEAD, java.time.Duration.ofMinutes(1));
+        final PresignedUrl getUrl = adapter.getPresignedUrl(ref, PresignedUrl.Action.GET, java.time.Duration.ofMinutes(1));
+        final PresignedUrl putUrl = adapter.getPresignedUrl(ref, PresignedUrl.Action.PUT, java.time.Duration.ofMinutes(1));
+        final PresignedUrl delUrl = adapter.getPresignedUrl(ref, PresignedUrl.Action.DELETE, java.time.Duration.ofMinutes(1));
+        final PresignedUrl headUrl = adapter.getPresignedUrl(ref, PresignedUrl.Action.HEAD, java.time.Duration.ofMinutes(1));
 
         assertThat(getUrl.url()).isEqualTo(uri.toURL());
         assertThat(putUrl.url()).isEqualTo(uri.toURL());
@@ -193,62 +198,62 @@ class S3AdapterTest {
     }
 
     @Test
-    void getPresignedUrl_throwsDomainException_onSdkError() {
-        final FileReference ref = new FileReference("bucket", "key");
+    void testGetPresignedUrl_throwsDomainException_onSdkError() {
+        final FileReference ref = new FileReference(BUCKET, PATH);
         when(s3Presigner.presignGetObject((GetObjectPresignRequest) any()))
-                .thenThrow(software.amazon.awssdk.services.s3.model.S3Exception.builder().message("boom").build());
+                .thenThrow(software.amazon.awssdk.services.s3.model.S3Exception.builder().message(S3_EXCEPTION_MESSAGE).build());
         assertThrows(S3Exception.class, () -> adapter.getPresignedUrl(ref, PresignedUrl.Action.GET, java.time.Duration.ofMinutes(1)));
     }
 
     @Test
-    void getFileContent_returnsStream() throws S3Exception {
-        final FileReference ref = new FileReference("bucket", "key");
+    void testGetFileContent() throws S3Exception {
+        final FileReference ref = new FileReference(BUCKET, PATH);
         when(s3Client.getObject(any(GetObjectRequest.class))).thenReturn(null);
         assertThat(adapter.getFileContent(ref)).isNull();
         verify(s3Client).getObject(any(GetObjectRequest.class));
     }
 
     @Test
-    void getFileContent_throwsDomainException_onSdkError() {
-        final FileReference ref = new FileReference("bucket", "key");
+    void testGetFileContent_throwsDomainException_onSdkError() {
+        final FileReference ref = new FileReference(BUCKET, PATH);
         when(s3Client.getObject(any(GetObjectRequest.class)))
-                .thenThrow(software.amazon.awssdk.services.s3.model.S3Exception.builder().message("boom").build());
+                .thenThrow(software.amazon.awssdk.services.s3.model.S3Exception.builder().message(S3_EXCEPTION_MESSAGE).build());
         assertThrows(S3Exception.class, () -> adapter.getFileContent(ref));
     }
 
     @Test
     void deleteFile_invokesClient() throws S3Exception {
-        final FileReference ref = new FileReference("bucket", "key");
+        final FileReference ref = new FileReference(BUCKET, PATH);
         adapter.deleteFile(ref);
-        ArgumentCaptor<DeleteObjectRequest> captor = ArgumentCaptor.forClass(DeleteObjectRequest.class);
+        final ArgumentCaptor<DeleteObjectRequest> captor = ArgumentCaptor.forClass(DeleteObjectRequest.class);
         verify(s3Client).deleteObject(captor.capture());
-        assertEquals("bucket", captor.getValue().bucket());
-        assertEquals("key", captor.getValue().key());
+        assertEquals(BUCKET, captor.getValue().bucket());
+        assertEquals(PATH, captor.getValue().key());
     }
 
     @Test
     void deleteFile_throwsDomainException_onSdkError() {
-        final FileReference ref = new FileReference("bucket", "key");
-        doThrow(software.amazon.awssdk.services.s3.model.S3Exception.builder().message("boom").build()).when(s3Client)
+        final FileReference ref = new FileReference(BUCKET, PATH);
+        doThrow(software.amazon.awssdk.services.s3.model.S3Exception.builder().message(S3_EXCEPTION_MESSAGE).build()).when(s3Client)
                 .deleteObject(any(DeleteObjectRequest.class));
         assertThrows(S3Exception.class, () -> adapter.deleteFile(ref));
     }
 
     @Test
-    void getFilesWithPrefix_mapsResults() throws S3Exception {
+    void testGetFilesWithPrefix_mapsResults() throws S3Exception {
         final S3Object obj = S3Object.builder().key("k1").size(1L).eTag("t").lastModified(Instant.now()).build();
         final ListObjectsResponse response = ListObjectsResponse.builder().contents(obj).build();
         when(s3Client.listObjects((ListObjectsRequest) any())).thenReturn(response);
 
-        List<FileMetadata> list = adapter.getFilesWithPrefix("bucket", "prefix", 10, null);
+        final List<FileMetadata> list = adapter.getFilesWithPrefix(BUCKET, "prefix", 10, null);
         assertThat(list).hasSize(1);
         assertThat(list.getFirst().path()).isEqualTo("k1");
     }
 
     @Test
-    void getFilesWithPrefix_throwsDomainException_onSdkError() {
+    void testGetFilesWithPrefix_throwsDomainException_onSdkError() {
         when(s3Client.listObjects((ListObjectsRequest) any()))
-                .thenThrow(software.amazon.awssdk.services.s3.model.S3Exception.builder().message("boom").build());
-        assertThrows(S3Exception.class, () -> adapter.getFilesWithPrefix("bucket", "prefix", 10, null));
+                .thenThrow(software.amazon.awssdk.services.s3.model.S3Exception.builder().message(S3_EXCEPTION_MESSAGE).build());
+        assertThrows(S3Exception.class, () -> adapter.getFilesWithPrefix(BUCKET, "prefix", 10, null));
     }
 }

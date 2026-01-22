@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
 import java.time.Duration;
 import java.time.Instant;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,6 +34,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class FileOperationsUseCaseTest {
 
+    public static final String BUCKET = "bucket";
+    public static final String PATH = "key";
+
     @Mock
     private S3OutPort s3OutPort;
 
@@ -44,33 +48,33 @@ class FileOperationsUseCaseTest {
     }
 
     @Test
-    void fileExists_delegatesToOutPort() throws S3Exception {
-        FileReference ref = new FileReference("bucket", "key");
+    void fileExists() throws S3Exception {
+        final FileReference ref = new FileReference(BUCKET, PATH);
         when(s3OutPort.fileExists(ref)).thenReturn(true);
         assertThat(useCase.fileExists(ref)).isTrue();
         verify(s3OutPort).fileExists(ref);
     }
 
     @Test
-    void saveFile_withKnownLength_delegates() throws S3Exception {
-        FileReference ref = new FileReference("bucket", "key");
-        byte[] bytes = "hello".getBytes();
-        InputStream is = new ByteArrayInputStream(bytes);
+    void saveFile_withKnownLength() throws S3Exception {
+        final FileReference ref = new FileReference(BUCKET, PATH);
+        final byte[] bytes = "hello".getBytes(Charset.defaultCharset());
+        final InputStream is = new ByteArrayInputStream(bytes);
         useCase.saveFile(ref, is, bytes.length);
         verify(s3OutPort).saveFile(ref, is, bytes.length);
     }
 
     @Test
-    void saveFile_withUnknownLength_buffersAndDelegates() throws Exception {
-        FileReference ref = new FileReference("bucket", "key");
-        byte[] bytes = "hello-world".getBytes();
-        ByteArrayInputStream is = new ByteArrayInputStream(bytes);
+    void saveFile_withUnknownLength() throws Exception {
+        final FileReference ref = new FileReference(BUCKET, PATH);
+        final byte[] bytes = "hello-world".getBytes(Charset.defaultCharset());
+        final InputStream is = new ByteArrayInputStream(bytes);
 
         // Capture the stream and validate its content and the inferred length during the call
         doAnswer(invocation -> {
-            InputStream captured = invocation.getArgument(1);
-            long len = invocation.getArgument(2);
-            byte[] read = captured.readAllBytes();
+            final InputStream captured = invocation.getArgument(1);
+            final long len = invocation.getArgument(2);
+            final byte[] read = captured.readAllBytes();
             assertEquals(bytes.length, len);
             assertThat(read).isEqualTo(bytes);
             return null;
@@ -82,48 +86,48 @@ class FileOperationsUseCaseTest {
     }
 
     @Test
-    void saveFile_fromFile_delegates() throws Exception {
-        FileReference ref = new FileReference("bucket", "key");
-        File tmp = File.createTempFile("s3-usecase", ".bin");
+    void saveFile_fromFile() throws Exception {
+        final FileReference ref = new FileReference(BUCKET, PATH);
+        final File tmp = File.createTempFile("s3-usecase", ".bin");
         tmp.deleteOnExit();
         useCase.saveFile(ref, tmp);
         verify(s3OutPort).saveFile(ref, tmp);
     }
 
     @Test
-    void getFileMetadata_delegatesAndReturns() throws S3Exception {
-        FileReference ref = new FileReference("bucket", "key");
-        FileMetadata metadata = new FileMetadata("key", 1L, "etag", Instant.now());
+    void testGetFileMetadata() throws S3Exception {
+        final FileReference ref = new FileReference(BUCKET, PATH);
+        final FileMetadata metadata = new FileMetadata(PATH, 1L, "etag", Instant.now());
         when(s3OutPort.getFileMetadata(ref)).thenReturn(metadata);
         assertThat(useCase.getFileMetadata(ref)).isEqualTo(metadata);
         verify(s3OutPort).getFileMetadata(ref);
     }
 
     @Test
-    void getPresignedUrl_delegatesWithDuration() throws S3Exception, MalformedURLException, URISyntaxException {
-        FileReference ref = new FileReference("bucket", "key");
-        PresignedUrl expected = new PresignedUrl(new URI("https://example.com").toURL(), "key", PresignedUrl.Action.GET);
+    void testGetPresignedUrl() throws S3Exception, MalformedURLException, URISyntaxException {
+        final FileReference ref = new FileReference(BUCKET, PATH);
+        final PresignedUrl expected = new PresignedUrl(new URI("https://example.com").toURL(), PATH, PresignedUrl.Action.GET);
         when(s3OutPort.getPresignedUrl(eq(ref), eq(PresignedUrl.Action.GET), any(Duration.class))).thenReturn(expected);
-        PresignedUrl result = useCase.getPresignedUrl(ref, PresignedUrl.Action.GET, Duration.ofMinutes(15));
+        final PresignedUrl result = useCase.getPresignedUrl(ref, PresignedUrl.Action.GET, Duration.ofMinutes(15));
         assertThat(result).isEqualTo(expected);
         // capture duration to ensure minutes are as expected
-        ArgumentCaptor<Duration> durationCaptor = ArgumentCaptor.forClass(Duration.class);
+        final ArgumentCaptor<Duration> durationCaptor = ArgumentCaptor.forClass(Duration.class);
         verify(s3OutPort).getPresignedUrl(eq(ref), eq(PresignedUrl.Action.GET), durationCaptor.capture());
         assertThat(durationCaptor.getValue()).isEqualTo(Duration.ofMinutes(15));
     }
 
     @Test
-    void getFileContent_delegatesAndReturns() throws S3Exception {
-        FileReference ref = new FileReference("bucket", "key");
-        InputStream is = new ByteArrayInputStream("x".getBytes());
+    void testGetFileContent() throws S3Exception {
+        final FileReference ref = new FileReference(BUCKET, PATH);
+        final InputStream is = new ByteArrayInputStream("x".getBytes(Charset.defaultCharset()));
         when(s3OutPort.getFileContent(ref)).thenReturn(is);
         assertThat(useCase.getFileContent(ref)).isEqualTo(is);
         verify(s3OutPort).getFileContent(ref);
     }
 
     @Test
-    void deleteFile_delegates() throws S3Exception {
-        FileReference ref = new FileReference("bucket", "key");
+    void deleteFile() throws S3Exception {
+        final FileReference ref = new FileReference(BUCKET, PATH);
         useCase.deleteFile(ref);
         verify(s3OutPort).deleteFile(ref);
     }
