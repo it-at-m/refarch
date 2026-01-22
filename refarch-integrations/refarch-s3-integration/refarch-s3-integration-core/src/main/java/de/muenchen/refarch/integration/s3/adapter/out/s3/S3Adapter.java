@@ -5,6 +5,10 @@ import de.muenchen.refarch.integration.s3.domain.exception.S3Exception;
 import de.muenchen.refarch.integration.s3.domain.model.FileMetadata;
 import de.muenchen.refarch.integration.s3.domain.model.FileReference;
 import de.muenchen.refarch.integration.s3.domain.model.PresignedUrl;
+import java.io.File;
+import java.io.InputStream;
+import java.time.Duration;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.core.exception.SdkException;
@@ -23,11 +27,6 @@ import software.amazon.awssdk.services.s3.presigner.model.DeleteObjectPresignReq
 import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
 import software.amazon.awssdk.services.s3.presigner.model.HeadObjectPresignRequest;
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
-
-import java.io.File;
-import java.io.InputStream;
-import java.time.Duration;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -59,7 +58,7 @@ public class S3Adapter implements S3OutPort {
                     .bucket(fileReference.bucket())
                     .key(fileReference.path())
                     .build(),
-                requestBody);
+                    requestBody);
         } catch (final SdkException e) {
             throw new S3Exception("Error while uploading %s".formatted(fileReference), e);
         }
@@ -79,8 +78,8 @@ public class S3Adapter implements S3OutPort {
     public FileMetadata getFileMetadata(final FileReference fileReference) throws S3Exception {
         try {
             final HeadObjectResponse response = s3Client.headObject(HeadObjectRequest.builder()
-                        .bucket(fileReference.bucket())
-                        .key(fileReference.path()).build());
+                    .bucket(fileReference.bucket())
+                    .key(fileReference.path()).build());
             return s3Mapper.toDomain(response, fileReference.path());
         } catch (final SdkException e) {
             throw new S3Exception("Error while downloading %s".formatted(fileReference), e);
@@ -92,51 +91,51 @@ public class S3Adapter implements S3OutPort {
         try {
             final java.net.URL url;
             switch (action) {
-                case GET -> {
-                    final GetObjectRequest getObjectRequest = GetObjectRequest.builder()
-                            .bucket(fileReference.bucket())
-                            .key(fileReference.path())
-                            .build();
-                    final GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder()
-                            .getObjectRequest(getObjectRequest)
-                            .signatureDuration(lifetime)
-                            .build();
-                    url = s3Presigner.presignGetObject(presignRequest).url();
-                }
-                case PUT -> {
-                    final PutObjectRequest putObjectRequest = PutObjectRequest.builder()
-                            .bucket(fileReference.bucket())
-                            .key(fileReference.path())
-                            .build();
-                    final PutObjectPresignRequest presignRequest = PutObjectPresignRequest.builder()
-                            .putObjectRequest(putObjectRequest)
-                            .signatureDuration(lifetime)
-                            .build();
-                    url = s3Presigner.presignPutObject(presignRequest).url();
-                }
-                case DELETE -> {
-                    final DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
-                            .bucket(fileReference.bucket())
-                            .key(fileReference.path())
-                            .build();
-                    final DeleteObjectPresignRequest presignRequest = DeleteObjectPresignRequest.builder()
-                            .deleteObjectRequest(deleteObjectRequest)
-                            .signatureDuration(lifetime)
-                            .build();
-                    url = s3Presigner.presignDeleteObject(presignRequest).url();
-                }
-                case HEAD -> {
-                    final HeadObjectRequest headObjectRequest = HeadObjectRequest.builder()
-                            .bucket(fileReference.bucket())
-                            .key(fileReference.path())
-                            .build();
-                    final HeadObjectPresignRequest presignRequest = HeadObjectPresignRequest.builder()
-                            .headObjectRequest(headObjectRequest)
-                            .signatureDuration(lifetime)
-                            .build();
-                    url = s3Presigner.presignHeadObject(presignRequest).url();
-                }
-                default -> throw new IllegalArgumentException("Unsupported presigned URL action: " + action);
+            case GET -> {
+                final GetObjectRequest getObjectRequest = GetObjectRequest.builder()
+                        .bucket(fileReference.bucket())
+                        .key(fileReference.path())
+                        .build();
+                final GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder()
+                        .getObjectRequest(getObjectRequest)
+                        .signatureDuration(lifetime)
+                        .build();
+                url = s3Presigner.presignGetObject(presignRequest).url();
+            }
+            case PUT -> {
+                final PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+                        .bucket(fileReference.bucket())
+                        .key(fileReference.path())
+                        .build();
+                final PutObjectPresignRequest presignRequest = PutObjectPresignRequest.builder()
+                        .putObjectRequest(putObjectRequest)
+                        .signatureDuration(lifetime)
+                        .build();
+                url = s3Presigner.presignPutObject(presignRequest).url();
+            }
+            case DELETE -> {
+                final DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
+                        .bucket(fileReference.bucket())
+                        .key(fileReference.path())
+                        .build();
+                final DeleteObjectPresignRequest presignRequest = DeleteObjectPresignRequest.builder()
+                        .deleteObjectRequest(deleteObjectRequest)
+                        .signatureDuration(lifetime)
+                        .build();
+                url = s3Presigner.presignDeleteObject(presignRequest).url();
+            }
+            case HEAD -> {
+                final HeadObjectRequest headObjectRequest = HeadObjectRequest.builder()
+                        .bucket(fileReference.bucket())
+                        .key(fileReference.path())
+                        .build();
+                final HeadObjectPresignRequest presignRequest = HeadObjectPresignRequest.builder()
+                        .headObjectRequest(headObjectRequest)
+                        .signatureDuration(lifetime)
+                        .build();
+                url = s3Presigner.presignHeadObject(presignRequest).url();
+            }
+            default -> throw new IllegalArgumentException("Unsupported presigned URL action: " + action);
             }
             return new PresignedUrl(url, fileReference.path(), action);
         } catch (final SdkException e) {

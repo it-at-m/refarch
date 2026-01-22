@@ -1,9 +1,24 @@
 package de.muenchen.refarch.integration.s3.adapter.out.s3;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import de.muenchen.refarch.integration.s3.domain.exception.S3Exception;
 import de.muenchen.refarch.integration.s3.domain.model.FileMetadata;
 import de.muenchen.refarch.integration.s3.domain.model.FileReference;
 import de.muenchen.refarch.integration.s3.domain.model.PresignedUrl;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.time.Instant;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,19 +45,6 @@ import software.amazon.awssdk.services.s3.presigner.model.PresignedGetObjectRequ
 import software.amazon.awssdk.services.s3.presigner.model.PresignedHeadObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.model.PresignedPutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
-
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.time.Instant;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class S3AdapterTest {
@@ -193,7 +195,8 @@ class S3AdapterTest {
     @Test
     void getPresignedUrl_throwsDomainException_onSdkError() {
         final FileReference ref = new FileReference("bucket", "key");
-        when(s3Presigner.presignGetObject((GetObjectPresignRequest) any())).thenThrow(software.amazon.awssdk.services.s3.model.S3Exception.builder().message("boom").build());
+        when(s3Presigner.presignGetObject((GetObjectPresignRequest) any()))
+                .thenThrow(software.amazon.awssdk.services.s3.model.S3Exception.builder().message("boom").build());
         assertThrows(S3Exception.class, () -> adapter.getPresignedUrl(ref, PresignedUrl.Action.GET, java.time.Duration.ofMinutes(1)));
     }
 
@@ -226,7 +229,8 @@ class S3AdapterTest {
     @Test
     void deleteFile_throwsDomainException_onSdkError() {
         final FileReference ref = new FileReference("bucket", "key");
-        doThrow(software.amazon.awssdk.services.s3.model.S3Exception.builder().message("boom").build()).when(s3Client).deleteObject(any(DeleteObjectRequest.class));
+        doThrow(software.amazon.awssdk.services.s3.model.S3Exception.builder().message("boom").build()).when(s3Client)
+                .deleteObject(any(DeleteObjectRequest.class));
         assertThrows(S3Exception.class, () -> adapter.deleteFile(ref));
     }
 
@@ -243,7 +247,8 @@ class S3AdapterTest {
 
     @Test
     void getFilesWithPrefix_throwsDomainException_onSdkError() {
-        when(s3Client.listObjects((ListObjectsRequest) any())).thenThrow(software.amazon.awssdk.services.s3.model.S3Exception.builder().message("boom").build());
+        when(s3Client.listObjects((ListObjectsRequest) any()))
+                .thenThrow(software.amazon.awssdk.services.s3.model.S3Exception.builder().message("boom").build());
         assertThrows(S3Exception.class, () -> adapter.getFilesWithPrefix("bucket", "prefix", 10, null));
     }
 }

@@ -5,7 +5,6 @@ import de.muenchen.refarch.integration.s3.domain.model.FileMetadata;
 import de.muenchen.refarch.integration.s3.domain.model.FileReference;
 import de.muenchen.refarch.integration.s3.domain.model.PresignedUrl;
 import jakarta.validation.constraints.NotNull;
-
 import java.io.File;
 import java.io.InputStream;
 
@@ -71,11 +70,13 @@ public interface FileOperationsInPort {
      *
      * @param fileReference the target file reference (bucket/key), must not be null
      * @param action the intended action (e.g., download or upload), must not be null
-     * @param lifetime the validity period for the presigned URL; actual expiration may be constrained by the provider
+     * @param lifetime the validity period for the presigned URL; actual expiration may be constrained
+     *            by the provider
      * @return a presigned URL encapsulating the action and expiration
      * @throws S3Exception if URL generation fails due to an underlying storage error
      */
-    PresignedUrl getPresignedUrl(@NotNull FileReference fileReference, @NotNull PresignedUrl.Action action, @NotNull java.time.Duration lifetime) throws S3Exception;
+    PresignedUrl getPresignedUrl(@NotNull FileReference fileReference, @NotNull PresignedUrl.Action action, @NotNull java.time.Duration lifetime)
+            throws S3Exception;
 
     /**
      * Retrieves the content of the referenced object as a stream.

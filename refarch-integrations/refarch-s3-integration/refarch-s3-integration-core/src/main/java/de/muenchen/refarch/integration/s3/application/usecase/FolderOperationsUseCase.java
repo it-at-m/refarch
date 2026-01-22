@@ -4,10 +4,9 @@ import de.muenchen.refarch.integration.s3.application.port.in.FolderOperationsIn
 import de.muenchen.refarch.integration.s3.application.port.out.S3OutPort;
 import de.muenchen.refarch.integration.s3.domain.exception.S3Exception;
 import de.muenchen.refarch.integration.s3.domain.model.FileMetadata;
-import lombok.RequiredArgsConstructor;
-
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Default implementation of {@link FolderOperationsInPort} delegating to {@link S3OutPort}.

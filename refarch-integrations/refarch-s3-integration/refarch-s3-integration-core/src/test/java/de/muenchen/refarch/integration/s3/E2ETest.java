@@ -1,5 +1,7 @@
 package de.muenchen.refarch.integration.s3;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import de.muenchen.refarch.integration.s3.adapter.out.s3.S3Adapter;
 import de.muenchen.refarch.integration.s3.adapter.out.s3.S3Mapper;
 import de.muenchen.refarch.integration.s3.application.port.in.FileOperationsInPort;
@@ -9,6 +11,14 @@ import de.muenchen.refarch.integration.s3.application.usecase.FolderOperationsUs
 import de.muenchen.refarch.integration.s3.domain.model.FileMetadata;
 import de.muenchen.refarch.integration.s3.domain.model.FileReference;
 import de.muenchen.refarch.integration.s3.domain.model.PresignedUrl;
+import java.io.InputStream;
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.Duration;
+import java.util.List;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -25,17 +35,6 @@ import software.amazon.awssdk.services.s3.model.BucketAlreadyExistsException;
 import software.amazon.awssdk.services.s3.model.BucketAlreadyOwnedByYouException;
 import software.amazon.awssdk.services.s3.model.CreateBucketRequest;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
-
-import java.io.InputStream;
-import java.net.URI;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.time.Duration;
-import java.util.List;
-import java.util.UUID;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @Testcontainers
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -120,10 +119,10 @@ class S3InPortsE2ETest {
 
         // Presigned URL (GET) and download
         final PresignedUrl pre = fileOps.getPresignedUrl(ref2, PresignedUrl.Action.GET, Duration.ofMinutes(2));
-//        try (InputStream is = pre.url().openStream()) {
-//            final String s = new String(is.readAllBytes(), StandardCharsets.UTF_8);
-//            assertThat(s).isEqualTo("filecontent");
-//        }
+        //        try (InputStream is = pre.url().openStream()) {
+        //            final String s = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+        //            assertThat(s).isEqualTo("filecontent");
+        //        }
 
         // List via folder ops
         final List<FileMetadata> listed = folderOps.getFilesInFolder(BUCKET, prefix, true);

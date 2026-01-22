@@ -6,8 +6,6 @@ import de.muenchen.refarch.integration.s3.domain.exception.S3Exception;
 import de.muenchen.refarch.integration.s3.domain.model.FileMetadata;
 import de.muenchen.refarch.integration.s3.domain.model.FileReference;
 import de.muenchen.refarch.integration.s3.domain.model.PresignedUrl;
-import lombok.RequiredArgsConstructor;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -16,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.time.Duration;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Default implementation of {@link FileOperationsInPort} delegating to {@link S3OutPort}.

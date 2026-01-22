@@ -7,7 +7,6 @@ import de.muenchen.refarch.integration.s3.domain.model.PresignedUrl;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-
 import java.io.File;
 import java.io.InputStream;
 import java.time.Duration;
@@ -36,7 +35,8 @@ public interface S3OutPort {
      *
      * @param fileReference the bucket and path where the content will be stored (must not be null)
      * @param content the input stream containing the data to upload (must not be null)
-     * @param contentLength the total number of bytes in {@code content}; used by some SDKs to optimize upload
+     * @param contentLength the total number of bytes in {@code content}; used by some SDKs to optimize
+     *            upload
      * @throws S3Exception if the upload fails due to client, network, or service issues
      */
     void saveFile(@NotNull @Valid FileReference fileReference, @NotNull InputStream content, long contentLength) throws S3Exception;
@@ -62,9 +62,11 @@ public interface S3OutPort {
     /**
      * Creates a presigned URL allowing the specified action on the object for a limited lifetime.
      *
-     * Supported actions typically include {@link PresignedUrl.Action#GET}, {@link PresignedUrl.Action#PUT},
+     * Supported actions typically include {@link PresignedUrl.Action#GET},
+     * {@link PresignedUrl.Action#PUT},
      * {@link PresignedUrl.Action#DELETE}, and {@link PresignedUrl.Action#HEAD}.
-     * The effective maximum lifetime may be constrained by the underlying provider (e.g., AWS S3 up to 7 days).
+     * The effective maximum lifetime may be constrained by the underlying provider (e.g., AWS S3 up to
+     * 7 days).
      *
      * @param fileReference the bucket and path identifying the object (must not be null)
      * @param action the operation to authorize via the presigned URL (must not be null)
@@ -72,7 +74,8 @@ public interface S3OutPort {
      * @return a {@link PresignedUrl} containing the URL, target path, and action
      * @throws S3Exception if URL creation fails due to client, network, or service issues
      */
-    PresignedUrl getPresignedUrl(@NotNull @Valid FileReference fileReference, @NotNull PresignedUrl.Action action, @NotNull Duration lifetime) throws S3Exception;
+    PresignedUrl getPresignedUrl(@NotNull @Valid FileReference fileReference, @NotNull PresignedUrl.Action action, @NotNull Duration lifetime)
+            throws S3Exception;
 
     /**
      * Downloads the object content as an input stream.
@@ -97,10 +100,13 @@ public interface S3OutPort {
      *
      * @param bucket the bucket name (must not be blank)
      * @param prefix the prefix under which to list objects (must not be blank)
-     * @param maxKeys maximum number of keys to return in this page (provider limits may apply, e.g., 1–1000)
-     * @param marker key to start after when listing objects (used to continue from a previous truncated response);
-     *               pass null or empty to start from the beginning
-     * @return a list of metadata entries for the objects found under the prefix (up to {@code maxKeys} items)
+     * @param maxKeys maximum number of keys to return in this page (provider limits may apply, e.g.,
+     *            1–1000)
+     * @param marker key to start after when listing objects (used to continue from a previous truncated
+     *            response);
+     *            pass null or empty to start from the beginning
+     * @return a list of metadata entries for the objects found under the prefix (up to {@code maxKeys}
+     *         items)
      * @throws S3Exception if listing fails due to client, network, or service issues
      */
     List<FileMetadata> getFilesWithPrefix(@NotBlank String bucket, @NotBlank String prefix, int maxKeys, String marker) throws S3Exception;

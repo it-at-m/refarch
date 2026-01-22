@@ -4,6 +4,5 @@ import jakarta.validation.constraints.NotBlank;
 
 public record FileReference(
         @NotBlank String bucket,
-        @NotBlank String path
-) {
+        @NotBlank String path) {
 }
