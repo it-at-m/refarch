@@ -37,7 +37,7 @@ public class S3ExampleService {
         }
         // list file
         final List<FileMetadata> files = folderOperationsInPort.getFilesInFolder(BUCKET, FOLDER, false);
-        if (!files.isEmpty() || !files.getFirst().path().equals(filePath)) {
+        if (files.isEmpty() || !files.getFirst().path().equals(filePath)) {
             throw new IllegalStateException("Uploaded file not found in S3: " + filePath);
         }
         // get file

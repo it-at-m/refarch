@@ -4,11 +4,13 @@ import de.muenchen.refarch.integration.s3.domain.exception.S3Exception;
 import de.muenchen.refarch.integration.s3.domain.model.FileMetadata;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
+import org.springframework.validation.annotation.Validated;
 
 /**
  * Inbound application port for listing and browsing objects within a logical folder (prefix)
  * in an object store (e.g. S3).
  */
+@Validated
 public interface FolderOperationsInPort {
 
     /**

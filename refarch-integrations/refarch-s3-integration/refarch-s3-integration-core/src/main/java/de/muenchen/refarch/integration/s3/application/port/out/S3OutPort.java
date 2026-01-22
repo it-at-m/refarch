@@ -11,12 +11,14 @@ import java.io.File;
 import java.io.InputStream;
 import java.time.Duration;
 import java.util.List;
+import org.springframework.validation.annotation.Validated;
 
 /**
  * Outbound port defining operations to interact with an S3-compatible object storage.
  * Implementations are responsible for translating these domain-level operations into SDK calls
  * and for converting SDK-specific exceptions into {@link S3Exception}.
  */
+@Validated
 public interface S3OutPort {
 
     /**

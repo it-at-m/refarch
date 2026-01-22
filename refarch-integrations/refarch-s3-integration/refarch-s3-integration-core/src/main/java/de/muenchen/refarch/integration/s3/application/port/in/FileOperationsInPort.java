@@ -7,11 +7,13 @@ import de.muenchen.refarch.integration.s3.domain.model.PresignedUrl;
 import jakarta.validation.constraints.NotNull;
 import java.io.File;
 import java.io.InputStream;
+import org.springframework.validation.annotation.Validated;
 
 /**
  * Inbound application port exposing file-oriented operations backed by an object store
  * (for example, Amazon S3 or an S3-compatible service).
  */
+@Validated
 public interface FileOperationsInPort {
 
     /**
