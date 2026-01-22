@@ -19,9 +19,7 @@ public class S3IntegrationProperties {
 
     @NotBlank private String secretKey;
 
-    @NotBlank private String bucketName;
+    private Boolean pathStyleAccessEnabled = true;
 
     @NotNull private Boolean initialConnectionTest = true;
-
-    private int presignedUrlExpiresInMinutes = 7 * 24 * 60; // 7 days
 }
