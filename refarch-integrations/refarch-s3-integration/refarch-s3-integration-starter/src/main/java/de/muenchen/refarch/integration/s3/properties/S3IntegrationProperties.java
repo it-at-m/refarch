@@ -23,6 +23,11 @@ public class S3IntegrationProperties {
      */
     @NotBlank private String url;
 
+    /**
+     * Region to use for the S3 client and presigner. For S3-compatible services like MinIO,
+     * this is often "us-east-1" and the default.
+     */
+    private String region = "us-east-1";
 
     /**
      * Access key used for authentication with the S3-compatible service.
