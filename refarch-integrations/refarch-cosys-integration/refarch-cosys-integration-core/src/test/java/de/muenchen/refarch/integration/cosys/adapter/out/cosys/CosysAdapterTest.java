@@ -13,6 +13,7 @@ import de.muenchen.refarch.integration.cosys.configuration.CosysConfiguration;
 import de.muenchen.refarch.integration.cosys.domain.model.GenerateDocument;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -33,7 +34,7 @@ class CosysAdapterTest {
     void testGenerateCosysDocumentSuccess() throws IOException {
         // given
         final GenerateDocument generateDocument = generateDocument();
-        final byte[] responseBody = "Response".getBytes();
+        final byte[] responseBody = "Response".getBytes(StandardCharsets.UTF_8);
         final DataBuffer dataBuffer = new DefaultDataBufferFactory().allocateBuffer(responseBody.length);
         dataBuffer.write(responseBody);
         final WebClient.ResponseSpec responseSpecMock = mock(WebClient.ResponseSpec.class);
@@ -53,7 +54,7 @@ class CosysAdapterTest {
 
         //then
         assert response != null;
-        assertEquals("Response", new String(response.readAllBytes()));
+        assertEquals("Response", new String(response.readAllBytes(), StandardCharsets.UTF_8));
         verify(generationApi).generatePdfWithResponseSpec(
                 generateDocument.guid(),
                 generateDocument.client(),

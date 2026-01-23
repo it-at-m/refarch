@@ -9,7 +9,7 @@ building full-stack applications based on the reference architecture (RefArch) o
 For more information on the RefArch itself, please check the [Overview](../overview).
 
 ::: danger IMPORTANT
-To use the `refarch-templates` you need to have [Docker](https://www.docker.com/) installed on your system.
+To use the `refarch-templates` you need to have a container engine like [Podman](https://podman.io/) or [Docker](https://www.docker.com/) installed on your system.
 :::
 
 ## Getting the templates
@@ -41,7 +41,7 @@ For example, if you want to work with the backend, you should copy the `refarch-
 If you want documentation, you should copy the `docs` folder.
 
 ::: danger IMPORTANT
-The `stack` folder must be copied to your project directory, as it contains the [development stack](./develop#docker) required by the templates.
+The `stack` folder must be copied to your project directory, as it contains the [development stack](./develop#container-engine) required by the templates.
 :::
 
 Besides the code templates, `refarch-templates` provides lots of other configuration files which help to establish
@@ -55,7 +55,7 @@ For further information on those topics please check out [Develop](./develop), [
 
 - Java 21
 - Maven 3.9
-- Docker (for Postgres and Keycloak)
+- Container engine (for Postgres and Keycloak)
 
 ### Configure templates
 
@@ -89,8 +89,8 @@ When running with the `local` profile, text-based logging is used (instead of JS
 
 ### Prerequisites
 
-- Node.js 22 LTS (`22.11.x` - `22.x.x`)
-- Docker (for AppSwitcher)
+- Node.js 22 LTS (`22.19.x` - `22.x.x`)
+- Container engine
 
 ### Configure templates
 
@@ -106,7 +106,7 @@ Congratulations, the Frontend/WebComponent is now ready to use.
 
 ### Prerequisites
 
-- Node.js 22 LTS (`22.11.x` - `22.x.x`)
+- Node.js 22 LTS (`22.19.x` - `22.x.x`)
 
 ### Configure documentation
 

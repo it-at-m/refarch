@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
@@ -134,7 +135,7 @@ class MailAdapterTest {
 
     @Test
     void sendMailWithAttachments() throws MessagingException, IOException {
-        final ByteArrayDataSource fileContent = new ByteArrayDataSource("FooBar".getBytes(), "application/pdf");
+        final ByteArrayDataSource fileContent = new ByteArrayDataSource("FooBar".getBytes(StandardCharsets.UTF_8), "application/pdf");
         final Attachment attachment = new Attachment("Testanhang", fileContent);
         final Mail mail = new Mail(
                 RECEIVER,
@@ -299,7 +300,7 @@ class MailAdapterTest {
 
             @Override
             public InputStream getInputStream() throws IOException {
-                return new ByteArrayInputStream(text.getBytes());
+                return new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8));
             }
         };
     }

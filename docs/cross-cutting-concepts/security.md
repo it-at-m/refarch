@@ -96,7 +96,7 @@ spring:
 
 ## Disable SBOM Exposing
 
-All services developed with the [templates](/overview#Templates), as well as all ready-to-use components like the [API Gateway](/overview#api-gateway) expose a SBOM (Software Bill of Materials) endpoint at `/actuator/sbom/application` by default.
+All services developed with the [templates](../overview.md#templates), as well as all ready-to-use components like the [API Gateway](../overview.md#api-gateway) expose a SBOM (Software Bill of Materials) endpoint at `/actuator/sbom/application` by default.
 
 This can be a problem for closed-source projects using any of the RefArch components, as it exposes information about the software dependencies and might thus lead to expose of critical CVEs.
 
@@ -133,7 +133,7 @@ management:
 ### Node-based templates
 
 The SBOM file is generated using [cyclonedx-node-npm](https://github.com/CycloneDX/cyclonedx-node-npm) and directly integrated into the `npm run build` script.
-It's placed inside the `dist` folder together will all other static resources and then served via the nginx server at runtime of the Docker image through a custom defined endpoint.
+It's placed inside the `dist` folder together will all other static resources and then served via the nginx server at runtime of the OCI image through a custom defined endpoint.
 
 To disable the exposure the behaviour of the nginx server has to be altered.
 This can be easily achieved by removing the following content from the file `sbom.conf` in the `docker/nginx` directory of the corresponding template.

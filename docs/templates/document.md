@@ -4,7 +4,7 @@ The templates include various tools and best practices to help you with document
 Those are further explained below.
 
 ::: danger IMPORTANT
-Please make sure you worked through the corresponding [Getting Started](./getting-started#documentation) instructions before proceeding.
+Please make sure you worked through the corresponding [Getting Started](./getting-started.md#documentation) instructions before proceeding.
 :::
 
 ## Code-focused documentation
@@ -13,7 +13,7 @@ To support code understandability for developers it's useful to document the cod
 This also improves developer experience when using tools like IDEs.
 
 Additionally, it's recommended to document developed APIs using standards like [OpenAPI](https://www.openapis.org/).
-We provide OpenAPI support for documenting APIs out of the box. This is further described in [our OpenAPI documentation page](/cross-cutting-concepts/openapi).
+We provide OpenAPI support for documenting APIs out of the box. This is further described in [our OpenAPI documentation page](../cross-cutting-concepts/openapi.md).
 
 The rest of this page will focus on code-decoupled documentation.
 
@@ -62,4 +62,10 @@ For ease of use, we prefer the use of GitHubs CI/CD capabilities using workflows
 By default, the documentation is deployed whenever a push to the `main` branch occurs, but you can adjust the workflow file to your needs.
 For further information about CI/CD-related topics, please check out the documentation for our [custom actions and workflows](https://github.com/it-at-m/.github).
 
-To make the workflow work, you also need to enable GitHub pages for your repository and select "GitHub Actions" as source. Please check of the official [GitHub Pages documentation](https://pages.github.com/) for further information.
+::: danger IMPORTANT
+To run this workflow, you must enable GitHub Pages for your repository and set the source to "GitHub Actions." For step-by-step instructions, see the official [GitHub documentation](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site#publishing-with-a-custom-github-actions-workflow).
+:::
+
+::: info Information
+If your documentation is hosted under a sub path (e.g. on GitHub Pages `https://username.github.io/my-repo/`), make sure to set the `base` property in your VitePress `config.mts`. Without this, asset URLs may point to the root path and result in 404 errors.
+:::

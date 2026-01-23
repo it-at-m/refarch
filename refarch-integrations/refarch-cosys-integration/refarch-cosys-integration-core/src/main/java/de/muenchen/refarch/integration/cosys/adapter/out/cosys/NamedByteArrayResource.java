@@ -6,7 +6,7 @@ import org.springframework.core.io.ByteArrayResource;
  * {@link ByteArrayResource} with filename to allow content type detection on receiving server.
  */
 public class NamedByteArrayResource extends ByteArrayResource {
-    final private String filename;
+    private final String filename;
 
     public NamedByteArrayResource(final byte[] byteArray, final String filename) {
         super(byteArray);

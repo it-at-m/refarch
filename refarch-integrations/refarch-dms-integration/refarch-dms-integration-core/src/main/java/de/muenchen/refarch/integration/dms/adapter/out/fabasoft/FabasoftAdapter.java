@@ -52,6 +52,7 @@ import de.muenchen.refarch.integration.dms.domain.model.DocumentType;
 import de.muenchen.refarch.integration.dms.domain.model.File;
 import de.muenchen.refarch.integration.dms.domain.model.Metadata;
 import de.muenchen.refarch.integration.dms.domain.model.Procedure;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -64,7 +65,6 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.lang.NonNull;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -346,7 +346,7 @@ public class FabasoftAdapter implements
     }
 
     @Override
-    public List<String> listContentCoos(@NonNull final String documentCoo, @NonNull final String user) throws DmsException {
+    public List<String> listContentCoos(@NotNull final String documentCoo, @NotNull final String user) throws DmsException {
         final ReadDocumentGIObjects request = new ReadDocumentGIObjects();
         request.setUserlogin(user);
         request.setBusinessapp(this.properties.getBusinessapp());

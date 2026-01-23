@@ -22,6 +22,7 @@ import freemarker.template.TemplateException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.util.ByteArrayDataSource;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,7 +32,7 @@ import org.springframework.mail.MailSendException;
 class SendMailUseCaseTest {
 
     private final MailOutPort mailOutPort = mock(MailOutPort.class);
-    private final Attachment attachment = new Attachment("file.pdf", new ByteArrayDataSource("Content".getBytes(), "application/pdf"));
+    private final Attachment attachment = new Attachment("file.pdf", new ByteArrayDataSource("Content".getBytes(StandardCharsets.UTF_8), "application/pdf"));
     private final TextMail mail = new TextMail(
             "mailReceiver1@muenchen.de,mailReceiver2@muenchen.de",
             "receiverCC@muenchen.de",

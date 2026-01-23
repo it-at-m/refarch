@@ -5,14 +5,10 @@ These enable reduced coding effort and maintenance as well as standardized progr
 
 ## Integrations
 
-- [s3-integration](./s3.md): For CRUD operations on a S3 storage. Also used for file handling
-  in other integrations.
-- [email-integration](./email.md): For sending text and HTML emails with attachments. Uses
-  s3-integration for file handling.
-- [dms-integration](./dms.md): For CRUD operations on a DMS system in specific fabasoft. Uses
-  s3-integration for file handling.
-- [cosys-integration](./cosys.md): For creating documents with coSys. Uses
-  s3-integration for file handling.
+- [s3-integration](./s3.md): For CRUD operations on a S3 storage.
+- [email-integration](./email.md): For sending text and HTML emails with attachments.
+- [dms-integration](./dms.md): For CRUD operations on a DMS system in specific fabasoft.
+- [cosys-integration](./cosys.md): For creating documents with coSys.
 - [address-integration](./address.md): For reading, searching and validating addresses via the LHM address service.
 
 ## Naming conventions
