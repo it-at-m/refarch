@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: "@project.artifactId@"
+    group: "@project.groupId@"
+    version: "@project.version@"
+
+server:
+  port: 8087
+
+logging:
+  level:
+    root: INFO
+    de.muenchen.refarch: DEBUG
+    org.springframework.web: DEBUG
+
+refarch:
+  s3:
+    access-key: minio
+    secret-key: Test1234
+    url: http://localhost:9000
