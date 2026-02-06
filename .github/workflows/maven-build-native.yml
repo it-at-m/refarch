@@ -1,0 +1,35 @@
+name: Build refarch-gateway native
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-maven:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      matrix:
+        include:
+          - profile: hazelcast-k8s
+          - profile: hazelcast-local
+          - profile: no-security
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: build native image
+        uses: ./.github/actions/build-spring-image
+        with:
+          app-path: refarch-gateway
+          maven-profiles: ci,native,build-native-image,publish-image
+          registry-username: ${{ github.actor }}
+          registry-password: ${{ secrets.GITHUB_TOKEN }}
+          image-name: refarch-gateway-native-${{ matrix.profile }}
+          image-tags: |
+            type=raw,value=dev
+        env:
+          NATIVE_SPRING_PROFILES: ${{ matrix.profile }}
