@@ -53,18 +53,18 @@ During this mapping the roles are prefixed with `ROLE_`, which Spring Security e
 #### Keycloak permissions
 
 ::: warning Keycloak specific
-This implementation relies on the UMA protocol which is not part of oAuth 2.0 or OpenID connect and not supported by all
+This implementation relies on the UMA protocol which is not part of OAuth 2.0 or OpenID Connect and not supported by all
 identity providers. Because of that this feature is coupled to using Keycloak or some other supporting identity provider.
 :::
 
 This implementation (`KeycloakPermissionsAuthoritiesConverter.java`) uses permissions for authorization and retrieves them
 from the OpenID token endpoint via the UMA protocol and grant-type `urn:ietf:params:oauth:grant-type:uma-ticket`.
-The resolved permissions are cached (default 1 minute).
+The resolved permissions are cached (default 1 minute, can be configured via properties).
 
 See [according Keycloak documentation](https://www.keycloak.org/docs/latest/authorization_services/index.html#_service_obtaining_permissions) for more information.
 
 ::: info
-Because roles are the default in the templates, permission-based authorization must be explicitly enabled via the `keycloak-permissions` Spring profile.
+Because the templates use roles by default, permission-based authorization must be explicitly enabled via the `keycloak-permissions` Spring profile.
 :::
 
 ### User attributes
