@@ -15,7 +15,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout code
-        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Maven build
         uses: it-at-m/lhm_actions/action-templates/actions/action-maven-build@e012d3bda6f9d5511415e2d885f32826049284a4 # v1.0.23
         id: maven-build-step
