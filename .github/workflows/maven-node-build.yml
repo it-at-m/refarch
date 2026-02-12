@@ -24,6 +24,8 @@ jobs:
             build-image: false
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: "false"
       - if: ${{ hashFiles(format('./{0}/package.json', matrix.app-path)) != null }}
         id: node
         uses: it-at-m/lhm_actions/action-templates/actions/action-npm-build@e012d3bda6f9d5511415e2d885f32826049284a4 # v1.0.23
