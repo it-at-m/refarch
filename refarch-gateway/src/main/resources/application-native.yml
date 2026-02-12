@@ -1,0 +1,17 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: "https://sso.muenchen.de/auth/realms/muenchen.de"
+      client:
+        provider:
+          sso:
+            issuer-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}
+        registration:
+          sso:
+            provider: sso
+            client-id:
+            client-secret:
+            # needed for userInfo endpoint
+            scope: profile, openid
