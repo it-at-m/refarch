@@ -53,7 +53,7 @@ and the now integrated [Unplugin Vue Router](https://uvr.esm.is/).
 
 1. Update the Vite configuration (`vite.config.ts`) to include the VueRouter plugin. This enables generation of a typed interface (`route-map.d.ts`) containing all routes.
 2. Update TypeScript, Prettier, ESLint and `.gitignore` configurations to make them aware of the new file.
-3. Update your Vue Router configuration to include the auto-generated routes by `import routes from "vue-router/auto-routes"` and remove the old explicit imports.
+3. Update your Vue Router configuration to include the auto-generated routes by `import { routes } from "vue-router/auto-routes"` and remove the old explicit imports.
 4. Move your old Vue view components from `views` to a new directory named `routes`
 5. Rename your old view components. The new filename will be the name of the automatically generated route.
    You can also use subfolders, e.g. `/routes/test/component.vue` will resolve to the route `/test/component`.
