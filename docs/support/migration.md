@@ -39,6 +39,10 @@ and [configuration section](../gateway.md#configuration) to find properties whic
 
 Main change: routes can now be configured more easily via the directory structure
 
+::: info Information
+This migration is fully optional, but still highly recommended.
+:::
+
 ### Prerequisites
 
 The migration can be done when using the new Vue Router v5 or higher.
