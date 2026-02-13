@@ -34,3 +34,29 @@ variables inside the Docker compose file.
 For deploying the central Gateway use the [according container image](../gateway.md#usage) and compare your working config with the `application.yml`,
 `application-local.yml` (inside [gateway code `resources` folder](https://github.com/it-at-m/refarch/tree/main/refarch-gateway/src/main/resources))
 and [configuration section](../gateway.md#configuration) to find properties which need to be migrated.
+
+## Move from centralized router configuration to file-based routing
+
+Main change: routes can now be configured more easily via the directory structure
+
+::: info Information
+This migration is fully optional.
+:::
+
+### Prerequisites
+
+The migration can be done when using the new Vue Router v5 or higher.
+For more detailed background information take a look at the official [Migrating to Vue Router 5](https://router.vuejs.org/guide/migration/v4-to-v5.html) guide
+and the now integrated [Unplugin Vue Router](https://uvr.esm.is/).
+
+### Steps
+
+1. Update the Vite configuration (`vite.config.ts`) to include the VueRouter plugin. This enables generation of a typed interface (`route-map.d.ts`) containing all routes.
+2. Update TypeScript, Prettier, ESLint and `.gitignore` configurations to make them aware of the new file.
+3. Update your Vue Router configuration to include the auto-generated routes by `import { routes } from "vue-router/auto-routes"` and remove the old explicit imports.
+4. Move your old Vue view components from `views` to a new directory named `routes`
+5. Rename your old view components. The new filename will be the name of the automatically generated route.
+   You can also use subfolders, e.g. `/routes/test/component.vue` will resolve to the route `/test/component`.
+6. Optionally customize the name, path, meta fields and more using the `definePage` utility inside the `<script>` of your Vue component.
+
+A complete example for the required changes can be found in [this PR](https://github.com/it-at-m/refarch-templates/pull/1393).
