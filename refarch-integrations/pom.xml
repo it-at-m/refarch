@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.9</version>
+        <version>3.5.10</version>
         <relativePath />
     </parent>
 
@@ -24,7 +24,9 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-    <scm>
+    <scm child.scm.url.inherit.append.path="false"
+        child.scm.connection.inherit.append.path="false"
+        child.scm.developerConnection.inherit.append.path="false">
         <url>https://github.com/it-at-m/refarch.git</url>
         <connection>scm:git:https://github.com/it-at-m/refarch.git</connection>
         <developerConnection>scm:git:https://github.com/it-at-m/refarch.git</developerConnection>
@@ -54,12 +56,12 @@
         <maven.compiler.release>${java.version}</maven.compiler.release>
 
         <!-- Linting & Formatting -->
-        <spotless-maven-plugin.version>3.1.0</spotless-maven-plugin.version>
+        <spotless-maven-plugin.version>3.2.1</spotless-maven-plugin.version>
         <itm-java-codeformat.version>1.0.10</itm-java-codeformat.version>
         <pmd-maven-plugin.version>3.28.0</pmd-maven-plugin.version>
 
         <!-- Release -->
-        <central-publishing-maven-plugin.version>0.9.0</central-publishing-maven-plugin.version>
+        <central-publishing-maven-plugin.version>0.10.0</central-publishing-maven-plugin.version>
         <maven-release-plugin.version>3.2.0</maven-release-plugin.version>
         <maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
 

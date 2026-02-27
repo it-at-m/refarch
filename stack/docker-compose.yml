@@ -3,7 +3,7 @@ name: refarch-development-stack
 services:
   # === Keycloak ===
   keycloak:
-    image: quay.io/keycloak/keycloak:26.1.5@sha256:be6a86215213145bfb4fb3e2b3ab982a806d00262655abdcf3ffa6a38d241c7c
+    image: quay.io/keycloak/keycloak:26.2.5@sha256:4883630ef9db14031cde3e60700c9a9a8eaf1b5c24db1589d6a2d43de38ba2a9
     command:
       - start-dev
     environment:
@@ -26,7 +26,7 @@ services:
       - no-new-privileges:true
 
   init-keycloak:
-    image: klg71/keycloakmigration:0.2.81@sha256:2c73c904a644b75637a01434f357caee9c029f37bd8960793c68233d5afa468a
+    image: klg71/keycloakmigration:0.2.125@sha256:a326d3e50e2a35b70a3cf3a5d33288af9bcba27fef89146a2107622583e34231
     depends_on:
       - keycloak
     environment:
@@ -76,7 +76,9 @@ services:
 
   # === Mail ===
   mailpit:
-    image: axllent/mailpit:v1.21.8@sha256:81370195cd4a0eab9604d17c2617a7525b0486f9365555253b6c5376c6350f1a
+    image: axllent/mailpit:v1.29.0@sha256:0f93f36075f5f6fe428655d94299dda59b9a533d3fe9ce62909a72ac6fe455a9
+    environment:
+      - MP_DISABLE_VERSION_CHECK=True
     ports:
       - '1025:1025' # SMTP Server
       - '8025:8025' # UI
