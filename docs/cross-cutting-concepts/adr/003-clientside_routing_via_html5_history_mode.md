@@ -7,8 +7,9 @@ State: accepted
 In RefArch frontend applications, client-side routing is implemented using Vue Router.
 The previous mode we used for Vue Router is hash mode, which uses the # character in the URL to manage routing.
 However, this approach has several drawbacks, including less clean URLs and issues with deep linking, where users may face problems when trying to access specific routes directly or when refreshing the page.
+Besides, the HTML5 mode is the official recommended mode to use.
 
-This ADR describes why the HTML5 mode is used instead.
+This ADR describes why the HTML5 mode is used.
 
 ## Decision
 
