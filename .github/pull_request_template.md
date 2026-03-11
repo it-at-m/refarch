@@ -36,7 +36,7 @@ Issue: #XXX
 
 ### API Gateway
 
-- [ ] Manually tested API gateway in combination with [refarch-templates](https://github.com/it-at-m/refarch-templates)
+- [ ] Tested API gateway in combination with [refarch-templates](https://github.com/it-at-m/refarch-templates)
 
 ### Development Stack
 
