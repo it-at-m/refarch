@@ -60,3 +60,18 @@ and the now integrated [Unplugin Vue Router](https://uvr.esm.is/).
 6. Optionally customize the name, path, meta fields and more using the `definePage` utility inside the `<script>` of your Vue component.
 
 A complete example for the required changes can be found in [this PR](https://github.com/it-at-m/refarch-templates/pull/1393).
+
+## S3-Integration v3
+
+### Removed without replacement
+
+- separate s3 service (image: `refarch/s3-integration-rest-service`)
+- file size and type validation
+- delete folder method
+
+### Migrate
+
+- Replace `DocumentStorageFileRepository` with `FileOperationsInPort`
+  - Some methods were merged
+- Replace `DocumentStorageFolderRepository` with `FolderOperationsInPort`
+  - Some methods were merged
