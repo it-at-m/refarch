@@ -10,11 +10,13 @@ import de.muenchen.refarch.integration.s3.application.usecase.FileOperationsUseC
 import de.muenchen.refarch.integration.s3.application.usecase.FolderOperationsUseCase;
 import de.muenchen.refarch.integration.s3.domain.model.FileMetadata;
 import de.muenchen.refarch.integration.s3.domain.model.FileReference;
+import de.muenchen.refarch.integration.s3.domain.model.PresignedUrl;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeAll;
@@ -36,7 +38,7 @@ import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 
 @Testcontainers
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class S3InPortsE2ETest {
+class E2ETest {
 
     private static final String ACCESS_KEY = "minio";
     private static final String SECRET_KEY = "Test1234";
@@ -71,6 +73,7 @@ class S3InPortsE2ETest {
                 .endpointOverride(URI.create(endpoint))
                 .region(region)
                 .credentialsProvider(creds)
+                .serviceConfiguration(s3cfg)
                 .build();
 
         try {
@@ -117,11 +120,11 @@ class S3InPortsE2ETest {
         assertThat(fileOps.fileExists(ref2)).isTrue();
 
         // Presigned URL (GET) and download
-        //        final PresignedUrl pre = fileOps.getPresignedUrl(ref2, PresignedUrl.Action.GET, Duration.ofMinutes(2));
-        //        try (InputStream is = pre.url().openStream()) {
-        //            final String s = new String(is.readAllBytes(), StandardCharsets.UTF_8);
-        //            assertThat(s).isEqualTo("filecontent");
-        //        }
+        final PresignedUrl pre = fileOps.getPresignedUrl(ref2, PresignedUrl.Action.GET, Duration.ofMinutes(2));
+        try (InputStream is = pre.url().openStream()) {
+            final String s = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+            assertThat(s).isEqualTo("filecontent");
+        }
 
         // List via folder ops
         final List<FileMetadata> listed = folderOps.getFilesInFolder(BUCKET, prefix, true);
