@@ -105,7 +105,7 @@ class E2ETest {
         // Get metadata
         final FileMetadata meta = fileOps.getFileMetadata(ref);
         assertThat(meta.path()).isEqualTo(key);
-        assertThat(meta.contentLength()).isEqualTo((long) data.length);
+        assertThat(meta.contentLength()).isEqualTo(data.length);
 
         // Read content
         try (InputStream is = fileOps.getFileContent(ref)) {
