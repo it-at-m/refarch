@@ -72,6 +72,5 @@ A complete example for the required changes can be found in [this PR](https://gi
 ### Migrate
 
 - Replace `DocumentStorageFileRepository` with `FileOperationsInPort`
-  - Some methods were merged
+  - Some methods were merged (e.g. now there are only `InputStream` methods and none with `byte[]`)
 - Replace `DocumentStorageFolderRepository` with `FolderOperationsInPort`
-  - Some methods were merged
