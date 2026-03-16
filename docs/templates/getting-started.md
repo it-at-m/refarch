@@ -62,8 +62,8 @@ For further information on those topics please check out [Develop](./develop), [
 After getting the templates, you will need to make a few adjustments in the respective template directories:
 
 1. Rename the folder you copied (e.g. from `refarch-backend` to `myapp-backend`).
-2. Change the package name from `de.muenchen.refarch` to
-   `de.muenchen.YourPackageName` (It's recommended to use an IDE for this
+2. Change the package name from `de.muenchen.oss.refarch` to
+   `de.muenchen.oss.YourPackageName` (It's recommended to use an IDE for this
    task, as it will automatically update the imports; otherwise, you will
    need to do this manually).
 3. Change the name of the main application class (e.g. from `MicroServiceApplication` to `MyAppApplication`)
@@ -89,7 +89,7 @@ When running with the `local` profile, text-based logging is used (instead of JS
 
 ### Prerequisites
 
-- Node.js 22 LTS (`22.19.x` - `22.x.x`)
+- Node.js 24 LTS (`24.11.x` - `24.x.x`)
 - Container engine
 
 ### Configure templates
@@ -106,7 +106,7 @@ Congratulations, the Frontend/WebComponent is now ready to use.
 
 ### Prerequisites
 
-- Node.js 22 LTS (`22.19.x` - `22.x.x`)
+- Node.js 24 LTS (`24.11.x` - `24.x.x`)
 
 ### Configure documentation
 

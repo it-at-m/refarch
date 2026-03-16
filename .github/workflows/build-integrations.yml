@@ -23,6 +23,7 @@ jobs:
         id: maven-build-step
         with:
           app-path: refarch-integrations
+          java-version: "21"
 
   build-images:
     if: github.ref_name == 'main'

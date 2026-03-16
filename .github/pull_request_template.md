@@ -34,7 +34,10 @@ Issue: #XXX
 - [ ] Added integration tests
 - [ ] Added Swagger API annotations (if changes to API was made)
 
+### API Gateway
+
+- [ ] Tested API gateway in combination with [refarch-templates](https://github.com/it-at-m/refarch-templates)
+
 ### Development Stack
 
-- [ ] Approved image change company internal (if Docker image was added or version was modified)
 - [ ] Checked functionality of Docker stack (if Docker stack was modified or images were changed)
