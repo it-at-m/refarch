@@ -138,9 +138,27 @@ class S3AdapterTest {
         adapter.saveFile(ref, tmp);
 
         final ArgumentCaptor<PutObjectRequest> requestCaptor = ArgumentCaptor.forClass(PutObjectRequest.class);
-        verify(s3Client).putObject(requestCaptor.capture(), any(RequestBody.class));
+        final ArgumentCaptor<RequestBody> bodyCaptor = ArgumentCaptor.forClass(RequestBody.class);
+        verify(s3Client).putObject(requestCaptor.capture(), bodyCaptor.capture());
         assertEquals(BUCKET, requestCaptor.getValue().bucket());
         assertEquals(PATH, requestCaptor.getValue().key());
+        assertEquals(tmp.length(), bodyCaptor.getValue().optionalContentLength().get());
+    }
+
+    @Test
+    void saveFile_withUnknownLength() throws Exception {
+        final FileReference ref = new FileReference(BUCKET, PATH);
+        final byte[] bytes = "hello-world".getBytes(Charset.defaultCharset());
+        final InputStream is = new ByteArrayInputStream(bytes);
+
+        adapter.saveFile(ref, is);
+
+        final ArgumentCaptor<PutObjectRequest> requestCaptor = ArgumentCaptor.forClass(PutObjectRequest.class);
+        final ArgumentCaptor<RequestBody> bodyCaptor = ArgumentCaptor.forClass(RequestBody.class);
+        verify(s3Client).putObject(requestCaptor.capture(), bodyCaptor.capture());
+        assertEquals(BUCKET, requestCaptor.getValue().bucket());
+        assertEquals(PATH, requestCaptor.getValue().key());
+        assertEquals(bytes.length, bodyCaptor.getValue().optionalContentLength().get());
     }
 
     @Test
@@ -256,6 +274,22 @@ class S3AdapterTest {
         final List<FileMetadata> list = adapter.getFilesWithPrefix(BUCKET, "prefix", 10, null);
         assertThat(list).hasSize(1);
         assertThat(list.getFirst().path()).isEqualTo("k1");
+    }
+
+    @Test
+    void testGetFilesWithPrefix_nonRecursive_filtersImmediateChildren() throws S3Exception {
+        final Instant now = Instant.now();
+        final S3Object o1 = S3Object.builder().key("dir/file1.txt").size(1L).eTag("e1").lastModified(now).build();
+        final S3Object o2 = S3Object.builder().key("dir/subdir/file2.txt").size(2L).eTag("e2").lastModified(now).build();
+        final S3Object o3 = S3Object.builder().key("dir/file3.txt").size(3L).eTag("e3").lastModified(now).build();
+        final S3Object o4 = S3Object.builder().key("other/file4.txt").size(4L).eTag("e4").lastModified(now).build();
+        final ListObjectsResponse response = ListObjectsResponse.builder().contents(o1, o2, o3, o4).build();
+        when(s3Client.listObjects((ListObjectsRequest) any())).thenReturn(response);
+
+        final List<FileMetadata> list = adapter.getFilesWithPrefix(BUCKET, "dir", false, 1000, null);
+
+        assertThat(list).extracting(FileMetadata::path)
+                .containsExactlyInAnyOrder("dir/file1.txt", "dir/file3.txt");
     }
 
     @Test

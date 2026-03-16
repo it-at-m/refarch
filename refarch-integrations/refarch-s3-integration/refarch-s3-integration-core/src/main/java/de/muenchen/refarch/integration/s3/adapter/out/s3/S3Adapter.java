@@ -6,10 +6,14 @@ import de.muenchen.refarch.integration.s3.domain.model.FileMetadata;
 import de.muenchen.refarch.integration.s3.domain.model.FileReference;
 import de.muenchen.refarch.integration.s3.domain.model.PresignedUrl;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.time.Duration;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.core.exception.SdkException;
@@ -74,6 +78,26 @@ public class S3Adapter implements S3OutPort {
     @Override
     public void saveFile(final FileReference fileReference, final File file) throws S3Exception {
         saveFile(fileReference, RequestBody.fromFile(file));
+    }
+
+    @Override
+    public void saveFile(final FileReference fileReference, final InputStream content) throws S3Exception {
+        File tempFile = null;
+        try {
+            tempFile = Files.createTempFile("s3-upload-", ".tmp").toFile();
+            Files.copy(content, tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            this.saveFile(fileReference, tempFile);
+        } catch (IOException e) {
+            throw new S3Exception("Failed to stream and upload file: " + fileReference, e);
+        } finally {
+            if (tempFile != null) {
+                try {
+                    Files.deleteIfExists(tempFile.toPath());
+                } catch (IOException ignored) {
+                    // best-effort cleanup
+                }
+            }
+        }
     }
 
     @Override
@@ -182,5 +206,38 @@ public class S3Adapter implements S3OutPort {
         } catch (final SdkException e) {
             throw new S3Exception("Error while listing (bucket: %s, path: %s, maxKeys: %d, marker: %s)".formatted(bucket, prefix, maxKeys, marker), e);
         }
+    }
+
+    @Override
+    public List<FileMetadata> getFilesWithPrefix(final String bucket, final String prefix) throws S3Exception {
+        return this.getFilesWithPrefix(bucket, prefix, 1000, null);
+    }
+
+    @Override
+    public List<FileMetadata> getFilesWithPrefix(final String bucket, final String prefix, final boolean recursive, final int maxKeys, final String marker)
+            throws S3Exception {
+        final List<FileMetadata> all = this.getFilesWithPrefix(bucket, prefix, maxKeys, marker);
+        if (recursive) {
+            return all;
+        }
+        final String normalizedPrefix = ensureTrailingSlash(prefix);
+        return all.stream()
+                .filter(meta -> isImmediateChild(normalizedPrefix, meta.path()))
+                .collect(Collectors.toList());
+    }
+
+    private static String ensureTrailingSlash(final String prefix) {
+        if (prefix == null || prefix.isEmpty()) {
+            return "";
+        }
+        return prefix.endsWith("/") ? prefix : prefix + "/";
+    }
+
+    private static boolean isImmediateChild(final String prefix, final String path) {
+        if (!path.startsWith(prefix)) {
+            return false;
+        }
+        final String remainder = path.substring(prefix.length());
+        return !remainder.contains("/");
     }
 }

@@ -4,10 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import de.muenchen.refarch.integration.s3.adapter.out.s3.S3Adapter;
 import de.muenchen.refarch.integration.s3.adapter.out.s3.S3Mapper;
-import de.muenchen.refarch.integration.s3.application.port.in.FileOperationsInPort;
-import de.muenchen.refarch.integration.s3.application.port.in.FolderOperationsInPort;
-import de.muenchen.refarch.integration.s3.application.usecase.FileOperationsUseCase;
-import de.muenchen.refarch.integration.s3.application.usecase.FolderOperationsUseCase;
+import de.muenchen.refarch.integration.s3.application.port.out.S3OutPort;
 import de.muenchen.refarch.integration.s3.domain.model.FileMetadata;
 import de.muenchen.refarch.integration.s3.domain.model.FileReference;
 import de.muenchen.refarch.integration.s3.domain.model.PresignedUrl;
@@ -51,8 +48,7 @@ class E2ETest {
             .withCommand("server", "/data", "--console-address", ":9001")
             .withExposedPorts(9000, 9001);
 
-    private FileOperationsInPort fileOps;
-    private FolderOperationsInPort folderOps;
+    private S3OutPort s3OutPort;
 
     @BeforeAll
     @SuppressWarnings("PMD.CloseResource")
@@ -82,10 +78,7 @@ class E2ETest {
         }
 
         final S3Mapper mapper = new S3Mapper();
-        final S3Adapter s3Adapter = new S3Adapter(mapper, s3Client, s3Presigner);
-
-        this.fileOps = new FileOperationsUseCase(s3Adapter);
-        this.folderOps = new FolderOperationsUseCase(s3Adapter);
+        this.s3OutPort = new S3Adapter(mapper, s3Client, s3Presigner);
     }
 
     @Test
@@ -95,20 +88,20 @@ class E2ETest {
         final FileReference ref = new FileReference(BUCKET, key);
 
         // Initially no file
-        assertThat(fileOps.fileExists(ref)).isFalse();
+        assertThat(s3OutPort.fileExists(ref)).isFalse();
 
         // Save from InputStream
         final byte[] data = "hello from inports".getBytes(StandardCharsets.UTF_8);
-        fileOps.saveFile(ref, new java.io.ByteArrayInputStream(data), data.length);
-        assertThat(fileOps.fileExists(ref)).isTrue();
+        s3OutPort.saveFile(ref, new java.io.ByteArrayInputStream(data), data.length);
+        assertThat(s3OutPort.fileExists(ref)).isTrue();
 
         // Get metadata
-        final FileMetadata meta = fileOps.getFileMetadata(ref);
+        final FileMetadata meta = s3OutPort.getFileMetadata(ref);
         assertThat(meta.path()).isEqualTo(key);
         assertThat(meta.contentLength()).isEqualTo(data.length);
 
         // Read content
-        try (InputStream is = fileOps.getFileContent(ref)) {
+        try (InputStream is = s3OutPort.getFileContent(ref)) {
             assertThat(is.readAllBytes()).isEqualTo(data);
         }
 
@@ -116,24 +109,24 @@ class E2ETest {
         final Path p = tempDir.resolve("inports-file.txt");
         Files.writeString(p, "filecontent");
         final FileReference ref2 = new FileReference(BUCKET, key + "-file");
-        fileOps.saveFile(ref2, p.toFile());
-        assertThat(fileOps.fileExists(ref2)).isTrue();
+        s3OutPort.saveFile(ref2, p.toFile());
+        assertThat(s3OutPort.fileExists(ref2)).isTrue();
 
         // Presigned URL (GET) and download
-        final PresignedUrl pre = fileOps.getPresignedUrl(ref2, PresignedUrl.Action.GET, Duration.ofMinutes(2));
+        final PresignedUrl pre = s3OutPort.getPresignedUrl(ref2, PresignedUrl.Action.GET, Duration.ofMinutes(2));
         try (InputStream is = pre.url().openStream()) {
             final String s = new String(is.readAllBytes(), StandardCharsets.UTF_8);
             assertThat(s).isEqualTo("filecontent");
         }
 
         // List via folder ops
-        final List<FileMetadata> listed = folderOps.getFilesInFolder(BUCKET, prefix, true);
+        final List<FileMetadata> listed = s3OutPort.getFilesWithPrefix(BUCKET, prefix);
         assertThat(listed.stream().map(FileMetadata::path)).anyMatch(k -> k.equals(key) || k.equals(key + "-file"));
 
         // Delete
-        fileOps.deleteFile(ref);
-        fileOps.deleteFile(ref2);
-        assertThat(fileOps.fileExists(ref)).isFalse();
-        assertThat(fileOps.fileExists(ref2)).isFalse();
+        s3OutPort.deleteFile(ref);
+        s3OutPort.deleteFile(ref2);
+        assertThat(s3OutPort.fileExists(ref)).isFalse();
+        assertThat(s3OutPort.fileExists(ref2)).isFalse();
     }
 }

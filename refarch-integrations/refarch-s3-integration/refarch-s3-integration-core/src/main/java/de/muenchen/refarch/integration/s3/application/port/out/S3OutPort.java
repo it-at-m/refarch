@@ -53,6 +53,18 @@ public interface S3OutPort {
     void saveFile(@NotNull @Valid FileReference fileReference, @NotNull File file) throws S3Exception;
 
     /**
+     * Convenience overload for saving content when the content length is unknown.
+     * Implementations may buffer/stream in order to determine the content length or
+     * use transfer strategies that do not require the length up front. Consider
+     * using the length-aware method when the size is known to avoid additional I/O.
+     *
+     * @param fileReference the target file reference (bucket/key), must not be null
+     * @param content the content to upload, must not be null
+     * @throws S3Exception if the upload fails due to an underlying storage error
+     */
+    void saveFile(@NotNull FileReference fileReference, @NotNull InputStream content) throws S3Exception;
+
+    /**
      * Retrieves object metadata for the given file reference without downloading the object body.
      *
      * @param fileReference the bucket and path identifying the object (must not be null)
@@ -98,10 +110,29 @@ public interface S3OutPort {
     void deleteFile(@NotNull @Valid FileReference fileReference) throws S3Exception;
 
     /**
+     * Lists files recursively in the specified bucket starting with the given prefix with pagination
+     * controls.
+     *
+     * @see #getFilesWithPrefix(String, String, boolean, int, String)
+     */
+    List<FileMetadata> getFilesWithPrefix(@NotBlank String bucket, @NotBlank String prefix, int maxKeys, String marker) throws S3Exception;
+
+    /**
+     * Lists files recursively in the specified bucket starting with the given prefix with pagination
+     * controls.
+     * Uses default pagination (maxKeys = 1000) and no marker.
+     *
+     * @see #getFilesWithPrefix(String, String, boolean, int, String)
+     */
+    List<FileMetadata> getFilesWithPrefix(@NotBlank String bucket, @NotBlank String prefix) throws S3Exception;
+
+    /**
      * Lists files in the specified bucket starting with the given prefix with pagination controls.
      *
      * @param bucket the bucket name (must not be blank)
-     * @param prefix the prefix under which to list objects (must not be blank)
+     * @param prefix the prefix under which to list objects (must not be blank). Trailing slash is
+     *            added.
+     * @param recursive if to lookup files recursive or not.
      * @param maxKeys maximum number of keys to return in this page (provider limits may apply, e.g.,
      *            1–1000)
      * @param marker key to start after when listing objects (used to continue from a previous truncated
@@ -111,5 +142,5 @@ public interface S3OutPort {
      *         items)
      * @throws S3Exception if listing fails due to client, network, or service issues
      */
-    List<FileMetadata> getFilesWithPrefix(@NotBlank String bucket, @NotBlank String prefix, int maxKeys, String marker) throws S3Exception;
+    List<FileMetadata> getFilesWithPrefix(@NotBlank String bucket, @NotBlank String prefix, boolean recursive, int maxKeys, String marker) throws S3Exception;
 }
