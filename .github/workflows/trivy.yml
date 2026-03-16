@@ -7,6 +7,8 @@ jobs:
   scan:
     name: Security check
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     if: github.event_name != 'schedule' || github.ref == 'refs/heads/main'
     steps:
       - name: Run Trivy security check on repository
