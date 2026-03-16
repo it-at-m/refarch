@@ -18,6 +18,8 @@ The modules follow the [default naming convention](./index.md#naming-conventions
 </dependencies>
 ```
 
+After that the [AddressOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-address-integration/refarch-address-integration-core/src/main/java/de/muenchen/refarch/integration/address/application/port/out/AddressOutPort.java) can be used for accessing the address service.
+
 ## Configuration
 
 ### refarch-address-integration-starter
