@@ -13,7 +13,7 @@
 
     <properties>
         <apache-commons-collections4.version>4.5.0</apache-commons-collections4.version>
-        <awssdk.s3.version>2.41.10</awssdk.s3.version>
+        <awssdk.version>2.41.10</awssdk.version>
     </properties>
 
     <dependencies>
@@ -34,7 +34,7 @@
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>s3</artifactId>
-            <version>${awssdk.s3.version}</version>
+            <version>${awssdk.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>software.amazon.awssdk</groupId>
@@ -49,7 +49,7 @@
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>url-connection-client</artifactId>
-            <version>${awssdk.s3.version}</version>
+            <version>${awssdk.version}</version>
         </dependency>
 
         <!-- Testing -->
