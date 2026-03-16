@@ -19,7 +19,7 @@ jobs:
         with:
           persist-credentials: "false"
       - name: Maven build
-        uses: it-at-m/lhm_actions/action-templates/actions/action-maven-build@e012d3bda6f9d5511415e2d885f32826049284a4 # v1.0.23
+        uses: it-at-m/lhm_actions/action-templates/actions/action-maven-build@7cb754b2056cebda6c36db344434f85be398c493 # v1.0.25
         id: maven-build-step
         with:
           app-path: refarch-integrations
@@ -38,7 +38,7 @@ jobs:
             path: ./refarch-integrations/refarch-s3-integration/refarch-s3-integration-rest/refarch-s3-integration-rest-service
     steps:
       - name: Build and push image
-        uses: it-at-m/lhm_actions/action-templates/actions/action-build-image@e012d3bda6f9d5511415e2d885f32826049284a4 # v1.0.23
+        uses: it-at-m/lhm_actions/action-templates/actions/action-build-image@7cb754b2056cebda6c36db344434f85be398c493 # v1.0.25
         with:
           registry-username: ${{ github.actor }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
