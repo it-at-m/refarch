@@ -314,11 +314,12 @@ The templates provide a default configuration for this feature inside the file `
 Currently, the templates only configure this feature for the [linting of GitHub workflows](./develop#ci-cd-configurations). We might extend this to other tools in the future.
 :::
 
-
 ### Trivy
-For security scanning we use Trivy (https://trivy.dev/). Trivy inspects your POM.xml and/or package.json files for known vulnerabilities.
+
+For security scanning we use Trivy (<https://trivy.dev/>). Trivy inspects your POM.xml and/or package.json files for known vulnerabilities.
 
 If Trivy reports a vulnerability:
+
 - Review the referenced CVE (Common Vulnerabilities and Exposures) and assess whether the issue is exploitable in your project.
 - Remediate where possible by upgrading or patching the affected dependency, replacing it, or adding the dependency directly to your project if it is a transitive dependency that needs to be pinned.
 - If the finding is a false positive, add it to the .trivyignore file .
@@ -326,8 +327,9 @@ If Trivy reports a vulnerability:
 By default, the Trivy workflow will fail when vulnerabilities are found. To make this failure block merges, enable the appropriate GitHub ruleset/branch protection so the workflow must pass before a pull request can be merged.
 
 ::: info Information
-The Trivy workflow is also scheduled to run on the main branch daily at around 3:00 AM. 
+The Trivy workflow is also scheduled to run on the main branch daily at around 3:00 AM.
 :::
+
 ## CI/CD Configurations
 
 The `.github/workflows` folder contains various GitHub workflow files. Those reference centralized actions to simplify different parts of the CI/CD process.
