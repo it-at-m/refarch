@@ -287,6 +287,22 @@ If you are using Java-based projects inside your repository, you need to add tho
 For the provided CodeQL workflow to run properly, the ‘Advanced Setup’ for CodeQL must be enabled. This is described in the corresponding [GitHub documentation](https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/configuring-advanced-setup-for-code-scanning#configuring-advanced-setup-for-code-scanning-with-codeql). Administrator rights on the repository are required for setup.
 :::
 
+### Trivy
+
+For dependency security scanning we use [Trivy](https://trivy.dev/). Trivy inspects your `pom.xml` and/or `package-lock.json` files for known vulnerabilities.
+
+If Trivy reports a vulnerability:
+
+- Review the referenced [CVE (Common Vulnerabilities and Exposures)](https://nvd.nist.gov/) or [GH advisories](https://github.com/advisories) and assess whether the issue is exploitable in your project.
+- Remediate where possible by upgrading, patching or replacing the affected dependency. If the vulnerability occurs in a transitive dependency, you might have to explicitly add a newer version.
+- If the finding is a false positive, add it to the `.trivyignore` file.
+
+By default, the Trivy workflow will fail when vulnerabilities are found. To make this failure block merges, enable the appropriate GitHub ruleset/branch protection so the workflow must pass before a pull request can be merged.
+
+::: info Information
+The Trivy workflow is also scheduled to run on the main branch daily at around 3:00 AM.
+:::
+
 ### Dependency Review
 
 To ensure that only dependencies with approved licenses are included, a [global check](https://github.com/it-at-m/.github/blob/main/workflow-configs/dependency_review.yaml) is implemented.
