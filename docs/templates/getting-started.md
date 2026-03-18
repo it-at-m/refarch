@@ -114,7 +114,7 @@ After getting the documentation template (`docs` directory), you will need to ma
 
 1. Change the artifact `name` inside the `package.json` file (e.g. from `refarch-templates-docs` to `myapp-docs`).
 2. Download dependencies and generate a new `package-lock.json` file by executing the command `npm install`.
-3. If using a subpath for hosting docs (e.g. it-at-m.github.io/refarch), the `base` configuration needs to be adjusted accordingly under `.vitepress/config.mts`.
+3. If using a subpath for hosting docs (e.g. `it-at-m.github.io/refarch`), the `base` configuration needs to be adjusted accordingly under `.vitepress/config.mts`.
 
 ## CI/CD
 
