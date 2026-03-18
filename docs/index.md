@@ -8,14 +8,11 @@ hero:
   tagline: "Standardized way for developing web applications"
   actions:
     - theme: brand
-      text: Overview
-      link: /overview
+      text: Getting Started
+      link: /templates/getting-started
     - theme: alt
       text: API Gateway
       link: /gateway
-    - theme: alt
-      text: Templates
-      link: /templates
     - theme: alt
       text: Integrations
       link: /integrations
