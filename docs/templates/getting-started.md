@@ -47,7 +47,7 @@ The `stack` folder must be copied to your project directory, as it contains the 
 Besides the code templates, `refarch-templates` provides lots of other configuration files which help to establish
 best practices in project development, documentation and organisation. Copy those over as well, if you want to use them.
 
-For further information on those topics please check out [Develop](./develop), [Document](./document) and [Organize](./organize).
+For further information on those topics please check out [Develop](./develop), [Deploy](./deploy), [Document](./document) and [Organize](./organize).
 
 ## Backend & EAI
 
@@ -128,4 +128,4 @@ For example, you should replace occurrences of `refarch-backend` with `myapp-bac
 If you finished the template configurations for all required components your project needs
 you have now successfully set up your project.
 
-To help you with software developing, documentation and project organisation, please check out [Develop](./develop), [Document](./document) and [Organize](./organize).
+To help you with software development, deployment, documentation and project organisation, please check out [Develop](./develop), [Deploy](./deploy), [Document](./document) and [Organize](./organize).
