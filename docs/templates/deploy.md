@@ -21,7 +21,7 @@ The reference architecture provides a [Helm chart](https://github.com/it-at-m/he
 The release notes of this chart can be found in the [GitHub releases](https://github.com/it-at-m/helm-charts/releases?q=refarch-templates) of the it@M Helm Charts repository.
 
 Each application container is called a "module" in the `refarch-templates` chart.
-Additionally, a [RefArch API Gateway](../gateway.md) can be deployed as well.
+Additionally, a [RefArch API Gateway](../gateway) can be deployed as well.
 
 :::details Sample configuration file
 
