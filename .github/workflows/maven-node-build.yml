@@ -1,4 +1,4 @@
-name: Build Gateway and tools
+name: Build all
 
 on:
   pull_request:
@@ -9,11 +9,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      TZ: Europe/Berlin # timezone
     permissions:
       contents: read
       packages: write
+    env:
+      TZ: Europe/Berlin # timezone
     strategy:
       fail-fast: false
       matrix:
@@ -21,6 +21,8 @@ jobs:
           - app-path: refarch-gateway
             build-image: true
           - app-path: refarch-tools/refarch-java-tools
+            build-image: false
+          - app-path: refarch-integrations
             build-image: false
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
