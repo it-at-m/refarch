@@ -91,7 +91,7 @@ spring:
             client-id:
             client-secret:
             # profile (to add user information to token (e.g. name, mail, ...))
-            # openid (for user info endpoint)
+            # openid (required for OpenID Connect authentication and user info endpoint)
             # roles (required if roles are used for authentication)
             # basic (required if permissions instead of roles are used)
             scope: profile, openid, roles, basic
