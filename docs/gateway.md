@@ -90,8 +90,11 @@ spring:
             provider: sso
             client-id:
             client-secret:
-            # needed for userInfo endpoint
-            scope: profile, openid
+            # profile (to add user information to token (e.g. name, mail, ...))
+            # openid (for user info endpoint)
+            # roles (required if roles are used for authentication)
+            # basic (required if permissions instead of roles are used)
+            scope: profile, openid, roles, basic
 ```
 
 ### Profiles
