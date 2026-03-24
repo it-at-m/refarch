@@ -18,6 +18,8 @@ The modules follow the [default naming convention](./index.md#naming-conventions
 </dependencies>
 ```
 
+After that the [MailOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-email-integration/refarch-email-integration-core/src/main/java/de/muenchen/refarch/email/integration/application/port/out/MailOutPort.java) can be used for sending mails.
+
 ## Configuration
 
 ### refarch-email-integration-starter

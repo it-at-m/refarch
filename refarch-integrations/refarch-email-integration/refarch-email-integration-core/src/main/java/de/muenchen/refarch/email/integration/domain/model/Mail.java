@@ -14,6 +14,17 @@ public record Mail(
         String sender,
         String replyTo,
         List<Attachment> attachments) {
+    public Mail(final BasicMail mail, final String body, final boolean htmlBody) {
+        this(mail.getReceivers(),
+                mail.getReceiversCc(),
+                mail.getReceiversBcc(),
+                mail.getSubject(),
+                body,
+                htmlBody,
+                null,
+                mail.getReplyTo(),
+                mail.getAttachments());
+    }
 
     public boolean hasAttachment() {
         return attachments != null && !attachments.isEmpty();
