@@ -2,7 +2,7 @@ package de.muenchen.refarch.integration.cosys.example.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.muenchen.refarch.integration.cosys.application.port.out.GenerateDocumentOutPort;
-import de.muenchen.refarch.integration.cosys.domain.exception.CosysException;
+import de.muenchen.refarch.integration.cosys.domain.exception.DocumentGenerationException;
 import de.muenchen.refarch.integration.cosys.domain.model.GenerateDocument;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,8 +24,8 @@ public class ExampleController {
 
     @PostMapping(value = "/test/document", produces = { MediaType.APPLICATION_PDF_VALUE, MediaType.APPLICATION_JSON_VALUE })
     @SuppressWarnings("PMD.CloseResource")
-    public ResponseEntity<InputStreamResource> testCreateCosysDocument() throws CosysException, IOException {
-        final InputStream pdfContent = this.generateDocumentOutPort.generateCosysDocument(this.generateDocument()).block();
+    public ResponseEntity<InputStreamResource> testCreateCosysDocument() throws DocumentGenerationException, IOException {
+        final InputStream pdfContent = this.generateDocumentOutPort.generateCosysDocument(this.generateDocument());
         assert pdfContent != null;
         final InputStreamResource fileResource = new InputStreamResource(pdfContent);
         return ResponseEntity.ok(fileResource);

@@ -27,6 +27,8 @@ flowchart RL
 </dependencies>
 ```
 
+After that the [GenerateDocumentOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-cosys-integration/refarch-cosys-integration-core/src/main/java/de/muenchen/refarch/integration/cosys/application/port/out/GenerateDocumentOutPort.java) can be used generating documents.
+
 ## Configuration
 
 Following are the properties to configure the different modules. Some of them are custom defined and others are synonyms

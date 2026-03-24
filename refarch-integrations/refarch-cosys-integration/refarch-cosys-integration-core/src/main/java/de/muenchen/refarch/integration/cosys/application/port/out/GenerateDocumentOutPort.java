@@ -1,11 +1,19 @@
 package de.muenchen.refarch.integration.cosys.application.port.out;
 
-import de.muenchen.refarch.integration.cosys.domain.exception.CosysException;
+import de.muenchen.refarch.integration.cosys.domain.exception.DocumentGenerationException;
 import de.muenchen.refarch.integration.cosys.domain.model.GenerateDocument;
+import jakarta.validation.Valid;
 import java.io.InputStream;
-import reactor.core.publisher.Mono;
+import org.springframework.validation.annotation.Validated;
 
+@Validated
 public interface GenerateDocumentOutPort {
-
-    Mono<InputStream> generateCosysDocument(GenerateDocument generateDocument) throws CosysException;
+    /**
+     * Generate a document based on the given input.
+     *
+     * @param generateDocument Parameters for generating the document.
+     * @return The generated document.
+     * @throws DocumentGenerationException If something goes wrong during document generation.
+     */
+    InputStream generateCosysDocument(@Valid GenerateDocument generateDocument) throws DocumentGenerationException;
 }
