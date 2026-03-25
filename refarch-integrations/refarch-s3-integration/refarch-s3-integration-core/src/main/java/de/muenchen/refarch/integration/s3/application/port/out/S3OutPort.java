@@ -62,7 +62,7 @@ public interface S3OutPort {
      * @param content the content to upload, must not be null
      * @throws S3Exception if the upload fails due to an underlying storage error
      */
-    void saveFile(@NotNull FileReference fileReference, @NotNull InputStream content) throws S3Exception;
+    void saveFile(@NotNull @Valid FileReference fileReference, @NotNull InputStream content) throws S3Exception;
 
     /**
      * Retrieves object metadata for the given file reference without downloading the object body.

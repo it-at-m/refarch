@@ -12,7 +12,6 @@ import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
-import jakarta.validation.Valid;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -25,12 +24,10 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 @RequiredArgsConstructor
 @Slf4j
-@Validated
 public class MailAdapter implements MailOutPort {
     private final JavaMailSender mailSender;
     private final ResourceLoader resourceLoader;
@@ -39,18 +36,18 @@ public class MailAdapter implements MailOutPort {
     private final String defaultReplyToAddress;
 
     @Override
-    public void sendTextMail(@Valid final TextMail mail) {
+    public void sendTextMail(final TextMail mail) {
         final Mail mailModel = new Mail(mail, mail.getBody(), false);
         this.sendMail(mailModel, null);
     }
 
     @Override
-    public void sendHtmlMailWithTemplate(@Valid final TemplateMail mail) {
+    public void sendHtmlMailWithTemplate(final TemplateMail mail) {
         this.sendHtmlMailWithTemplate(mail, null);
     }
 
     @Override
-    public void sendHtmlMailWithTemplate(@Valid final TemplateMail mail, final String logoPath) {
+    public void sendHtmlMailWithTemplate(final TemplateMail mail, final String logoPath) {
         final Map<String, Object> content = new HashMap<>(mail.getContent());
         final String body = this.getBodyFromTemplate(mail.getTemplate(), content);
 

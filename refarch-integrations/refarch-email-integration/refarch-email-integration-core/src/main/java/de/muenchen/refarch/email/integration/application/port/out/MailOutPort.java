@@ -5,10 +5,14 @@ import de.muenchen.refarch.email.integration.domain.exception.TemplateException;
 import de.muenchen.refarch.email.integration.domain.model.Mail;
 import de.muenchen.refarch.email.integration.domain.model.TemplateMail;
 import de.muenchen.refarch.email.integration.domain.model.TextMail;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import org.springframework.validation.annotation.Validated;
 
 /**
  * Outbound port for sending emails.
  */
+@Validated
 public interface MailOutPort {
 
     /**
@@ -18,7 +22,7 @@ public interface MailOutPort {
      * @param mail the fully constructed mail to send
      * @throws SendMailException if an error occurs while constructing or sending the message
      */
-    void sendMail(Mail mail);
+    void sendMail(@NotNull @Valid Mail mail);
 
     /**
      * Sends a mail and optionally embeds an inline logo image.
@@ -28,7 +32,7 @@ public interface MailOutPort {
      *            if {@code null} or the resource is not found, the mail is sent without a logo
      * @throws SendMailException if an error occurs while constructing or sending the message
      */
-    void sendMail(Mail mail, String logoPath);
+    void sendMail(@NotNull @Valid Mail mail, String logoPath);
 
     /**
      * Sends a plain text mail.
@@ -36,7 +40,7 @@ public interface MailOutPort {
      * @param mail the text mail to send
      * @throws SendMailException if an error occurs while constructing or sending the message
      */
-    void sendTextMail(TextMail mail);
+    void sendTextMail(@NotNull @Valid TextMail mail);
 
     /**
      * Renders and sends an HTML mail based on a template.
@@ -45,7 +49,7 @@ public interface MailOutPort {
      * @throws SendMailException if an error occurs while constructing or sending the message
      * @throws TemplateException if the template cannot be rendered
      */
-    void sendHtmlMailWithTemplate(TemplateMail mail);
+    void sendHtmlMailWithTemplate(@NotNull @Valid TemplateMail mail);
 
     /**
      * Renders and sends an HTML mail based on a template and optionally embeds an inline logo image.
@@ -56,5 +60,5 @@ public interface MailOutPort {
      * @throws SendMailException if an error occurs while constructing or sending the message
      * @throws TemplateException if the template cannot be rendered
      */
-    void sendHtmlMailWithTemplate(TemplateMail mail, String logoPath);
+    void sendHtmlMailWithTemplate(@NotNull @Valid TemplateMail mail, String logoPath);
 }

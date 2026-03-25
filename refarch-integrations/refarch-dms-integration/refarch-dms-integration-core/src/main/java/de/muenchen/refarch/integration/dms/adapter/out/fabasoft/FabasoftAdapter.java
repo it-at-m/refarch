@@ -53,7 +53,6 @@ import de.muenchen.refarch.integration.dms.domain.model.File;
 import de.muenchen.refarch.integration.dms.domain.model.Metadata;
 import de.muenchen.refarch.integration.dms.domain.model.Procedure;
 import de.muenchen.refarch.integration.dms.domain.model.RequestContext;
-import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -371,7 +370,7 @@ public class FabasoftAdapter implements
     }
 
     @Override
-    public List<String> listContentCoos(@NotNull final String documentCoo, @NotNull final RequestContext requestContext) throws DmsException {
+    public List<String> listContentCoos(final String documentCoo, final RequestContext requestContext) throws DmsException {
         final ReadDocumentGIObjects request = new ReadDocumentGIObjects();
         request.setUserlogin(requestContext.user());
         request.setJoboe(requestContext.jobOe());

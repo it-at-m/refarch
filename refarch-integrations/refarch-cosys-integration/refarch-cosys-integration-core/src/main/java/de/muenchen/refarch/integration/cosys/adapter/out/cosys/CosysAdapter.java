@@ -27,7 +27,7 @@ public class CosysAdapter implements GenerateDocumentOutPort {
     private final ObjectMapper objectMapper;
 
     @Override
-    public InputStream generateCosysDocument(final GenerateDocument generateDocument) {
+    public Mono<InputStream> generateCosysDocument(final GenerateDocument generateDocument) {
         final AbstractResource data = new NamedByteArrayResource(generateDocument.variables().toString().getBytes(StandardCharsets.UTF_8), "data.json");
         final AbstractResource mergeOptions = this.getMergeOptions();
         return this.generationApi.generatePdfWithResponseSpec(
@@ -48,7 +48,7 @@ public class CosysAdapter implements GenerateDocumentOutPort {
                         response -> Mono.error(new DocumentGenerationException(DOC_GEN_EXCEPTION_MESSAGE)))
                 .onStatus(HttpStatusCode::is4xxClientError,
                         response -> Mono.error(new DocumentGenerationException(DOC_GEN_EXCEPTION_MESSAGE)))
-                .bodyToMono(DataBuffer.class).map(DataBuffer::asInputStream).block();
+                .bodyToMono(DataBuffer.class).map(i -> i.asInputStream(true));
     }
 
     private AbstractResource getMergeOptions() {

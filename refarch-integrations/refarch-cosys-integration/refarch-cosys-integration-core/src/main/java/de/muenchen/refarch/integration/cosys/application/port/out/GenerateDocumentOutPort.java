@@ -5,6 +5,7 @@ import de.muenchen.refarch.integration.cosys.domain.model.GenerateDocument;
 import jakarta.validation.Valid;
 import java.io.InputStream;
 import org.springframework.validation.annotation.Validated;
+import reactor.core.publisher.Mono;
 
 @Validated
 public interface GenerateDocumentOutPort {
@@ -15,5 +16,5 @@ public interface GenerateDocumentOutPort {
      * @return The generated document.
      * @throws DocumentGenerationException If something goes wrong during document generation.
      */
-    InputStream generateCosysDocument(@Valid GenerateDocument generateDocument) throws DocumentGenerationException;
+    Mono<InputStream> generateCosysDocument(@Valid GenerateDocument generateDocument) throws DocumentGenerationException;
 }

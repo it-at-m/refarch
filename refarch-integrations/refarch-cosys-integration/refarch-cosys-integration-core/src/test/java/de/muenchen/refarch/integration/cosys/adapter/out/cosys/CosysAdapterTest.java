@@ -50,7 +50,7 @@ class CosysAdapterTest {
         when(configuration.getMergeOptions()).thenReturn(Map.of("mergedata", "test"));
 
         //when
-        final InputStream response = cosysAdapter.generateCosysDocument(generateDocument);
+        final InputStream response = cosysAdapter.generateCosysDocument(generateDocument).block();
 
         //then
         assert response != null;
