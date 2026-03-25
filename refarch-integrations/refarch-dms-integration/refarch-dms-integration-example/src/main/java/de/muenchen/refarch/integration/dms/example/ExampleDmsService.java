@@ -1,10 +1,11 @@
 package de.muenchen.refarch.integration.dms.example;
 
-import de.muenchen.refarch.integration.dms.application.port.in.CreateDocumentInPort;
+import de.muenchen.refarch.integration.dms.application.port.out.CreateDocumentOutPort;
 import de.muenchen.refarch.integration.dms.domain.exception.DmsException;
 import de.muenchen.refarch.integration.dms.domain.model.Content;
-import de.muenchen.refarch.integration.dms.domain.model.DocumentResponse;
+import de.muenchen.refarch.integration.dms.domain.model.Document;
 import de.muenchen.refarch.integration.dms.domain.model.DocumentType;
+import de.muenchen.refarch.integration.dms.domain.model.RequestContext;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
@@ -19,20 +20,24 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class ExampleDmsService {
     private final DmsExampleProperties dmsExampleProperties;
-    private final CreateDocumentInPort createDocumentInPort;
+    private final CreateDocumentOutPort createDocumentOutPort;
 
     public void testCreateDocument() throws IOException, DmsException {
         try (InputStream file = new ClassPathResource("/files/test-pdf.pdf").getInputStream()) {
             final LocalDate date = LocalDate.now();
             final Content content = new Content("pdf", "Example ContentObject", file.readAllBytes());
-            final DocumentResponse response = this.createDocumentInPort.createDocument(
+            final Document document = new Document(
                     dmsExampleProperties.getTargetProcedureCoo(),
                     "Refarch Example - Test Document",
                     date,
-                    dmsExampleProperties.getUsername(),
                     DocumentType.EINGEHEND,
                     List.of(content));
-            log.info("Successfully created document {}", response.documentCoo());
+            final RequestContext requestContext = new RequestContext(dmsExampleProperties.getUsername(), null, null);
+
+            final String documentCoo = this.createDocumentOutPort.createDocument(
+                    document,
+                    requestContext);
+            log.info("Successfully created document {}", documentCoo);
         }
     }
 }
