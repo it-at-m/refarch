@@ -36,6 +36,7 @@ flowchart RL
 ```
 
 After that the following `OutPort`s can be used for accessing DMS/eAkte:
+
 - [CancelObjectOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-dms-integration/refarch-dms-integration-core/src/main/java/de/muenchen/refarch/integration/dms/application/port/out/CancelObjectOutPort.java)
 - [CreateDocumentOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-dms-integration/refarch-dms-integration-core/src/main/java/de/muenchen/refarch/integration/dms/application/port/out/CreateDocumentOutPort.java)
 - [CreateFileOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-dms-integration/refarch-dms-integration-core/src/main/java/de/muenchen/refarch/integration/dms/application/port/out/CreateFileOutPort.java)
@@ -47,8 +48,6 @@ After that the following `OutPort`s can be used for accessing DMS/eAkte:
 - [SearchFileOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-dms-integration/refarch-dms-integration-core/src/main/java/de/muenchen/refarch/integration/dms/application/port/out/SearchFileOutPort.java)
 - [SearchSubjectAreaOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-dms-integration/refarch-dms-integration-core/src/main/java/de/muenchen/refarch/integration/dms/application/port/out/SearchSubjectAreaOutPort.java)
 - [UpdateDocumentOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-dms-integration/refarch-dms-integration-core/src/main/java/de/muenchen/refarch/integration/dms/application/port/out/UpdateDocumentOutPort.java)
-
-
 
 ## Configuration
 
