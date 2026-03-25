@@ -1,7 +1,6 @@
 package de.muenchen.refarch.integration.s3.example;
 
-import de.muenchen.refarch.integration.s3.application.port.in.FileOperationsInPort;
-import de.muenchen.refarch.integration.s3.application.port.in.FolderOperationsInPort;
+import de.muenchen.refarch.integration.s3.application.port.out.S3OutPort;
 import de.muenchen.refarch.integration.s3.domain.exception.S3Exception;
 import de.muenchen.refarch.integration.s3.domain.model.FileMetadata;
 import de.muenchen.refarch.integration.s3.domain.model.FileReference;
@@ -23,8 +22,7 @@ public class S3ExampleService {
     private static final String FILE_NAME = "test.txt";
     private static final String FILE_CONTENT = "test content";
 
-    private final FileOperationsInPort fileOperationsInPort;
-    private final FolderOperationsInPort folderOperationsInPort;
+    private final S3OutPort s3OutPort;
 
     protected void testS3() throws IOException, S3Exception {
         log.info("Testing S3 integration");
@@ -33,24 +31,24 @@ public class S3ExampleService {
         final FileReference fileReference = new FileReference(BUCKET, filePath);
         final byte[] content = FILE_CONTENT.getBytes(StandardCharsets.UTF_8);
         try (InputStream fileContent = new ByteArrayInputStream(content)) {
-            fileOperationsInPort.saveFile(fileReference, fileContent, content.length);
+            s3OutPort.saveFile(fileReference, fileContent, content.length);
         }
         // list file
-        final List<FileMetadata> files = folderOperationsInPort.getFilesInFolder(BUCKET, FOLDER, false);
+        final List<FileMetadata> files = s3OutPort.getFilesWithPrefix(BUCKET, FOLDER);
         if (files.isEmpty() || !files.getFirst().path().equals(filePath)) {
             throw new IllegalStateException("Uploaded file not found in S3: " + filePath);
         }
         // get file
-        try (InputStream fileContentGet = fileOperationsInPort.getFileContent(fileReference)) {
+        try (InputStream fileContentGet = s3OutPort.getFileContent(fileReference)) {
             final String fileContentGetString = new String(fileContentGet.readAllBytes(), StandardCharsets.UTF_8);
             if (!FILE_CONTENT.equals(fileContentGetString)) {
                 throw new IllegalStateException("Unexpected S3 content for " + filePath);
             }
         }
         // delete file
-        fileOperationsInPort.deleteFile(fileReference);
+        s3OutPort.deleteFile(fileReference);
         // list file
-        final List<FileMetadata> files2 = folderOperationsInPort.getFilesInFolder(BUCKET, FOLDER, false);
+        final List<FileMetadata> files2 = s3OutPort.getFilesWithPrefix(BUCKET, FOLDER);
         if (!files2.isEmpty()) {
             throw new IllegalStateException("S3 folder not empty after delete: " + FOLDER);
         }

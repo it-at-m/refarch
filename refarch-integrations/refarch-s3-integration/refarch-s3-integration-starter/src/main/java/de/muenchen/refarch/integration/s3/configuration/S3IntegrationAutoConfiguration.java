@@ -2,11 +2,7 @@ package de.muenchen.refarch.integration.s3.configuration;
 
 import de.muenchen.refarch.integration.s3.adapter.out.s3.S3Adapter;
 import de.muenchen.refarch.integration.s3.adapter.out.s3.S3Mapper;
-import de.muenchen.refarch.integration.s3.application.port.in.FileOperationsInPort;
-import de.muenchen.refarch.integration.s3.application.port.in.FolderOperationsInPort;
 import de.muenchen.refarch.integration.s3.application.port.out.S3OutPort;
-import de.muenchen.refarch.integration.s3.application.usecase.FileOperationsUseCase;
-import de.muenchen.refarch.integration.s3.application.usecase.FolderOperationsUseCase;
 import de.muenchen.refarch.integration.s3.properties.S3IntegrationProperties;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
@@ -90,17 +86,5 @@ public class S3IntegrationAutoConfiguration {
     @ConditionalOnMissingBean
     public S3OutPort s3Adapter(final S3Mapper s3Mapper, final S3Client s3Client, final S3Presigner s3Presigner) {
         return new S3Adapter(s3Mapper, s3Client, s3Presigner);
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public FileOperationsInPort fileOperationsInPort(final S3OutPort s3Adapter) {
-        return new FileOperationsUseCase(s3Adapter);
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public FolderOperationsInPort folderOperationsInPort(final S3OutPort s3OutPort) {
-        return new FolderOperationsUseCase(s3OutPort);
     }
 }
