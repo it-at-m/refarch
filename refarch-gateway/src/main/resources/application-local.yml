@@ -37,7 +37,7 @@ spring:
             provider: sso
             client-id: local
             client-secret: client_secret
-            scope: profile, openid
+            scope: profile, openid, roles, basic
 
 logging:
   include-application-group: false # disabled because application group is only relevant when deployed
