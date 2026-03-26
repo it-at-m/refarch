@@ -6,7 +6,7 @@ and to execute initial required steps for the individual templates.
 
 The purpose of these templates is to provide developers with an out-of-the-box solution for
 building full-stack applications based on the reference architecture (RefArch) of it@M.
-For more information on the RefArch itself, please check the [Overview](../overview).
+For more information on the RefArch itself, please check the [Overview](../overview.md).
 
 ::: danger IMPORTANT
 To use the `refarch-templates` you need to have a container engine like [Podman](https://podman.io/) or [Docker](https://www.docker.com/) installed on your system.
@@ -41,13 +41,13 @@ For example, if you want to work with the backend, you should copy the `refarch-
 If you want documentation, you should copy the `docs` folder.
 
 ::: danger IMPORTANT
-The `stack` folder must be copied to your project directory, as it contains the [development stack](./develop#container-engine) required by the templates.
+The `stack` folder must be copied to your project directory, as it contains the [development stack](./develop.md#container-engine) required by the templates.
 :::
 
 Besides the code templates, `refarch-templates` provides lots of other configuration files which help to establish
 best practices in project development, documentation and organisation. Copy those over as well, if you want to use them.
 
-For further information on those topics please check out [Develop](./develop), [Deploy](./deploy), [Document](./document) and [Organize](./organize).
+For further information on those topics please check out [Develop](./develop.md), [Deploy](./deploy.md), [Document](./document.md) and [Organize](./organize.md).
 
 ## Backend & EAI
 
@@ -129,4 +129,4 @@ For example, you should replace occurrences of `refarch-backend` with `myapp-bac
 If you finished the template configurations for all required components your project needs
 you have now successfully set up your project.
 
-To help you with software development, deployment, documentation and project organisation, please check out [Develop](./develop), [Deploy](./deploy), [Document](./document) and [Organize](./organize).
+To help you with software development, deployment, documentation and project organisation, please check out [Develop](./develop.md), [Deploy](./deploy.md), [Document](./document.md) and [Organize](./organize.md).

@@ -21,12 +21,11 @@ The reference architecture provides a [Helm chart](https://github.com/it-at-m/he
 The release notes of this chart can be found in the [GitHub releases](https://github.com/it-at-m/helm-charts/releases?q=refarch-templates) of the it@M Helm Charts repository.
 
 Each application container is called a "module" in the `refarch-templates` chart.
-Additionally, a [RefArch API Gateway](../gateway) can be deployed as well.
+Additionally, a [RefArch API Gateway](../gateway.md) can be deployed as well.
 
-:::details Sample configuration file
+:::details Sample configuration file (`values-<ENV>.yaml`)
 
 ```yaml
-# myapp-config.yaml
 secrets:
   - name: sso-credentials
     keys:
@@ -66,8 +65,6 @@ modules:
     env:
       - name: TZ
         value: "Europe/Berlin"
-      - name: REFARCH_SECURITY_LOGGINGMODE
-        value: "all"
       # mappings, normally don't have to be changed
       - name: REFARCH_SECURITY_CLIENTID
         value: "${SSO_CLIENTID}"
@@ -92,7 +89,7 @@ refarch-gateway:
     - name: ALLOWED_ORIGINS_PUBLIC
       value: "https://*.example.com"
     - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_SSO_SCOPE
-      value: "profile, openid"
+      value: "profile, openid, roles"
     - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_SSO_PROVIDER
       value: "sso"
     # mappings, normally don't have to be changed
@@ -131,7 +128,7 @@ refarch-gateway:
   ingress:
     enabled: true
     hosts:
-      - host: myapp.example.com #
+      - host: myapp.example.com
         paths:
           - path: /
             pathType: "ImplementationSpecific"
@@ -146,12 +143,12 @@ Detailed information about all configuration options for the `refarch-templates`
 The configuration file can then be used to install the chart to your cluster with the following commands:
 
 ```bash
-helm pull refarch-templates --version <HELM_CHART_VERSION> --repo https://it-at-m.github.io/helm-charts --untar
-helm upgrade --install <HELM_RELEASE_NAME> refarch-templates --values=myapp-config.yaml --force-conflicts=true --server-side=true --rollback-on-failure
+helm repo add it-at-m https://it-at-m.github.io/helm-charts
+helm install <HELM_RELEASE_NAME> it-at-m/refarch-templates --version <HELM_CHART_VERSION> --values values-<ENV>.yaml
 ```
 
 ::: details it@M internal configuration
-We provide an [internal IaC example repository](https://git.muenchen.de/ccse/refarch/refarch-iac) that implements this variant.
+An [internal IaC example repository](https://git.muenchen.de/ccse/refarch/refarch-iac) is provided, which implements this variant.
 :::
 
 ### Variant 2: `refarch-templates` chart as dependency for an application-specific chart

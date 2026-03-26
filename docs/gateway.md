@@ -91,7 +91,7 @@ spring:
             client-id:
             client-secret:
             # needed for userInfo endpoint
-            scope: profile, openid
+            scope: profile, openid, roles
 ```
 
 ### Profiles
