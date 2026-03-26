@@ -138,6 +138,7 @@ refarch-gateway:
 
 :::info Information
 Detailed information about all configuration options for the `refarch-templates` Helm chart can be found in its [README](https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-templates#refarch).
+Available options for the RefArch Gateway can be found in the [configuration documentation](../gateway.md#configuration).
 :::
 
 The configuration file can then be used to install the chart to your cluster with the following commands:
@@ -154,8 +155,8 @@ An [internal IaC example repository](https://git.muenchen.de/ccse/refarch/refarc
 ### Variant 2: `refarch-templates` chart as dependency for an application-specific chart
 
 The `refarch-templates` chart can be used as a dependency for application-specific charts through [Helm dependencies](https://helm.sh/docs/helm/helm_dependency/).
-This enables setting specific values for the `refarch-templates` chart (e.g. image names or versions) and embedding those values statically into the application-specific chart.
-Additionally, the chart can be further enhanced with custom configurations.
+This allows reuse of the mechanisms provided by the `refarch-templates` chart,
+while the application-specific chart can be further enhanced with custom configurations and Kubernetes resources.
 
 A simple `Chart.yaml` could look like this:
 
@@ -177,7 +178,7 @@ More information about creating Helm charts can be found in the [official Helm d
 
 ### Variant 3: Application-specific chart only
 
-Creating a custom Helm chart allows for the definition of all required Kubernetes resources. This approach provides complete control over the configuration but requires a high level of effort.
+Creating a custom Helm chart allows for the manual definition of all required Kubernetes resources. This approach provides complete control over the configuration but requires a high level of effort.
 
 :::danger Important
 Using this variant is not recommended. It is advisable to explore variants 1 or 2 first. If any features are found to be lacking, an issue can be opened in the [it@M Helm Charts](https://github.com/it-at-m/helm-charts) repository.
