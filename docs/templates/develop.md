@@ -31,7 +31,7 @@ Stack components (as OCI images):
 - [Keycloak Migration](https://mayope.github.io/keycloakmigration/): Migration tool to set up the local SSO provider by executing scripts upon startup, configured via `.yml` files in `stack/keycloak/migration`
 - [PostgreSQL](https://www.postgresql.org): Database instance for application data
 - [pgAdmin](https://www.pgadmin.org/): Database management UI pre-configured to connect to the local PostgreSQL instance
-- [API Gateway](../gateway.md): API gateway of the RefArch, configured via [environment variables](../gateway#configuration) in `docker-compose.yml`
+- [API Gateway](../gateway.md): API gateway of the RefArch, configured via [environment variables](../gateway.md#configuration) in `docker-compose.yml`
 - [Appswitcher Server](https://github.com/it-at-m/appswitcher-server): Server component to access local development tools via the frontend UI
 
 ::: info Information

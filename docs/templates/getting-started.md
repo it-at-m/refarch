@@ -118,7 +118,7 @@ After getting the documentation template (`docs` directory), you will need to ma
 
 ## CI/CD
 
-To make the [predefined CI/CD configurations](./develop#ci-cd-configurations) work, you need to adjust the content of the `.yml` files inside the `.github/workflows` directory to the specific folder structure of your project.
+To make the [predefined CI/CD configurations](./develop.md#ci-cd-configurations) work, you need to adjust the content of the `.yml` files inside the `.github/workflows` directory to the specific folder structure of your project.
 
 ::: info Information
 For example, you should replace occurrences of `refarch-backend` with `myapp-backend`.
