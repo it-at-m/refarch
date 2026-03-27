@@ -9,7 +9,7 @@ on:
 
 jobs:
   codeql:
-    uses: it-at-m/.github/.github/workflows/codeql.yml@main
+    uses: it-at-m/.github/.github/workflows/codeql.yml@15b73973fafbc6b50e70aa57d14e860bd2acbf8c # main
     permissions:
       pull-requests: read
       security-events: write
