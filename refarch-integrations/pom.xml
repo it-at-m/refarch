@@ -98,7 +98,7 @@
             <dependency> <!-- Added to fix CVE-2025-53864 -->
                 <groupId>com.nimbusds</groupId>
                 <artifactId>nimbus-jose-jwt</artifactId>
-                <version>9.37.4</version>
+                <version>10.8</version>
             </dependency>
 
             <!-- Open API -->
