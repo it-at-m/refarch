@@ -13,7 +13,7 @@
 
     <properties>
         <apache-commons-collections4.version>4.5.0</apache-commons-collections4.version>
-        <awssdk.version>2.42.13</awssdk.version>
+        <awssdk.version>2.42.23</awssdk.version>
     </properties>
 
     <dependencies>
