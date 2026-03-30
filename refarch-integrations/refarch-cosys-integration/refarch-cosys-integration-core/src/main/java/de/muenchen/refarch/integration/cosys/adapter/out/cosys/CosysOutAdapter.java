@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono;
 
 @Slf4j
 @RequiredArgsConstructor
-public class CosysAdapter implements GenerateDocumentOutPort {
+public class CosysOutAdapter implements GenerateDocumentOutPort {
 
     public static final String DOC_GEN_EXCEPTION_MESSAGE = "Document could not be created.";
 

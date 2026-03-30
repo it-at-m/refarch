@@ -39,7 +39,7 @@ class AddressClientOutAdapterTest {
     private final AddressMunichApi addressMunichApi = mock(AddressMunichApi.class);
     private final StreetsMunichApi streetsMunichApi = mock(StreetsMunichApi.class);
 
-    private final AddressOutPort addressOutPort = new AddressClientOutAdapter(addressGermanyApi, addressMunichApi, streetsMunichApi);
+    private final AddressOutPort addressOutPort = new AddressOutAdapter(addressGermanyApi, addressMunichApi, streetsMunichApi);
 
     @Test
     void testSearchGermanyAddresses()

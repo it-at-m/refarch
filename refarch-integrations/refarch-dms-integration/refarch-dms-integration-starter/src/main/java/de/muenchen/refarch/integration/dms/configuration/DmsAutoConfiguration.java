@@ -1,7 +1,7 @@
 package de.muenchen.refarch.integration.dms.configuration;
 
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.LHMBAI151700GIWSDSoap;
-import de.muenchen.refarch.integration.dms.adapter.out.fabasoft.FabasoftAdapter;
+import de.muenchen.refarch.integration.dms.adapter.out.fabasoft.FabasoftOutAdapter;
 import de.muenchen.refarch.integration.dms.adapter.out.fabasoft.FabasoftClientConfiguration;
 import de.muenchen.refarch.integration.dms.adapter.out.fabasoft.FabasoftProperties;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +19,8 @@ public class DmsAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public FabasoftAdapter fabasoftAdapter(final FabasoftProperties dmsProperties, final LHMBAI151700GIWSDSoap wsClient) {
-        return new FabasoftAdapter(dmsProperties, wsClient);
+    public FabasoftOutAdapter fabasoftAdapter(final FabasoftProperties dmsProperties, final LHMBAI151700GIWSDSoap wsClient) {
+        return new FabasoftOutAdapter(dmsProperties, wsClient);
     }
 
     @Bean

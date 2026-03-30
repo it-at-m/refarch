@@ -1,6 +1,6 @@
 package de.muenchen.refarch.integration.address.configuration;
 
-import de.muenchen.refarch.integration.address.adapter.out.address.AddressClientOutAdapter;
+import de.muenchen.refarch.integration.address.adapter.out.address.AddressOutAdapter;
 import de.muenchen.refarch.integration.address.application.port.out.AddressOutPort;
 import de.muenchen.refarch.integration.address.client.api.AddressGermanyApi;
 import de.muenchen.refarch.integration.address.client.api.AddressMunichApi;
@@ -81,7 +81,7 @@ public class AddressServiceIntegrationAutoConfiguration {
             final AddressGermanyApi addressGermanyApi,
             final AddressMunichApi addressMunichApi,
             final StreetsMunichApi streetsMunichApi) {
-        return new AddressClientOutAdapter(addressGermanyApi, addressMunichApi, streetsMunichApi);
+        return new AddressOutAdapter(addressGermanyApi, addressMunichApi, streetsMunichApi);
     }
 
     @ConditionalOnMissingBean

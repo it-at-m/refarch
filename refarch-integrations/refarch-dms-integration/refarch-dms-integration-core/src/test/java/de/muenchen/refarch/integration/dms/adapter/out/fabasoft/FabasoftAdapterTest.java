@@ -69,7 +69,7 @@ class FabasoftAdapterTest {
     public static final String DOCUMENT_COO = "documentCOO";
 
     private final FabasoftProperties properties = new FabasoftProperties();
-    private FabasoftAdapter fabasoftAdapter;
+    private FabasoftOutAdapter fabasoftAdapter;
 
     @BeforeEach
     public void setUp(final WireMockRuntimeInfo wmRuntimeInfo) {
@@ -78,7 +78,7 @@ class FabasoftAdapterTest {
         this.properties.setBusinessapp("businessapp");
         this.properties.setUiUrl("uiurl");
         final LHMBAI151700GIWSDSoap soapClient = FabasoftClientFactory.dmsWsClient("http://localhost:" + wmRuntimeInfo.getHttpPort() + "/");
-        fabasoftAdapter = new FabasoftAdapter(properties, soapClient);
+        fabasoftAdapter = new FabasoftOutAdapter(properties, soapClient);
     }
 
     @Test

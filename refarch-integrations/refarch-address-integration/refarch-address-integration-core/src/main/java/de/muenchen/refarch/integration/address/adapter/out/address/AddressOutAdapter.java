@@ -24,7 +24,7 @@ import de.muenchen.refarch.integration.address.client.model.response.AddressDist
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class AddressClientOutAdapter implements AddressOutPort {
+public class AddressOutAdapter implements AddressOutPort {
 
     private final AddressGermanyApi addressGermanyApi;
     private final AddressMunichApi addressMunichApi;

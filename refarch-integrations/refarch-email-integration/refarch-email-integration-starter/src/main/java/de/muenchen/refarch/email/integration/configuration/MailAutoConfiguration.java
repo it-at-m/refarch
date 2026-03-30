@@ -1,6 +1,6 @@
 package de.muenchen.refarch.email.integration.configuration;
 
-import de.muenchen.refarch.email.integration.adapter.out.mail.MailAdapter;
+import de.muenchen.refarch.email.integration.adapter.out.mail.MailOutAdapter;
 import de.muenchen.refarch.email.integration.application.port.out.MailOutPort;
 import jakarta.mail.MessagingException;
 import java.util.Properties;
@@ -58,7 +58,7 @@ public class MailAutoConfiguration {
     @ConditionalOnMissingBean
     public MailOutPort getMailPort(final ResourceLoader resourceLoader, final JavaMailSender javaMailSender,
             final FreeMarkerConfigurer freeMarkerConfigurer) {
-        return new MailAdapter(javaMailSender, resourceLoader, freeMarkerConfigurer, this.customMailProperties.getFromAddress(),
+        return new MailOutAdapter(javaMailSender, resourceLoader, freeMarkerConfigurer, this.customMailProperties.getFromAddress(),
                 this.customMailProperties.getDefaultReplyToAddress());
     }
 }

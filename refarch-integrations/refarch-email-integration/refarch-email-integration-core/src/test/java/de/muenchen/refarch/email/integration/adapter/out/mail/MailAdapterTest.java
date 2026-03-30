@@ -50,12 +50,12 @@ class MailAdapterTest {
     private static final String REPLY_TO = "test@muenchen.de";
     private static final String DEFAULT_REPLY_TO = "noreply@muenchen.de";
     private static final String SENDER = "some-custom-sender@muenchen.de";
-    private MailAdapter mailAdapter;
+    private MailOutAdapter mailAdapter;
 
     @BeforeEach
     void setUp() {
         Mockito.when(this.javaMailSender.createMimeMessage()).thenReturn(new MimeMessage((Session) null));
-        this.mailAdapter = new MailAdapter(this.javaMailSender, this.resourceLoader, freeMarkerConfigurer, "test@muenchen.de", DEFAULT_REPLY_TO);
+        this.mailAdapter = new MailOutAdapter(this.javaMailSender, this.resourceLoader, freeMarkerConfigurer, "test@muenchen.de", DEFAULT_REPLY_TO);
     }
 
     @Test
@@ -89,7 +89,7 @@ class MailAdapterTest {
                 null,
                 null,
                 null);
-        new MailAdapter(this.javaMailSender, this.resourceLoader, freeMarkerConfigurer, customAddress.getAddress(), null).sendMail(mail);
+        new MailOutAdapter(this.javaMailSender, this.resourceLoader, freeMarkerConfigurer, customAddress.getAddress(), null).sendMail(mail);
 
         assertMailSend(new InternetAddress(customAddress.getAddress()));
     }
@@ -337,7 +337,7 @@ class MailAdapterTest {
                 List.of(),
                 "template.ftl",
                 Map.of("subject", SUBJECT));
-        final MailAdapter spyAdapter = Mockito.spy(this.mailAdapter);
+        final MailOutAdapter spyAdapter = Mockito.spy(this.mailAdapter);
         Mockito.doThrow(new TemplateException(
                 ERROR_WHILE_RENDERING_TEMPLATE,
                 new IOException("IO Exception")))
@@ -360,7 +360,7 @@ class MailAdapterTest {
                 List.of(),
                 "template.ftl",
                 Map.of("subject", SUBJECT));
-        final MailAdapter spyAdapter = Mockito.spy(this.mailAdapter);
+        final MailOutAdapter spyAdapter = Mockito.spy(this.mailAdapter);
         Mockito.doThrow(new TemplateException(ERROR_WHILE_RENDERING_TEMPLATE, new RuntimeException("test")))
                 .when(spyAdapter)
                 .getBodyFromTemplate(ArgumentMatchers.anyString(), ArgumentMatchers.anyMap());

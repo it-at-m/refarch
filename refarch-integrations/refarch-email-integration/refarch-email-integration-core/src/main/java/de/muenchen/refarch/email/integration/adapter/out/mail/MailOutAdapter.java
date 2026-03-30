@@ -28,7 +28,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 @RequiredArgsConstructor
 @Slf4j
-public class MailAdapter implements MailOutPort {
+public class MailOutAdapter implements MailOutPort {
     private final JavaMailSender mailSender;
     private final ResourceLoader resourceLoader;
     private final FreeMarkerConfigurer freeMarkerConfigurer;
