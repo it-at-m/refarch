@@ -91,7 +91,7 @@ class E2ETest {
         assertThat(s3OutPort.fileExists(ref)).isFalse();
 
         // Save from InputStream
-        final byte[] data = "hello from inports".getBytes(StandardCharsets.UTF_8);
+        final byte[] data = "hello from test".getBytes(StandardCharsets.UTF_8);
         s3OutPort.saveFile(ref, new java.io.ByteArrayInputStream(data), data.length);
         assertThat(s3OutPort.fileExists(ref)).isTrue();
 
@@ -119,14 +119,39 @@ class E2ETest {
             assertThat(s).isEqualTo("filecontent");
         }
 
-        // List via folder ops
+        // Prepare directory-like structure under e2e/dir for recursive vs non-recursive listing
+        final String dirPrefix = prefix + "dir/";
+        final FileReference refDir1 = new FileReference(BUCKET, dirPrefix + "file1.txt");
+        final FileReference refDir2 = new FileReference(BUCKET, dirPrefix + "subdir/file2.txt");
+        final FileReference refDir3 = new FileReference(BUCKET, dirPrefix + "file3.txt");
+        s3OutPort.saveFile(refDir1, new java.io.ByteArrayInputStream("f1".getBytes(StandardCharsets.UTF_8)), 2);
+        s3OutPort.saveFile(refDir2, new java.io.ByteArrayInputStream("f2".getBytes(StandardCharsets.UTF_8)), 2);
+        s3OutPort.saveFile(refDir3, new java.io.ByteArrayInputStream("f3".getBytes(StandardCharsets.UTF_8)), 2);
+
+        // List via folder ops (default recursive)
         final List<FileMetadata> listed = s3OutPort.getFilesWithPrefix(BUCKET, prefix);
         assertThat(listed.stream().map(FileMetadata::path)).anyMatch(k -> k.equals(key) || k.equals(key + "-file"));
+
+        // Recursive listing should include immediate and nested children
+        final List<FileMetadata> recursiveList = s3OutPort.getFilesWithPrefix(BUCKET, dirPrefix, true, 1000, null);
+        assertThat(recursiveList).extracting(FileMetadata::path)
+                .containsExactlyInAnyOrder(dirPrefix + "file1.txt", dirPrefix + "subdir/file2.txt", dirPrefix + "file3.txt");
+
+        // Non-recursive listing should only include immediate children (delimiter "/" behavior)
+        final List<FileMetadata> nonRecursiveList = s3OutPort.getFilesWithPrefix(BUCKET, dirPrefix, false, 1000, null);
+        assertThat(nonRecursiveList).extracting(FileMetadata::path)
+                .containsExactlyInAnyOrder(dirPrefix + "file1.txt", dirPrefix + "file3.txt");
 
         // Delete
         s3OutPort.deleteFile(ref);
         s3OutPort.deleteFile(ref2);
+        s3OutPort.deleteFile(refDir1);
+        s3OutPort.deleteFile(refDir2);
+        s3OutPort.deleteFile(refDir3);
         assertThat(s3OutPort.fileExists(ref)).isFalse();
         assertThat(s3OutPort.fileExists(ref2)).isFalse();
+        assertThat(s3OutPort.fileExists(refDir1)).isFalse();
+        assertThat(s3OutPort.fileExists(refDir2)).isFalse();
+        assertThat(s3OutPort.fileExists(refDir3)).isFalse();
     }
 }

@@ -13,7 +13,6 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.time.Duration;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.core.exception.SdkException;
@@ -190,12 +189,16 @@ public class S3Adapter implements S3OutPort {
     }
 
     @Override
-    public List<FileMetadata> getFilesWithPrefix(final String bucket, final String prefix, final int maxKeys, final String marker) throws S3Exception {
+    public List<FileMetadata> getFilesWithPrefix(final String bucket, final String prefix, final boolean recursive, final int maxKeys, final String marker)
+            throws S3Exception {
         try {
             final ListObjectsRequest.Builder builder = ListObjectsRequest.builder()
                     .bucket(bucket)
                     .prefix(prefix)
                     .maxKeys(maxKeys);
+            if (!recursive) {
+                builder.delimiter("/");
+            }
             if (marker != null && !marker.isEmpty()) {
                 builder.marker(marker);
             }
@@ -214,30 +217,8 @@ public class S3Adapter implements S3OutPort {
     }
 
     @Override
-    public List<FileMetadata> getFilesWithPrefix(final String bucket, final String prefix, final boolean recursive, final int maxKeys, final String marker)
+    public List<FileMetadata> getFilesWithPrefix(final String bucket, final String prefix, final int maxKeys, final String marker)
             throws S3Exception {
-        final List<FileMetadata> all = this.getFilesWithPrefix(bucket, prefix, maxKeys, marker);
-        if (recursive) {
-            return all;
-        }
-        final String normalizedPrefix = ensureTrailingSlash(prefix);
-        return all.stream()
-                .filter(meta -> isImmediateChild(normalizedPrefix, meta.path()))
-                .collect(Collectors.toList());
-    }
-
-    private static String ensureTrailingSlash(final String prefix) {
-        if (prefix == null || prefix.isEmpty()) {
-            return "";
-        }
-        return prefix.endsWith("/") ? prefix : prefix + "/";
-    }
-
-    private static boolean isImmediateChild(final String prefix, final String path) {
-        if (!path.startsWith(prefix)) {
-            return false;
-        }
-        final String remainder = path.substring(prefix.length());
-        return !remainder.contains("/");
+        return this.getFilesWithPrefix(bucket, prefix, true, maxKeys, marker);
     }
 }

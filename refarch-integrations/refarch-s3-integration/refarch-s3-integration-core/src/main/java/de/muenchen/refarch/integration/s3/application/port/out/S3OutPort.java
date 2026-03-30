@@ -130,8 +130,8 @@ public interface S3OutPort {
      * Lists files in the specified bucket starting with the given prefix with pagination controls.
      *
      * @param bucket the bucket name (must not be blank)
-     * @param prefix the prefix under which to list objects (must not be blank). Trailing slash is
-     *            added.
+     * @param prefix the prefix under which to list objects (must not be blank). Trailing slash needs to
+     *            be added to list a specific "dir", when using recursive=false.
      * @param recursive if to lookup files recursive or not.
      * @param maxKeys maximum number of keys to return in this page (provider limits may apply, e.g.,
      *            1–1000)

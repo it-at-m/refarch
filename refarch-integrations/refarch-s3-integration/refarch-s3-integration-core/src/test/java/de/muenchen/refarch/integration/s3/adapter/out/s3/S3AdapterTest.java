@@ -32,6 +32,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.CommonPrefix;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectResponse;
@@ -280,10 +281,9 @@ class S3AdapterTest {
     void testGetFilesWithPrefix_nonRecursive_filtersImmediateChildren() throws S3Exception {
         final Instant now = Instant.now();
         final S3Object o1 = S3Object.builder().key("dir/file1.txt").size(1L).eTag("e1").lastModified(now).build();
-        final S3Object o2 = S3Object.builder().key("dir/subdir/file2.txt").size(2L).eTag("e2").lastModified(now).build();
-        final S3Object o3 = S3Object.builder().key("dir/file3.txt").size(3L).eTag("e3").lastModified(now).build();
-        final S3Object o4 = S3Object.builder().key("other/file4.txt").size(4L).eTag("e4").lastModified(now).build();
-        final ListObjectsResponse response = ListObjectsResponse.builder().contents(o1, o2, o3, o4).build();
+        final S3Object o2 = S3Object.builder().key("dir/file3.txt").size(3L).eTag("e3").lastModified(now).build();
+        final CommonPrefix p1 = CommonPrefix.builder().prefix("subdir/").build();
+        final ListObjectsResponse response = ListObjectsResponse.builder().contents(o1, o2).commonPrefixes(p1).build();
         when(s3Client.listObjects((ListObjectsRequest) any())).thenReturn(response);
 
         final List<FileMetadata> list = adapter.getFilesWithPrefix(BUCKET, "dir", false, 1000, null);
