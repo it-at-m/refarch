@@ -7,6 +7,7 @@ import de.muenchen.refarch.integration.s3.domain.model.PresignedUrl;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import java.io.File;
 import java.io.InputStream;
 import java.time.Duration;
@@ -110,21 +111,12 @@ public interface S3OutPort {
     void deleteFile(@NotNull @Valid FileReference fileReference) throws S3Exception;
 
     /**
-     * Lists files recursively in the specified bucket starting with the given prefix with pagination
-     * controls.
-     *
-     * @see #getFilesWithPrefix(String, String, boolean, int, String)
-     */
-    List<FileMetadata> getFilesWithPrefix(@NotBlank String bucket, @NotBlank String prefix, int maxKeys, String marker) throws S3Exception;
-
-    /**
-     * Lists files recursively in the specified bucket starting with the given prefix with pagination
-     * controls.
+     * Lists files in the specified bucket starting with the given prefix with pagination controls.
      * Uses default pagination (maxKeys = 1000) and no marker.
      *
      * @see #getFilesWithPrefix(String, String, boolean, int, String)
      */
-    List<FileMetadata> getFilesWithPrefix(@NotBlank String bucket, @NotBlank String prefix) throws S3Exception;
+    List<FileMetadata> getFilesWithPrefix(@NotBlank String bucket, @NotBlank String prefix, boolean recursive) throws S3Exception;
 
     /**
      * Lists files in the specified bucket starting with the given prefix with pagination controls.
@@ -142,5 +134,6 @@ public interface S3OutPort {
      *         items)
      * @throws S3Exception if listing fails due to client, network, or service issues
      */
-    List<FileMetadata> getFilesWithPrefix(@NotBlank String bucket, @NotBlank String prefix, boolean recursive, int maxKeys, String marker) throws S3Exception;
+    List<FileMetadata> getFilesWithPrefix(@NotBlank String bucket, @NotBlank String prefix, boolean recursive, @Positive int maxKeys, String marker)
+            throws S3Exception;
 }

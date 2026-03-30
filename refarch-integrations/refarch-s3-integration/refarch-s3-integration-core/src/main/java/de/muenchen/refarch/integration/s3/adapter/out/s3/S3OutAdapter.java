@@ -35,7 +35,7 @@ import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignReques
 @RequiredArgsConstructor
 @Slf4j
 @SuppressWarnings("PMD.CouplingBetweenObjects")
-public class S3Adapter implements S3OutPort {
+public class S3OutAdapter implements S3OutPort {
     private final S3Mapper s3Mapper;
     private final S3Client s3Client;
     private final S3Presigner s3Presigner;
@@ -212,13 +212,7 @@ public class S3Adapter implements S3OutPort {
     }
 
     @Override
-    public List<FileMetadata> getFilesWithPrefix(final String bucket, final String prefix) throws S3Exception {
-        return this.getFilesWithPrefix(bucket, prefix, 1000, null);
-    }
-
-    @Override
-    public List<FileMetadata> getFilesWithPrefix(final String bucket, final String prefix, final int maxKeys, final String marker)
-            throws S3Exception {
-        return this.getFilesWithPrefix(bucket, prefix, true, maxKeys, marker);
+    public List<FileMetadata> getFilesWithPrefix(final String bucket, final String prefix, final boolean recursive) throws S3Exception {
+        return this.getFilesWithPrefix(bucket, prefix, recursive, 1000, null);
     }
 }

@@ -1,7 +1,7 @@
 package de.muenchen.refarch.integration.s3.configuration;
 
-import de.muenchen.refarch.integration.s3.adapter.out.s3.S3Adapter;
 import de.muenchen.refarch.integration.s3.adapter.out.s3.S3Mapper;
+import de.muenchen.refarch.integration.s3.adapter.out.s3.S3OutAdapter;
 import de.muenchen.refarch.integration.s3.application.port.out.S3OutPort;
 import de.muenchen.refarch.integration.s3.properties.S3IntegrationProperties;
 import java.net.URI;
@@ -85,6 +85,6 @@ public class S3IntegrationAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public S3OutPort s3Adapter(final S3Mapper s3Mapper, final S3Client s3Client, final S3Presigner s3Presigner) {
-        return new S3Adapter(s3Mapper, s3Client, s3Presigner);
+        return new S3OutAdapter(s3Mapper, s3Client, s3Presigner);
     }
 }

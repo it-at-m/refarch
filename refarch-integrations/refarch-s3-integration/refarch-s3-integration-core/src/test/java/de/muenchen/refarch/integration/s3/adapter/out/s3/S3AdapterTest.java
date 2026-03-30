@@ -66,11 +66,11 @@ class S3AdapterTest {
     @Mock
     private S3Presigner s3Presigner;
 
-    private S3Adapter adapter;
+    private S3OutAdapter adapter;
 
     @BeforeEach
     void setUp() {
-        adapter = new S3Adapter(s3Mapper, s3Client, s3Presigner);
+        adapter = new S3OutAdapter(s3Mapper, s3Client, s3Presigner);
     }
 
     @Test
@@ -272,7 +272,7 @@ class S3AdapterTest {
         final ListObjectsResponse response = ListObjectsResponse.builder().contents(obj).build();
         when(s3Client.listObjects((ListObjectsRequest) any())).thenReturn(response);
 
-        final List<FileMetadata> list = adapter.getFilesWithPrefix(BUCKET, "prefix", 10, null);
+        final List<FileMetadata> list = adapter.getFilesWithPrefix(BUCKET, "prefix", true, 10, null);
         assertThat(list).hasSize(1);
         assertThat(list.getFirst().path()).isEqualTo("k1");
     }
@@ -296,6 +296,6 @@ class S3AdapterTest {
     void testGetFilesWithPrefix_throwsDomainException_onSdkError() {
         when(s3Client.listObjects((ListObjectsRequest) any()))
                 .thenThrow(software.amazon.awssdk.services.s3.model.S3Exception.builder().message(S3_EXCEPTION_MESSAGE).build());
-        assertThrows(S3Exception.class, () -> adapter.getFilesWithPrefix(BUCKET, "prefix", 10, null));
+        assertThrows(S3Exception.class, () -> adapter.getFilesWithPrefix(BUCKET, "prefix", true, 10, null));
     }
 }

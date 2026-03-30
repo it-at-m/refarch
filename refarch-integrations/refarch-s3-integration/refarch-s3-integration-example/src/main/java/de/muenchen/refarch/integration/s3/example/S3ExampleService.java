@@ -34,7 +34,7 @@ public class S3ExampleService {
             s3OutPort.saveFile(fileReference, fileContent, content.length);
         }
         // list file
-        final List<FileMetadata> files = s3OutPort.getFilesWithPrefix(BUCKET, FOLDER);
+        final List<FileMetadata> files = s3OutPort.getFilesWithPrefix(BUCKET, FOLDER, true);
         if (files.isEmpty() || !files.getFirst().path().equals(filePath)) {
             throw new IllegalStateException("Uploaded file not found in S3: " + filePath);
         }
@@ -48,7 +48,7 @@ public class S3ExampleService {
         // delete file
         s3OutPort.deleteFile(fileReference);
         // list file
-        final List<FileMetadata> files2 = s3OutPort.getFilesWithPrefix(BUCKET, FOLDER);
+        final List<FileMetadata> files2 = s3OutPort.getFilesWithPrefix(BUCKET, FOLDER, true);
         if (!files2.isEmpty()) {
             throw new IllegalStateException("S3 folder not empty after delete: " + FOLDER);
         }

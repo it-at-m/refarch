@@ -2,8 +2,8 @@ package de.muenchen.refarch.integration.s3;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import de.muenchen.refarch.integration.s3.adapter.out.s3.S3Adapter;
 import de.muenchen.refarch.integration.s3.adapter.out.s3.S3Mapper;
+import de.muenchen.refarch.integration.s3.adapter.out.s3.S3OutAdapter;
 import de.muenchen.refarch.integration.s3.application.port.out.S3OutPort;
 import de.muenchen.refarch.integration.s3.domain.model.FileMetadata;
 import de.muenchen.refarch.integration.s3.domain.model.FileReference;
@@ -78,7 +78,7 @@ class E2ETest {
         }
 
         final S3Mapper mapper = new S3Mapper();
-        this.s3OutPort = new S3Adapter(mapper, s3Client, s3Presigner);
+        this.s3OutPort = new S3OutAdapter(mapper, s3Client, s3Presigner);
     }
 
     @Test
@@ -128,8 +128,8 @@ class E2ETest {
         s3OutPort.saveFile(refDir2, new java.io.ByteArrayInputStream("f2".getBytes(StandardCharsets.UTF_8)), 2);
         s3OutPort.saveFile(refDir3, new java.io.ByteArrayInputStream("f3".getBytes(StandardCharsets.UTF_8)), 2);
 
-        // List via folder ops (default recursive)
-        final List<FileMetadata> listed = s3OutPort.getFilesWithPrefix(BUCKET, prefix);
+        // List via folder ops (recursive)
+        final List<FileMetadata> listed = s3OutPort.getFilesWithPrefix(BUCKET, prefix, true);
         assertThat(listed.stream().map(FileMetadata::path)).anyMatch(k -> k.equals(key) || k.equals(key + "-file"));
 
         // Recursive listing should include immediate and nested children
