@@ -9,15 +9,21 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.core.exception.SdkException;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.AbortMultipartUploadRequest;
+import software.amazon.awssdk.services.s3.model.CompleteMultipartUploadRequest;
+import software.amazon.awssdk.services.s3.model.CompletedMultipartUpload;
+import software.amazon.awssdk.services.s3.model.CompletedPart;
+import software.amazon.awssdk.services.s3.model.CreateMultipartUploadRequest;
+import software.amazon.awssdk.services.s3.model.CreateMultipartUploadResponse;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.HeadObjectRequest;
@@ -26,6 +32,8 @@ import software.amazon.awssdk.services.s3.model.ListObjectsRequest;
 import software.amazon.awssdk.services.s3.model.ListObjectsResponse;
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.UploadPartRequest;
+import software.amazon.awssdk.services.s3.model.UploadPartResponse;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.DeleteObjectPresignRequest;
 import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
@@ -81,21 +89,56 @@ public class S3OutAdapter implements S3OutPort {
 
     @Override
     public void saveFile(final FileReference fileReference, final InputStream content) throws S3Exception {
-        File tempFile = null;
+        final CreateMultipartUploadResponse createResponse = s3Client.createMultipartUpload(CreateMultipartUploadRequest.builder()
+                .bucket(fileReference.bucket())
+                .key(fileReference.path())
+                .build());
+        final String uploadId = createResponse.uploadId();
+
+        final List<CompletedPart> completedParts = new ArrayList<>();
+
+        final byte[] buffer = new byte[5 * 1024 * 1024]; // 5 MB
+        int partNumber = 1;
+        int bytesRead;
+
         try {
-            tempFile = Files.createTempFile("s3-upload-", ".tmp").toFile();
-            Files.copy(content, tempFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            this.saveFile(fileReference, tempFile);
-        } catch (IOException e) {
-            throw new S3Exception("Failed to stream and upload file: " + fileReference, e);
-        } finally {
-            if (tempFile != null) {
-                try {
-                    Files.deleteIfExists(tempFile.toPath());
-                } catch (IOException ignored) {
-                    // best-effort cleanup
-                }
+            bytesRead = content.read(buffer);
+            while (bytesRead != -1) {
+
+                final UploadPartResponse uploadPartResponse = s3Client.uploadPart(UploadPartRequest.builder()
+                        .bucket(fileReference.bucket())
+                        .key(fileReference.path())
+                        .uploadId(uploadId)
+                        .partNumber(partNumber)
+                        .contentLength((long) bytesRead)
+                        .build(),
+                        RequestBody.fromBytes(Arrays.copyOf(buffer, bytesRead)));
+
+                completedParts.add(CompletedPart.builder()
+                        .partNumber(partNumber)
+                        .eTag(uploadPartResponse.eTag())
+                        .build());
+
+                partNumber++;
+                bytesRead = content.read(buffer);
             }
+
+            s3Client.completeMultipartUpload(CompleteMultipartUploadRequest.builder()
+                    .bucket(fileReference.bucket())
+                    .key(fileReference.path())
+                    .uploadId(uploadId)
+                    .multipartUpload(CompletedMultipartUpload.builder()
+                            .parts(completedParts)
+                            .build())
+                    .build());
+
+        } catch (final SdkException | IOException e) {
+            s3Client.abortMultipartUpload(AbortMultipartUploadRequest.builder()
+                    .bucket(fileReference.bucket())
+                    .key(fileReference.path())
+                    .uploadId(uploadId)
+                    .build());
+            throw new S3Exception("Error while chunked uploading %s".formatted(fileReference), e);
         }
     }
 

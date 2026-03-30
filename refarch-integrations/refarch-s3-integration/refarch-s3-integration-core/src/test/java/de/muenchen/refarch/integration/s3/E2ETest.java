@@ -82,6 +82,7 @@ class E2ETest {
     }
 
     @Test
+    @SuppressWarnings("PMD.NcssCount")
     void test(@TempDir final Path tempDir) throws Exception {
         final String prefix = "e2e/";
         final String key = prefix + UUID.randomUUID();
@@ -103,6 +104,23 @@ class E2ETest {
         // Read content
         try (InputStream is = s3OutPort.getFileContent(ref)) {
             assertThat(is.readAllBytes()).isEqualTo(data);
+        }
+
+        // Save from InputStream without known length (multipart upload path)
+        final String keyUnknown = prefix + UUID.randomUUID() + "-unknown";
+        final FileReference refUnknown = new FileReference(BUCKET, keyUnknown);
+        final int unknownSize = 6 * 1024 * 1024 + 123; // > 5MB to create multiple parts
+        final byte[] unknownData = new byte[unknownSize];
+        for (int i = 0; i < unknownData.length; i++) {
+            unknownData[i] = (byte) (i % 256);
+        }
+        s3OutPort.saveFile(refUnknown, new java.io.ByteArrayInputStream(unknownData));
+        assertThat(s3OutPort.fileExists(refUnknown)).isTrue();
+        final FileMetadata metaUnknown = s3OutPort.getFileMetadata(refUnknown);
+        assertThat(metaUnknown.path()).isEqualTo(keyUnknown);
+        assertThat(metaUnknown.contentLength()).isEqualTo(unknownData.length);
+        try (InputStream is = s3OutPort.getFileContent(refUnknown)) {
+            assertThat(is.readAllBytes()).isEqualTo(unknownData);
         }
 
         // Save via File overload
@@ -148,10 +166,12 @@ class E2ETest {
         s3OutPort.deleteFile(refDir1);
         s3OutPort.deleteFile(refDir2);
         s3OutPort.deleteFile(refDir3);
+        s3OutPort.deleteFile(new FileReference(BUCKET, keyUnknown));
         assertThat(s3OutPort.fileExists(ref)).isFalse();
         assertThat(s3OutPort.fileExists(ref2)).isFalse();
         assertThat(s3OutPort.fileExists(refDir1)).isFalse();
         assertThat(s3OutPort.fileExists(refDir2)).isFalse();
         assertThat(s3OutPort.fileExists(refDir3)).isFalse();
+        assertThat(s3OutPort.fileExists(new FileReference(BUCKET, keyUnknown))).isFalse();
     }
 }

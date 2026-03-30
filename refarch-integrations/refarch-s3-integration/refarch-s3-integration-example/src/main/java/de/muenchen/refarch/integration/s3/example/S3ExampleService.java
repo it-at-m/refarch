@@ -20,6 +20,7 @@ public class S3ExampleService {
     private static final String BUCKET = "test-bucket";
     private static final String FOLDER = "test";
     private static final String FILE_NAME = "test.txt";
+    private static final String FILE_NAME_UNKNOWN = "test_unkown.txt";
     private static final String FILE_CONTENT = "test content";
 
     private final S3OutPort s3OutPort;
@@ -33,6 +34,9 @@ public class S3ExampleService {
         try (InputStream fileContent = new ByteArrayInputStream(content)) {
             s3OutPort.saveFile(fileReference, fileContent, content.length);
         }
+        // upload file with unknown length
+        final String filePathUnknown = "%s/%s".formatted(FOLDER, FILE_NAME_UNKNOWN);
+        final FileReference fileReferenceUnknown = new FileReference(BUCKET, filePathUnknown);
         // list file
         final List<FileMetadata> files = s3OutPort.getFilesWithPrefix(BUCKET, FOLDER, true);
         if (files.isEmpty() || !files.getFirst().path().equals(filePath)) {
@@ -47,6 +51,7 @@ public class S3ExampleService {
         }
         // delete file
         s3OutPort.deleteFile(fileReference);
+        s3OutPort.deleteFile(fileReferenceUnknown);
         // list file
         final List<FileMetadata> files2 = s3OutPort.getFilesWithPrefix(BUCKET, FOLDER, true);
         if (!files2.isEmpty()) {

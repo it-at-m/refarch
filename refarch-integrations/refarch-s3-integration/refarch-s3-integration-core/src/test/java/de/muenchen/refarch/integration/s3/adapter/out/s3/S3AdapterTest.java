@@ -33,6 +33,9 @@ import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.CommonPrefix;
+import software.amazon.awssdk.services.s3.model.CompleteMultipartUploadRequest;
+import software.amazon.awssdk.services.s3.model.CreateMultipartUploadRequest;
+import software.amazon.awssdk.services.s3.model.CreateMultipartUploadResponse;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectResponse;
@@ -43,6 +46,8 @@ import software.amazon.awssdk.services.s3.model.ListObjectsResponse;
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.model.S3Object;
+import software.amazon.awssdk.services.s3.model.UploadPartRequest;
+import software.amazon.awssdk.services.s3.model.UploadPartResponse;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.DeleteObjectPresignRequest;
 import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
@@ -60,6 +65,7 @@ class S3AdapterTest {
     public static final String BUCKET = "bucket";
     public static final String PATH = "path";
     public static final String S3_EXCEPTION_MESSAGE = "boom";
+    public static final String ETAG = "etag";
     private final S3Mapper s3Mapper = new S3Mapper();
     @Mock
     private S3Client s3Client;
@@ -78,7 +84,7 @@ class S3AdapterTest {
         final FileReference ref = new FileReference(BUCKET, PATH);
         when(s3Client.headObject(any(HeadObjectRequest.class))).thenReturn(
                 HeadObjectResponse.builder()
-                        .eTag("etag")
+                        .eTag(ETAG)
                         .contentLength(1L)
                         .lastModified(Instant.now())
                         .build());
@@ -152,14 +158,30 @@ class S3AdapterTest {
         final byte[] bytes = "hello-world".getBytes(Charset.defaultCharset());
         final InputStream is = new ByteArrayInputStream(bytes);
 
+        when(s3Client.createMultipartUpload((CreateMultipartUploadRequest) any()))
+                .thenReturn(CreateMultipartUploadResponse.builder().uploadId("upload-id").build());
+        when(s3Client.uploadPart((UploadPartRequest) any(), any(RequestBody.class)))
+                .thenReturn(UploadPartResponse.builder().eTag(ETAG).build());
+
         adapter.saveFile(ref, is);
 
-        final ArgumentCaptor<PutObjectRequest> requestCaptor = ArgumentCaptor.forClass(PutObjectRequest.class);
+        final ArgumentCaptor<CreateMultipartUploadRequest> createCaptor = ArgumentCaptor.forClass(CreateMultipartUploadRequest.class);
+        verify(s3Client).createMultipartUpload(createCaptor.capture());
+        assertEquals(BUCKET, createCaptor.getValue().bucket());
+        assertEquals(PATH, createCaptor.getValue().key());
+
+        final ArgumentCaptor<UploadPartRequest> partCaptor = ArgumentCaptor.forClass(UploadPartRequest.class);
         final ArgumentCaptor<RequestBody> bodyCaptor = ArgumentCaptor.forClass(RequestBody.class);
-        verify(s3Client).putObject(requestCaptor.capture(), bodyCaptor.capture());
-        assertEquals(BUCKET, requestCaptor.getValue().bucket());
-        assertEquals(PATH, requestCaptor.getValue().key());
+        verify(s3Client).uploadPart(partCaptor.capture(), bodyCaptor.capture());
+        assertEquals(BUCKET, partCaptor.getValue().bucket());
+        assertEquals(PATH, partCaptor.getValue().key());
+        assertEquals(bytes.length, partCaptor.getValue().contentLength());
         assertEquals(bytes.length, bodyCaptor.getValue().optionalContentLength().get());
+
+        final ArgumentCaptor<CompleteMultipartUploadRequest> completeCaptor = ArgumentCaptor.forClass(CompleteMultipartUploadRequest.class);
+        verify(s3Client).completeMultipartUpload(completeCaptor.capture());
+        assertEquals(BUCKET, completeCaptor.getValue().bucket());
+        assertEquals(PATH, completeCaptor.getValue().key());
     }
 
     @Test
@@ -167,7 +189,7 @@ class S3AdapterTest {
         final FileReference ref = new FileReference(BUCKET, PATH);
         final Instant now = Instant.now();
         final HeadObjectResponse hdr = HeadObjectResponse.builder()
-                .eTag("etag")
+                .eTag(ETAG)
                 .contentLength(10L)
                 .lastModified(now)
                 .build();
@@ -176,7 +198,7 @@ class S3AdapterTest {
         final FileMetadata result = adapter.getFileMetadata(ref);
         assertThat(result.path()).isEqualTo(PATH);
         assertThat(result.contentLength()).isEqualTo(10L);
-        assertThat(result.eTag()).isEqualTo("etag");
+        assertThat(result.eTag()).isEqualTo(ETAG);
         assertThat(result.lastModified()).isEqualTo(now);
     }
 
