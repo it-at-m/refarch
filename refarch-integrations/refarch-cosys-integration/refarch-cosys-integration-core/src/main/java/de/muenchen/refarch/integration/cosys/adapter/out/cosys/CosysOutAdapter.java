@@ -48,7 +48,11 @@ public class CosysOutAdapter implements GenerateDocumentOutPort {
                         response -> Mono.error(new DocumentGenerationException(DOC_GEN_EXCEPTION_MESSAGE)))
                 .onStatus(HttpStatusCode::is4xxClientError,
                         response -> Mono.error(new DocumentGenerationException(DOC_GEN_EXCEPTION_MESSAGE)))
-                .bodyToMono(DataBuffer.class).map(i -> i.asInputStream(true));
+                .bodyToMono(DataBuffer.class)
+                .map(i -> i.asInputStream(true))
+                .onErrorMap(ex -> ex instanceof DocumentGenerationException
+                        ? ex
+                        : new DocumentGenerationException(DOC_GEN_EXCEPTION_MESSAGE, ex));
     }
 
     private AbstractResource getMergeOptions() {

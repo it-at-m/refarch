@@ -37,7 +37,7 @@ Add the following dependency for using the dms integration.
 </dependencies>
 ```
 
-After that the following `OutPort`s can be used for accessing DMS/eAkte  (e.g. via autowiring, as ports are available as bean):
+After that the following `OutPort`s can be used for accessing DMS/eAkte (e.g. via autowiring, as ports are available as bean):
 
 - [CancelObjectOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-dms-integration/refarch-dms-integration-core/src/main/java/de/muenchen/refarch/integration/dms/application/port/out/CancelObjectOutPort.java)
 - [CreateDocumentOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-dms-integration/refarch-dms-integration-core/src/main/java/de/muenchen/refarch/integration/dms/application/port/out/CreateDocumentOutPort.java)
