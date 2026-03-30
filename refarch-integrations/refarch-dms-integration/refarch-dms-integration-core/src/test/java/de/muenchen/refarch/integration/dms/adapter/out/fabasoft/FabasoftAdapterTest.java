@@ -46,6 +46,7 @@ import de.muenchen.refarch.integration.dms.domain.model.DocumentType;
 import de.muenchen.refarch.integration.dms.domain.model.File;
 import de.muenchen.refarch.integration.dms.domain.model.Metadata;
 import de.muenchen.refarch.integration.dms.domain.model.Procedure;
+import de.muenchen.refarch.integration.dms.domain.model.RequestContext;
 import de.muenchen.refarch.integration.dms.fabasoft.mock.FabasoftClientFactory;
 import de.muenchen.refarch.integration.dms.fabasoft.mock.WiremockWsdlUtility;
 import java.nio.charset.StandardCharsets;
@@ -60,6 +61,7 @@ import org.junit.jupiter.api.Test;
 class FabasoftAdapterTest {
 
     public static final String USER = "user";
+    public static final RequestContext REQUEST_CONTEXT = new RequestContext(USER, null, null);
     public static final String OBJID = "1234567890";
     public static final byte[] CONTENT = "content".getBytes(StandardCharsets.UTF_8);
     public static final String NAME = "name";
@@ -67,7 +69,7 @@ class FabasoftAdapterTest {
     public static final String DOCUMENT_COO = "documentCOO";
 
     private final FabasoftProperties properties = new FabasoftProperties();
-    private FabasoftAdapter fabasoftAdapter;
+    private FabasoftOutAdapter fabasoftAdapter;
 
     @BeforeEach
     public void setUp(final WireMockRuntimeInfo wmRuntimeInfo) {
@@ -76,7 +78,7 @@ class FabasoftAdapterTest {
         this.properties.setBusinessapp("businessapp");
         this.properties.setUiUrl("uiurl");
         final LHMBAI151700GIWSDSoap soapClient = FabasoftClientFactory.dmsWsClient("http://localhost:" + wmRuntimeInfo.getHttpPort() + "/");
-        fabasoftAdapter = new FabasoftAdapter(properties, soapClient);
+        fabasoftAdapter = new FabasoftOutAdapter(properties, soapClient);
     }
 
     @Test
@@ -91,9 +93,9 @@ class FabasoftAdapterTest {
 
         final File file = new File("apentryCOO", "new file");
 
-        final String procedureResponse = fabasoftAdapter.createFile(file, USER);
+        final String procedureResponse = fabasoftAdapter.createFile(file, REQUEST_CONTEXT);
 
-        assertEquals(procedureResponse, OBJID);
+        assertEquals(OBJID, procedureResponse);
     }
 
     @Test
@@ -108,9 +110,9 @@ class FabasoftAdapterTest {
 
         final Procedure procedure = new Procedure("fileCOO", "new procedure", "custom file subject");
 
-        final Procedure procedureResponse = fabasoftAdapter.createProcedure(procedure, USER);
+        final Procedure procedureResponse = fabasoftAdapter.createProcedure(procedure, REQUEST_CONTEXT);
 
-        assertEquals(procedureResponse.coo(), OBJID);
+        assertEquals(OBJID, procedureResponse.coo());
     }
 
     @Test
@@ -123,7 +125,7 @@ class FabasoftAdapterTest {
                 DepositObjectGI.class, (u) -> true,
                 response);
 
-        assertDoesNotThrow(() -> fabasoftAdapter.depositObject("objectCoo", USER));
+        assertDoesNotThrow(() -> fabasoftAdapter.depositObject("objectCoo", REQUEST_CONTEXT));
     }
 
     @Test
@@ -139,9 +141,10 @@ class FabasoftAdapterTest {
                 response);
 
         final String documentResponse = fabasoftAdapter
-                .createDocument(new Document("procedureCOO", "title", LocalDate.parse("2023-12-31"), DocumentType.EINGEHEND, List.of(content)), USER);
+                .createDocument(new Document("procedureCOO", "title", LocalDate.parse("2023-12-31"), DocumentType.EINGEHEND, List.of(content)),
+                        REQUEST_CONTEXT);
 
-        assertEquals(documentResponse, DOCUMENT_COO);
+        assertEquals(DOCUMENT_COO, documentResponse);
     }
 
     @Test
@@ -157,9 +160,10 @@ class FabasoftAdapterTest {
                 response);
 
         final String documentResponse = fabasoftAdapter
-                .createDocument(new Document("procedureCOO", "title", LocalDate.parse("2023-12-31"), DocumentType.AUSGEHEND, List.of(content)), USER);
+                .createDocument(new Document("procedureCOO", "title", LocalDate.parse("2023-12-31"), DocumentType.AUSGEHEND, List.of(content)),
+                        REQUEST_CONTEXT);
 
-        assertEquals(documentResponse, DOCUMENT_COO);
+        assertEquals(DOCUMENT_COO, documentResponse);
     }
 
     @Test
@@ -175,9 +179,9 @@ class FabasoftAdapterTest {
                 response);
 
         final String documentResponse = fabasoftAdapter
-                .createDocument(new Document("procedureCOO", "title", LocalDate.parse("2023-12-31"), DocumentType.INTERN, List.of(content)), USER);
+                .createDocument(new Document("procedureCOO", "title", LocalDate.parse("2023-12-31"), DocumentType.INTERN, List.of(content)), REQUEST_CONTEXT);
 
-        assertEquals(documentResponse, DOCUMENT_COO);
+        assertEquals(DOCUMENT_COO, documentResponse);
     }
 
     @Test
@@ -192,7 +196,7 @@ class FabasoftAdapterTest {
                 UpdateIncomingGI.class, (u) -> true,
                 response);
 
-        assertDoesNotThrow(() -> fabasoftAdapter.updateDocument(DOCUMENT_COO, DocumentType.EINGEHEND, List.of(content), USER));
+        assertDoesNotThrow(() -> fabasoftAdapter.updateDocument(DOCUMENT_COO, DocumentType.EINGEHEND, List.of(content), REQUEST_CONTEXT));
     }
 
     @Test
@@ -207,7 +211,7 @@ class FabasoftAdapterTest {
                 UpdateOutgoingGI.class, (u) -> true,
                 response);
 
-        assertDoesNotThrow(() -> fabasoftAdapter.updateDocument(DOCUMENT_COO, DocumentType.AUSGEHEND, List.of(content), USER));
+        assertDoesNotThrow(() -> fabasoftAdapter.updateDocument(DOCUMENT_COO, DocumentType.AUSGEHEND, List.of(content), REQUEST_CONTEXT));
     }
 
     @Test
@@ -222,7 +226,7 @@ class FabasoftAdapterTest {
                 UpdateInternalGI.class, (u) -> true,
                 response);
 
-        assertDoesNotThrow(() -> fabasoftAdapter.updateDocument(DOCUMENT_COO, DocumentType.INTERN, List.of(content), USER));
+        assertDoesNotThrow(() -> fabasoftAdapter.updateDocument(DOCUMENT_COO, DocumentType.INTERN, List.of(content), REQUEST_CONTEXT));
     }
 
     @Test
@@ -235,7 +239,7 @@ class FabasoftAdapterTest {
                 CancelObjectGI.class, (u) -> true,
                 response);
 
-        assertDoesNotThrow(() -> fabasoftAdapter.cancelObject("objectCoo", USER));
+        assertDoesNotThrow(() -> fabasoftAdapter.cancelObject("objectCoo", REQUEST_CONTEXT));
     }
 
     @Test
@@ -255,7 +259,7 @@ class FabasoftAdapterTest {
                 CancelObjectGI.class, (u) -> true,
                 response);
 
-        final List<String> contentCoos = fabasoftAdapter.listContentCoos("coo1", USER);
+        final List<String> contentCoos = fabasoftAdapter.listContentCoos("coo1", REQUEST_CONTEXT);
 
         final List<String> expectedCoos = List.of("contentCoo1");
 
@@ -279,7 +283,7 @@ class FabasoftAdapterTest {
                 CancelObjectGI.class, (u) -> true,
                 response);
 
-        final List<Content> files = fabasoftAdapter.readContent(List.of("coo1"), USER);
+        final List<Content> files = fabasoftAdapter.readContent(List.of("coo1"), REQUEST_CONTEXT);
 
         final Content expectedFile = new Content(EXTENSION, "filename", CONTENT);
 
@@ -292,7 +296,7 @@ class FabasoftAdapterTest {
      */
     @Test
     void executeSearchFileRequest() {
-        assertDoesNotThrow(() -> internalSearchFileCallTest(DMSObjectClass.Sachakte, "searchString", USER, null, null));
+        assertDoesNotThrow(() -> internalSearchFileCallTest(DMSObjectClass.Sachakte, "searchString", REQUEST_CONTEXT, null, null));
     }
 
     /**
@@ -300,7 +304,7 @@ class FabasoftAdapterTest {
      */
     @Test
     void executeSearchFileRequestBusinessData() throws DmsException {
-        assertDoesNotThrow(() -> internalSearchFileCallTest(DMSObjectClass.Sachakte, "searchString", USER, "reference", "value"));
+        assertDoesNotThrow(() -> internalSearchFileCallTest(DMSObjectClass.Sachakte, "searchString", REQUEST_CONTEXT, "reference", "value"));
     }
 
     /**
@@ -324,12 +328,13 @@ class FabasoftAdapterTest {
                 SearchObjNameGI.class, (u) -> u.getObjclass().equals(DMSObjectClass.Aktenplaneintrag.getName()),
                 response);
 
-        final List<String> files = fabasoftAdapter.searchSubjectArea("searchString", USER);
+        final List<String> files = fabasoftAdapter.searchSubjectArea("searchString", REQUEST_CONTEXT);
 
         assertThat(files.size()).isEqualTo(1);
     }
 
-    private void internalSearchFileCallTest(final DMSObjectClass dmsObjectClass, final String searchString, final String user, final String reference,
+    private void internalSearchFileCallTest(final DMSObjectClass dmsObjectClass, final String searchString, final RequestContext requestContext,
+            final String reference,
             final String value)
             throws DmsException {
         final LHMBAI151700GIObjectType file = new LHMBAI151700GIObjectType();
@@ -348,7 +353,7 @@ class FabasoftAdapterTest {
                 SearchObjNameGI.class, (u) -> u.getObjclass().equals(dmsObjectClass.getName()) && validateBusinessData(u),
                 response);
 
-        final List<String> files = fabasoftAdapter.searchFile(searchString, user, reference, value);
+        final List<String> files = fabasoftAdapter.searchFile(searchString, requestContext, reference, value);
 
         assertThat(files.size()).isEqualTo(1);
     }
@@ -377,7 +382,7 @@ class FabasoftAdapterTest {
                 ReadMetadataObjectGI.class, (u) -> true,
                 response);
 
-        final Metadata metadata = fabasoftAdapter.readMetadata("coo", USER);
+        final Metadata metadata = fabasoftAdapter.readMetadata("coo", REQUEST_CONTEXT);
 
         assertThat(metadata.name()).isEqualTo(NAME);
         assertThat(metadata.type()).isEqualTo("Vorgang");
@@ -398,7 +403,7 @@ class FabasoftAdapterTest {
                 ReadContentObjectMetaDataGI.class, (u) -> true,
                 response);
 
-        final Metadata metadata = fabasoftAdapter.readContentMetadata("coo", USER);
+        final Metadata metadata = fabasoftAdapter.readContentMetadata("coo", REQUEST_CONTEXT);
 
         assertThat(metadata.name()).isEqualTo(NAME);
         assertThat(metadata.type()).isEqualTo("pdf");

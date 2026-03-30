@@ -6,15 +6,24 @@ import de.muenchen.refarch.integration.s3.domain.model.FileMetadata;
 import de.muenchen.refarch.integration.s3.domain.model.FileReference;
 import de.muenchen.refarch.integration.s3.domain.model.PresignedUrl;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.core.exception.SdkException;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.AbortMultipartUploadRequest;
+import software.amazon.awssdk.services.s3.model.CompleteMultipartUploadRequest;
+import software.amazon.awssdk.services.s3.model.CompletedMultipartUpload;
+import software.amazon.awssdk.services.s3.model.CompletedPart;
+import software.amazon.awssdk.services.s3.model.CreateMultipartUploadRequest;
+import software.amazon.awssdk.services.s3.model.CreateMultipartUploadResponse;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.HeadObjectRequest;
@@ -23,6 +32,8 @@ import software.amazon.awssdk.services.s3.model.ListObjectsRequest;
 import software.amazon.awssdk.services.s3.model.ListObjectsResponse;
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.UploadPartRequest;
+import software.amazon.awssdk.services.s3.model.UploadPartResponse;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.DeleteObjectPresignRequest;
 import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
@@ -32,7 +43,7 @@ import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignReques
 @RequiredArgsConstructor
 @Slf4j
 @SuppressWarnings("PMD.CouplingBetweenObjects")
-public class S3Adapter implements S3OutPort {
+public class S3OutAdapter implements S3OutPort {
     private final S3Mapper s3Mapper;
     private final S3Client s3Client;
     private final S3Presigner s3Presigner;
@@ -74,6 +85,61 @@ public class S3Adapter implements S3OutPort {
     @Override
     public void saveFile(final FileReference fileReference, final File file) throws S3Exception {
         saveFile(fileReference, RequestBody.fromFile(file));
+    }
+
+    @Override
+    public void saveFile(final FileReference fileReference, final InputStream content) throws S3Exception {
+        final CreateMultipartUploadResponse createResponse = s3Client.createMultipartUpload(CreateMultipartUploadRequest.builder()
+                .bucket(fileReference.bucket())
+                .key(fileReference.path())
+                .build());
+        final String uploadId = createResponse.uploadId();
+
+        final List<CompletedPart> completedParts = new ArrayList<>();
+
+        final byte[] buffer = new byte[5 * 1024 * 1024]; // 5 MB
+        int partNumber = 1;
+        int bytesRead;
+
+        try {
+            bytesRead = content.read(buffer);
+            while (bytesRead != -1) {
+
+                final UploadPartResponse uploadPartResponse = s3Client.uploadPart(UploadPartRequest.builder()
+                        .bucket(fileReference.bucket())
+                        .key(fileReference.path())
+                        .uploadId(uploadId)
+                        .partNumber(partNumber)
+                        .contentLength((long) bytesRead)
+                        .build(),
+                        RequestBody.fromBytes(Arrays.copyOf(buffer, bytesRead)));
+
+                completedParts.add(CompletedPart.builder()
+                        .partNumber(partNumber)
+                        .eTag(uploadPartResponse.eTag())
+                        .build());
+
+                partNumber++;
+                bytesRead = content.read(buffer);
+            }
+
+            s3Client.completeMultipartUpload(CompleteMultipartUploadRequest.builder()
+                    .bucket(fileReference.bucket())
+                    .key(fileReference.path())
+                    .uploadId(uploadId)
+                    .multipartUpload(CompletedMultipartUpload.builder()
+                            .parts(completedParts)
+                            .build())
+                    .build());
+
+        } catch (final SdkException | IOException e) {
+            s3Client.abortMultipartUpload(AbortMultipartUploadRequest.builder()
+                    .bucket(fileReference.bucket())
+                    .key(fileReference.path())
+                    .uploadId(uploadId)
+                    .build());
+            throw new S3Exception("Error while chunked uploading %s".formatted(fileReference), e);
+        }
     }
 
     @Override
@@ -166,12 +232,16 @@ public class S3Adapter implements S3OutPort {
     }
 
     @Override
-    public List<FileMetadata> getFilesWithPrefix(final String bucket, final String prefix, final int maxKeys, final String marker) throws S3Exception {
+    public List<FileMetadata> getFilesWithPrefix(final String bucket, final String prefix, final boolean recursive, final int maxKeys, final String marker)
+            throws S3Exception {
         try {
             final ListObjectsRequest.Builder builder = ListObjectsRequest.builder()
                     .bucket(bucket)
                     .prefix(prefix)
                     .maxKeys(maxKeys);
+            if (!recursive) {
+                builder.delimiter("/");
+            }
             if (marker != null && !marker.isEmpty()) {
                 builder.marker(marker);
             }
@@ -182,5 +252,10 @@ public class S3Adapter implements S3OutPort {
         } catch (final SdkException e) {
             throw new S3Exception("Error while listing (bucket: %s, path: %s, maxKeys: %d, marker: %s)".formatted(bucket, prefix, maxKeys, marker), e);
         }
+    }
+
+    @Override
+    public List<FileMetadata> getFilesWithPrefix(final String bucket, final String prefix, final boolean recursive) throws S3Exception {
+        return this.getFilesWithPrefix(bucket, prefix, recursive, 1000, null);
     }
 }

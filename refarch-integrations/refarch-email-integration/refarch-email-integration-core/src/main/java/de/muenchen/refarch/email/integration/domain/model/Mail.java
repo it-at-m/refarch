@@ -1,5 +1,6 @@
 package de.muenchen.refarch.email.integration.domain.model;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
@@ -14,6 +15,17 @@ public record Mail(
         String sender,
         String replyTo,
         List<Attachment> attachments) {
+    public Mail(@Valid final BasicMail mail, @NotBlank final String body, final boolean htmlBody) {
+        this(mail.getReceivers(),
+                mail.getReceiversCc(),
+                mail.getReceiversBcc(),
+                mail.getSubject(),
+                body,
+                htmlBody,
+                null,
+                mail.getReplyTo(),
+                mail.getAttachments());
+    }
 
     public boolean hasAttachment() {
         return attachments != null && !attachments.isEmpty();

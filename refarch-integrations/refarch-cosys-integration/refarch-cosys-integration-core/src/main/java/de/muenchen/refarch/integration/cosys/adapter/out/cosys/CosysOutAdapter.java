@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.muenchen.refarch.integration.cosys.api.GenerationApi;
 import de.muenchen.refarch.integration.cosys.application.port.out.GenerateDocumentOutPort;
 import de.muenchen.refarch.integration.cosys.configuration.CosysConfiguration;
-import de.muenchen.refarch.integration.cosys.domain.exception.CosysException;
+import de.muenchen.refarch.integration.cosys.domain.exception.DocumentGenerationException;
 import de.muenchen.refarch.integration.cosys.domain.model.GenerateDocument;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono;
 
 @Slf4j
 @RequiredArgsConstructor
-public class CosysAdapter implements GenerateDocumentOutPort {
+public class CosysOutAdapter implements GenerateDocumentOutPort {
 
     public static final String DOC_GEN_EXCEPTION_MESSAGE = "Document could not be created.";
 
@@ -26,12 +26,6 @@ public class CosysAdapter implements GenerateDocumentOutPort {
     private final GenerationApi generationApi;
     private final ObjectMapper objectMapper;
 
-    /**
-     * Generate a Document in Cosys
-     *
-     * @param generateDocument Data for generating documents
-     * @return the generated document
-     */
     @Override
     public Mono<InputStream> generateCosysDocument(final GenerateDocument generateDocument) {
         final AbstractResource data = new NamedByteArrayResource(generateDocument.variables().toString().getBytes(StandardCharsets.UTF_8), "data.json");
@@ -51,10 +45,14 @@ public class CosysAdapter implements GenerateDocumentOutPort {
                 null,
                 null)
                 .onStatus(HttpStatusCode::is5xxServerError,
-                        response -> Mono.error(new CosysException(DOC_GEN_EXCEPTION_MESSAGE)))
+                        response -> Mono.error(new DocumentGenerationException(DOC_GEN_EXCEPTION_MESSAGE)))
                 .onStatus(HttpStatusCode::is4xxClientError,
-                        response -> Mono.error(new CosysException(DOC_GEN_EXCEPTION_MESSAGE)))
-                .bodyToMono(DataBuffer.class).map(DataBuffer::asInputStream);
+                        response -> Mono.error(new DocumentGenerationException(DOC_GEN_EXCEPTION_MESSAGE)))
+                .bodyToMono(DataBuffer.class)
+                .map(i -> i.asInputStream(true))
+                .onErrorMap(ex -> ex instanceof DocumentGenerationException
+                        ? ex
+                        : new DocumentGenerationException(DOC_GEN_EXCEPTION_MESSAGE, ex));
     }
 
     private AbstractResource getMergeOptions() {

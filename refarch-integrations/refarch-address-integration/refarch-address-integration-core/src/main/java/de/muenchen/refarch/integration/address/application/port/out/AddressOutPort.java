@@ -19,48 +19,48 @@ import de.muenchen.refarch.integration.address.client.model.response.AddressDist
 /**
  * Port to integration infrastructure.
  */
-public interface AddressClientOutPort {
+public interface AddressOutPort {
 
     /**
      * Search for addresses in Germany.
      */
-    BundesweiteAdresseResponse searchAddresses(SearchAddressesGermanyModel searchAddressesGermanyModel)
+    BundesweiteAdresseResponse searchGermanyAddresses(SearchAddressesGermanyModel searchAddressesGermanyModel)
             throws AddressServiceIntegrationException;
 
     /**
      * Check an address in Munich.
      */
-    MuenchenAdresse checkAddress(CheckAddressesModel checkAddressesModel) throws AddressServiceIntegrationException;
+    MuenchenAdresse checkMunichAddress(CheckAddressesModel checkAddressesModel) throws AddressServiceIntegrationException;
 
     /**
      * List addresses in Munich.
      */
-    MuenchenAdresseResponse listAddresses(ListAddressesModel listAddressesModel) throws AddressServiceIntegrationException;
+    MuenchenAdresseResponse listMunichAddresses(ListAddressesModel listAddressesModel) throws AddressServiceIntegrationException;
 
     /**
      * List changes in Munich.
      */
-    AenderungResponse listChanges(ListAddressChangesModel listAddressChangesModel) throws AddressServiceIntegrationException;
+    AenderungResponse listMunichChanges(ListAddressChangesModel listAddressChangesModel) throws AddressServiceIntegrationException;
 
     /**
      * Search for addresses in Munich.
      */
-    MuenchenAdresseResponse searchAddresses(SearchAddressesModel searchAddressesModel) throws AddressServiceIntegrationException;
+    MuenchenAdresseResponse searchMunichAddresses(SearchAddressesModel searchAddressesModel) throws AddressServiceIntegrationException;
 
     /**
      * Search for addresses in Munich.
      */
-    AddressDistancesModel searchAddressesGeo(SearchAddressesGeoModel searchAddressesGeoModel)
+    AddressDistancesModel searchMunichAddressesGeo(SearchAddressesGeoModel searchAddressesGeoModel)
             throws AddressServiceIntegrationException;
 
     /**
      * List streets in Munich.
      */
-    Strasse findStreetsById(long streetId) throws AddressServiceIntegrationException;
+    Strasse findMunichStreetsById(long streetId) throws AddressServiceIntegrationException;
 
     /**
      * List streets in Munich.
      */
-    StrasseResponse listStreets(ListStreetsModel listStreetsModel) throws AddressServiceIntegrationException;
+    StrasseResponse listMunichStreets(ListStreetsModel listStreetsModel) throws AddressServiceIntegrationException;
 
 }

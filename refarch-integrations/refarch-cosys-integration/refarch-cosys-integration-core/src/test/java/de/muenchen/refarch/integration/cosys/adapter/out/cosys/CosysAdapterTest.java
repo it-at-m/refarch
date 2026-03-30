@@ -27,7 +27,7 @@ class CosysAdapterTest {
     private final CosysConfiguration configuration = mock(CosysConfiguration.class);
     private final GenerationApi generationApi = mock(GenerationApi.class);
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final CosysAdapter cosysAdapter = new CosysAdapter(configuration, generationApi, objectMapper);
+    private final CosysOutAdapter cosysAdapter = new CosysOutAdapter(configuration, generationApi, objectMapper);
 
     @Test
     @SuppressWarnings("PMD.CloseResource")

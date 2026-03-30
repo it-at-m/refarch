@@ -2,12 +2,9 @@ package de.muenchen.refarch.integration.s3;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import de.muenchen.refarch.integration.s3.adapter.out.s3.S3Adapter;
 import de.muenchen.refarch.integration.s3.adapter.out.s3.S3Mapper;
-import de.muenchen.refarch.integration.s3.application.port.in.FileOperationsInPort;
-import de.muenchen.refarch.integration.s3.application.port.in.FolderOperationsInPort;
-import de.muenchen.refarch.integration.s3.application.usecase.FileOperationsUseCase;
-import de.muenchen.refarch.integration.s3.application.usecase.FolderOperationsUseCase;
+import de.muenchen.refarch.integration.s3.adapter.out.s3.S3OutAdapter;
+import de.muenchen.refarch.integration.s3.application.port.out.S3OutPort;
 import de.muenchen.refarch.integration.s3.domain.model.FileMetadata;
 import de.muenchen.refarch.integration.s3.domain.model.FileReference;
 import de.muenchen.refarch.integration.s3.domain.model.PresignedUrl;
@@ -51,8 +48,7 @@ class E2ETest {
             .withCommand("server", "/data", "--console-address", ":9001")
             .withExposedPorts(9000, 9001);
 
-    private FileOperationsInPort fileOps;
-    private FolderOperationsInPort folderOps;
+    private S3OutPort s3OutPort;
 
     @BeforeAll
     @SuppressWarnings("PMD.CloseResource")
@@ -82,58 +78,100 @@ class E2ETest {
         }
 
         final S3Mapper mapper = new S3Mapper();
-        final S3Adapter s3Adapter = new S3Adapter(mapper, s3Client, s3Presigner);
-
-        this.fileOps = new FileOperationsUseCase(s3Adapter);
-        this.folderOps = new FolderOperationsUseCase(s3Adapter);
+        this.s3OutPort = new S3OutAdapter(mapper, s3Client, s3Presigner);
     }
 
     @Test
+    @SuppressWarnings("PMD.NcssCount")
     void test(@TempDir final Path tempDir) throws Exception {
         final String prefix = "e2e/";
         final String key = prefix + UUID.randomUUID();
         final FileReference ref = new FileReference(BUCKET, key);
 
         // Initially no file
-        assertThat(fileOps.fileExists(ref)).isFalse();
+        assertThat(s3OutPort.fileExists(ref)).isFalse();
 
         // Save from InputStream
-        final byte[] data = "hello from inports".getBytes(StandardCharsets.UTF_8);
-        fileOps.saveFile(ref, new java.io.ByteArrayInputStream(data), data.length);
-        assertThat(fileOps.fileExists(ref)).isTrue();
+        final byte[] data = "hello from test".getBytes(StandardCharsets.UTF_8);
+        s3OutPort.saveFile(ref, new java.io.ByteArrayInputStream(data), data.length);
+        assertThat(s3OutPort.fileExists(ref)).isTrue();
 
         // Get metadata
-        final FileMetadata meta = fileOps.getFileMetadata(ref);
+        final FileMetadata meta = s3OutPort.getFileMetadata(ref);
         assertThat(meta.path()).isEqualTo(key);
         assertThat(meta.contentLength()).isEqualTo(data.length);
 
         // Read content
-        try (InputStream is = fileOps.getFileContent(ref)) {
+        try (InputStream is = s3OutPort.getFileContent(ref)) {
             assertThat(is.readAllBytes()).isEqualTo(data);
+        }
+
+        // Save from InputStream without known length (multipart upload path)
+        final String keyUnknown = prefix + UUID.randomUUID() + "-unknown";
+        final FileReference refUnknown = new FileReference(BUCKET, keyUnknown);
+        final int unknownSize = 6 * 1024 * 1024 + 123; // > 5MB to create multiple parts
+        final byte[] unknownData = new byte[unknownSize];
+        for (int i = 0; i < unknownData.length; i++) {
+            unknownData[i] = (byte) (i % 256);
+        }
+        s3OutPort.saveFile(refUnknown, new java.io.ByteArrayInputStream(unknownData));
+        assertThat(s3OutPort.fileExists(refUnknown)).isTrue();
+        final FileMetadata metaUnknown = s3OutPort.getFileMetadata(refUnknown);
+        assertThat(metaUnknown.path()).isEqualTo(keyUnknown);
+        assertThat(metaUnknown.contentLength()).isEqualTo(unknownData.length);
+        try (InputStream is = s3OutPort.getFileContent(refUnknown)) {
+            assertThat(is.readAllBytes()).isEqualTo(unknownData);
         }
 
         // Save via File overload
         final Path p = tempDir.resolve("inports-file.txt");
         Files.writeString(p, "filecontent");
         final FileReference ref2 = new FileReference(BUCKET, key + "-file");
-        fileOps.saveFile(ref2, p.toFile());
-        assertThat(fileOps.fileExists(ref2)).isTrue();
+        s3OutPort.saveFile(ref2, p.toFile());
+        assertThat(s3OutPort.fileExists(ref2)).isTrue();
 
         // Presigned URL (GET) and download
-        final PresignedUrl pre = fileOps.getPresignedUrl(ref2, PresignedUrl.Action.GET, Duration.ofMinutes(2));
+        final PresignedUrl pre = s3OutPort.getPresignedUrl(ref2, PresignedUrl.Action.GET, Duration.ofMinutes(2));
         try (InputStream is = pre.url().openStream()) {
             final String s = new String(is.readAllBytes(), StandardCharsets.UTF_8);
             assertThat(s).isEqualTo("filecontent");
         }
 
-        // List via folder ops
-        final List<FileMetadata> listed = folderOps.getFilesInFolder(BUCKET, prefix, true);
+        // Prepare directory-like structure under e2e/dir for recursive vs non-recursive listing
+        final String dirPrefix = prefix + "dir/";
+        final FileReference refDir1 = new FileReference(BUCKET, dirPrefix + "file1.txt");
+        final FileReference refDir2 = new FileReference(BUCKET, dirPrefix + "subdir/file2.txt");
+        final FileReference refDir3 = new FileReference(BUCKET, dirPrefix + "file3.txt");
+        s3OutPort.saveFile(refDir1, new java.io.ByteArrayInputStream("f1".getBytes(StandardCharsets.UTF_8)), 2);
+        s3OutPort.saveFile(refDir2, new java.io.ByteArrayInputStream("f2".getBytes(StandardCharsets.UTF_8)), 2);
+        s3OutPort.saveFile(refDir3, new java.io.ByteArrayInputStream("f3".getBytes(StandardCharsets.UTF_8)), 2);
+
+        // List via folder ops (recursive)
+        final List<FileMetadata> listed = s3OutPort.getFilesWithPrefix(BUCKET, prefix, true);
         assertThat(listed.stream().map(FileMetadata::path)).anyMatch(k -> k.equals(key) || k.equals(key + "-file"));
 
+        // Recursive listing should include immediate and nested children
+        final List<FileMetadata> recursiveList = s3OutPort.getFilesWithPrefix(BUCKET, dirPrefix, true, 1000, null);
+        assertThat(recursiveList).extracting(FileMetadata::path)
+                .containsExactlyInAnyOrder(dirPrefix + "file1.txt", dirPrefix + "subdir/file2.txt", dirPrefix + "file3.txt");
+
+        // Non-recursive listing should only include immediate children (delimiter "/" behavior)
+        final List<FileMetadata> nonRecursiveList = s3OutPort.getFilesWithPrefix(BUCKET, dirPrefix, false, 1000, null);
+        assertThat(nonRecursiveList).extracting(FileMetadata::path)
+                .containsExactlyInAnyOrder(dirPrefix + "file1.txt", dirPrefix + "file3.txt");
+
         // Delete
-        fileOps.deleteFile(ref);
-        fileOps.deleteFile(ref2);
-        assertThat(fileOps.fileExists(ref)).isFalse();
-        assertThat(fileOps.fileExists(ref2)).isFalse();
+        s3OutPort.deleteFile(ref);
+        s3OutPort.deleteFile(ref2);
+        s3OutPort.deleteFile(refDir1);
+        s3OutPort.deleteFile(refDir2);
+        s3OutPort.deleteFile(refDir3);
+        s3OutPort.deleteFile(new FileReference(BUCKET, keyUnknown));
+        assertThat(s3OutPort.fileExists(ref)).isFalse();
+        assertThat(s3OutPort.fileExists(ref2)).isFalse();
+        assertThat(s3OutPort.fileExists(refDir1)).isFalse();
+        assertThat(s3OutPort.fileExists(refDir2)).isFalse();
+        assertThat(s3OutPort.fileExists(refDir3)).isFalse();
+        assertThat(s3OutPort.fileExists(new FileReference(BUCKET, keyUnknown))).isFalse();
     }
 }
