@@ -11,8 +11,8 @@
     <name>refarch-cosys-integration-client</name>
 
     <properties>
-        <openapi-generator-maven-plugin.version>7.20.0</openapi-generator-maven-plugin.version>
-        <jackson-databind-nullable.version>0.2.9</jackson-databind-nullable.version>
+        <openapi-generator-maven-plugin.version>7.21.0</openapi-generator-maven-plugin.version>
+        <jackson-databind-nullable.version>0.2.10</jackson-databind-nullable.version>
     </properties>
 
     <dependencies>

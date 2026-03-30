@@ -69,6 +69,7 @@ const vitepressConfig = defineConfig({
         items: [
           { text: "Getting Started", link: "/templates/getting-started" },
           { text: "Develop", link: "/templates/develop" },
+          { text: "Deploy", link: "/templates/deploy" },
           { text: "Document", link: "/templates/document" },
           { text: "Organize", link: "/templates/organize" },
         ],
