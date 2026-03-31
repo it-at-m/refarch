@@ -52,7 +52,7 @@ import de.muenchen.refarch.integration.dms.domain.model.DocumentType;
 import de.muenchen.refarch.integration.dms.domain.model.File;
 import de.muenchen.refarch.integration.dms.domain.model.Metadata;
 import de.muenchen.refarch.integration.dms.domain.model.Procedure;
-import jakarta.validation.constraints.NotNull;
+import de.muenchen.refarch.integration.dms.domain.model.RequestContext;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -68,8 +68,8 @@ import org.apache.commons.lang3.StringUtils;
 
 @Slf4j
 @RequiredArgsConstructor
-@SuppressWarnings({ "PMD.UseObjectForClearerAPI", "PMD.CouplingBetweenObjects" })
-public class FabasoftAdapter implements
+@SuppressWarnings({ "PMD.CouplingBetweenObjects" })
+public class FabasoftOutAdapter implements
         CreateFileOutPort,
         CreateProcedureOutPort,
         CreateDocumentOutPort,
@@ -88,13 +88,15 @@ public class FabasoftAdapter implements
     private final DMSErrorHandler dmsErrorHandler = new DMSErrorHandler();
 
     @Override
-    public String createFile(final File file, final String user) throws DmsException {
+    public String createFile(final File file, final RequestContext requestContext) throws DmsException {
         //logging for dms team
-        log.info("calling CreateFileGI Userlogin: {} Apentry: {} Filesubj: {} Shortname: {} Apentrysearch: true", user, file.apentryCOO(), file.title(),
+        log.info("calling CreateFileGI Context: {} Apentry: {} Filesubj: {} Shortname: {} Apentrysearch: true", requestContext, file.apentryCOO(), file.title(),
                 file.title());
 
         final CreateFileGI request = new CreateFileGI();
-        request.setUserlogin(user);
+        request.setUserlogin(requestContext.user());
+        request.setJoboe(requestContext.jobOe());
+        request.setJobposition(requestContext.jobPosition());
         request.setBusinessapp(this.properties.getBusinessapp());
         request.setApentry(file.apentryCOO());
         request.setShortname(file.title());
@@ -108,11 +110,13 @@ public class FabasoftAdapter implements
     }
 
     @Override
-    public Procedure createProcedure(final Procedure procedure, final String user) throws DmsException {
+    public Procedure createProcedure(final Procedure procedure, final RequestContext requestContext) throws DmsException {
         log.info("calling CreateProcedureGI: {}", procedure.toString());
 
         final CreateProcedureGI request = new CreateProcedureGI();
-        request.setUserlogin(user);
+        request.setUserlogin(requestContext.user());
+        request.setJoboe(requestContext.jobOe());
+        request.setJobposition(requestContext.jobPosition());
         request.setReferrednumber(procedure.fileCOO());
         request.setBusinessapp(this.properties.getBusinessapp());
         request.setShortname(procedure.title());
@@ -129,21 +133,24 @@ public class FabasoftAdapter implements
     }
 
     @Override
-    public String createDocument(final Document document, final String user) throws DmsException {
+    public String createDocument(final Document document, final RequestContext requestContext) throws DmsException {
         return switch (document.type()) {
-        case EINGEHEND -> this.createIncomingDocument(document, user);
-        case AUSGEHEND -> this.createOutgoingDocument(document, user);
-        case INTERN -> this.createInternalDocument(document, user);
+        case EINGEHEND -> this.createIncomingDocument(document, requestContext);
+        case AUSGEHEND -> this.createOutgoingDocument(document, requestContext);
+        case INTERN -> this.createInternalDocument(document, requestContext);
         };
     }
 
-    private String createIncomingDocument(final Document document, final String user) throws DmsException {
+    private String createIncomingDocument(final Document document, final RequestContext requestContext) throws DmsException {
         //logging for dms team
-        log.info("calling CreateIncomingGI Userlogin: {} Referrednumber: {} Shortname: {} Filesubj: {}", user, document.procedureCOO(), document.title(),
+        log.info("calling CreateIncomingGI Context: {} Referrednumber: {} Shortname: {} Filesubj: {}", requestContext, document.procedureCOO(),
+                document.title(),
                 document.title());
 
         final CreateIncomingGI request = new CreateIncomingGI();
-        request.setUserlogin(user);
+        request.setUserlogin(requestContext.user());
+        request.setJoboe(requestContext.jobOe());
+        request.setJobposition(requestContext.jobPosition());
         request.setReferrednumber(document.procedureCOO());
         request.setBusinessapp(this.properties.getBusinessapp());
         request.setShortname(document.title());
@@ -167,13 +174,16 @@ public class FabasoftAdapter implements
         return response.getObjid();
     }
 
-    private String createOutgoingDocument(final Document document, final String user) throws DmsException {
+    private String createOutgoingDocument(final Document document, final RequestContext requestContext) throws DmsException {
         //logging for dms team
-        log.info("calling CreateOutgoingGI Userlogin: {} Referrednumber: {} Shortname: {} Filesubj: {}", user, document.procedureCOO(), document.title(),
+        log.info("calling CreateOutgoingGI Context: {} Referrednumber: {} Shortname: {} Filesubj: {}", requestContext, document.procedureCOO(),
+                document.title(),
                 document.title());
 
         final CreateOutgoingGI request = new CreateOutgoingGI();
-        request.setUserlogin(user);
+        request.setUserlogin(requestContext.user());
+        request.setJoboe(requestContext.jobOe());
+        request.setJobposition(requestContext.jobPosition());
         request.setReferrednumber(document.procedureCOO());
         request.setBusinessapp(this.properties.getBusinessapp());
 
@@ -198,13 +208,16 @@ public class FabasoftAdapter implements
         return response.getObjid();
     }
 
-    private String createInternalDocument(final Document document, final String user) throws DmsException {
+    private String createInternalDocument(final Document document, final RequestContext requestContext) throws DmsException {
         //logging for dms team
-        log.info("calling CreateInternalGI Userlogin: {} Referrednumber: {} Shortname: {} Filesubj: {}", user, document.procedureCOO(), document.title(),
+        log.info("calling CreateInternalGI Context: {} Referrednumber: {} Shortname: {} Filesubj: {}", requestContext, document.procedureCOO(),
+                document.title(),
                 document.title());
 
         final CreateInternalGI request = new CreateInternalGI();
-        request.setUserlogin(user);
+        request.setUserlogin(requestContext.user());
+        request.setJoboe(requestContext.jobOe());
+        request.setJobposition(requestContext.jobPosition());
         request.setReferrednumber(document.procedureCOO());
         request.setBusinessapp(this.properties.getBusinessapp());
         request.setShortname(document.title());
@@ -229,25 +242,28 @@ public class FabasoftAdapter implements
     }
 
     @Override
-    public void updateDocument(final String documentCOO, final DocumentType type, final List<Content> contents, final String user) throws DmsException {
+    public void updateDocument(final String documentCOO, final DocumentType type, final List<Content> contents, final RequestContext requestContext)
+            throws DmsException {
         switch (type) {
         case EINGEHEND:
-            this.updateIncomingDocument(documentCOO, contents, user);
+            this.updateIncomingDocument(documentCOO, contents, requestContext);
             break;
         case AUSGEHEND:
-            this.updateOutgoingDocument(documentCOO, contents, user);
+            this.updateOutgoingDocument(documentCOO, contents, requestContext);
             break;
         case INTERN:
-            this.updateInternalDocument(documentCOO, contents, user);
+            this.updateInternalDocument(documentCOO, contents, requestContext);
             break;
         }
     }
 
-    private void updateIncomingDocument(final String documentCOO, final List<Content> contents, final String user) throws DmsException {
+    private void updateIncomingDocument(final String documentCOO, final List<Content> contents, final RequestContext requestContext) throws DmsException {
         log.info("calling UpdateIncomingGI: {}", documentCOO);
 
         final UpdateIncomingGI request = new UpdateIncomingGI();
-        request.setUserlogin(user);
+        request.setUserlogin(requestContext.user());
+        request.setJoboe(requestContext.jobOe());
+        request.setJobposition(requestContext.jobPosition());
         request.setObjaddress(documentCOO);
         request.setBusinessapp(this.properties.getBusinessapp());
 
@@ -265,11 +281,13 @@ public class FabasoftAdapter implements
         dmsErrorHandler.handleError(response.getStatus(), response.getErrormessage());
     }
 
-    private void updateOutgoingDocument(final String documentCOO, final List<Content> contents, final String user) throws DmsException {
+    private void updateOutgoingDocument(final String documentCOO, final List<Content> contents, final RequestContext requestContext) throws DmsException {
         log.info("calling UpdateOutgoingGI: {}", documentCOO);
 
         final UpdateOutgoingGI request = new UpdateOutgoingGI();
-        request.setUserlogin(user);
+        request.setUserlogin(requestContext.user());
+        request.setJoboe(requestContext.jobOe());
+        request.setJobposition(requestContext.jobPosition());
         request.setObjaddress(documentCOO);
         request.setBusinessapp(this.properties.getBusinessapp());
 
@@ -287,11 +305,13 @@ public class FabasoftAdapter implements
         dmsErrorHandler.handleError(response.getStatus(), response.getErrormessage());
     }
 
-    private void updateInternalDocument(final String documentCOO, final List<Content> contents, final String user) throws DmsException {
+    private void updateInternalDocument(final String documentCOO, final List<Content> contents, final RequestContext requestContext) throws DmsException {
         log.info("calling UpdateInternalGI: {}", documentCOO);
 
         final UpdateInternalGI request = new UpdateInternalGI();
-        request.setUserlogin(user);
+        request.setUserlogin(requestContext.user());
+        request.setJoboe(requestContext.jobOe());
+        request.setJobposition(requestContext.jobPosition());
         request.setObjaddress(documentCOO);
         request.setBusinessapp(this.properties.getBusinessapp());
 
@@ -310,11 +330,13 @@ public class FabasoftAdapter implements
     }
 
     @Override
-    public void depositObject(final String objectCoo, final String user) throws DmsException {
+    public void depositObject(final String objectCoo, final RequestContext requestContext) throws DmsException {
         log.info("calling DepositObject: {}", objectCoo);
 
         final DepositObjectGI request = new DepositObjectGI();
-        request.setUserlogin(user);
+        request.setUserlogin(requestContext.user());
+        request.setJoboe(requestContext.jobOe());
+        request.setJobposition(requestContext.jobPosition());
         request.setBusinessapp(this.properties.getBusinessapp());
         request.setObjaddress(objectCoo);
 
@@ -332,12 +354,14 @@ public class FabasoftAdapter implements
     }
 
     @Override
-    public void cancelObject(final String objectCoo, final String user) throws DmsException {
-        log.info("calling CancelObjectGI Userlogin: {} Objaddress: {}", user, objectCoo);
+    public void cancelObject(final String objectCoo, final RequestContext requestContext) throws DmsException {
+        log.info("calling CancelObjectGI Context: {} Objaddress: {}", requestContext, objectCoo);
 
         final CancelObjectGI cancelObjectGI = new CancelObjectGI();
         cancelObjectGI.setObjaddress(objectCoo);
-        cancelObjectGI.setUserlogin(user);
+        cancelObjectGI.setUserlogin(requestContext.user());
+        cancelObjectGI.setJoboe(requestContext.jobOe());
+        cancelObjectGI.setJobposition(requestContext.jobPosition());
         cancelObjectGI.setBusinessapp(this.properties.getBusinessapp());
 
         final CancelObjectGIResponse response = this.wsClient.cancelObjectGI(cancelObjectGI);
@@ -346,9 +370,11 @@ public class FabasoftAdapter implements
     }
 
     @Override
-    public List<String> listContentCoos(@NotNull final String documentCoo, @NotNull final String user) throws DmsException {
+    public List<String> listContentCoos(final String documentCoo, final RequestContext requestContext) throws DmsException {
         final ReadDocumentGIObjects request = new ReadDocumentGIObjects();
-        request.setUserlogin(user);
+        request.setUserlogin(requestContext.user());
+        request.setJoboe(requestContext.jobOe());
+        request.setJobposition(requestContext.jobPosition());
         request.setBusinessapp(this.properties.getBusinessapp());
         request.setObjaddress(documentCoo);
 
@@ -361,12 +387,14 @@ public class FabasoftAdapter implements
     }
 
     @Override
-    public List<Content> readContent(final List<String> coos, final String user) throws DmsException {
+    public List<Content> readContent(final List<String> coos, final RequestContext requestContext) throws DmsException {
         final List<Content> files = new ArrayList<>();
 
         for (final String coo : coos) {
             final ReadContentObjectGI request = new ReadContentObjectGI();
-            request.setUserlogin(user);
+            request.setUserlogin(requestContext.user());
+            request.setJoboe(requestContext.jobOe());
+            request.setJobposition(requestContext.jobPosition());
             request.setBusinessapp(this.properties.getBusinessapp());
             request.setObjaddress(coo);
             final ReadContentObjectGIResponse response = this.wsClient.readContentObjectGI(request);
@@ -385,27 +413,30 @@ public class FabasoftAdapter implements
     }
 
     @Override
-    public List<String> searchFile(final String searchString, final String user, final String reference, final String value) throws DmsException {
-        return this.searchObject(searchString, DMSObjectClass.Sachakte, user, reference, value).stream()
+    public List<String> searchFile(final String searchString, final RequestContext requestContext, final String reference, final String value)
+            throws DmsException {
+        return this.searchObject(searchString, DMSObjectClass.Sachakte, requestContext, reference, value).stream()
                 .map(LHMBAI151700GIObjectType::getLHMBAI151700Objaddress)
                 .toList();
     }
 
     @Override
-    public List<String> searchSubjectArea(final String searchString, final String user) throws DmsException {
-        return this.searchObject(searchString, DMSObjectClass.Aktenplaneintrag, user).stream()
+    public List<String> searchSubjectArea(final String searchString, final RequestContext requestContext) throws DmsException {
+        return this.searchObject(searchString, DMSObjectClass.Aktenplaneintrag, requestContext).stream()
                 .map(LHMBAI151700GIObjectType::getLHMBAI151700Objaddress)
                 .toList();
     }
 
     @Override
-    public Metadata readMetadata(final String coo, final String username) throws DmsException {
-        log.info("calling ReadMetadataObjectGI Userlogin: {} COO: {}", username, coo);
+    public Metadata readMetadata(final String coo, final RequestContext requestContext) throws DmsException {
+        log.info("calling ReadMetadataObjectGI Context: {} COO: {}", requestContext, coo);
 
         final ReadMetadataObjectGI request = new ReadMetadataObjectGI();
         request.setObjaddress(coo);
         request.setBusinessapp(this.properties.getBusinessapp());
-        request.setUserlogin(username);
+        request.setUserlogin(requestContext.user());
+        request.setJoboe(requestContext.jobOe());
+        request.setJobposition(requestContext.jobPosition());
         final ReadMetadataObjectGIResponse response = this.wsClient.readMetadataObjectGI(request);
 
         dmsErrorHandler.handleError(response.getStatus(), response.getErrormessage());
@@ -417,13 +448,15 @@ public class FabasoftAdapter implements
     }
 
     @Override
-    public Metadata readContentMetadata(final String coo, final String username) throws DmsException {
-        log.info("calling ReadContentObjectMetaDataGI Userlogin: {} COO: {}", username, coo);
+    public Metadata readContentMetadata(final String coo, final RequestContext requestContext) throws DmsException {
+        log.info("calling ReadContentObjectMetaDataGI Context: {} COO: {}", requestContext, coo);
 
         final ReadContentObjectMetaDataGI request = new ReadContentObjectMetaDataGI();
         request.setObjaddress(coo);
         request.setBusinessapp(this.properties.getBusinessapp());
-        request.setUserlogin(username);
+        request.setUserlogin(requestContext.user());
+        request.setJoboe(requestContext.jobOe());
+        request.setJobposition(requestContext.jobPosition());
         final ReadContentObjectMetaDataGIResponse response = this.wsClient.readContentObjectMetaDataGI(request);
 
         dmsErrorHandler.handleError(response.getStatus(), response.getErrormessage());
@@ -441,12 +474,12 @@ public class FabasoftAdapter implements
      *
      * @param searchString string to search for
      * @param dmsObjectClass object class for a soap request
-     * @param username account name
+     * @param requestContext Context to make the request with
      * @return List of discovered objects
      */
-    private List<LHMBAI151700GIObjectType> searchObject(final String searchString, final DMSObjectClass dmsObjectClass, final String username)
+    private List<LHMBAI151700GIObjectType> searchObject(final String searchString, final DMSObjectClass dmsObjectClass, final RequestContext requestContext)
             throws DmsException {
-        return searchObject(searchString, dmsObjectClass, username, null, null);
+        return searchObject(searchString, dmsObjectClass, requestContext, null, null);
     }
 
     /**
@@ -454,20 +487,22 @@ public class FabasoftAdapter implements
      *
      * @param searchString string to search for
      * @param dmsObjectClass object class for a soap request
-     * @param username account name
+     * @param requestContext Context to make the request with
      * @param reference (optional) 'Fachdatum'/business case to refine a search
      * @param value (optional) value of 'Fachdatum'/business case
      * @return List of discovered objects
      */
-    private List<LHMBAI151700GIObjectType> searchObject(final String searchString, final DMSObjectClass dmsObjectClass, final String username,
+    private List<LHMBAI151700GIObjectType> searchObject(final String searchString, final DMSObjectClass dmsObjectClass, final RequestContext requestContext,
             final String reference, final String value)
             throws DmsException {
         //logging for dms team
-        log.info("calling SearchObjNameGI Userlogin: {} SearchString: {} Objclass: {} Reference: {} Value: {}", username, searchString,
+        log.info("calling SearchObjNameGI Context: {} SearchString: {} Objclass: {} Reference: {} Value: {}", requestContext, searchString,
                 dmsObjectClass.getName(), reference, value);
 
         final SearchObjNameGI params = new SearchObjNameGI();
-        params.setUserlogin(username);
+        params.setUserlogin(requestContext.user());
+        params.setJoboe(requestContext.jobOe());
+        params.setJobposition(requestContext.jobPosition());
         params.setBusinessapp(this.properties.getBusinessapp());
         params.setObjclass(dmsObjectClass.getName());
         params.setSearchstring(searchString);

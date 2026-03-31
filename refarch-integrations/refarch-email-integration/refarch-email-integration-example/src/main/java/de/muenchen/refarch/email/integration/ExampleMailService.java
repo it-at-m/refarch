@@ -1,6 +1,6 @@
 package de.muenchen.refarch.email.integration;
 
-import de.muenchen.refarch.email.integration.application.port.in.SendMailInPort;
+import de.muenchen.refarch.email.integration.application.port.out.MailOutPort;
 import de.muenchen.refarch.email.integration.domain.model.Attachment;
 import de.muenchen.refarch.email.integration.domain.model.TemplateMail;
 import de.muenchen.refarch.email.integration.domain.model.TextMail;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Slf4j
 public class ExampleMailService {
-    private final SendMailInPort sendMailInPort;
+    private final MailOutPort mailOutPort;
 
     public void testSendMail() {
         try (InputStream file = new ClassPathResource("/files/test-pdf.pdf").getInputStream()) {
@@ -31,7 +31,7 @@ public class ExampleMailService {
                     "This is a test",
                     null,
                     List.of(attachment));
-            sendMailInPort.sendMailWithText(mail);
+            mailOutPort.sendTextMail(mail);
             log.info("Test mail sent");
         } catch (final IOException e) {
             throw new RuntimeException(e);
@@ -52,7 +52,7 @@ public class ExampleMailService {
                     Map.of(
                             "subject", "Test",
                             "recipientName", "Test User"));
-            sendMailInPort.sendMailWithTemplate(mail, "files/email-logo.png");
+            mailOutPort.sendHtmlMailWithTemplate(mail, "files/email-logo.png");
             log.info("Test template mail sent");
         } catch (final IOException e) {
             throw new RuntimeException(e);

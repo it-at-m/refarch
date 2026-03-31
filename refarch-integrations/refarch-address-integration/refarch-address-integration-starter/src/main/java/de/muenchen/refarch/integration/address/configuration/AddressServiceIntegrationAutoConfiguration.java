@@ -1,13 +1,7 @@
 package de.muenchen.refarch.integration.address.configuration;
 
-import de.muenchen.refarch.integration.address.adapter.out.address.AddressClientOutAdapter;
-import de.muenchen.refarch.integration.address.application.port.in.AddressGermanyInPort;
-import de.muenchen.refarch.integration.address.application.port.in.AddressMunichInPort;
-import de.muenchen.refarch.integration.address.application.port.in.StreetsMunichInPort;
-import de.muenchen.refarch.integration.address.application.port.out.AddressClientOutPort;
-import de.muenchen.refarch.integration.address.application.usecase.AddressesGermanyUseCase;
-import de.muenchen.refarch.integration.address.application.usecase.AddressesMunichUseCase;
-import de.muenchen.refarch.integration.address.application.usecase.StreetsMunichUseCase;
+import de.muenchen.refarch.integration.address.adapter.out.address.AddressOutAdapter;
+import de.muenchen.refarch.integration.address.application.port.out.AddressOutPort;
 import de.muenchen.refarch.integration.address.client.api.AddressGermanyApi;
 import de.muenchen.refarch.integration.address.client.api.AddressMunichApi;
 import de.muenchen.refarch.integration.address.client.api.StreetsMunichApi;
@@ -83,32 +77,12 @@ public class AddressServiceIntegrationAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public AddressClientOutPort addressClientOutPort(
+    public AddressOutPort addressOutPort(
             final AddressGermanyApi addressGermanyApi,
             final AddressMunichApi addressMunichApi,
             final StreetsMunichApi streetsMunichApi) {
-        return new AddressClientOutAdapter(addressGermanyApi, addressMunichApi, streetsMunichApi);
+        return new AddressOutAdapter(addressGermanyApi, addressMunichApi, streetsMunichApi);
     }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public AddressGermanyInPort addressGermanyInPort(final AddressClientOutPort addressClientOutPort) {
-        return new AddressesGermanyUseCase(addressClientOutPort);
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public AddressMunichInPort addressMunichInPort(final AddressClientOutPort addressClientOutPort) {
-        return new AddressesMunichUseCase(addressClientOutPort);
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public StreetsMunichInPort streetsMunichInPort(final AddressClientOutPort addressClientOutPort) {
-        return new StreetsMunichUseCase(addressClientOutPort);
-    }
-
-    // client api
 
     @ConditionalOnMissingBean
     @Bean

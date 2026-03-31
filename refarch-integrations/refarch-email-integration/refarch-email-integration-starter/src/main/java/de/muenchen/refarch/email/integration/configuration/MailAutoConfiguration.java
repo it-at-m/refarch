@@ -1,9 +1,7 @@
 package de.muenchen.refarch.email.integration.configuration;
 
-import de.muenchen.refarch.email.integration.adapter.out.mail.MailAdapter;
-import de.muenchen.refarch.email.integration.application.port.in.SendMailInPort;
+import de.muenchen.refarch.email.integration.adapter.out.mail.MailOutAdapter;
 import de.muenchen.refarch.email.integration.application.port.out.MailOutPort;
-import de.muenchen.refarch.email.integration.application.usecase.SendMailUseCase;
 import jakarta.mail.MessagingException;
 import java.util.Properties;
 import lombok.RequiredArgsConstructor;
@@ -58,15 +56,9 @@ public class MailAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public SendMailInPort getSendMailPathsInPort(final MailOutPort mailOutPort) {
-        return new SendMailUseCase(mailOutPort);
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     public MailOutPort getMailPort(final ResourceLoader resourceLoader, final JavaMailSender javaMailSender,
             final FreeMarkerConfigurer freeMarkerConfigurer) {
-        return new MailAdapter(javaMailSender, resourceLoader, freeMarkerConfigurer, this.customMailProperties.getFromAddress(),
+        return new MailOutAdapter(javaMailSender, resourceLoader, freeMarkerConfigurer, this.customMailProperties.getFromAddress(),
                 this.customMailProperties.getDefaultReplyToAddress());
     }
 }

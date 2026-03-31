@@ -2,11 +2,9 @@ package de.muenchen.refarch.integration.cosys.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.muenchen.refarch.integration.cosys.ApiClient;
-import de.muenchen.refarch.integration.cosys.adapter.out.cosys.CosysAdapter;
+import de.muenchen.refarch.integration.cosys.adapter.out.cosys.CosysOutAdapter;
 import de.muenchen.refarch.integration.cosys.api.GenerationApi;
-import de.muenchen.refarch.integration.cosys.application.port.in.CreateDocumentInPort;
 import de.muenchen.refarch.integration.cosys.application.port.out.GenerateDocumentOutPort;
-import de.muenchen.refarch.integration.cosys.application.usecase.CreateDocumentUseCase;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -79,16 +77,10 @@ public class CosysAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public CreateDocumentInPort getCreateDocumentInPort(final GenerateDocumentOutPort generateDocumentOutPort) {
-        return new CreateDocumentUseCase(generateDocumentOutPort);
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public GenerateDocumentOutPort getGenerateDocumentOutPort(
+    public GenerateDocumentOutPort generateDocumentOutPort(
             final CosysConfiguration cosysConfiguration,
             final GenerationApi generationApi,
             final ObjectMapper objectMapper) {
-        return new CosysAdapter(cosysConfiguration, generationApi, objectMapper);
+        return new CosysOutAdapter(cosysConfiguration, generationApi, objectMapper);
     }
 }

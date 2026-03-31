@@ -32,6 +32,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.CommonPrefix;
+import software.amazon.awssdk.services.s3.model.CompleteMultipartUploadRequest;
+import software.amazon.awssdk.services.s3.model.CreateMultipartUploadRequest;
+import software.amazon.awssdk.services.s3.model.CreateMultipartUploadResponse;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectResponse;
@@ -42,6 +46,8 @@ import software.amazon.awssdk.services.s3.model.ListObjectsResponse;
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.model.S3Object;
+import software.amazon.awssdk.services.s3.model.UploadPartRequest;
+import software.amazon.awssdk.services.s3.model.UploadPartResponse;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.DeleteObjectPresignRequest;
 import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
@@ -59,17 +65,18 @@ class S3AdapterTest {
     public static final String BUCKET = "bucket";
     public static final String PATH = "path";
     public static final String S3_EXCEPTION_MESSAGE = "boom";
+    public static final String ETAG = "etag";
     private final S3Mapper s3Mapper = new S3Mapper();
     @Mock
     private S3Client s3Client;
     @Mock
     private S3Presigner s3Presigner;
 
-    private S3Adapter adapter;
+    private S3OutAdapter adapter;
 
     @BeforeEach
     void setUp() {
-        adapter = new S3Adapter(s3Mapper, s3Client, s3Presigner);
+        adapter = new S3OutAdapter(s3Mapper, s3Client, s3Presigner);
     }
 
     @Test
@@ -77,7 +84,7 @@ class S3AdapterTest {
         final FileReference ref = new FileReference(BUCKET, PATH);
         when(s3Client.headObject(any(HeadObjectRequest.class))).thenReturn(
                 HeadObjectResponse.builder()
-                        .eTag("etag")
+                        .eTag(ETAG)
                         .contentLength(1L)
                         .lastModified(Instant.now())
                         .build());
@@ -138,9 +145,43 @@ class S3AdapterTest {
         adapter.saveFile(ref, tmp);
 
         final ArgumentCaptor<PutObjectRequest> requestCaptor = ArgumentCaptor.forClass(PutObjectRequest.class);
-        verify(s3Client).putObject(requestCaptor.capture(), any(RequestBody.class));
+        final ArgumentCaptor<RequestBody> bodyCaptor = ArgumentCaptor.forClass(RequestBody.class);
+        verify(s3Client).putObject(requestCaptor.capture(), bodyCaptor.capture());
         assertEquals(BUCKET, requestCaptor.getValue().bucket());
         assertEquals(PATH, requestCaptor.getValue().key());
+        assertEquals(tmp.length(), bodyCaptor.getValue().optionalContentLength().get());
+    }
+
+    @Test
+    void saveFile_withUnknownLength() throws Exception {
+        final FileReference ref = new FileReference(BUCKET, PATH);
+        final byte[] bytes = "hello-world".getBytes(Charset.defaultCharset());
+        final InputStream is = new ByteArrayInputStream(bytes);
+
+        when(s3Client.createMultipartUpload((CreateMultipartUploadRequest) any()))
+                .thenReturn(CreateMultipartUploadResponse.builder().uploadId("upload-id").build());
+        when(s3Client.uploadPart((UploadPartRequest) any(), any(RequestBody.class)))
+                .thenReturn(UploadPartResponse.builder().eTag(ETAG).build());
+
+        adapter.saveFile(ref, is);
+
+        final ArgumentCaptor<CreateMultipartUploadRequest> createCaptor = ArgumentCaptor.forClass(CreateMultipartUploadRequest.class);
+        verify(s3Client).createMultipartUpload(createCaptor.capture());
+        assertEquals(BUCKET, createCaptor.getValue().bucket());
+        assertEquals(PATH, createCaptor.getValue().key());
+
+        final ArgumentCaptor<UploadPartRequest> partCaptor = ArgumentCaptor.forClass(UploadPartRequest.class);
+        final ArgumentCaptor<RequestBody> bodyCaptor = ArgumentCaptor.forClass(RequestBody.class);
+        verify(s3Client).uploadPart(partCaptor.capture(), bodyCaptor.capture());
+        assertEquals(BUCKET, partCaptor.getValue().bucket());
+        assertEquals(PATH, partCaptor.getValue().key());
+        assertEquals(bytes.length, partCaptor.getValue().contentLength());
+        assertEquals(bytes.length, bodyCaptor.getValue().optionalContentLength().get());
+
+        final ArgumentCaptor<CompleteMultipartUploadRequest> completeCaptor = ArgumentCaptor.forClass(CompleteMultipartUploadRequest.class);
+        verify(s3Client).completeMultipartUpload(completeCaptor.capture());
+        assertEquals(BUCKET, completeCaptor.getValue().bucket());
+        assertEquals(PATH, completeCaptor.getValue().key());
     }
 
     @Test
@@ -148,7 +189,7 @@ class S3AdapterTest {
         final FileReference ref = new FileReference(BUCKET, PATH);
         final Instant now = Instant.now();
         final HeadObjectResponse hdr = HeadObjectResponse.builder()
-                .eTag("etag")
+                .eTag(ETAG)
                 .contentLength(10L)
                 .lastModified(now)
                 .build();
@@ -157,7 +198,7 @@ class S3AdapterTest {
         final FileMetadata result = adapter.getFileMetadata(ref);
         assertThat(result.path()).isEqualTo(PATH);
         assertThat(result.contentLength()).isEqualTo(10L);
-        assertThat(result.eTag()).isEqualTo("etag");
+        assertThat(result.eTag()).isEqualTo(ETAG);
         assertThat(result.lastModified()).isEqualTo(now);
     }
 
@@ -253,15 +294,30 @@ class S3AdapterTest {
         final ListObjectsResponse response = ListObjectsResponse.builder().contents(obj).build();
         when(s3Client.listObjects((ListObjectsRequest) any())).thenReturn(response);
 
-        final List<FileMetadata> list = adapter.getFilesWithPrefix(BUCKET, "prefix", 10, null);
+        final List<FileMetadata> list = adapter.getFilesWithPrefix(BUCKET, "prefix", true, 10, null);
         assertThat(list).hasSize(1);
         assertThat(list.getFirst().path()).isEqualTo("k1");
+    }
+
+    @Test
+    void testGetFilesWithPrefix_nonRecursive_filtersImmediateChildren() throws S3Exception {
+        final Instant now = Instant.now();
+        final S3Object o1 = S3Object.builder().key("dir/file1.txt").size(1L).eTag("e1").lastModified(now).build();
+        final S3Object o2 = S3Object.builder().key("dir/file3.txt").size(3L).eTag("e3").lastModified(now).build();
+        final CommonPrefix p1 = CommonPrefix.builder().prefix("subdir/").build();
+        final ListObjectsResponse response = ListObjectsResponse.builder().contents(o1, o2).commonPrefixes(p1).build();
+        when(s3Client.listObjects((ListObjectsRequest) any())).thenReturn(response);
+
+        final List<FileMetadata> list = adapter.getFilesWithPrefix(BUCKET, "dir", false, 1000, null);
+
+        assertThat(list).extracting(FileMetadata::path)
+                .containsExactlyInAnyOrder("dir/file1.txt", "dir/file3.txt");
     }
 
     @Test
     void testGetFilesWithPrefix_throwsDomainException_onSdkError() {
         when(s3Client.listObjects((ListObjectsRequest) any()))
                 .thenThrow(software.amazon.awssdk.services.s3.model.S3Exception.builder().message(S3_EXCEPTION_MESSAGE).build());
-        assertThrows(S3Exception.class, () -> adapter.getFilesWithPrefix(BUCKET, "prefix", 10, null));
+        assertThrows(S3Exception.class, () -> adapter.getFilesWithPrefix(BUCKET, "prefix", true, 10, null));
     }
 }
