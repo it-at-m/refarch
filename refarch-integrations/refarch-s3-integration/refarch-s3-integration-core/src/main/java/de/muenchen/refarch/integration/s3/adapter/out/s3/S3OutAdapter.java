@@ -89,22 +89,27 @@ public class S3OutAdapter implements S3OutPort {
 
     @Override
     public void saveFile(final FileReference fileReference, final InputStream content) throws S3Exception {
-        final CreateMultipartUploadResponse createResponse = s3Client.createMultipartUpload(CreateMultipartUploadRequest.builder()
-                .bucket(fileReference.bucket())
-                .key(fileReference.path())
-                .build());
-        final String uploadId = createResponse.uploadId();
-
-        final List<CompletedPart> completedParts = new ArrayList<>();
-
         final byte[] buffer = new byte[5 * 1024 * 1024]; // 5 MB
         int partNumber = 1;
-        int bytesRead;
+
+        String uploadId = null;
 
         try {
-            bytesRead = content.read(buffer);
-            while (bytesRead != -1) {
+            int bytesRead = content.read(buffer);
 
+            if (bytesRead == -1) {
+                throw new IllegalArgumentException("Empty input stream not allowed");
+            }
+
+            final CreateMultipartUploadResponse createResponse = s3Client.createMultipartUpload(CreateMultipartUploadRequest.builder()
+                    .bucket(fileReference.bucket())
+                    .key(fileReference.path())
+                    .build());
+            uploadId = createResponse.uploadId();
+
+            final List<CompletedPart> completedParts = new ArrayList<>();
+
+            while (bytesRead != -1) {
                 final UploadPartResponse uploadPartResponse = s3Client.uploadPart(UploadPartRequest.builder()
                         .bucket(fileReference.bucket())
                         .key(fileReference.path())
@@ -131,13 +136,18 @@ public class S3OutAdapter implements S3OutPort {
                             .parts(completedParts)
                             .build())
                     .build());
-
         } catch (final SdkException | IOException e) {
-            s3Client.abortMultipartUpload(AbortMultipartUploadRequest.builder()
-                    .bucket(fileReference.bucket())
-                    .key(fileReference.path())
-                    .uploadId(uploadId)
-                    .build());
+            if (uploadId != null) {
+                try {
+                    s3Client.abortMultipartUpload(AbortMultipartUploadRequest.builder()
+                            .bucket(fileReference.bucket())
+                            .key(fileReference.path())
+                            .uploadId(uploadId)
+                            .build());
+                } catch (final SdkException abortEx) {
+                    log.warn("Failed to abort multipart upload for {} (uploadId={})", fileReference, uploadId, abortEx);
+                }
+            }
             throw new S3Exception("Error while chunked uploading %s".formatted(fileReference), e);
         }
     }

@@ -20,11 +20,12 @@ public class S3ExampleService {
     private static final String BUCKET = "test-bucket";
     private static final String FOLDER = "test";
     private static final String FILE_NAME = "test.txt";
-    private static final String FILE_NAME_UNKNOWN = "test_unkown.txt";
+    private static final String FILE_NAME_UNKNOWN = "test_unknown.txt";
     private static final String FILE_CONTENT = "test content";
 
     private final S3OutPort s3OutPort;
 
+    @SuppressWarnings("PMD.CyclomaticComplexity")
     protected void testS3() throws IOException, S3Exception {
         log.info("Testing S3 integration");
         // upload file
@@ -37,6 +38,9 @@ public class S3ExampleService {
         // upload file with unknown length
         final String filePathUnknown = "%s/%s".formatted(FOLDER, FILE_NAME_UNKNOWN);
         final FileReference fileReferenceUnknown = new FileReference(BUCKET, filePathUnknown);
+        try (InputStream fileContent = new ByteArrayInputStream(content)) {
+            s3OutPort.saveFile(fileReferenceUnknown, fileContent);
+        }
         // list file
         final List<FileMetadata> files = s3OutPort.getFilesWithPrefix(BUCKET, FOLDER, true);
         if (files.isEmpty() || !files.getFirst().path().equals(filePath)) {
@@ -44,6 +48,13 @@ public class S3ExampleService {
         }
         // get file
         try (InputStream fileContentGet = s3OutPort.getFileContent(fileReference)) {
+            final String fileContentGetString = new String(fileContentGet.readAllBytes(), StandardCharsets.UTF_8);
+            if (!FILE_CONTENT.equals(fileContentGetString)) {
+                throw new IllegalStateException("Unexpected S3 content for " + filePath);
+            }
+        }
+        // get file unknown length
+        try (InputStream fileContentGet = s3OutPort.getFileContent(fileReferenceUnknown)) {
             final String fileContentGetString = new String(fileContentGet.readAllBytes(), StandardCharsets.UTF_8);
             if (!FILE_CONTENT.equals(fileContentGetString)) {
                 throw new IllegalStateException("Unexpected S3 content for " + filePath);
