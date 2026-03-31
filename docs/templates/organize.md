@@ -116,4 +116,4 @@ It will also add a label based on which files were changed, which is useful for 
       - any-glob-to-any-file: ["eai/**"]
 ```
 
-This will add an `Component: EAI` label if changes in the `eai` folder have occurred.
+This will add a `Component: EAI` label if changes in the `eai` folder have occurred.
