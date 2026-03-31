@@ -111,9 +111,9 @@ will add a label to a pull request if the branch name has `feat` as a prefix, e.
 It will also add a label based on which files were changed, which is useful for multi-project repos.
 
 ```yml
-"Template: EAI":
+"Component: EAI":
   - changed-files:
-      - any-glob-to-any-file: ["refarch-eai/**"]
+      - any-glob-to-any-file: ["eai/**"]
 ```
 
-This will add an `Template: EAI` label if changes in the `refarch-eai` folder have occurred.
+This will add an `Component: EAI` label if changes in the `eai` folder have occurred.

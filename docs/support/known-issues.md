@@ -29,21 +29,21 @@ The easiest and best fix is to not set the header in the underlying service and 
 Besides that this is also a known "issue" of the gateway which can
 be fixed by adding the `DedupeResponseHeader` filter (see [according docs](https://docs.spring.io/spring-cloud-gateway/reference/spring-cloud-gateway-server-webflux/gatewayfilter-factories/deduperesponseheader-factory.html)).
 
-## refarch-backend
+## backend
 
 ### Timeout on SSO misconfiguration or audience claim mismatch
 
-When the configured SSO URLs in the `refarch-backend` and [API gateway](../gateway.md#security) do not match, accessing a secured endpoint in the backend via the API gateway results in a timeout.
+When the configured SSO URLs in the `backend` and [API gateway](../gateway.md#security) do not match, accessing a secured endpoint in the backend via the API gateway results in a timeout.
 
 The same behavior occurs when the names of the expected [audience claims](../cross-cutting-concepts/security.md#client-validation) do not match.
 
 In both cases this is a configuration-error and thus should not occur in a working real-case scenario.
 
-## refarch-frontend
+## frontend
 
 ### Refresh loop (local only)
 
 If the frontend is showing a white page and reloading infinitely, this is because the session expired but the frontend
 is accessed directly instead through the gateway. To fix this behaviour the frontend needs to be accessed via through the
 gateway to allow the re-authentication to take place.
-See [according code](https://github.com/it-at-m/refarch-templates/blob/main/refarch-frontend/src/api/fetch-utils.ts#L87-L116)
+See [according code](https://github.com/it-at-m/refarch-templates/blob/main/frontend/src/api/fetch-utils.ts#L87-L116)
