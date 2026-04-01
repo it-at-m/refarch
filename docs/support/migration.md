@@ -73,6 +73,7 @@ A complete example for the required changes can be found in [this PR](https://gi
   - [s3](../integrations/s3.md#usage)
 
 ### S3 specific
+
 #### Removed without replacement
 
 - separate s3 service (image: `refarch/s3-integration-rest-service`)
