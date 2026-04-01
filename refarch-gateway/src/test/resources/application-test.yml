@@ -7,23 +7,23 @@ spring:
             - id: public-backend
               uri: http://localhost:${wiremock.server.port}/
               predicates:
-                - Path=/public/api/refarch-gateway-backend-service/**
+                - Path=/public/api/backend/**
               filters:
-                - RewritePath=/public/api/refarch-gateway-backend-service/(?<urlsegments>.*), /$\{urlsegments}
+                - RewritePath=/public/api/backend/(?<urlsegments>.*), /$\{urlsegments}
                 - RemoveResponseHeader=WWW-Authenticate
             - id: clients-backend
               uri: http://localhost:${wiremock.server.port}/
               predicates:
-                - Path=/clients/api/refarch-gateway-backend-service/**
+                - Path=/clients/api/backend/**
               filters:
-                - RewritePath=/clients/api/refarch-gateway-backend-service/(?<urlsegments>.*), /$\{urlsegments}
+                - RewritePath=/clients/api/backend/(?<urlsegments>.*), /$\{urlsegments}
                 - RemoveResponseHeader=WWW-Authenticate
             - id: backend
               uri: http://localhost:${wiremock.server.port}/
               predicates:
-                - Path=/api/refarch-gateway-backend-service/**
+                - Path=/api/backend/**
               filters:
-                - RewritePath=/api/refarch-gateway-backend-service/(?<urlsegments>.*), /$\{urlsegments}
+                - RewritePath=/api/backend/(?<urlsegments>.*), /$\{urlsegments}
                 - RemoveResponseHeader=WWW-Authenticate
 
 logging:
