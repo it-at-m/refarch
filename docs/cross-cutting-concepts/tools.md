@@ -12,7 +12,7 @@ The module code can be found in the [`refarch-pmd` directory](https://github.com
 
 All available rules can be found in [the according PMD documentation](https://docs.pmd-code.org/latest/pmd_rules_java.html).
 
-For using the ruleset, `de.muenchen.refarch.tools:refarch-pmd` needs to be added as a dependency for the `maven-pmd-plugin` plugin and the `refarch-pmd-ruleset.xml` needs to be added as a ruleset in the plugin configuration.
+For using the ruleset, `de.muenchen.oss.refarch.tools:refarch-pmd` needs to be added as a dependency for the `maven-pmd-plugin` plugin and the `refarch-pmd-ruleset.xml` needs to be added as a ruleset in the plugin configuration.
 See following example. The RefArch templates are already configured this way.
 
 ```xml
@@ -30,7 +30,7 @@ See following example. The RefArch templates are already configured this way.
             </configuration>
             <dependencies>
                 <dependency>
-                    <groupId>de.muenchen.refarch.tools</groupId>
+                    <groupId>de.muenchen.oss.refarch.tools</groupId>
                     <artifactId>refarch-pmd</artifactId>
                     <version>${refarch-tools.version}</version>
                 </dependency>
