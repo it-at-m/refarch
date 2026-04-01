@@ -48,11 +48,11 @@ spring:
         webflux:
           routes:
             - id: backend
-              uri: http://backend-service:8080/
+              uri: http://<backend-service>:8080/
               predicates:
-                - "Path=/api/backend-service/**"
+                - "Path=/api/backend/**"
               filters:
-                - RewritePath=/api/backend-service/(?<urlsegments>.*), /$\{urlsegments}
+                - RewritePath=/api/backend/(?<urlsegments>.*), /$\{urlsegments}
 refarch:
   hazelcast:
     service-name: # Kubernetes service name for when using profile `hazelcast-k8s`

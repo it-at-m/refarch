@@ -46,7 +46,7 @@ class GlobalBackend5xxTo400MapperTest {
                                         "Bearer realm=\"Access to the staging site\", charset=\"UTF-8\"")))
                         .withBody("{ \"testkey\" : \"testvalue\" }")));
 
-        webTestClient.get().uri("/api/refarch-gateway-backend-service/remote").exchange()
+        webTestClient.get().uri("/api/backend/remote").exchange()
                 .expectStatus().isEqualTo(HttpStatus.BAD_REQUEST)
                 .expectHeader().valueMatches(org.springframework.http.HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType())
                 .expectHeader().doesNotExist(org.springframework.http.HttpHeaders.WWW_AUTHENTICATE)
@@ -67,7 +67,7 @@ class GlobalBackend5xxTo400MapperTest {
                                         "Bearer realm=\"Access to the staging site\", charset=\"UTF-8\"")))
                         .withBody("{ \"testkey\" : \"testvalue\" }")));
 
-        webTestClient.get().uri("/api/refarch-gateway-backend-service/remote").exchange()
+        webTestClient.get().uri("/api/backend/remote").exchange()
                 .expectStatus().isEqualTo(HttpStatus.OK)
                 .expectHeader().valueMatches(org.springframework.http.HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType())
                 .expectHeader().doesNotExist(org.springframework.http.HttpHeaders.WWW_AUTHENTICATE)

@@ -15,9 +15,9 @@ spring:
             - id: backend
               uri: http://localhost:39146/
               predicates:
-                - "Path=/api/backend-service/**"
+                - "Path=/api/backend/**"
               filters:
-                - RewritePath=/api/backend-service/(?<urlsegments>.*), /$\{urlsegments}
+                - RewritePath=/api/backend/(?<urlsegments>.*), /$\{urlsegments}
                 - "RemoveResponseHeader=WWW-Authenticate"
             - id: frontend
               uri: http://localhost:8081/

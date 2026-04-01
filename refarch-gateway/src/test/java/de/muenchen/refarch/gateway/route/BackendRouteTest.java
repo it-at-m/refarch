@@ -70,7 +70,7 @@ class BackendRouteTest {
     @WithMockUser
     void backendGetSuccess() {
         webTestClient
-                .get().uri("/api/refarch-gateway-backend-service/test")
+                .get().uri("/api/backend/test")
                 .header(org.springframework.http.HttpHeaders.COOKIE,
                         "SESSION=5cfb01a3-b691-4ca9-8735-a05690e6c2ec; XSRF-TOKEN=4d82f9f1-41f6-4a09-994a-df99d30d1be9") // removed by default-filter
                 .header(XSRF_HEADER_NAME, "5cfb01a3-b691-4ca9-8735-a05690e6c2ec") // angular specific -> removed by default-filter
@@ -90,7 +90,7 @@ class BackendRouteTest {
     @Test
     void backendGetForbidden() {
         webTestClient
-                .get().uri("/api/refarch-gateway-backend-service/test")
+                .get().uri("/api/backend/test")
                 .exchange()
                 // because redirect to login
                 .expectStatus().isEqualTo(HttpStatus.FOUND)
@@ -100,7 +100,7 @@ class BackendRouteTest {
     @Test
     void publicGetSuccess() {
         webTestClient
-                .get().uri("/public/api/refarch-gateway-backend-service/test")
+                .get().uri("/public/api/backend/test")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
@@ -110,7 +110,7 @@ class BackendRouteTest {
     void publicPostSuccess() {
         webTestClient
                 .mutateWith(csrf())
-                .post().uri("/public/api/refarch-gateway-backend-service/test")
+                .post().uri("/public/api/backend/test")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
@@ -120,7 +120,7 @@ class BackendRouteTest {
     void clientGetSuccess() {
         webTestClient
                 .mutateWith(mockJwt())
-                .get().uri("/clients/api/refarch-gateway-backend-service/test")
+                .get().uri("/clients/api/backend/test")
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
@@ -129,7 +129,7 @@ class BackendRouteTest {
     @Test
     void clientGetForbidden() {
         webTestClient
-                .get().uri("/clients/api/refarch-gateway-backend-service/test")
+                .get().uri("/clients/api/backend/test")
                 .exchange()
                 .expectStatus().isUnauthorized();
     }
