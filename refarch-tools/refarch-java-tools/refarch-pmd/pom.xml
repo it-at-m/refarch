@@ -10,7 +10,7 @@
 
     <distributionManagement>
         <relocation>
-            <groupId>de.muenchen.oss.refarch.tools</groupId>
+            <groupId>de.muenchen.oss.refarch</groupId>
         </relocation>
     </distributionManagement>
 
