@@ -7,6 +7,12 @@
     <version>1.3.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <distributionManagement>
+        <relocation>
+            <groupId>de.muenchen.oss.refarch</groupId>
+        </relocation>
+    </distributionManagement>
+
     <name>refarch-tools</name>
     <description>Collection of different RefArch development tools</description>
     <url>https://github.com/it-at-m/refarch</url>
