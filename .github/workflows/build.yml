@@ -1,4 +1,5 @@
-name: Build all
+# Workflow for building NPM/Maven projects and Docker images
+name: build
 
 on:
   pull_request:
@@ -13,39 +14,38 @@ jobs:
       contents: read
       packages: write
     env:
-      TZ: Europe/Berlin # timezone
+      TZ: Europe/Berlin
     strategy:
       fail-fast: false
       matrix:
-        include: # paths of different modules
+        include: # Add or modify paths according to your project structure
           - app-path: refarch-gateway
             build-image: true
           - app-path: refarch-tools/refarch-java-tools
             build-image: false
           - app-path: refarch-integrations
             build-image: false
+
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-        with:
-          persist-credentials: "false"
-      - if: ${{ hashFiles(format('./{0}/package.json', matrix.app-path)) != null }}
-        id: node
+      - uses: it-at-m/lhm_actions/action-templates/actions/action-checkout@94f7e40aa557a2790abfa98a9cc9186d260b94f8 # v1.0.27
+      - id: node # required for steps.* syntax
+        if: ${{ hashFiles(format('./{0}/package.json', matrix.app-path)) != '' }}
         uses: it-at-m/lhm_actions/action-templates/actions/action-npm-build@94f7e40aa557a2790abfa98a9cc9186d260b94f8 # v1.0.27
         with:
-          app-path: "${{ matrix.app-path }}"
+          app-path: ${{ matrix.app-path }}
           node-version: "24"
-      - if: ${{ hashFiles(format('./{0}/pom.xml', matrix.app-path)) != null }}
-        id: maven
+      - id: maven # required for steps.* syntax
+        if: ${{ hashFiles(format('./{0}/pom.xml', matrix.app-path)) != '' }}
         uses: it-at-m/lhm_actions/action-templates/actions/action-maven-build@94f7e40aa557a2790abfa98a9cc9186d260b94f8 # v1.0.27
         with:
-          app-path: "${{ matrix.app-path }}"
+          app-path: ${{ matrix.app-path }}
           java-version: "21"
       - if: github.ref == 'refs/heads/main' && matrix.build-image
         uses: it-at-m/lhm_actions/action-templates/actions/action-build-image@94f7e40aa557a2790abfa98a9cc9186d260b94f8 # v1.0.27
         with:
-          path: "${{ matrix.app-path }}"
-          image-name: "${{ matrix.app-path }}"
-          artifact-name: ${{ join(steps.*.outputs.artifact-name, ',') }}
+          path: ${{ matrix.app-path }}
+          image-name: ${{ matrix.app-path }}
+          artifact-name: ${{ join(steps.*.outputs.artifact-name) }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
           registry-username: ${{ github.actor }}
           image-tags: |

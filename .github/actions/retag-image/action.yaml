@@ -25,14 +25,12 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Login to Registry
-      uses: docker/login-action@b45d80f862d83dbcd57f89517bcf500b2ab88fb2 # v4.0.0
+    - uses: docker/login-action@b45d80f862d83dbcd57f89517bcf500b2ab88fb2 # v4.0.0
       with:
         registry: ${{ inputs.registry }}
         username: ${{ inputs.registry-username }}
         password: ${{ inputs.registry-password }}
-    - name: Tag image
-      shell: bash
+    - shell: bash
       run: |
         skopeo copy docker://${{ inputs.registry }}/${{ github.repository }}/${{ inputs.image-name }}:${{ inputs.existing-tag }} \
         docker://${{ inputs.registry }}/${{ github.repository }}/${{ inputs.image-name }}:${{ inputs.new-tag }}
