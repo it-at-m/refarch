@@ -1,11 +1,11 @@
-name: Actionlint
+# Workflow for scanning GitHub workflows with actionlint
+name: actionlint
 
 on:
   pull_request:
 
 jobs:
   actionlint:
-    name: Run actionlint
     runs-on: ubuntu-latest
     permissions:
       contents: read

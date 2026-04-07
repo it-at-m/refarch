@@ -31,8 +31,9 @@ runs:
         registry: ${{ inputs.registry }}
         username: ${{ inputs.registry-username }}
         password: ${{ inputs.registry-password }}
-    - name: Tag image
-      shell: bash
+    - shell: bash
+      env:
+        SOURCE_IMAGE: docker://${{ inputs.registry }}/${{ github.repository }}/${{ inputs.image-name }}:${{ inputs.existing-tag }}
+        TARGET_IMAGE: docker://${{ inputs.registry }}/${{ github.repository }}/${{ inputs.image-name }}:${{ inputs.new-tag }}
       run: |
-        skopeo copy docker://${{ inputs.registry }}/${{ github.repository }}/${{ inputs.image-name }}:${{ inputs.existing-tag }} \
-        docker://${{ inputs.registry }}/${{ github.repository }}/${{ inputs.image-name }}:${{ inputs.new-tag }}
+        skopeo copy -- "$SOURCE_IMAGE" "$TARGET_IMAGE"
