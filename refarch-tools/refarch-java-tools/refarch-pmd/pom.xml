@@ -8,7 +8,6 @@
         <version>1.3.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>de.muenchen.refarch.tools</groupId>
     <artifactId>refarch-pmd</artifactId>
     <name>refarch-pmd</name>
     <description>Default RefArch configuration for PMD</description>

@@ -6,8 +6,8 @@ The templates include configuration files to simplify deployment of applications
 
 All templates include a simple `Dockerfile` to build Docker images. The following base images are used:
 
-- Java-based templates (`refarch-backend` and `refarch-eai`): [RedHat UBI OpenJDK Runtime](https://rh-openjdk.github.io/redhat-openjdk-containers/index.html)
-- JavaScript-based templates (`refarch-frontend` and `refarch-webcomponent`): RedHat UBI Nginx (e.g. [`ubi10/nginx-126`](https://catalog.redhat.com/en/software/containers/ubi10/nginx-126/677d3735607921b4d7503cf3))
+- Java-based templates (`backend` and `eai`): [RedHat UBI OpenJDK Runtime](https://rh-openjdk.github.io/redhat-openjdk-containers/index.html)
+- JavaScript-based templates (`frontend` and `webcomponent`): RedHat UBI Nginx (e.g. [`ubi10/nginx-126`](https://catalog.redhat.com/en/software/containers/ubi10/nginx-126/677d3735607921b4d7503cf3))
 
 ## Helm Chart
 

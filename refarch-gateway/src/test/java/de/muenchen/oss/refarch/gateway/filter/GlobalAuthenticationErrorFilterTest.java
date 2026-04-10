@@ -43,7 +43,7 @@ class GlobalAuthenticationErrorFilterTest {
     @Test
     @WithMockUser
     void backendAuthenticationError() {
-        webTestClient.get().uri("/api/refarch-gateway-backend-service/remote").exchange()
+        webTestClient.get().uri("/api/backend/remote").exchange()
                 .expectStatus().isEqualTo(HttpStatus.UNAUTHORIZED)
                 .expectHeader().valueMatches("Content-Type", "application/json")
                 .expectHeader().doesNotExist("WWW-Authenticate")

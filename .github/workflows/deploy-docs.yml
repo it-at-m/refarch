@@ -1,17 +1,18 @@
-name: Deploy documentation website
+# Workflow to build docs and deploy docs folder to GitHub pages
+name: deploy-docs
 
 on:
   # Runs on pushes to any branch when changes are made to docs or workflow
   push:
+    branches:
+      - main
     paths:
       - "docs/**"
       - ".github/workflows/deploy-docs.yml"
-
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
-concurrency:
-  group: pages
-  cancel-in-progress: false
+  pull_request:
+    paths:
+      - "docs/**"
+      - ".github/workflows/deploy-docs.yml"
 
 jobs:
   deploy-docs:
@@ -21,10 +22,8 @@ jobs:
       pages: write
       id-token: write
     steps:
-      - id: build-docs
-        uses: it-at-m/lhm_actions/action-templates/actions/action-build-docs@992204b33cb6a9766bbc8bc57ccd1460c4bf1aa9 # v1.0.26
+      - uses: it-at-m/lhm_actions/action-templates/actions/action-build-docs@94f7e40aa557a2790abfa98a9cc9186d260b94f8 # v1.0.27
         with:
           node-version: "24"
-      - id: deploy-docs
-        # Only deploy documentation from the main branch to prevent unauthorized changes
-        uses: it-at-m/lhm_actions/action-templates/actions/action-deploy-docs@992204b33cb6a9766bbc8bc57ccd1460c4bf1aa9 # v1.0.26
+      # Only deploy documentation from the main branch to prevent unauthorized changes
+      - uses: it-at-m/lhm_actions/action-templates/actions/action-deploy-docs@94f7e40aa557a2790abfa98a9cc9186d260b94f8 # v1.0.27

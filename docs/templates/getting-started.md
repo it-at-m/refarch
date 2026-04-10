@@ -37,7 +37,7 @@ git clone https://github.com/it-at-m/refarch-templates.git
 ```
 
 Once the templates are available locally, copy the folders you need into your own project directory.
-For example, if you want to work with the backend, you should copy the `refarch-backend` folder.
+For example, if you want to work with the backend, you should copy the `backend` folder.
 If you want documentation, you should copy the `docs` folder.
 
 ::: danger IMPORTANT
@@ -61,15 +61,14 @@ For further information on those topics please check out [Develop](./develop.md)
 
 After getting the templates, you will need to make a few adjustments in the respective template directories:
 
-1. Rename the folder you copied (e.g. from `refarch-backend` to `myapp-backend`).
-2. Change the package name from `de.muenchen.oss.refarch` to
+1. Change the package name from `de.muenchen.oss.refarch` to
    `de.muenchen.oss.YourPackageName` (It's recommended to use an IDE for this
    task, as it will automatically update the imports; otherwise, you will
    need to do this manually).
-3. Change the name of the main application class (e.g. from `MicroServiceApplication` to `MyAppApplication`)
-4. Inside the `pom.xml`, update the `groupId`, `artifactId`, `name`, `description`, `url` and `scm`
+2. Change the name of the main application class (e.g. from `MicroServiceApplication` to `MyAppApplication`)
+3. Inside the `pom.xml`, update the `groupId`, `artifactId`, `name`, `description`, `url` and `scm`
    fields.
-5. Install required dependencies by executing the command `mvn install`.
+4. Install required dependencies by executing the command `mvn install`.
 
 Congratulations, the Backend/EAI is now ready to use.
 
@@ -96,9 +95,8 @@ When running with the `local` profile, text-based logging is used (instead of JS
 
 After getting the templates, you will need to make a few adjustments in the respective template directories:
 
-1. Rename the folder you copied (e.g. from `refarch-frontend` to `myapp-frontend`).
-2. Change the artifact `name` inside the `package.json` file.
-3. Download dependencies and generate a new `package-lock.json` file by executing the command `npm install`.
+1. Change the artifact `name` inside the `package.json` file.
+2. Download dependencies and generate a new `package-lock.json` file by executing the command `npm install`.
 
 Congratulations, the Frontend/WebComponent is now ready to use.
 
@@ -118,11 +116,7 @@ After getting the documentation template (`docs` directory), you will need to ma
 
 ## CI/CD
 
-To make the [predefined CI/CD configurations](./develop.md#ci-cd-configurations) work, you need to adjust the content of the `.yml` files inside the `.github/workflows` directory to the specific folder structure of your project.
-
-::: info Information
-For example, you should replace occurrences of `refarch-backend` with `myapp-backend`.
-:::
+To make the [predefined CI/CD configurations](./develop.md#ci-cd-configurations) work, you might need to adjust the content of the `.yml` files inside the `.github/workflows` directory to the specific folder structure of your project.
 
 ## Next steps
 

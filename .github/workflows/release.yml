@@ -1,4 +1,5 @@
-name: Build artifacts and images and execute GitHub release
+# Workflow to release artifacts and images
+name: release
 
 on:
   workflow_dispatch:
@@ -34,12 +35,11 @@ jobs:
       pull-requests: write
     runs-on: ubuntu-latest
     outputs:
-      MVN_ARTIFACT_ID: ${{ steps.maven-release-step.outputs.MVN_ARTIFACT_ID }}
-      ARTIFACT_NAME: ${{ steps.maven-release-step.outputs.artifact-name }}
+      MVN_ARTIFACT_ID: ${{ steps.release-maven.outputs.MVN_ARTIFACT_ID }}
+      ARTIFACT_NAME: ${{ steps.release-maven.outputs.artifact-name }}
     steps:
-      - name: Maven build and release
-        id: maven-release-step
-        uses: it-at-m/lhm_actions/action-templates/actions/action-maven-release@992204b33cb6a9766bbc8bc57ccd1460c4bf1aa9 # v1.0.26
+      - id: release-maven
+        uses: it-at-m/lhm_actions/action-templates/actions/action-maven-release@94f7e40aa557a2790abfa98a9cc9186d260b94f8 # v1.0.27
         with:
           app-path: ${{ inputs.module }}
           java-version: "21"
@@ -47,20 +47,19 @@ jobs:
           developmentVersion: ${{ inputs.next-version }}
           use-pr: true
           skipDeployment: false
-          GPG_PRIVATE_KEY: ${{ secrets.gpg_private_key }}
           SIGN_KEY_PASS: ${{ secrets.gpg_passphrase }}
           CENTRAL_USERNAME: ${{ secrets.sonatype_username }}
           CENTRAL_PASSWORD: ${{ secrets.sonatype_password }}
+          GPG_PRIVATE_KEY: ${{ secrets.gpg_private_key }}
 
-  build-image-gateway:
+  release-image-gateway:
     if: inputs.module == 'refarch-gateway'
     needs: release-maven
     runs-on: ubuntu-latest
     permissions:
       packages: write
     steps:
-      - name: Build and push image
-        uses: it-at-m/lhm_actions/action-templates/actions/action-build-image@992204b33cb6a9766bbc8bc57ccd1460c4bf1aa9 # v1.0.26
+      - uses: it-at-m/lhm_actions/action-templates/actions/action-build-image@94f7e40aa557a2790abfa98a9cc9186d260b94f8 # v1.0.27
         with:
           registry-username: ${{ github.actor }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
@@ -71,7 +70,7 @@ jobs:
             type=raw,value=${{ inputs.release-version }}
             type=raw,value=latest,enable=${{ inputs.tag-latest == true }}
 
-  build-images-integrations:
+  release-image-integrations:
     if: inputs.module == 'refarch-integrations'
     needs: release-maven
     runs-on: ubuntu-latest
@@ -83,8 +82,7 @@ jobs:
           - name: s3-integration-rest-service
             path: ./refarch-integrations/refarch-s3-integration/refarch-s3-integration-rest/refarch-s3-integration-rest-service
     steps:
-      - name: Build and push images
-        uses: it-at-m/lhm_actions/action-templates/actions/action-build-image@992204b33cb6a9766bbc8bc57ccd1460c4bf1aa9 # v1.0.26
+      - uses: it-at-m/lhm_actions/action-templates/actions/action-build-image@94f7e40aa557a2790abfa98a9cc9186d260b94f8 # v1.0.27
         with:
           registry-username: ${{ github.actor }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
@@ -95,16 +93,14 @@ jobs:
             type=raw,value=${{ inputs.release-version }}
             type=raw,value=latest,enable=${{ inputs.tag-latest == true }}
 
-  create-github-release:
+  release-github:
     if: ${{ !failure() && !cancelled() }}
-    needs: ["release-maven", "build-image-gateway", "build-images-integrations"]
+    needs: ["release-maven", "release-image-gateway", "release-image-integrations"]
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
-      - name: Create GitHub Release
-        id: create_release
-        uses: it-at-m/lhm_actions/action-templates/actions/action-create-github-release@992204b33cb6a9766bbc8bc57ccd1460c4bf1aa9 # v1.0.26
+      - uses: it-at-m/lhm_actions/action-templates/actions/action-create-github-release@94f7e40aa557a2790abfa98a9cc9186d260b94f8 # v1.0.27
         with:
           tag-name: "${{ inputs.module }}_${{ github.event.inputs.release-version }}"
           generate-release-notes: true

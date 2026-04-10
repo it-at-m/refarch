@@ -21,7 +21,7 @@ The migration consists of two parts: extracting the frontend and using the centr
 #### Frontend
 
 - Extract the frontend code into a separate repo or folder (in a mono repo)
-- Copy `Dockerfile` and nginx config `docker/nginx/` from [`refarch-frontend`](https://github.com/it-at-m/refarch-templates/tree/main/refarch-frontend) template
+- Copy `Dockerfile` and nginx config `docker/nginx/` from [`frontend`](https://github.com/it-at-m/refarch-templates/tree/main/frontend) template
 - Adopt and configure `maven-node-build.yml` and `npm-release.yml` GitHub Actions workflows, see [`.github`](https://github.com/it-at-m/refarch-templates/tree/main/.github/workflows)
   - For internal GitLab migration see [according docs](https://git.muenchen.de/ccse/cicd/docs-gitlab-runner/-/blob/main-2.x/Migration.adoc?ref_type=heads#user-content-migration-refarch-api-gateway-integriertes-frontend-eigener-service-f%C3%BCr-frontend)
 
