@@ -327,7 +327,7 @@
                 </executions>
                 <dependencies>
                     <dependency>
-                        <groupId>de.muenchen.oss.refarch.tools</groupId>
+                        <groupId>de.muenchen.oss.refarch</groupId>
                         <artifactId>refarch-pmd</artifactId>
                         <version>${refarch-tools.version}</version>
                     </dependency>
