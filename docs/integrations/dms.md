@@ -30,7 +30,7 @@ Add the following dependency for using the dms integration.
 ```xml
 <dependencies>
     <dependency>
-        <groupId>de.muenchen.refarch</groupId>
+        <groupId>de.muenchen.oss.refarch</groupId>
         <artifactId>refarch-dms-integration-starter</artifactId>
         <version>...</version>
     </dependency>
