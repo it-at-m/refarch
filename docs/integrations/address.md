@@ -13,7 +13,7 @@ Add the following dependency for using the address integration.
 ```xml
 <dependencies>
     <dependency>
-        <groupId>de.muenchen.refarch</groupId>
+        <groupId>de.muenchen.oss.refarch</groupId>
         <artifactId>refarch-address-integration-starter</artifactId>
         <version>...</version>
     </dependency>

@@ -22,7 +22,7 @@ Add the following dependency for using the cosys integration.
 ```xml
 <dependencies>
     <dependency>
-        <groupId>de.muenchen.refarch</groupId>
+        <groupId>de.muenchen.oss.refarch</groupId>
         <artifactId>refarch-cosys-integration-starter</artifactId>
         <version>...</version>
     </dependency>

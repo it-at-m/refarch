@@ -13,7 +13,7 @@ Add the following dependency for using the email integration.
 ```xml
 <dependencies>
     <dependency>
-        <groupId>de.muenchen.refarch</groupId>
+        <groupId>de.muenchen.oss.refarch</groupId>
         <artifactId>refarch-email-integration-starter</artifactId>
         <version>...</version>
     </dependency>
