@@ -8,35 +8,10 @@
     </parent>
 
     <artifactId>refarch-dms-integration-core</artifactId>
-    <name>refarch-dms-integration-core</name>
 
-    <dependencies>
-        <!-- Spring -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
-        </dependency>
-
-        <!-- DMS -->
-        <dependency>
-            <groupId>de.muenchen.refarch</groupId>
-            <artifactId>refarch-dms-integration-fabasoft-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <!-- Utils -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
-
-        <!-- testing -->
-        <dependency>
-            <groupId>de.muenchen.refarch</groupId>
-            <artifactId>refarch-dms-integration-fabasoft-mock</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-
+    <distributionManagement>
+        <relocation>
+            <groupId>de.muenchen.oss.refarch</groupId>
+        </relocation>
+    </distributionManagement>
 </project>

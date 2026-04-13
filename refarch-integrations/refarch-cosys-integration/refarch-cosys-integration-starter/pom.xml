@@ -8,40 +8,10 @@
     </parent>
 
     <artifactId>refarch-cosys-integration-starter</artifactId>
-    <name>refarch-cosys-integration-starter</name>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-oauth2-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-autoconfigure</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>de.muenchen.refarch</groupId>
-            <artifactId>refarch-cosys-integration-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-    </dependencies>
-
+    <distributionManagement>
+        <relocation>
+            <groupId>de.muenchen.oss.refarch</groupId>
+        </relocation>
+    </distributionManagement>
 </project>

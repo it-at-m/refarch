@@ -8,25 +8,13 @@
     </parent>
 
     <artifactId>refarch-dms-integration-fabasoft-soap</artifactId>
-    <name>refarch-dms-integration-fabasoft-soap</name>
     <packaging>pom</packaging>
 
-    <dependencies>
-        <dependency> <!-- com.sun.xml.internal.ws.spi.ProviderImpl -->
-            <groupId>com.sun.xml.ws</groupId>
-            <artifactId>jaxws-rt</artifactId>
-            <version>4.0.4</version>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>jakarta.xml.bind</groupId>
-            <artifactId>jakarta.xml.bind-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>jakarta.xml.ws</groupId>
-            <artifactId>jakarta.xml.ws-api</artifactId>
-        </dependency>
-    </dependencies>
+    <distributionManagement>
+        <relocation>
+            <groupId>de.muenchen.oss.refarch</groupId>
+        </relocation>
+    </distributionManagement>
 
     <modules>
         <module>refarch-dms-integration-fabasoft-api</module>

@@ -9,10 +9,13 @@
     </parent>
 
     <artifactId>refarch-dms-integration</artifactId>
-    <name>refarch-dms-integration</name>
-    <version>2.3.0-SNAPSHOT</version>
-    <description>RefArch DMS integration</description>
     <packaging>pom</packaging>
+
+    <distributionManagement>
+        <relocation>
+            <groupId>de.muenchen.oss.refarch</groupId>
+        </relocation>
+    </distributionManagement>
 
     <modules>
         <module>refarch-dms-integration-core</module>

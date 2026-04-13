@@ -8,40 +8,10 @@
     </parent>
 
     <artifactId>refarch-cosys-integration-example</artifactId>
-    <name>refarch-cosys-integration-example</name>
 
-    <dependencies>
-        <dependency>
-            <groupId>de.muenchen.refarch</groupId>
-            <artifactId>refarch-cosys-integration-starter</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.httpcomponents.client5</groupId>
-            <artifactId>httpclient5</artifactId>
-        </dependency>
-    </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.cyclonedx</groupId>
-                <artifactId>cyclonedx-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <configuration>
-                            <projectType>application</projectType>
-                            <outputName>application.cdx</outputName>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+    <distributionManagement>
+        <relocation>
+            <groupId>de.muenchen.oss.refarch</groupId>
+        </relocation>
+    </distributionManagement>
 </project>

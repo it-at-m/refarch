@@ -8,24 +8,10 @@
     </parent>
 
     <artifactId>refarch-dms-integration-fabasoft-mock</artifactId>
-    <name>refarch-dms-integration-fabasoft-mock</name>
 
-    <dependencies>
-        <dependency>
-            <groupId>de.muenchen.refarch</groupId>
-            <artifactId>refarch-dms-integration-fabasoft-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <!-- Testing -->
-        <dependency>
-            <groupId>org.wiremock</groupId>
-            <artifactId>wiremock-standalone</artifactId>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
-    </dependencies>
-
+    <distributionManagement>
+        <relocation>
+            <groupId>de.muenchen.oss.refarch</groupId>
+        </relocation>
+    </distributionManagement>
 </project>

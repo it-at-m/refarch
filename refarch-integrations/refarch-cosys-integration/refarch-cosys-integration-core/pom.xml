@@ -8,44 +8,10 @@
     </parent>
 
     <artifactId>refarch-cosys-integration-core</artifactId>
-    <name>refarch-cosys-integration-core</name>
 
-    <properties>
-        <httpmime.version>4.5.14</httpmime.version>
-    </properties>
-
-    <dependencies>
-        <!-- Spring -->
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-oauth2-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webflux</artifactId>
-        </dependency>
-
-        <!-- Other -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>${gson.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpmime</artifactId>
-            <version>${httpmime.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>de.muenchen.refarch</groupId>
-            <artifactId>refarch-cosys-integration-client</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-    </dependencies>
-
+    <distributionManagement>
+        <relocation>
+            <groupId>de.muenchen.oss.refarch</groupId>
+        </relocation>
+    </distributionManagement>
 </project>

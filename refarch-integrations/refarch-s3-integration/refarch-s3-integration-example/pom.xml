@@ -9,21 +9,10 @@
     </parent>
 
     <artifactId>refarch-s3-integration-example</artifactId>
-    <name>refarch-s3-integration-example</name>
 
-    <dependencies>
-        <!-- internal dependencies -->
-        <dependency>
-            <groupId>de.muenchen.refarch</groupId>
-            <artifactId>refarch-s3-integration-starter</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <!-- SpringBoot -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-    </dependencies>
-
+    <distributionManagement>
+        <relocation>
+            <groupId>de.muenchen.oss.refarch</groupId>
+        </relocation>
+    </distributionManagement>
 </project>

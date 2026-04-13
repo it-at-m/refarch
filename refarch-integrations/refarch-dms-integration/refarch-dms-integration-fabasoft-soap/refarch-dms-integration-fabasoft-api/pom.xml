@@ -8,63 +8,10 @@
     </parent>
 
     <artifactId>refarch-dms-integration-fabasoft-api</artifactId>
-    <name>refarch-dms-integration-fabasoft-api</name>
 
-    <properties>
-        <cxf-codegen-plugin.version>4.2.0</cxf-codegen-plugin.version>
-    </properties>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.cxf</groupId>
-                <artifactId>cxf-codegen-plugin</artifactId>
-                <version>${cxf-codegen-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>generate-sources</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>wsdl2java</goal>
-                        </goals>
-                        <configuration>
-                            <sourceRoot>${project.build.directory}/generated/cxf</sourceRoot>
-                            <additionalJvmArgs>-Dlogback.configurationFile=${project.basedir}/src/test/resources/logback-codegen.xml</additionalJvmArgs>
-                            <wsdlOptions>
-                                <wsdlOption>
-                                    <wsdl>${basedir}/src/main/resources/fabasoft.wsdl</wsdl>
-                                    <wsdlLocation>classpath:fabasoft.wsdl</wsdlLocation>
-                                    <extraargs>
-                                        <extraarg>-quiet</extraarg>
-                                    </extraargs>
-                                    <bindingFiles>
-                                        <bindingFile>${basedir}/src/main/resources/binding.xml</bindingFile>
-                                    </bindingFiles>
-                                </wsdlOption>
-                            </wsdlOptions>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>${build-helper-maven-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>add-source</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>add-source</goal>
-                        </goals>
-                        <configuration>
-                            <sources>
-                                <source>${basedir}/target/generated/cxf</source>
-                            </sources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+    <distributionManagement>
+        <relocation>
+            <groupId>de.muenchen.oss.refarch</groupId>
+        </relocation>
+    </distributionManagement>
 </project>
