@@ -242,6 +242,27 @@ This includes the Keycloak management UI, pgAdmin to check the application datab
 The configuration in the `application.yml` file (inside the `appswitcher-server` directory of the stack) can be modified to include additional tools required for your specific project setup.
 :::
 
+
+### Ports and locale urls
+
+The following table shows which local development services are served on which port.
+
+| Service                 | Standard-Port | Locale URL            |
+|-------------------------|--------------:|-----------------------|
+| Frontend (Vite Dev)     |          8081 | http://localhost:8081 |
+| Webcomponent (Vite Dev) |          8082 | http://localhost:8082 |
+| API Gateway             |          8083 | http://localhost:8083 |
+| AppSwitcher             |          8084 | http://localhost:8084 |
+| EAI (spring Boot)       |          8085 | http://localhost:8085 |
+| Backend (Spring Boot)   |          8086 | http://localhost:8086 |
+| Keycloak                |          8100 | http://keycloak:8100  |
+| PostgreSQL              |          5432 | http://localhost:5432 |
+| pgAdmin                 |          5050 | http://localhost:5050 |
+
+::: info Information
+This configuration could be changed depending on your project. The most current configuration can be viewed from your `docker-compose.yaml` inside the `stack` folder.
+:::
+
 ## Lifecycle Management (LCM)
 
 [Renovate](https://docs.renovatebot.com/) is used to keep your dependencies up to date.
