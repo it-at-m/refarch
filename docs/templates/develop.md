@@ -259,7 +259,7 @@ The following table shows which local development services are served on which p
 | [pgAdmin](http://localhost:5050)                 |     5050      |
 
 ::: info Information
-This configuration could be changed depending on your project. The most current configuration can be viewed from your `docker-compose.yaml` inside the `stack` folder.
+This configuration could be changed depending on your project. The most current configuration can be viewed from your `stack/docker-compose.yaml`.
 :::
 
 ## Lifecycle Management (LCM)
