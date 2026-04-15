@@ -244,7 +244,7 @@ The configuration in the `application.yml` file (inside the `appswitcher-server`
 
 ### Ports and locale urls
 
-The following table shows which local development services are served on which port.
+The following table shows which local development service is served on which port.
 
 | Service                                          | Default port |
 | ------------------------------------------------ | :-----------: |
