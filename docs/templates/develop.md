@@ -244,22 +244,23 @@ The configuration in the `application.yml` file (inside the `appswitcher-server`
 
 ### Local services and ports
 
-The following table shows which local development service is served on which port.
+The following table shows which local development service is served on which port (services reachable inside the browser will have a direct `localhost` link).
 
-| Service                                          | Default port |
-| ------------------------------------------------ | :-----------: |
-| [Frontend (Vite Dev)](http://localhost:8081)     |     8081      |
-| [Webcomponent (Vite Dev)](http://localhost:8082) |     8082      |
-| [API Gateway](http://localhost:8083)             |     8083      |
-| AppSwitcher                                      |     8084      |
-| EAI (spring Boot)                                |     8085      |
-| Backend (Spring Boot)                            |     8086      |
-| [Keycloak](http://localhost:8100)                |     8100      |
-| PostgreSQL                                       |     5432      |
-| [pgAdmin](http://localhost:5050)                 |     5050      |
+| Service                               | Default port |
+| ------------------------------------- | :----------: |
+| [Frontend](http://localhost:8081)     |     8081     |
+| [Webcomponent](http://localhost:8082) |     8082     |
+| [API Gateway](http://localhost:8083)  |     8083     |
+| AppSwitcher                           |     8084     |
+| EAI                                   |     8085     |
+| Backend                               |     8086     |
+| [Keycloak](http://localhost:8100)     |     8100     |
+| PostgreSQL                            |     5432     |
+| [pgAdmin](http://localhost:5050)      |     5050     |
 
 ::: info Information
-This configuration could be changed depending on your project. The most current configuration can be viewed from your `stack/docker-compose.yaml`.
+Depending on the project-specific configuration, differen tports might be used inside the `stack/docker-compose.yaml`.
+This table only shows default ports shipped inside the `refarch-templates`.
 :::
 
 ## Lifecycle Management (LCM)
