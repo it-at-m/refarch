@@ -242,7 +242,7 @@ This includes the Keycloak management UI, pgAdmin to check the application datab
 The configuration in the `application.yml` file (inside the `appswitcher-server` directory of the stack) can be modified to include additional tools required for your specific project setup.
 :::
 
-### Ports and locale urls
+### Local services and ports
 
 The following table shows which local development service is served on which port.
 
