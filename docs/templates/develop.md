@@ -246,7 +246,7 @@ The configuration in the `application.yml` file (inside the `appswitcher-server`
 
 The following table shows which local development services are served on which port.
 
-| Service                                          | Standard port |
+| Service                                          | Default port |
 | ------------------------------------------------ | :-----------: |
 | [Frontend (Vite Dev)](http://localhost:8081)     |     8081      |
 | [Webcomponent (Vite Dev)](http://localhost:8082) |     8082      |
