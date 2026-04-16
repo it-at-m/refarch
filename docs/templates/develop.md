@@ -248,7 +248,7 @@ The following table shows which local development service is served on which por
 
 | Service                               | Default port |
 | ------------------------------------- | :----------: |
-| [Frontend](http://localhost:8081)     |     8081     |
+| [Frontend](http://localhost:8083)     |     8081     |
 | [Webcomponent](http://localhost:8082) |     8082     |
 | [API Gateway](http://localhost:8083)  |     8083     |
 | AppSwitcher                           |     8084     |
