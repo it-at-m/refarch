@@ -70,32 +70,9 @@ jobs:
             type=raw,value=${{ inputs.release-version }}
             type=raw,value=latest,enable=${{ inputs.tag-latest == true }}
 
-  release-image-integrations:
-    if: inputs.module == 'refarch-integrations'
-    needs: release-maven
-    runs-on: ubuntu-latest
-    permissions:
-      packages: write
-    strategy:
-      matrix:
-        include:
-          - name: s3-integration-rest-service
-            path: ./refarch-integrations/refarch-s3-integration/refarch-s3-integration-rest/refarch-s3-integration-rest-service
-    steps:
-      - uses: it-at-m/lhm_actions/action-templates/actions/action-build-image@94f7e40aa557a2790abfa98a9cc9186d260b94f8 # v1.0.27
-        with:
-          registry-username: ${{ github.actor }}
-          registry-password: ${{ secrets.GITHUB_TOKEN }}
-          path: ${{ matrix.path }}
-          artifact-name: ${{ needs.release-maven.outputs.ARTIFACT_NAME }}
-          image-name: ${{ matrix.name }}
-          image-tags: |
-            type=raw,value=${{ inputs.release-version }}
-            type=raw,value=latest,enable=${{ inputs.tag-latest == true }}
-
   release-github:
     if: ${{ !failure() && !cancelled() }}
-    needs: ["release-maven", "release-image-gateway", "release-image-integrations"]
+    needs: ["release-maven", "release-image-gateway"]
     runs-on: ubuntu-latest
     permissions:
       contents: write
