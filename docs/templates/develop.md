@@ -259,8 +259,8 @@ The following table shows which local development service is served on which por
 | [pgAdmin](http://localhost:5050)      |     5050     |
 
 ::: info Information
-Depending on the project-specific configuration, differen tports might be used inside the `stack/docker-compose.yaml`.
-This table only shows default ports shipped inside the `refarch-templates`.
+Depending on the project-specific configuration, different ports might be used inside the `stack/docker-compose.yaml`.
+This table only shows default ports shipped in the `refarch-templates`.
 :::
 
 ## Lifecycle Management (LCM)
