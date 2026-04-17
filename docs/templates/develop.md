@@ -242,6 +242,27 @@ This includes the Keycloak management UI, pgAdmin to check the application datab
 The configuration in the `application.yml` file (inside the `appswitcher-server` directory of the stack) can be modified to include additional tools required for your specific project setup.
 :::
 
+### Local services and ports
+
+The following table shows which local development service is served on which port (services reachable inside the browser will have a direct `localhost` link).
+
+| Service                               | Default port |
+| ------------------------------------- | :----------: |
+| [Frontend](http://localhost:8083)     |     8081     |
+| [Webcomponent](http://localhost:8082) |     8082     |
+| [API Gateway](http://localhost:8083)  |     8083     |
+| AppSwitcher                           |     8084     |
+| EAI                                   |     8085     |
+| Backend                               |     8086     |
+| [Keycloak](http://localhost:8100)     |     8100     |
+| PostgreSQL                            |     5432     |
+| [pgAdmin](http://localhost:5050)      |     5050     |
+
+::: info Information
+Depending on the project-specific configuration, different ports might be used inside the `stack/docker-compose.yaml`.
+This table only shows default ports shipped in the `refarch-templates`.
+:::
+
 ## Lifecycle Management (LCM)
 
 [Renovate](https://docs.renovatebot.com/) is used to keep your dependencies up to date.
