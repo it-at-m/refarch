@@ -10,6 +10,7 @@
 
 
     <artifactId>refarch-s3-integration</artifactId>
+    <name>refarch-s3-integration</name>
     <packaging>pom</packaging>
 
     <distributionManagement>

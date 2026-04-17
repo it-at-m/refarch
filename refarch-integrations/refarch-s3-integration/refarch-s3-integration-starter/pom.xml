@@ -9,6 +9,7 @@
     </parent>
 
     <artifactId>refarch-s3-integration-starter</artifactId>
+    <name>refarch-s3-integration-starter</name>
 
     <distributionManagement>
         <relocation>

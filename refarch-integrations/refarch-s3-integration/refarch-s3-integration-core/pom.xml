@@ -9,6 +9,7 @@
     </parent>
 
     <artifactId>refarch-s3-integration-core</artifactId>
+    <name>refarch-s3-integration-core</name>
 
     <distributionManagement>
         <relocation>

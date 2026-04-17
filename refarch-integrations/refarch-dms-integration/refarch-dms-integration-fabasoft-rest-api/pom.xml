@@ -8,6 +8,7 @@
     </parent>
 
     <artifactId>refarch-dms-integration-fabasoft-rest-api</artifactId>
+    <name>refarch-dms-integration-fabasoft-rest-api</name>
 
     <distributionManagement>
         <relocation>

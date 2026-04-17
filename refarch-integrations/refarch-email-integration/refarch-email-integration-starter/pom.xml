@@ -8,6 +8,7 @@
     </parent>
 
     <artifactId>refarch-email-integration-starter</artifactId>
+    <name>refarch-email-integration-starter</name>
 
     <distributionManagement>
         <relocation>

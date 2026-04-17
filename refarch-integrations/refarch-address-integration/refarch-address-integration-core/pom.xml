@@ -9,6 +9,7 @@
     </parent>
 
     <artifactId>refarch-address-integration-core</artifactId>
+    <name>refarch-address-integration-core</name>
 
     <distributionManagement>
         <relocation>
