@@ -4,12 +4,12 @@
 
     <groupId>de.muenchen.refarch</groupId>
     <artifactId>refarch-integrations</artifactId>
-    <version>2.3.0-SNAPSHOT</version>
+    <version>3.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <distributionManagement>
         <relocation>
-            <groupId>de.muenchen.oss.refarch</groupId>
+            <groupId>de.muenchen.refarch</groupId>
         </relocation>
     </distributionManagement>
 
@@ -26,6 +26,7 @@
         <central-publishing-maven-plugin.version>0.10.0</central-publishing-maven-plugin.version>
         <maven-release-plugin.version>3.3.1</maven-release-plugin.version>
         <maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
+
     </properties>
 
     <build>
@@ -33,6 +34,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
+                <version>3.4.0</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -45,6 +47,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.12.0</version>
                 <configuration>
                     <doclint>accessibility,html,reference,syntax</doclint>
                 </configuration>
