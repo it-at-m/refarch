@@ -7,6 +7,30 @@
     <version>3.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <name>refarch-integrations</name>
+    <description>Collection of different ready to use RefArch integrations</description>
+    <url>https://github.com/it-at-m/refarch</url>
+    <licenses>
+        <license>
+            <name>MIT</name>
+            <url>https://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <scm child.scm.url.inherit.append.path="false" child.scm.connection.inherit.append.path="false" child.scm.developerConnection.inherit.append.path="false">
+        <url>https://github.com/it-at-m/refarch.git</url>
+        <connection>scm:git:https://github.com/it-at-m/refarch.git</connection>
+        <developerConnection>scm:git:https://github.com/it-at-m/refarch.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+    <developers>
+        <developer>
+            <organization>it@M</organization>
+            <email>opensource@muenchen.de</email>
+            <url>https://github.com/it-at-m</url>
+        </developer>
+    </developers>
+
     <distributionManagement>
         <relocation>
             <groupId>de.muenchen.refarch</groupId>

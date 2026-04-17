@@ -9,6 +9,7 @@
     </parent>
 
     <artifactId>refarch-cosys-integration</artifactId>
+    <description>CoSys integration</description>
     <packaging>pom</packaging>
 
     <distributionManagement>
