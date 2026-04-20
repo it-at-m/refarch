@@ -31,31 +31,6 @@ It can be retrieved from the following standard paths:
 
 These endpoints are normally used for client generation, validation or export of the documentation as this is a standardized format for any OpenAPI generator.
 
-## Generating API definition
-
-The current API definition can be generated locally as a `.yaml` file using the [Springdoc Maven plugin](https://springdoc.org/#maven-plugin).
-
-This is useful for different use-cases e.g.:
-
-- OpenAPI-based client generation
-- External documentation processing
-
-The export is performed via the following command:
-
-```shell
-mvn springdoc-openapi:generate
-```
-
-::: info Information
-The backend component must be running during this process. The plugin fetches the OpenAPI definition from the running instance via its `/v3/api-docs` endpoint.
-:::
-
-The OpenAPI `.yaml` file will be saved to the project's target directory with the name of the Maven artifact itself (`{artifact-name}.yaml`).
-
-::: danger IMPORTANT
-Changing the output file location or name via plugin configuration is highly discouraged, as other processes (e.g., client generation) might depend on the default.
-:::
-
 ## Documenting endpoints
 
 Currently, there are two ways to add documentation to an endpoint. Those will be further explained below.
@@ -129,3 +104,28 @@ public SomeEntity getEndpoint(@PathVariable("someId") final UUID someId) {
   return service.doSth(someId);
 }
 ```
+
+## Generating API specification
+
+The current API specification can be generated locally as a `.yaml` file using the [Springdoc Maven plugin](https://springdoc.org/#maven-plugin).
+
+This is useful for different use-cases e.g.:
+
+- OpenAPI-based client generation
+- External documentation processing
+
+The export is performed via the following command:
+
+```shell
+mvn springdoc-openapi:generate
+```
+
+::: info Information
+The backend component must be running during this process. The plugin fetches the OpenAPI definition from the running instance via its `/v3/api-docs` endpoint.
+:::
+
+The OpenAPI `.yaml` file will be saved to the project's target directory with the name of the Maven artifact itself (`{artifact-name}.yaml`).
+
+::: danger IMPORTANT
+Changing the output file location or name via plugin configuration is highly discouraged, as other processes (e.g., client generation) might depend on the default.
+:::
