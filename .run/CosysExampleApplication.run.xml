@@ -1,8 +1,8 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="S3ExampleApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+  <configuration default="false" name="CosysExampleApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
     <option name="ACTIVE_PROFILES" value="local" />
-    <module name="refarch-s3-integration-example" />
-    <option name="SPRING_BOOT_MAIN_CLASS" value="de.muenchen.oss.refarch.integration.s3.example.S3ExampleApplication" />
+    <module name="refarch-cosys-integration-example" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="de.muenchen.oss.refarch.integration.cosys.example.CosysExampleApplication" />
     <extension name="net.ashald.envfile">
       <option name="IS_ENABLED" value="false" />
       <option name="IS_SUBST" value="false" />
