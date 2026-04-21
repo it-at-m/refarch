@@ -88,6 +88,13 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- TEMPORARY TRANSITIVE DEPENDENCY OVERRIDES FOR SECURITY FIXES -->
+            <dependency>
+                <groupId>com.nimbusds</groupId>
+                <artifactId>nimbus-jose-jwt</artifactId>
+                <version>${nimbus.jose-jwt.version}</version>
+            </dependency>
+
             <!-- Open API -->
             <dependency>
                 <groupId>org.springdoc</groupId>
@@ -105,13 +112,6 @@
                 <groupId>org.wiremock</groupId>
                 <artifactId>wiremock-standalone</artifactId>
                 <version>3.13.2</version>
-            </dependency>
-
-            <!-- TEMPORARY TRANSITIVE DEPENDENCY OVERRIDES FOR SECURITY FIXES -->
-            <dependency>
-                <groupId>com.nimbusds</groupId>
-                <artifactId>nimbus-jose-jwt</artifactId>
-                <version>${nimbus.jose-jwt.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
