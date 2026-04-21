@@ -129,6 +129,7 @@ This file will be checked into the vcs, as it can be used inside the [following 
 
 ::: danger IMPORTANT
 Changing the output file location or name via plugin configuration is highly discouraged, as other processes (e.g., client generation) might depend on the default.
+Do not edit the generated OpenAPI specification file manually, regenerate it from the backend sources instead.
 :::
 
 ## Generating API client from specification
@@ -178,7 +179,7 @@ This `.jar` is mandatory, as it contains the generator itself. The node dependen
 ```
 
 ```shell [bash]
-.download-openapi-jar.bat
+./download-openapi-jar.bat
 ```
 
 This shell script automatically extracts the needed version from the `openapitools.json`, downloads the needed `.jar` and places into your `node_modules` folder.
@@ -191,7 +192,7 @@ This script needs to be executed each time you update the version inside your `o
 
 ### Usage of frontend without backend
 
-In the case of the frontend or webcomponent is used without a backend and therefore without an API specification, the scripts previously mentioned scripts for generting the client inside the `package.json` need some adjustment.
+If the frontend or web component is used without a backend (and therefore without an API specification), the scripts previously mentioned scripts for generting the client inside the `package.json` need some adjustment.
 This can be done via removing the `openapi-generator-cli` call inside the `pre-build` step.
 
 ```json:line-numbers=10
