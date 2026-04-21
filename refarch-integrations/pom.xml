@@ -78,32 +78,15 @@
         <p2.username /> <!-- must be empty, override via Maven settings.xml if needed -->
         <p2.password /> <!-- must be empty, override via Maven settings.xml if needed -->
         <p2.mirror>download.eclipse.org</p2.mirror>
+
+        <!-- TEMPORARY TRANSITIVE DEPENDENCY OVERRIDES FOR SECURITY FIXES -->
+        <jackson-bom.version>2.21.2</jackson-bom.version> <!-- Added to fix GHSA-72hv-8253-57qq -->
+        <commons-lang3.version>3.20.0</commons-lang3.version> <!-- Added to fix CVE-2025-48924-->
+        <tomcat.version>10.1.54</tomcat.version> <!-- Added to fix CVE-2026-34483, CVE-2026-34486, CVE-2026-34487 -->
     </properties>
 
     <dependencyManagement>
         <dependencies>
-            <!-- TEMPORARY TRANSITIVE DEPENDENCY OVERRIDES FOR SECURITY FIXES -->
-            <dependency> <!-- Added to fix GHSA-72hv-8253-57qq -->
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-core</artifactId>
-                <version>2.21.2</version>
-            </dependency>
-            <dependency> <!-- Added to fix CVE-2025-48924 -->
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>3.20.0</version>
-            </dependency>
-            <dependency> <!-- Added to fix CVE-2025-53864 -->
-                <groupId>com.nimbusds</groupId>
-                <artifactId>nimbus-jose-jwt</artifactId>
-                <version>9.37.4</version>
-            </dependency>
-            <dependency> <!-- Added to fix CVE-2026-34483, CVE-2026-34486, CVE-2026-34487 -->
-                <groupId>org.apache.tomcat.embed</groupId>
-                <artifactId>tomcat-embed-core</artifactId>
-                <version>10.1.54</version>
-            </dependency>
-
             <!-- Open API -->
             <dependency>
                 <groupId>org.springdoc</groupId>
