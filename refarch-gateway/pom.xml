@@ -68,10 +68,21 @@
         <p2.username /> <!-- must be empty, override via Maven settings.xml if needed -->
         <p2.password /> <!-- must be empty, override via Maven settings.xml if needed -->
         <p2.mirror>download.eclipse.org</p2.mirror>
+
+        <!-- TEMPORARY TRANSITIVE DEPENDENCY OVERRIDES FOR SECURITY FIXES -->
+        <commons-lang3.version>3.20.0</commons-lang3.version>
+        <jackson-bom.version>2.21.2</jackson-bom.version>
+        <bcutil-jdk18on.version>1.84</bcutil-jdk18on.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <!-- TEMPORARY TRANSITIVE DEPENDENCY OVERRIDES FOR SECURITY FIXES -->
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcutil-jdk18on</artifactId>
+                <version>${bcutil-jdk18on.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
@@ -83,13 +94,6 @@
     </dependencyManagement>
 
     <dependencies>
-        <!-- TEMPORARY TRANSITIVE DEPENDENCY OVERRIDES FOR SECURITY FIXES -->
-        <dependency> <!-- Added to fix GHSA-72hv-8253-57qq -->
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>2.21.2</version>
-        </dependency>
-
         <!-- spring cloud -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
