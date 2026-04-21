@@ -22,6 +22,7 @@ import org.springframework.session.ReactiveSessionRepository;
 import org.springframework.session.Session;
 import org.springframework.session.config.annotation.web.server.EnableSpringWebSession;
 import org.springframework.session.hazelcast.HazelcastIndexedSessionRepository;
+import org.springframework.util.StringUtils;
 
 /**
  * This class configures Hazelcast as the ReactiveSessionRepository.
@@ -80,6 +81,9 @@ public class WebSessionHazelcastConfiguration {
         addSessionTimeoutToHazelcastConfig(hazelcastConfig, securityConfiguration.getSessionTimeout());
 
         hazelcastConfig.getNetworkConfig().getJoin().getMulticastConfig().setEnabled(false);
+        if (!StringUtils.hasText(hazelcastProperties.getServiceName())) {
+            throw new IllegalArgumentException("refarch.hazelcast.service-name is required for hazelcast-k8s");
+        }
         hazelcastConfig.getNetworkConfig().getJoin().getKubernetesConfig().setEnabled(true)
                 //If we don't set a specific name, it would call -all- services within a namespace
                 .setProperty("service-name", hazelcastProperties.getServiceName());
