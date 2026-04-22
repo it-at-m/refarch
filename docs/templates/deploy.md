@@ -39,9 +39,9 @@ secrets:
       - USERNAME
       - PASSWORD
 
-# Module-specific configuration for own application containers
+# Module-specific configuration for own application containers (>=v2 chart syntax)
 modules:
-  - name: frontend
+  frontend:
     image:
       registry: ghcr.io
       repository: myorg/myapp-frontend
@@ -49,7 +49,7 @@ modules:
       tag: "1.0.0"
     service:
       http: true
-  - name: backend
+  backend:
     image:
       registry: ghcr.io
       repository: myorg/myapp-backend
