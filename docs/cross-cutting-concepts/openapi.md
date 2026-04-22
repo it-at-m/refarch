@@ -107,7 +107,7 @@ public SomeEntity getEndpoint(@PathVariable("someId") final UUID someId) {
 
 ## Generating API specification
 
-The current API specification can be generated locally as a `.yaml` file using the [Springdoc Maven plugin](https://springdoc.org/#maven-plugin).
+An OpenApi specification for the backend API layer (e.g. controllers and DTOs) can be generated locally as a `.yaml` file using the [Springdoc Maven plugin](https://springdoc.org/#maven-plugin).
 
 This is useful for different use-cases e.g.:
 
@@ -121,56 +121,51 @@ mvn springdoc-openapi:generate
 ```
 
 ::: info Information
-The backend component must be running during this process. The plugin fetches the OpenAPI definition from the running instance via its `http://localhost:8086/v3/api-docs` endpoint.
+The backend component must be running during this process, because the plugin fetches the OpenAPI specification via its `/v3/api-docs` endpoint.
 :::
 
-The OpenAPI `.yaml` file will be saved into the backend's `api-spec` folder. The name is related to the Maven artifact itself (`{artifact-name}.yaml`).
-This file will be checked into the vcs, as it can be used inside the [following step](#generating-api-client-from-specification).
+Further notice, every controller should be annotated as follows:
+
+```java
+@RequestMapping(value = "/theEntity", produces = MediaType.APPLICATION_JSON_VALUE)
+@SecurityRequirement(name = OpenAPIDocumentationConfiguration.SECURITY_SCHEME_NAME)
+```
+
+On the `@RequestMapping`, the `produces` media type is explicitly defined to ensure that the generated specification uses the correct media type (`application/json`) instead of the generic `*/*`.
+The `@SecurityRequirement` annotation indicates that this controller is secured using the global `WebAuthConfiguration`. Adjust this as required based on your project’s security setup.
+Neither of these annotations affects OpenAPI client generation. They only improve the accuracy and completeness of the generated specification.
+
+The OpenAPI `.yaml` file will be saved in the backend's `api-spec` folder.
+The filename is derived from the Maven artifact defined inside the `pom.xml`.
+By default, this file is and should be versioned controlled as it may be used inside the [following step](#generating-api-client-from-specification).
 
 ::: danger IMPORTANT
-Changing the output file location or name via plugin configuration is highly discouraged, as other processes (e.g., client generation) might depend on the default.
-Do not edit the generated OpenAPI specification file manually, regenerate it from the backend sources instead.
+Changing the name or location via plugin configuration is highly discouraged, as other features (e.g., client generation) might depend on the default / RefArch plugin configuration.
+The generated OpenApi specification must not be edited manually as any generated file. Instead, regenerate it from backend sources using the previously described Maven plugin.
 :::
 
 ## Generating API client from specification
 
 The generator is configured via the `openapitools.json` file in the frontend / webcomponent project, which references the exported OpenAPI specification from the backend.
-The generated API specification from the [previous step](#generating-api-specification) can be used to generate a client for the API inside the [frontend or webcomponent template](../templates/getting-started.md#frontend-web-components).
+The generated API specification from the [previous step](#generating-api-specification) can be used to generate Api clients for the [frontend or webcomponent template](../templates/getting-started.md#frontend-web-components).
+For this purpose the [`@openapitools/openapi-generator-cli`](https://openapi-generator.tech/docs/usage) dependency was added.
+
 For this the `@openapitools/openapi-generator-cli` dependency is used, which can be started via the `pre-build` script. This script will be automatically called while using the `build` or `lint` script.
 
 ```json:line-numbers=10
   "scripts": {
-    "dev": "vite",
-    "test": "vitest run",
-    "build": "npm run pre-build && vue-tsc --build --noCheck && vite build && npm run post-build",
+    ...
     "pre-build": "openapi-generator-cli generate", // [!code focus]
-    "post-build": "cyclonedx-npm --omit dev --omit optional --output-reproducible -o dist/application.cdx.json",
-    "lint": "npm run pre-build && prettier . --check --cache && eslint . --cache --concurrency auto && vue-tsc --build --noEmit",
-    "fix": "prettier . --write --cache && eslint . --fix --cache --concurrency auto"
+    ...
   },
 ```
 
-### Typical workflow
-
-1. Generate / Update the OpenAPI specification in the backend (see [Generating API specification](#generating-api-specification))
-2. Run `npm run build` or `npm run lint` inside the frontend or webcomponent project
-
-The configuration inside `openapitools.json` normally does not need any modification as its independent of the specification's filename.
-
-### Generated folder structure
-
-The generated client will be placed inside this folder: `src/api/generated/<backend-artifact>`.
-The naming in `<backend-artifact>` differs from project to project and results from the specifications filename.
-
-Each controller has its own API class (`src/api/generated/<backend-artifact>/apis/*`).
-These should be accessed via the provided `ApiFactory.ts` inside of the components.
-All DTOs necessary for requesting and receiving information can be found inside the `models` folder, together with all restriction set to attributes inside the backend (e.g. length of a string).
-
-### First usage
+::: info First usage
 
 After installing the new dependency, we recommend to execute the following script before first usage.
 Otherwise, the npm-script might still throw an error upon execution as it could not download the `openapi-generator-cli-X.X.X.jar` while using a proxy.
-This `.jar` is mandatory, as it contains the generator itself. The node dependency is just a wrapper around this `.jar`.
+This `.jar` file is required, as it contains the actual generator.
+The npm dependency only provides a wrapper around this `.jar`.
 
 ::: code-group
 
@@ -184,27 +179,37 @@ This `.jar` is mandatory, as it contains the generator itself. The node dependen
 
 This shell script automatically extracts the needed version from the `openapitools.json`, downloads the needed `.jar` and places into your `node_modules` folder.
 
-:::
-
-::: info Information
 This script needs to be executed each time you update the version inside your `openapitools.json`.
 :::
 
+### Typical workflow
+
+1. Generate / Update the OpenAPI specification in the backend (see [Generating API specification](#generating-api-specification))
+2. Run `npm run build` or `npm run lint` inside the frontend or webcomponent project
+
+If multiple clients (e.g. based on different specifications) are to be generated, the configuration in `openapitools.json` must be adapted accordingly.
+Otherwise, no modifications are necessary, as the default configuration already handles standard use cases (e.g. independence from the specification filename).
+
+### Generated folder structure
+
+After generating, the API client is placed inside the folder `src/api/generated/<specification-filename>`.
+The folders name is derived from the specifications' filename.
+
+For each Spring controller a dedicated API class (`src/api/generated/<backend-artifact>/apis/*`) is generated and should be used via the provided `ApiFactory.ts` and its `getInstance` function.
+All DTOs for requests and response are generated inside the `models` folder.
+Field constraints of the Java DTOs (e.g. `@NotNull` or `@Size`) are respected in the generated TypeScript code as well.
+
 ### Usage of frontend without backend
 
-If the frontend or web component is used without a backend (and therefore without an API specification), the scripts previously mentioned scripts for generting the client inside the `package.json` need some adjustment.
+If the frontend or web component is used without a backend (and therefore without an API specification), the previously mentioned scripts for generating the client inside the `package.json` needs to be adjusted.
 This can be done via removing the `openapi-generator-cli` call inside the `pre-build` step.
 
 ```json:line-numbers=10
   "scripts": {
-    "dev": "vite",
-    "test": "vitest run",
-    "build": "npm run pre-build && vue-tsc --build --noCheck && vite build && npm run post-build",
-    "pre-build": "openapi-generator-cli generate", // [!code --]
-    "pre-build": "", // [!code ++]
-    "post-build": "cyclonedx-npm --omit dev --omit optional --output-reproducible -o dist/application.cdx.json",
-    "lint": "npm run pre-build && prettier . --check --cache && eslint . --cache --concurrency auto && vue-tsc --build --noEmit",
-    "fix": "prettier . --write --cache && eslint . --fix --cache --concurrency auto"
+    ...
+    "pre-build": "openapi-generator-cli generate", // [!code --][!code focus]
+    "pre-build": "", // [!code ++] [!code focus]
+    ...
   },
 ```
 
