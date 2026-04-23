@@ -236,7 +236,7 @@ For more information about how to work with Flyway, checkout its [Getting Starte
 The [App Switcher](https://github.com/it-at-m/appswitcher-server) is a feature accessible from the app bar in the frontend.
 
 While developing, this is especially useful to access useful development tools tied to the local container stack.
-This includes the Keycloak management UI, pgAdmin to check the application database and a possibility to open Vue DevTools in a separate browser tab.
+This includes the SwaggerUI exposed by the backend service, the Keycloak management UI, pgAdmin to check the application database and a possibility to open Vue DevTools in a separate browser tab.
 
 ::: info Information
 The configuration in the `application.yml` file (inside the `appswitcher-server` directory of the stack) can be modified to include additional tools required for your specific project setup.
