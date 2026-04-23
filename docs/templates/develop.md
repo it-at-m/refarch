@@ -310,7 +310,7 @@ For the provided CodeQL workflow to run properly, the ‘Advanced Setup’ for C
 
 ### Trivy
 
-For dependency security scanning we use [Trivy](https://trivy.dev/). Trivy inspects your `pom.xml` and/or `package-lock.json` files for known vulnerabilities. 
+For dependency security scanning we use [Trivy](https://trivy.dev/). Trivy inspects your `pom.xml` and/or `package-lock.json` files for known vulnerabilities.
 
 If Trivy reports a vulnerability:
 
