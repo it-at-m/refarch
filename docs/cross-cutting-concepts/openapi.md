@@ -127,7 +127,7 @@ The backend component must be running during this process, because the plugin fe
 Further notice, every controller should be annotated as follows:
 
 ```java
-@RequestMapping(value = "/theEntity", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(..., produces = MediaType.APPLICATION_JSON_VALUE)
 @SecurityRequirement(name = OpenAPIDocumentationConfiguration.SECURITY_SCHEME_NAME)
 ```
 
