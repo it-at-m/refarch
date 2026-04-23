@@ -107,7 +107,7 @@ public SomeEntity getEndpoint(@PathVariable("someId") final UUID someId) {
 
 ## Generating API specification
 
-An OpenApi specification for the backend API layer (e.g. controllers and DTOs) can be generated locally as a `.yaml` file using the [Springdoc Maven plugin](https://springdoc.org/#maven-plugin).
+An OpenAPI specification for the backend API layer (e.g. controllers and DTOs) can be generated locally as a `.yaml` file using the [Springdoc Maven plugin](https://springdoc.org/#maven-plugin).
 
 This is useful for different use-cases e.g.:
 
@@ -132,25 +132,25 @@ Further notice, every controller should be annotated as follows:
 ```
 
 On the `@RequestMapping`, the `produces` media type is explicitly defined to ensure that the generated specification uses the correct media type (`application/json`) instead of the generic `*/*`.
-The `@SecurityRequirement` annotation indicates that this controller is secured using the global `WebAuthConfiguration`. Adjust this as required based on your project’s security setup.
+The `@SecurityRequirement` annotation indicates that this controller is secured using the global `SecurityConfiguration`. Adjust this as required based on your project’s security setup.
 Neither of these annotations affects OpenAPI client generation. They only improve the accuracy and completeness of the generated specification.
 
-The OpenAPI `.yaml` file will be saved in the backend's `api-spec` folder.
+The OpenAPI `.yaml` file is saved in the backend's `api-spec` folder.
 The filename is derived from the Maven artifact defined inside the `pom.xml`.
-By default, this file is and should be versioned controlled as it may be used inside the [following step](#generating-api-client-from-specification).
+By default, this file is and should be kept under version control as it may be used inside the [following step](#generating-api-client-from-specification).
 
 ::: danger IMPORTANT
-Changing the name or location via plugin configuration is highly discouraged, as other features (e.g., client generation) might depend on the default / RefArch plugin configuration.
-The generated OpenApi specification must not be edited manually as any generated file. Instead, regenerate it from backend sources using the previously described Maven plugin.
+Changing the name or location via plugin configuration is highly discouraged, as other features (e.g., client generation) might depend on the default configuration.
+The generated OpenAPI specification must not be edited manually as any generated file. Instead, regenerate it from backend sources using the previously described Maven plugin.
 :::
 
 ## Generating API client from specification
 
 The generator is configured via the `openapitools.json` file in the frontend / webcomponent project, which references the exported OpenAPI specification from the backend.
 The generated API specification from the [previous step](#generating-api-specification) can be used to generate Api clients for the [frontend or webcomponent template](../templates/getting-started.md#frontend-web-components).
-For this purpose the [`@openapitools/openapi-generator-cli`](https://openapi-generator.tech/docs/usage) dependency was added.
+For this purpose the [`@openapitools/openapi-generator-cli`](https://openapi-generator.tech/docs/usage) dependency is added.
 
-For this the `@openapitools/openapi-generator-cli` dependency is used, which can be started via the `pre-build` script. This script will be automatically called while using the `build` or `lint` script.
+For this the `@openapitools/openapi-generator-cli` dependency is used, which can be executed manually via the `pre-build` script. This script will be automatically called while using the `build` or `lint` script.
 
 ```json:line-numbers=10
   "scripts": {
@@ -160,12 +160,10 @@ For this the `@openapitools/openapi-generator-cli` dependency is used, which can
   },
 ```
 
-::: info First usage
-
-After installing the new dependency, we recommend to execute the following script before first usage.
-Otherwise, the npm-script might still throw an error upon execution as it could not download the `openapi-generator-cli-X.X.X.jar` while using a proxy.
-This `.jar` file is required, as it contains the actual generator.
-The npm dependency only provides a wrapper around this `.jar`.
+::: info Usage behind a proxy
+When using a proxy, it might be necessary to run the custom script we provide after installing the dependency.
+This scripts downloads the required `.jar` file that includes the generator logic.
+The NPM dependency only provides a wrapper around this `.jar`.
 
 ::: code-group
 
@@ -177,9 +175,9 @@ The npm dependency only provides a wrapper around this `.jar`.
 ./download-openapi-jar.bat
 ```
 
-This shell script automatically extracts the needed version from the `openapitools.json`, downloads the needed `.jar` and places into your `node_modules` folder.
+This shell script automatically extracts the relevant version from the `openapitools.json`, downloads the needed `.jar` and places into the project's `node_modules` folder.
 
-This script needs to be executed each time you update the version inside your `openapitools.json`.
+This script needs to be executed each time the version inside the `openapitools.json` is updated.
 :::
 
 ### Typical workflow
@@ -195,7 +193,7 @@ Otherwise, no modifications are necessary, as the default configuration already 
 After generating, the API client is placed inside the folder `src/api/generated/<specification-filename>`.
 The folders name is derived from the specifications' filename.
 
-For each Spring controller a dedicated API class (`src/api/generated/<backend-artifact>/apis/*`) is generated and should be used via the provided `ApiFactory.ts` and its `getInstance` function.
+For each Spring controller a dedicated API class (`src/api/generated/<specification-filename>/apis/*`) is generated and should be used via the provided `ApiFactory.ts` and its `getInstance` function.
 All DTOs for requests and response are generated inside the `models` folder.
 Field constraints of the Java DTOs (e.g. `@NotNull` or `@Size`) are respected in the generated TypeScript code as well.
 
