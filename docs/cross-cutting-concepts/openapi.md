@@ -148,9 +148,7 @@ The generated OpenAPI specification must not be edited manually as any generated
 
 The generator is configured via the `openapitools.json` file in the frontend / webcomponent project, which references the exported OpenAPI specification from the backend.
 The generated API specification from the [previous step](#generating-api-specification) can be used to generate Api clients for the [frontend or webcomponent template](../templates/getting-started.md#frontend-web-components).
-For this purpose the [`@openapitools/openapi-generator-cli`](https://openapi-generator.tech/docs/usage) dependency is added.
-
-For this the `@openapitools/openapi-generator-cli` dependency is used, which can be executed manually via the `pre-build` script. This script will be automatically called while using the `build` or `lint` script.
+For this purpose the [`@openapitools/openapi-generator-cli`](https://openapi-generator.tech/docs/usage) dependency is added, which can be executed manually via the `pre-build` script. This script will be automatically called while using the `build` or `lint` script.
 
 ```json:line-numbers=10
   "scripts": {
