@@ -132,7 +132,7 @@ Further notice, every controller should be annotated as follows:
 ```
 
 On the `@RequestMapping`, the `produces` media type is explicitly defined to ensure that the generated specification uses the correct media type (`application/json`) instead of the generic `*/*`.
-The `@SecurityRequirement` annotation indicates that this controller is secured using the global `SecurityConfiguration`. Adjust this as required based on your project’s security setup.
+The `@SecurityRequirement` annotation indicates that this controller is secured using the global `SecurityConfiguration`. Adjust this as required based on the project’s security setup.
 Neither of these annotations affects OpenAPI client generation. They only improve the accuracy and completeness of the generated specification.
 
 The OpenAPI `.yaml` file is saved in the backend's `api-spec` folder.
@@ -147,7 +147,7 @@ The generated OpenAPI specification must not be edited manually as any generated
 ## Generating API client from specification
 
 The generator is configured via the `openapitools.json` file in the frontend / webcomponent project, which references the exported OpenAPI specification from the backend.
-The generated API specification from the [previous step](#generating-api-specification) can be used to generate Api clients for the [frontend or webcomponent template](../templates/getting-started.md#frontend-web-components).
+The generated API specification from the [previous step](#generating-api-specification) can be used to generate API clients for the [frontend or webcomponent template](../templates/getting-started.md#frontend-web-components).
 For this purpose the [`@openapitools/openapi-generator-cli`](https://openapi-generator.tech/docs/usage) dependency is added, which can be executed manually via the `pre-build` script. This script will be automatically called while using the `build` or `lint` script.
 
 ```json:line-numbers=10
@@ -159,7 +159,7 @@ For this purpose the [`@openapitools/openapi-generator-cli`](https://openapi-gen
 ```
 
 ::: info Usage behind a proxy
-When using a proxy, it might be necessary to run the custom script we provide after installing the dependency.
+When using a proxy, it might be necessary to run the provided script after installing the dependency.
 This scripts downloads the required `.jar` file that includes the generator logic.
 The NPM dependency only provides a wrapper around this `.jar`.
 
@@ -192,12 +192,12 @@ After generating, the API client is placed inside the folder `src/api/generated/
 The folders name is derived from the specifications' filename.
 
 For each Spring controller a dedicated API class (`src/api/generated/<specification-filename>/apis/*`) is generated and should be used via the provided `ApiFactory.ts` and its `getInstance` function.
-All DTOs for requests and response are generated inside the `models` folder.
+All DTOs for requests and responses are generated inside the `models` folder.
 Field constraints of the Java DTOs (e.g. `@NotNull` or `@Size`) are respected in the generated TypeScript code as well.
 
 ### Usage of frontend without backend
 
-If the frontend or web component is used without a backend (and therefore without an API specification), the previously mentioned scripts for generating the client inside the `package.json` needs to be adjusted.
+If the frontend or web component is used without a backend (and therefore without an API specification), the previously mentioned script for generating the client inside the `package.json` needs to be adjusted.
 This can be done via removing the `openapi-generator-cli` call inside the `pre-build` step.
 
 ```json:line-numbers=10
