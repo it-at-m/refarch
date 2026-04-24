@@ -22,7 +22,7 @@ Each application container is called a "module" in the `refarch-templates` chart
 Additionally, a [RefArch API Gateway](../gateway.md) can be deployed as well.
 An example `values.yaml` file can be found in the [Helm chart sources](https://github.com/it-at-m/helm-charts/blob/main/charts/refarch-templates/values-example.yaml).
 
-The release notes of this chart can be found in the [GitHub releases](https://github.com/it-at-m/helm-charts/releases?q=refarch-templates) of the it@M Helm Charts repository.
+The release notes of this chart can be found in the [GitHub releases](https://github.com/it-at-m/helm-charts/releases?q="refarch-templates") of the it@M Helm Charts repository.
 
 :::info Information
 Detailed information about all configuration options for the `refarch-templates` Helm chart can be found in its [README](https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-templates#refarch).
