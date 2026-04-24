@@ -316,7 +316,7 @@ If Trivy reports a vulnerability:
 
 - Review the referenced [CVE (Common Vulnerabilities and Exposures)](https://nvd.nist.gov/) or [GH advisories](https://github.com/advisories) and assess whether the issue is exploitable in your project.
 - Remediate where possible by upgrading, patching or replacing the affected dependency. If the vulnerability occurs in a transitive dependency, you might have to explicitly add a newer version.
-- If the finding is a false positive, add it to the `.trivyignore` file. There is a web application that allows to load a Trivy report in json format and displays the vulnerabilities of a single target in an interactive data table. https://dbsystel.github.io/trivy-vulnerability-explorer/#/
+- If the finding is a false positive, add it to the `.trivyignore` file. [Trivy Vulnerability Explorer](https://dbsystel.github.io/trivy-vulnerability-explorer/) allows creating the `.trivyignore` file interactively by uploading a Trivy report in JSON format. A Trivy report can be retrieved as a pipeline artifact.
 
 By default, the Trivy workflow will fail when vulnerabilities are found. To make this failure block merges, enable the appropriate GitHub ruleset/branch protection so the workflow must pass before a pull request can be merged.
 
