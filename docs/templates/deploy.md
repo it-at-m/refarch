@@ -22,18 +22,24 @@ Each application container is called a "module" in the `refarch-templates` chart
 Additionally, a [RefArch API Gateway](../gateway.md) can be deployed as well.
 An example `values.yaml` file can be found in the [Helm chart sources](https://github.com/it-at-m/helm-charts/blob/main/charts/refarch-templates/values-example.yaml).
 
+Splitting into multiple files (e.g a common `values.yaml` and environment specific configuration in `values-<ENV>.yaml`) is also possible.
+
+::: warning Warning
+When using multiple files, array-based configuration options are not merged.
+:::
+
 The release notes of this chart can be found in the [GitHub releases](https://github.com/it-at-m/helm-charts/releases?q="refarch-templates") of the it@M Helm Charts repository.
 
-:::info Information
+::: info Information
 Detailed information about all configuration options for the `refarch-templates` Helm chart can be found in its [README](https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-templates#refarch).
 Available options for the RefArch Gateway can be found in the [configuration documentation](../gateway.md#configuration).
 :::
 
-The configuration file can then be used to install the chart to your cluster with the following commands:
+The configuration file (or multiple) can then be used to install the chart to your cluster with the following commands:
 
 ```bash
 helm repo add it-at-m https://it-at-m.github.io/helm-charts
-helm install <HELM_RELEASE_NAME> it-at-m/refarch-templates --version <HELM_CHART_VERSION> --values values-<ENV>.yaml
+helm install <HELM_RELEASE_NAME> it-at-m/refarch-templates --version <HELM_CHART_VERSION> --values values.yaml --values values-<ENV>.yaml
 ```
 
 ::: details it@M internal configuration
