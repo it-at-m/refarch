@@ -20,7 +20,7 @@ Add the following dependency for using the address integration.
 </dependencies>
 ```
 
-After that the [AddressOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-address-integration/refarch-address-integration-core/src/main/java/de/muenchen/refarch/integration/address/application/port/out/AddressOutPort.java) can be used for accessing the address service (e.g. via autowiring, as port is available as bean).
+After that the [AddressOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-address-integration/refarch-address-integration-core/src/main/java/de/muenchen/oss/refarch/integration/address/application/port/out/AddressOutPort.java) can be used for accessing the address service (e.g. via autowiring, as port is available as bean).
 
 ## Configuration
 

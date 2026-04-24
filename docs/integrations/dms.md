@@ -39,17 +39,17 @@ Add the following dependency for using the dms integration.
 
 After that the following `OutPort`s can be used for accessing DMS/eAkte (e.g. via autowiring, as ports are available as bean):
 
-- [CancelObjectOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-dms-integration/refarch-dms-integration-core/src/main/java/de/muenchen/refarch/integration/dms/application/port/out/CancelObjectOutPort.java)
-- [CreateDocumentOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-dms-integration/refarch-dms-integration-core/src/main/java/de/muenchen/refarch/integration/dms/application/port/out/CreateDocumentOutPort.java)
-- [CreateFileOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-dms-integration/refarch-dms-integration-core/src/main/java/de/muenchen/refarch/integration/dms/application/port/out/CreateFileOutPort.java)
-- [CreateProcedureOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-dms-integration/refarch-dms-integration-core/src/main/java/de/muenchen/refarch/integration/dms/application/port/out/CreateProcedureOutPort.java)
-- [DepositObjectOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-dms-integration/refarch-dms-integration-core/src/main/java/de/muenchen/refarch/integration/dms/application/port/out/DepositObjectOutPort.java)
-- [ListContentOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-dms-integration/refarch-dms-integration-core/src/main/java/de/muenchen/refarch/integration/dms/application/port/out/ListContentOutPort.java)
-- [ReadContentOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-dms-integration/refarch-dms-integration-core/src/main/java/de/muenchen/refarch/integration/dms/application/port/out/ReadContentOutPort.java)
-- [ReadMetadataOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-dms-integration/refarch-dms-integration-core/src/main/java/de/muenchen/refarch/integration/dms/application/port/out/ReadMetadataOutPort.java)
-- [SearchFileOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-dms-integration/refarch-dms-integration-core/src/main/java/de/muenchen/refarch/integration/dms/application/port/out/SearchFileOutPort.java)
-- [SearchSubjectAreaOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-dms-integration/refarch-dms-integration-core/src/main/java/de/muenchen/refarch/integration/dms/application/port/out/SearchSubjectAreaOutPort.java)
-- [UpdateDocumentOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-dms-integration/refarch-dms-integration-core/src/main/java/de/muenchen/refarch/integration/dms/application/port/out/UpdateDocumentOutPort.java)
+- [CancelObjectOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-dms-integration/refarch-dms-integration-core/src/main/java/de/muenchen/oss/refarch/integration/dms/application/port/out/CancelObjectOutPort.java)
+- [CreateDocumentOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-dms-integration/refarch-dms-integration-core/src/main/java/de/muenchen/oss/refarch/integration/dms/application/port/out/CreateDocumentOutPort.java)
+- [CreateFileOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-dms-integration/refarch-dms-integration-core/src/main/java/de/muenchen/oss/refarch/integration/dms/application/port/out/CreateFileOutPort.java)
+- [CreateProcedureOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-dms-integration/refarch-dms-integration-core/src/main/java/de/muenchen/oss/refarch/integration/dms/application/port/out/CreateProcedureOutPort.java)
+- [DepositObjectOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-dms-integration/refarch-dms-integration-core/src/main/java/de/muenchen/oss/refarch/integration/dms/application/port/out/DepositObjectOutPort.java)
+- [ListContentOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-dms-integration/refarch-dms-integration-core/src/main/java/de/muenchen/oss/refarch/integration/dms/application/port/out/ListContentOutPort.java)
+- [ReadContentOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-dms-integration/refarch-dms-integration-core/src/main/java/de/muenchen/oss/refarch/integration/dms/application/port/out/ReadContentOutPort.java)
+- [ReadMetadataOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-dms-integration/refarch-dms-integration-core/src/main/java/de/muenchen/oss/refarch/integration/dms/application/port/out/ReadMetadataOutPort.java)
+- [SearchFileOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-dms-integration/refarch-dms-integration-core/src/main/java/de/muenchen/oss/refarch/integration/dms/application/port/out/SearchFileOutPort.java)
+- [SearchSubjectAreaOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-dms-integration/refarch-dms-integration-core/src/main/java/de/muenchen/oss/refarch/integration/dms/application/port/out/SearchSubjectAreaOutPort.java)
+- [UpdateDocumentOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-dms-integration/refarch-dms-integration-core/src/main/java/de/muenchen/oss/refarch/integration/dms/application/port/out/UpdateDocumentOutPort.java)
 
 ## Configuration
 
