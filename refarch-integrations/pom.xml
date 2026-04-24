@@ -80,20 +80,12 @@
         <p2.mirror>download.eclipse.org</p2.mirror>
 
         <!-- TEMPORARY TRANSITIVE DEPENDENCY OVERRIDES FOR SECURITY FIXES -->
-        <jackson-bom.version>2.21.2</jackson-bom.version> <!-- Added to fix GHSA-72hv-8253-57qq -->
         <commons-lang3.version>3.20.0</commons-lang3.version> <!-- Added to fix CVE-2025-48924-->
-        <tomcat.version>10.1.54</tomcat.version> <!-- Added to fix CVE-2026-34483, CVE-2026-34486, CVE-2026-34487 -->
-        <nimbus.jose-jwt.version>9.37.4</nimbus.jose-jwt.version> <!-- Added to fix CVE-2025-53864 -->
     </properties>
 
     <dependencyManagement>
         <dependencies>
             <!-- TEMPORARY TRANSITIVE DEPENDENCY OVERRIDES FOR SECURITY FIXES -->
-            <dependency>
-                <groupId>com.nimbusds</groupId>
-                <artifactId>nimbus-jose-jwt</artifactId>
-                <version>${nimbus.jose-jwt.version}</version>
-            </dependency>
 
             <!-- Open API -->
             <dependency>
