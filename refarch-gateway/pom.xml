@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.13</version>
+        <version>3.5.14</version>
         <relativePath />
     </parent>
 
@@ -70,7 +70,6 @@
         <p2.mirror>download.eclipse.org</p2.mirror>
 
         <!-- TEMPORARY TRANSITIVE DEPENDENCY OVERRIDES FOR SECURITY FIXES -->
-        <jackson-bom.version>2.21.2</jackson-bom.version> <!-- Added to fix CVE-2026-29062 -->
         <bcprov-jdk18on.version>1.84</bcprov-jdk18on.version> <!-- Added to fix CVE-2026-0636 -->
     </properties>
 
