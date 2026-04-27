@@ -29,7 +29,7 @@ Add the following dependency for using the cosys integration.
 </dependencies>
 ```
 
-After that the [GenerateDocumentOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-cosys-integration/refarch-cosys-integration-core/src/main/java/de/muenchen/refarch/integration/cosys/application/port/out/GenerateDocumentOutPort.java) can be used to generate documents (e.g. via autowiring, as port is available as bean).
+After that the [GenerateDocumentOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-cosys-integration/refarch-cosys-integration-core/src/main/java/de/muenchen/oss/refarch/integration/cosys/application/port/out/GenerateDocumentOutPort.java) can be used to generate documents (e.g. via autowiring, as port is available as bean).
 
 ## Configuration
 

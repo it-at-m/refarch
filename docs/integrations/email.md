@@ -20,7 +20,7 @@ Add the following dependency for using the email integration.
 </dependencies>
 ```
 
-After that the [MailOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-email-integration/refarch-email-integration-core/src/main/java/de/muenchen/refarch/email/integration/application/port/out/MailOutPort.java) can be used for sending mails (e.g. via autowiring, as port is available as bean).
+After that the [MailOutPort](https://github.com/it-at-m/refarch/blob/main/refarch-integrations/refarch-email-integration/refarch-email-integration-core/src/main/java/de/muenchen/oss/refarch/integration/email/application/port/out/MailOutPort.java) can be used for sending mails (e.g. via autowiring, as port is available as bean).
 
 ## Configuration
 
