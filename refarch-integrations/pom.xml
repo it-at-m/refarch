@@ -81,7 +81,7 @@
 
         <!-- TEMPORARY TRANSITIVE DEPENDENCY OVERRIDES FOR SECURITY FIXES -->
         <commons-lang3.version>3.20.0</commons-lang3.version> <!-- Added to fix CVE-2025-48924-->
-        <nimbus.jose-jwt.version>9.37.4</nimbus.jose-jwt.version> <!-- Added to fix CVE-2025-53864 -->
+        <nimbus.jose-jwt.version>9.48</nimbus.jose-jwt.version> <!-- Added to fix CVE-2025-53864 -->
     </properties>
 
     <dependencyManagement>
