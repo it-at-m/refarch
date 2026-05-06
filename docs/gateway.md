@@ -27,10 +27,21 @@ By default, routes require authentication through OAuth 2.0 and manage the sessi
 cookies.
 The gateway then maps the session cookie to a JWT before routing it.
 
-Beside the default behaviour there are some special route prefixes which are handled different:
+Beside the default behavior there are special public and clients routes described in the following.
 
-- `/public/**`: All requests are routed WITHOUT security.
-- `/clients/**`: Uses JWT for authenticating incoming requests instead of session cookies.
+#### Public Routes
+
+Request matching public routes are routed WITHOUT authentication.
+
+To configure public routes either the prefix `/public/**` can be used or custom patterns can be configured via `refarch.security.public-patterns` (see [Configuration](#configuration)).
+
+CSRF protection is still be enabled for these routes and can be disabled via `refarch.security.csrf-whitelisted`.
+
+#### Clients Routes
+
+Requests matching clients routes use JWT for authenticating instead of session cookies.
+
+To configure public routes either the prefix `/clients/**` can be used or custom patterns can be configured via `refarch.security.clients-patterns` (see [Configuration](#configuration)).
 
 ## Configuration
 
@@ -59,10 +70,11 @@ refarch:
   security:
     csrf-whitelisted: # List of routes to disable CSRF protection for (optional)
       - /example/**
-
-# Aliases for `spring.cloud.gateway.server.webflux.globalcors.cors-configurations` to allow configuration via environment variables, as the used glob patterns can't be used there
-ALLOWED_ORIGINS_PUBLIC: https://*.example.com,http://localhost:* # List of URIs allowed as origin for public routes (optional)
-ALLOWED_ORIGINS_CLIENTS: https://*.example.com,http://localhost:* # List of URIs allowed as origin for client routes (optional)
+    public-patterns: # Additional public routes with explicit methods (optional)
+      - pattern: /api/backend/public/**
+        methods: [GET] # All methods need to be listed, no default all
+    clients-patterns: # Additional clients routes (optional)
+      - /api/backend/clients/**
 ```
 
 ### Security

@@ -18,6 +18,13 @@ spring:
               filters:
                 - RewritePath=/clients/api/backend/(?<urlsegments>.*), /$\{urlsegments}
                 - RemoveResponseHeader=WWW-Authenticate
+            - id: clients-extra-backend
+              uri: http://localhost:${wiremock.server.port}/
+              predicates:
+                - Path=/clients-extra/api/backend/**
+              filters:
+                - RewritePath=/clients-extra/api/backend/(?<urlsegments>.*), /$\{urlsegments}
+                - RemoveResponseHeader=WWW-Authenticate
             - id: backend
               uri: http://localhost:${wiremock.server.port}/
               predicates:
@@ -36,3 +43,11 @@ wiremock:
   server:
     port: 0
     https-port: -1
+
+refarch:
+  security:
+    public-patterns:
+      - pattern: /api/backend/public/**
+        methods: [GET]
+    clients-patterns:
+      - /api/backend/clients/**
