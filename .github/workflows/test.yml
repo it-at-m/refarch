@@ -1,0 +1,17 @@
+name: test
+
+on:
+  push:
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          submodules: true
+      - run: |
+         cd lhm_actions
+         ls 
