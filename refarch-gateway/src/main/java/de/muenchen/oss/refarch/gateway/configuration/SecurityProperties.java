@@ -1,6 +1,7 @@
 package de.muenchen.oss.refarch.gateway.configuration;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -34,7 +35,7 @@ public class SecurityProperties {
      * All methods must be explicitly listed, there is no implicit "all".
      * WARNING: Security is DISABLED for matching requests.
      */
-    @NotNull private List<@NotNull PermitRule> publicPatterns = List.of();
+    @Valid @NotNull private List<@NotNull PermitRule> publicPatterns = List.of();
 
     /**
      * Rule describing a public endpoint combination consisting of a path pattern and the explicitly

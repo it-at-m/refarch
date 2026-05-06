@@ -31,17 +31,17 @@ Beside the default behavior there are special public and clients routes describe
 
 #### Public Routes
 
-Request matching public routes are routed WITHOUT authentication.
+Requests matching public routes are routed WITHOUT authentication.
 
 To configure public routes either the prefix `/public/**` can be used or custom patterns can be configured via `refarch.security.public-patterns` (see [Configuration](#configuration)).
 
-CSRF protection is still be enabled for these routes and can be disabled via `refarch.security.csrf-whitelisted`.
+CSRF protection remains enabled for these routes and can be disabled via `refarch.security.csrf-whitelisted`.
 
 #### Clients Routes
 
-Requests matching clients routes use JWT for authenticating instead of session cookies.
+Requests matching clients routes use JWT for authentication instead of session cookies.
 
-To configure public routes either the prefix `/clients/**` can be used or custom patterns can be configured via `refarch.security.clients-patterns` (see [Configuration](#configuration)).
+To configure clients routes either the prefix `/clients/**` can be used or custom patterns can be configured via `refarch.security.clients-patterns` (see [Configuration](#configuration)).
 
 ## Configuration
 
@@ -72,9 +72,13 @@ refarch:
       - /example/**
     public-patterns: # Additional public routes with explicit methods (optional)
       - pattern: /api/backend/public/**
-        methods: [GET] # All methods need to be listed, no default all
+        methods: [GET] # All methods must be listed, there is no default all
     clients-patterns: # Additional clients routes (optional)
       - /api/backend/clients/**
+
+# Aliases for `spring.cloud.gateway.server.webflux.globalcors.cors-configurations` to allow configuration via environment variables, as the used glob patterns can't be used there
+ALLOWED_ORIGINS_PUBLIC: https://*.example.com,http://localhost:* # List of URIs allowed as origin for public routes (optional)
+ALLOWED_ORIGINS_CLIENTS: https://*.example.com,http://localhost:* # List of URIs allowed as origin for client routes (optional)
 ```
 
 ### Security

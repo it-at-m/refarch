@@ -42,7 +42,6 @@ public class SecurityConfiguration {
         if (!securityProperties.getClientsPatterns().isEmpty()) {
             patternsList.addAll(securityProperties.getClientsPatterns());
         }
-        patternsList.add(CLIENTS_ROUTE_PREFIX);
         final String[] patterns = patternsList.toArray(new String[0]);
         // security config
         http.securityMatcher(ServerWebExchangeMatchers.pathMatchers(patterns))

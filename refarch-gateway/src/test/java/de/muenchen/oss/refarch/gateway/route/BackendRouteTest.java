@@ -177,6 +177,14 @@ class BackendRouteTest {
     }
 
     @Test
+    void clientGetForbiddenExtraPattern() {
+        webTestClient
+                .get().uri(URI_CLIENTS_EXTRA_PATTERN)
+                .exchange()
+                .expectStatus().isUnauthorized();
+    }
+
+    @Test
     void clientGetSuccessExtraPattern() {
         webTestClient
                 .mutateWith(mockJwt())
