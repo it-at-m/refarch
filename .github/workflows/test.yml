@@ -14,4 +14,8 @@ jobs:
           submodules: true
       - run: |
          cd lhm_actions
+         cd ..
+         cd docs/templates
          ls 
+         cd docs
+         ls
