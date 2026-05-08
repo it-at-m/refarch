@@ -25,7 +25,7 @@ import reactor.core.publisher.Mono;
 @Profile("!no-security")
 @RequiredArgsConstructor
 public class SecurityConfiguration {
-    private static final String CLIENTS_ROUTE_PREFIX = "/clients/**";
+    private static final String CLIENT_ROUTES_PREFIX = "/clients/**";
     private static final String PUBLIC_ROUTES_PREFIX = "/public/**";
 
     private final CsrfProtectionMatcher csrfProtectionMatcher;
@@ -38,9 +38,9 @@ public class SecurityConfiguration {
     public SecurityWebFilterChain clientAccessFilterChain(final ServerHttpSecurity http) {
         // build patterns
         final List<String> patternsList = new ArrayList<>();
-        patternsList.add(CLIENTS_ROUTE_PREFIX);
-        if (!securityProperties.getClientsPatterns().isEmpty()) {
-            patternsList.addAll(securityProperties.getClientsPatterns());
+        patternsList.add(CLIENT_ROUTES_PREFIX);
+        if (!securityProperties.getClientPatterns().isEmpty()) {
+            patternsList.addAll(securityProperties.getClientPatterns());
         }
         final String[] patterns = patternsList.toArray(new String[0]);
         // security config
@@ -71,7 +71,7 @@ public class SecurityConfiguration {
                             "/actuator/metrics",
                             "/actuator/sbom",
                             "/actuator/sbom/application",
-                            PUBLIC_ROUTE_PREFIX)
+                            PUBLIC_ROUTES_PREFIX)
                             .permitAll();
                     // dynamic permitAll from properties
                     this.applyDynamicPermitAll(authorizeExchangeSpec);

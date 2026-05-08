@@ -41,7 +41,7 @@ CSRF protection remains enabled for these routes and can be disabled via `refarc
 
 Requests matching client routes use JWT for authentication instead of session cookies.
 
-To configure clients routes either the prefix `/clients/**` can be used or custom patterns can be configured via `refarch.security.clients-patterns` (see [Configuration](#configuration)).
+To configure client routes either the prefix `/clients/**` can be used or custom patterns can be configured via `refarch.security.client-patterns` (see [Configuration](#configuration)).
 
 ## Configuration
 
@@ -73,7 +73,7 @@ refarch:
     public-patterns: # Additional public routes with explicit methods (optional)
       - pattern: /example/**
         methods: [GET] # All methods must be listed, there is no default all
-    clients-patterns: # Additional clients routes (optional)
+    client-patterns: # Additional clients routes (optional)
       - /example/**
 
 # Aliases for `spring.cloud.gateway.server.webflux.globalcors.cors-configurations` to allow configuration via environment variables, as the used glob patterns can't be used there

@@ -27,7 +27,7 @@ public class SecurityProperties {
      * Each pattern is an Ant-style glob that will be matched in the dedicated client security filter
      * chain.
      */
-    @NotNull private List<@NotBlank String> clientsPatterns = List.of();
+    @NotNull private List<@NotBlank String> clientPatterns = List.of();
 
     /**
      * List of rules for publicly accessible routes (permitAll, like `/public/**`), combining a path

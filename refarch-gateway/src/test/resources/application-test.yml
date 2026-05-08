@@ -42,5 +42,5 @@ refarch:
     public-patterns:
       - pattern: /api/backend/public/**
         methods: [GET]
-    clients-patterns:
+    client-patterns:
       - /api/backend/clients/**
