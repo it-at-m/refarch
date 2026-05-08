@@ -71,10 +71,10 @@ refarch:
     csrf-whitelisted: # List of routes to disable CSRF protection for (optional)
       - /example/**
     public-patterns: # Additional public routes with explicit methods (optional)
-      - pattern: /api/backend/public/**
+      - pattern: /example/**
         methods: [GET] # All methods must be listed, there is no default all
     clients-patterns: # Additional clients routes (optional)
-      - /api/backend/clients/**
+      - /example/**
 
 # Aliases for `spring.cloud.gateway.server.webflux.globalcors.cors-configurations` to allow configuration via environment variables, as the used glob patterns can't be used there
 ALLOWED_ORIGINS_PUBLIC: https://*.example.com,http://localhost:* # List of URIs allowed as origin for public routes (optional)
