@@ -104,7 +104,6 @@
                                 <performBeanValidation>true</performBeanValidation>
                                 <additionalProperty>true</additionalProperty>
                                 <useJakartaEe>true</useJakartaEe>
-
                             </configOptions>
                         </configuration>
                     </execution>

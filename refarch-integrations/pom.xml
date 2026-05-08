@@ -322,7 +322,6 @@
                     <linkXRef>false</linkXRef>
                     <includeTests>true</includeTests>
                     <excludeRoots>
-                        <!--<excludeRoot>target/generated</excludeRoot>-->
                         <excludeRoot>target/generated-sources</excludeRoot>
                         <excludeRoot>target/generated-test-sources</excludeRoot>
                     </excludeRoots>

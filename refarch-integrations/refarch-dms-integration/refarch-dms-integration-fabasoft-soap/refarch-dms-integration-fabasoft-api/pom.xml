@@ -28,7 +28,6 @@
                             <goal>wsdl2java</goal>
                         </goals>
                         <configuration>
-                            <sourceRoot>${project.build.directory}/generated/cxf</sourceRoot>
                             <additionalJvmArgs>-Dlogback.configurationFile=${project.basedir}/src/test/resources/logback-codegen.xml</additionalJvmArgs>
                             <wsdlOptions>
                                 <wsdlOption>
@@ -59,7 +58,7 @@
                         </goals>
                         <configuration>
                             <sources>
-                                <source>${basedir}/target/generated/cxf</source>
+                                <source>${basedir}/target/generated-sources/cxf</source>
                             </sources>
                         </configuration>
                     </execution>
