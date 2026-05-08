@@ -236,10 +236,31 @@ For more information about how to work with Flyway, checkout its [Getting Starte
 The [App Switcher](https://github.com/it-at-m/appswitcher-server) is a feature accessible from the app bar in the frontend.
 
 While developing, this is especially useful to access useful development tools tied to the local container stack.
-This includes the Keycloak management UI, pgAdmin to check the application database and a possibility to open Vue DevTools in a separate browser tab.
+This includes the SwaggerUI exposed by the backend service, the Keycloak management UI, pgAdmin to check the application database and a possibility to open Vue DevTools in a separate browser tab.
 
 ::: info Information
 The configuration in the `application.yml` file (inside the `appswitcher-server` directory of the stack) can be modified to include additional tools required for your specific project setup.
+:::
+
+### Local services and ports
+
+The following table shows which local development service is served on which port (services reachable inside the browser will have a direct `localhost` link).
+
+| Service                               | Default port |
+| ------------------------------------- | :----------: |
+| [Frontend](http://localhost:8083)     |     8081     |
+| [Webcomponent](http://localhost:8082) |     8082     |
+| [API Gateway](http://localhost:8083)  |     8083     |
+| AppSwitcher                           |     8084     |
+| EAI                                   |     8085     |
+| Backend                               |     8086     |
+| [Keycloak](http://localhost:8100)     |     8100     |
+| PostgreSQL                            |     5432     |
+| [pgAdmin](http://localhost:5050)      |     5050     |
+
+::: info Information
+Depending on the project-specific configuration, different ports might be used inside the `stack/docker-compose.yaml`.
+This table only shows default ports shipped in the `refarch-templates`.
 :::
 
 ## Lifecycle Management (LCM)
@@ -295,7 +316,7 @@ If Trivy reports a vulnerability:
 
 - Review the referenced [CVE (Common Vulnerabilities and Exposures)](https://nvd.nist.gov/) or [GH advisories](https://github.com/advisories) and assess whether the issue is exploitable in your project.
 - Remediate where possible by upgrading, patching or replacing the affected dependency. If the vulnerability occurs in a transitive dependency, you might have to explicitly add a newer version.
-- If the finding is a false positive, add it to the `.trivyignore` file.
+- If the finding is a false positive, add it to the `.trivyignore` file. [Trivy Vulnerability Explorer](https://dbsystel.github.io/trivy-vulnerability-explorer/) allows creating the `.trivyignore` file interactively by uploading a Trivy report in JSON format. A Trivy report can be retrieved as a pipeline artifact.
 
 By default, the Trivy workflow will fail when vulnerabilities are found. To make this failure block merges, enable the appropriate GitHub ruleset/branch protection so the workflow must pass before a pull request can be merged.
 

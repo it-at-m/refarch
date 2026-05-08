@@ -61,15 +61,26 @@ and the now integrated [Unplugin Vue Router](https://uvr.esm.is/).
 
 A complete example for the required changes can be found in [this PR](https://github.com/it-at-m/refarch-templates/pull/1393).
 
-## S3-Integration v3
+## Integrations v3
 
-### Removed without replacement
+- `oss` was added to all packages and maven group ids.
+  - Dependencies and imports need to be changed from `de.muenchen.refarch` to `de.muenchen.oss.refarch`
+- `InPorts` and `Repositories` where replaced by `OutPorts`, which should be used in application in the future. The available ports are listed in the according `Usage` section of each integration:
+  - [address](../integrations/address.md#usage)
+  - [cosys](../integrations/cosys.md#usage)
+  - [dms](../integrations/dms.md#usage)
+  - [email](../integrations/email.md#usage)
+  - [s3](../integrations/s3.md#usage)
+
+### S3 specific
+
+#### Removed without replacement
 
 - separate s3 service (image: `refarch/s3-integration-rest-service`)
 - file size and type validation
 - delete folder method
 
-### Migrate
+#### Migrate
 
 - Replace `DocumentStorageFileRepository` with `FileOperationsInPort`
   - Some methods were merged (e.g. now there are only `InputStream` methods and none with `byte[]`)

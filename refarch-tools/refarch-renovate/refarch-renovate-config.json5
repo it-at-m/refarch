@@ -24,7 +24,7 @@
       "description": "Ignore spring-boot-parent updates in EAI projects because Camel version specifies compatible Spring version",
       "matchManagers": ["maven"],
       "matchPackageNames": ["org.springframework.boot:spring-boot-starter-parent"],
-      "matchFileNames": ["**/*-eai/pom.xml"],
+      "matchFileNames": ["**/*eai/pom.xml"],
       "enabled": false
     },
     {

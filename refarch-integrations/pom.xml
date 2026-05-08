@@ -5,13 +5,13 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.13</version>
+        <version>3.5.14</version>
         <relativePath />
     </parent>
 
-    <groupId>de.muenchen.refarch</groupId>
+    <groupId>de.muenchen.oss.refarch</groupId>
     <artifactId>refarch-integrations</artifactId>
-    <version>2.3.0-SNAPSHOT</version>
+    <version>3.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>refarch-integrations</name>
@@ -24,9 +24,7 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-    <scm child.scm.url.inherit.append.path="false"
-        child.scm.connection.inherit.append.path="false"
-        child.scm.developerConnection.inherit.append.path="false">
+    <scm child.scm.url.inherit.append.path="false" child.scm.connection.inherit.append.path="false" child.scm.developerConnection.inherit.append.path="false">
         <url>https://github.com/it-at-m/refarch.git</url>
         <connection>scm:git:https://github.com/it-at-m/refarch.git</connection>
         <developerConnection>scm:git:https://github.com/it-at-m/refarch.git</developerConnection>
@@ -74,34 +72,28 @@
         <!-- Utility -->
         <mapstruct.version>1.6.3</mapstruct.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
-        <refarch-tools.version>1.2.0</refarch-tools.version>
+        <refarch-tools.version>1.2.2</refarch-tools.version>
 
         <!-- Additional required dependencies -->
-        <springdoc-openapi.version>2.8.16</springdoc-openapi.version>
+        <springdoc-openapi.version>2.8.17</springdoc-openapi.version>
 
         <!-- Spotless P2 Mirror configuration (e.g. required when using company internal registry -->
         <p2.username /> <!-- must be empty, override via Maven settings.xml if needed -->
         <p2.password /> <!-- must be empty, override via Maven settings.xml if needed -->
         <p2.mirror>download.eclipse.org</p2.mirror>
+
+        <!-- TEMPORARY TRANSITIVE DEPENDENCY OVERRIDES FOR SECURITY FIXES -->
+        <commons-lang3.version>3.20.0</commons-lang3.version> <!-- Added to fix CVE-2025-48924-->
+        <nimbus.jose-jwt.version>9.37.4</nimbus.jose-jwt.version> <!-- Added to fix CVE-2025-53864 -->
     </properties>
 
     <dependencyManagement>
         <dependencies>
             <!-- TEMPORARY TRANSITIVE DEPENDENCY OVERRIDES FOR SECURITY FIXES -->
-            <dependency> <!-- Added to fix GHSA-72hv-8253-57qq -->
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-core</artifactId>
-                <version>2.21.2</version>
-            </dependency>
-            <dependency> <!-- Added to fix CVE-2025-48924 -->
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>3.20.0</version>
-            </dependency>
-            <dependency> <!-- Added to fix CVE-2025-53864 -->
+            <dependency>
                 <groupId>com.nimbusds</groupId>
                 <artifactId>nimbus-jose-jwt</artifactId>
-                <version>9.37.4</version>
+                <version>${nimbus.jose-jwt.version}</version>
             </dependency>
 
             <!-- Open API -->
@@ -348,7 +340,7 @@
                 </executions>
                 <dependencies>
                     <dependency>
-                        <groupId>de.muenchen.refarch.tools</groupId>
+                        <groupId>de.muenchen.oss.refarch</groupId>
                         <artifactId>refarch-pmd</artifactId>
                         <version>${refarch-tools.version}</version>
                     </dependency>

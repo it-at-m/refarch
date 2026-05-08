@@ -10,7 +10,7 @@ server:
 logging:
   level:
     root: INFO
-    de.muenchen.refarch: DEBUG
+    de.muenchen.oss.refarch: DEBUG
     org.springframework.web: DEBUG
 
 refarch:

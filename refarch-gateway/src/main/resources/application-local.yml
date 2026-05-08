@@ -13,7 +13,7 @@ spring:
               filters:
                 - RewritePath=/api/sso/userinfo, /auth/realms/local_realm/protocol/openid-connect/userinfo
             - id: backend
-              uri: http://localhost:39146/
+              uri: http://localhost:8086/
               predicates:
                 - "Path=/api/backend/**"
               filters:

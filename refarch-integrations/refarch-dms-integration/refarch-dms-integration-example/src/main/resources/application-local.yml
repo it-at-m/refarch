@@ -8,7 +8,7 @@ logging:
   include-application-group: false # disabled because application group is only relevant when deployed
   level:
     root: INFO
-    de.muenchen.refarch: DEBUG
+    de.muenchen.oss.refarch: DEBUG
     org.springframework.web: DEBUG
 
 refarch:

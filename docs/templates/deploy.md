@@ -17,135 +17,29 @@ For RefArch-based applications, there are multiple ways to use Helm charts with 
 
 ### Variant 1: Direct use of `refarch-templates` chart (recommended)
 
-The reference architecture provides a [Helm chart](https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-templates) to easily deploy RefArch-based multi-container applications by just providing a configuration file.
-The release notes of this chart can be found in the [GitHub releases](https://github.com/it-at-m/helm-charts/releases?q=refarch-templates) of the it@M Helm Charts repository.
-
+The reference architecture provides a [Helm chart](https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-templates) to easily deploy RefArch-based multi-container applications by just providing a configuration file (`values.yaml`).
 Each application container is called a "module" in the `refarch-templates` chart.
 Additionally, a [RefArch API Gateway](../gateway.md) can be deployed as well.
+An example `values.yaml` file can be found in the [Helm chart sources](https://github.com/it-at-m/helm-charts/blob/main/charts/refarch-templates/values-example.yaml).
 
-:::details Sample configuration file (`values-<ENV>.yaml`)
+Splitting into multiple files (e.g a common `values.yaml` and environment specific configuration in `values-<ENV>.yaml`) is also possible.
 
-```yaml
-secrets:
-  - name: sso-credentials
-    keys:
-      - URL # e.g. https://sso.example.com
-      - REALM
-      - CLIENTID
-      - CLIENTSECRET
-  - name: db-credentials
-    keys:
-      - URL # e.g. jdbc:postgresql://db.example.com:5432/mydb
-      - USERNAME
-      - PASSWORD
-
-# Module-specific configuration for own application containers
-modules:
-  - name: frontend
-    image:
-      registry: ghcr.io
-      repository: myorg/myapp-frontend
-      pullPolicy: IfNotPresent
-      tag: "1.0.0"
-    service:
-      http: true
-  - name: backend
-    image:
-      registry: ghcr.io
-      repository: myorg/myapp-backend
-      pullPolicy: IfNotPresent
-      tag: "1.0.0"
-    envFrom:
-      - prefix: SSO_
-        secretRef:
-          name: sso-test
-      - prefix: SPRING_DATASOURCE_
-        secretRef:
-          name: db-credentials
-    env:
-      - name: TZ
-        value: "Europe/Berlin"
-      # mappings, normally don't have to be changed
-      - name: REFARCH_SECURITY_CLIENTID
-        value: "${SSO_CLIENTID}"
-      - name: REFARCH_SECURITY_USERINFOURI
-        value: "${SSO_URL}/auth/realms/${SSO_REALM}/protocol/openid-connect/userinfo"
-      - name: REFARCH_SECURITY_PERMISSIONS_URI
-        value: "${SSO_URL}/auth/realms/${SSO_REALM}/protocol/openid-connect/token"
-      - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWKSETURI
-        value: "${SSO_URL}/auth/realms/${SSO_REALM}/protocol/openid-connect/certs"
-    service:
-      http: true
-
-# API Gateway configuration
-refarch-gateway:
-  envFrom:
-    - prefix: SSO_
-      secretRef:
-        name: sso-credentials
-  envAppend:
-    - name: SPRING_PROFILES_ACTIVE
-      value: "hazelcast-k8s"
-    - name: ALLOWED_ORIGINS_PUBLIC
-      value: "https://*.example.com"
-    - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_SSO_SCOPE
-      value: "profile, openid, roles"
-    - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_SSO_PROVIDER
-      value: "sso"
-    # mappings, normally don't have to be changed
-    - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
-      value: "${SSO_URL}/auth/realms/${SSO_REALM}"
-    - name: SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_SSO_ISSUER_URI
-      value: "${SSO_URL}/auth/realms/${SSO_REALM}"
-    - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_SSO_CLIENTID
-      value: "${SSO_CLIENTID}"
-    - name: SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_SSO_CLIENTSECRET
-      value: "${SSO_CLIENTSECRET}"
-  applicationYML:
-    spring:
-      cloud:
-        gateway:
-          server:
-            webflux:
-              routes:
-                - id: "sso"
-                  uri: ${SSO_URL}
-                  predicates:
-                    - "Path=/api/sso/userinfo"
-                  filters:
-                    - "RewritePath=/api/sso/userinfo, /auth/realms/${SSO_REALM}/protocol/openid-connect/userinfo"
-                - id: "backend"
-                  uri: "http://<HELM_RELEASE_NAME>-backend:8080/"
-                  predicates:
-                    - "Path=/api/myapp-backend/**"
-                  filters:
-                    - "RewritePath=/api/myapp-backend/(?<urlsegments>.*), /$\\{urlsegments}"
-                # The catch all route needs to be at the end
-                - id: "frontend"
-                  uri: "http://<HELM_RELEASE_NAME>-frontend:8080/"
-                  predicates:
-                    - "Path=/**"
-  ingress:
-    enabled: true
-    hosts:
-      - host: myapp.example.com
-        paths:
-          - path: /
-            pathType: "ImplementationSpecific"
-```
-
+::: warning Warning
+When using multiple files, array-based configuration options are not merged.
 :::
 
-:::info Information
+The release notes of this chart can be found in the [GitHub releases](https://github.com/it-at-m/helm-charts/releases?q="refarch-templates") of the it@M Helm Charts repository.
+
+::: info Information
 Detailed information about all configuration options for the `refarch-templates` Helm chart can be found in its [README](https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-templates#refarch).
 Available options for the RefArch Gateway can be found in the [configuration documentation](../gateway.md#configuration).
 :::
 
-The configuration file can then be used to install the chart to your cluster with the following commands:
+The configuration file (or multiple) can then be used to install the chart to your cluster with the following commands:
 
 ```bash
 helm repo add it-at-m https://it-at-m.github.io/helm-charts
-helm install <HELM_RELEASE_NAME> it-at-m/refarch-templates --version <HELM_CHART_VERSION> --values values-<ENV>.yaml
+helm install <HELM_RELEASE_NAME> it-at-m/refarch-templates --version <HELM_CHART_VERSION> --values values.yaml --values values-<ENV>.yaml
 ```
 
 ::: details it@M internal configuration

@@ -3,16 +3,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>de.muenchen.refarch</groupId>
+        <groupId>de.muenchen.oss.refarch</groupId>
         <artifactId>refarch-address-integration</artifactId>
-        <version>2.3.0-SNAPSHOT</version>
+        <version>3.1.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>refarch-address-integration-client</artifactId>
     <name>refarch-address-integration-client</name>
 
     <properties>
-        <openapi-generator-maven-plugin.version>7.21.0</openapi-generator-maven-plugin.version>
+        <openapi-generator-maven-plugin.version>7.22.0</openapi-generator-maven-plugin.version>
 
         <jackson-databind-nullable.version>0.2.10</jackson-databind-nullable.version>
     </properties>
@@ -34,12 +34,6 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webflux</artifactId>
-        </dependency>
-
-        <!-- Validation -->
-        <dependency>
-            <groupId>jakarta.validation</groupId>
-            <artifactId>jakarta.validation-api</artifactId>
         </dependency>
 
         <!-- openApi -->
@@ -82,9 +76,9 @@
                             <inputSpec>${project.basedir}/apidoc/api-docs.json</inputSpec>
                             <library>webclient</library>
 
-                            <apiPackage>de.muenchen.refarch.integration.address.client.gen.api</apiPackage>
-                            <modelPackage>de.muenchen.refarch.integration.address.client.gen.model</modelPackage>
-                            <invokerPackage>de.muenchen.refarch.integration.address.client.gen</invokerPackage>
+                            <apiPackage>de.muenchen.oss.refarch.integration.address.client.gen.api</apiPackage>
+                            <modelPackage>de.muenchen.oss.refarch.integration.address.client.gen.model</modelPackage>
+                            <invokerPackage>de.muenchen.oss.refarch.integration.address.client.gen</invokerPackage>
 
                             <generateApiTests>false</generateApiTests>
                             <generateModelTests>false</generateModelTests>
