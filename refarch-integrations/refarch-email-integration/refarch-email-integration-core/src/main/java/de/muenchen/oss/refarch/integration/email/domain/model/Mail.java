@@ -2,6 +2,7 @@ package de.muenchen.oss.refarch.integration.email.domain.model;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import java.util.Collections;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
@@ -25,6 +26,10 @@ public record Mail(
                 null,
                 mail.getReplyTo(),
                 mail.getAttachments());
+    }
+
+    public List<Attachment> attachments() {
+        return Collections.unmodifiableList(this.attachments);
     }
 
     public boolean hasAttachment() {

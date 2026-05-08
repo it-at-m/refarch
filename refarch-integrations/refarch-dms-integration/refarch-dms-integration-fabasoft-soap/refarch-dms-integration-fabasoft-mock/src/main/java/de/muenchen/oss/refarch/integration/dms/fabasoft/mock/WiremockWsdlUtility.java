@@ -66,6 +66,8 @@ public final class WiremockWsdlUtility {
     public static <T> T deserializeSoapRequest(final String soapRequest, final Class<T> clazz) {
 
         final XMLInputFactory xif = XMLInputFactory.newFactory();
+        xif.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
+
         final JAXBElement<T> jb;
         try {
             final XMLStreamReader xsr = xif.createXMLStreamReader(new StringReader(soapRequest));
@@ -81,7 +83,7 @@ public final class WiremockWsdlUtility {
             jb = unmarshaller.unmarshal(xsr, clazz);
             xsr.close();
         } catch (Exception e) {
-            throw new RuntimeException(String.format("Unable to deserialize request to type: %s. Request \n %s", clazz, soapRequest), e);
+            throw new RuntimeException(String.format("Unable to deserialize request to type: %s. Request %n %s", clazz, soapRequest), e);
         }
 
         return jb.getValue();
