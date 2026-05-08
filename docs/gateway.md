@@ -73,7 +73,7 @@ refarch:
     public-patterns: # Additional public routes with explicit methods (optional)
       - pattern: /example/**
         methods: [GET] # All methods must be listed, there is no default all
-    client-patterns: # Additional clients routes (optional)
+    client-patterns: # Additional client routes (optional)
       - /example/**
 
 # Aliases for `spring.cloud.gateway.server.webflux.globalcors.cors-configurations` to allow configuration via environment variables, as the used glob patterns can't be used there
