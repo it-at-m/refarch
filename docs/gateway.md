@@ -27,19 +27,19 @@ By default, routes require authentication through OAuth 2.0 and manage the sessi
 cookies.
 The gateway then maps the session cookie to a JWT before routing it.
 
-Beside the default behavior there are special public and clients routes described in the following.
+Beside the default behavior there are special public and client routes described in the following.
 
 #### Public Routes
 
-Requests matching public routes are routed WITHOUT authentication.
+Requests matching public routes are routed **WITHOUT** authentication.
 
-To configure public routes either the prefix `/public/**` can be used or custom patterns can be configured via `refarch.security.public-patterns` (see [Configuration](#configuration)).
+To configure public routes either the pre-defined prefix `/public/**` can be used or custom patterns can be configured via `refarch.security.public-patterns` (see [Configuration](#configuration)).
 
 CSRF protection remains enabled for these routes and can be disabled via `refarch.security.csrf-whitelisted`.
 
-#### Clients Routes
+#### Client Routes
 
-Requests matching clients routes use JWT for authentication instead of session cookies.
+Requests matching client routes use JWT for authentication instead of session cookies.
 
 To configure clients routes either the prefix `/clients/**` can be used or custom patterns can be configured via `refarch.security.clients-patterns` (see [Configuration](#configuration)).
 

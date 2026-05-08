@@ -26,7 +26,7 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class SecurityConfiguration {
     private static final String CLIENTS_ROUTE_PREFIX = "/clients/**";
-    private static final String PUBLIC_ROUTE_PREFIX = "/public/**";
+    private static final String PUBLIC_ROUTES_PREFIX = "/public/**";
 
     private final CsrfProtectionMatcher csrfProtectionMatcher;
     private final SessionProperties sessionProperties;
