@@ -6,6 +6,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static de.muenchen.oss.refarch.gateway.TestConstants.SPRING_TEST_PROFILE;
 import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.csrf;
@@ -39,6 +40,12 @@ class BackendRouteTest {
     private static final String TEST_JSON = "{ \"" + TEST_KEY + "\" : \"" + TEST_VALUE + "\" }";
     public static final String TEST_KEY_EXPRESSION = "$." + TEST_KEY;
 
+    public static final String URI_PUBLIC = "/public/api/backend/test";
+    public static final String URI_PUBLIC_EXTRA_PATTERN = "/api/backend/public/test";
+    public static final String URI_CLIENTS = "/clients/api/backend/test";
+    public static final String URI_CLIENTS_EXTRA_PATTERN = "/api/backend/clients/test";
+    public static final String URI_DEFAULT = "/api/backend/test";
+
     @Autowired
     private ApplicationContext context;
     private WebTestClient webTestClient;
@@ -50,8 +57,8 @@ class BackendRouteTest {
                 .apply(springSecurity())
                 .configureClient()
                 .build();
-        // setup wiremock routes
-        stubFor(get(urlEqualTo("/test"))
+        // setup wiremock for routes
+        stubFor(get(urlMatching(".*/test"))
                 .willReturn(aResponse()
                         .withStatus(HttpStatus.OK.value())
                         .withHeaders(new HttpHeaders(
@@ -70,7 +77,7 @@ class BackendRouteTest {
     @WithMockUser
     void backendGetSuccess() {
         webTestClient
-                .get().uri("/api/backend/test")
+                .get().uri(URI_DEFAULT)
                 .header(org.springframework.http.HttpHeaders.COOKIE,
                         "SESSION=5cfb01a3-b691-4ca9-8735-a05690e6c2ec; XSRF-TOKEN=4d82f9f1-41f6-4a09-994a-df99d30d1be9") // removed by default-filter
                 .header(XSRF_HEADER_NAME, "5cfb01a3-b691-4ca9-8735-a05690e6c2ec") // angular specific -> removed by default-filter
@@ -90,7 +97,7 @@ class BackendRouteTest {
     @Test
     void backendGetForbidden() {
         webTestClient
-                .get().uri("/api/backend/test")
+                .get().uri(URI_DEFAULT)
                 .exchange()
                 // because redirect to login
                 .expectStatus().isEqualTo(HttpStatus.FOUND)
@@ -98,9 +105,25 @@ class BackendRouteTest {
     }
 
     @Test
+    void backendPostForbidden() {
+        // No CSRF, no auth -> blocked by CSRF (403)
+        webTestClient
+                .post().uri(URI_DEFAULT)
+                .exchange()
+                .expectStatus().isForbidden();
+
+        // With CSRF, still no auth -> redirected to login (302)
+        webTestClient
+                .mutateWith(csrf())
+                .post().uri(URI_DEFAULT)
+                .exchange()
+                .expectStatus().isFound();
+    }
+
+    @Test
     void publicGetSuccess() {
         webTestClient
-                .get().uri("/public/api/backend/test")
+                .get().uri(URI_PUBLIC)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
@@ -110,7 +133,26 @@ class BackendRouteTest {
     void publicPostSuccess() {
         webTestClient
                 .mutateWith(csrf())
-                .post().uri("/public/api/backend/test")
+                .post().uri(URI_PUBLIC)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
+    }
+
+    @Test
+    void publicPostExtraPatternMissingMethod() {
+        // With CSRF, still no auth -> redirected to login (302)
+        webTestClient
+                .mutateWith(csrf())
+                .post().uri(URI_PUBLIC_EXTRA_PATTERN)
+                .exchange()
+                .expectStatus().isFound();
+    }
+
+    @Test
+    void publicGetSuccessExtraPattern() {
+        webTestClient
+                .get().uri(URI_PUBLIC_EXTRA_PATTERN)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
@@ -120,7 +162,7 @@ class BackendRouteTest {
     void clientGetSuccess() {
         webTestClient
                 .mutateWith(mockJwt())
-                .get().uri("/clients/api/backend/test")
+                .get().uri(URI_CLIENTS)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
@@ -129,9 +171,26 @@ class BackendRouteTest {
     @Test
     void clientGetForbidden() {
         webTestClient
-                .get().uri("/clients/api/backend/test")
+                .get().uri(URI_CLIENTS)
                 .exchange()
                 .expectStatus().isUnauthorized();
     }
 
+    @Test
+    void clientGetForbiddenExtraPattern() {
+        webTestClient
+                .get().uri(URI_CLIENTS_EXTRA_PATTERN)
+                .exchange()
+                .expectStatus().isUnauthorized();
+    }
+
+    @Test
+    void clientGetSuccessExtraPattern() {
+        webTestClient
+                .mutateWith(mockJwt())
+                .get().uri(URI_CLIENTS_EXTRA_PATTERN)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
+    }
 }

@@ -1,6 +1,8 @@
 package de.muenchen.oss.refarch.gateway.configuration;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.session.SessionProperties;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
@@ -23,18 +25,28 @@ import reactor.core.publisher.Mono;
 @Profile("!no-security")
 @RequiredArgsConstructor
 public class SecurityConfiguration {
+    private static final String CLIENT_ROUTES_PREFIX = "/clients/**";
+    private static final String PUBLIC_ROUTES_PREFIX = "/public/**";
 
     private final CsrfProtectionMatcher csrfProtectionMatcher;
     private final SessionProperties sessionProperties;
     private final ServerProperties serverProperties;
+    private final SecurityProperties securityProperties;
 
     @Bean
     @Order(0)
     public SecurityWebFilterChain clientAccessFilterChain(final ServerHttpSecurity http) {
-        http
-                .securityMatcher(ServerWebExchangeMatchers.pathMatchers("/clients/**"))
+        // build patterns
+        final List<String> patternsList = new ArrayList<>();
+        patternsList.add(CLIENT_ROUTES_PREFIX);
+        if (!securityProperties.getClientPatterns().isEmpty()) {
+            patternsList.addAll(securityProperties.getClientPatterns());
+        }
+        final String[] patterns = patternsList.toArray(new String[0]);
+        // security config
+        http.securityMatcher(ServerWebExchangeMatchers.pathMatchers(patterns))
                 .authorizeExchange(authorizeExchangeSpec -> authorizeExchangeSpec
-                        .pathMatchers(HttpMethod.OPTIONS, "/clients/**").permitAll()
+                        .pathMatchers(HttpMethod.OPTIONS, patterns).permitAll()
                         .anyExchange().authenticated())
                 .cors(corsSpec -> {
                 })
@@ -47,21 +59,25 @@ public class SecurityConfiguration {
     public SecurityWebFilterChain springSecurityFilterChain(final ServerHttpSecurity http) {
         http
                 .logout(ServerHttpSecurity.LogoutSpec::disable)
-                .authorizeExchange(authorizeExchangeSpec -> authorizeExchangeSpec
-                        // permitAll
-                        .pathMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
-                        .pathMatchers("/api/*/actuator/info",
-                                "/actuator/health",
-                                "/actuator/health/liveness",
-                                "/actuator/health/readiness",
-                                "/actuator/info",
-                                "/actuator/metrics",
-                                "/actuator/sbom",
-                                "/actuator/sbom/application",
-                                "/public/**")
-                        .permitAll()
-                        // only authenticated
-                        .anyExchange().authenticated())
+                .authorizeExchange(authorizeExchangeSpec -> {
+                    // permitAll
+                    authorizeExchangeSpec.pathMatchers(HttpMethod.OPTIONS, "/api/**").permitAll();
+                    authorizeExchangeSpec.pathMatchers(
+                            "/api/*/actuator/info",
+                            "/actuator/health",
+                            "/actuator/health/liveness",
+                            "/actuator/health/readiness",
+                            "/actuator/info",
+                            "/actuator/metrics",
+                            "/actuator/sbom",
+                            "/actuator/sbom/application",
+                            PUBLIC_ROUTES_PREFIX)
+                            .permitAll();
+                    // dynamic permitAll from properties
+                    this.applyDynamicPermitAll(authorizeExchangeSpec);
+                    // only authenticated
+                    authorizeExchangeSpec.anyExchange().authenticated();
+                })
                 .cors(corsSpec -> {
                 })
                 .csrf(csrfSpec -> {
@@ -88,6 +104,17 @@ public class SecurityConfiguration {
                 }));
 
         return http.build();
+    }
+
+    /**
+     * Apply dynamic permitAll rules based on properties.
+     */
+    private void applyDynamicPermitAll(final ServerHttpSecurity.AuthorizeExchangeSpec authorize) {
+        for (final SecurityProperties.PermitRule rule : securityProperties.getPublicPatterns()) {
+            for (final HttpMethod method : rule.getMethods()) {
+                authorize.pathMatchers(method, rule.getPattern()).permitAll();
+            }
+        }
     }
 
     /**

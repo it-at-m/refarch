@@ -27,10 +27,21 @@ By default, routes require authentication through OAuth 2.0 and manage the sessi
 cookies.
 The gateway then maps the session cookie to a JWT before routing it.
 
-Beside the default behaviour there are some special route prefixes which are handled different:
+Beside the default behavior there are special public and client routes described in the following.
 
-- `/public/**`: All requests are routed WITHOUT security.
-- `/clients/**`: Uses JWT for authenticating incoming requests instead of session cookies.
+#### Public Routes
+
+Requests matching public routes are routed **WITHOUT** authentication.
+
+To configure public routes either the pre-defined prefix `/public/**` can be used or custom patterns can be configured via `refarch.security.public-patterns` (see [Configuration](#configuration)).
+
+CSRF protection remains enabled for these routes and can be disabled via `refarch.security.csrf-whitelisted`.
+
+#### Client Routes
+
+Requests matching client routes use JWT for authentication instead of session cookies.
+
+To configure client routes either the prefix `/clients/**` can be used or custom patterns can be configured via `refarch.security.client-patterns` (see [Configuration](#configuration)).
 
 ## Configuration
 
@@ -58,6 +69,11 @@ refarch:
     service-name: # Kubernetes service name for when using profile `hazelcast-k8s`
   security:
     csrf-whitelisted: # List of routes to disable CSRF protection for (optional)
+      - /example/**
+    public-patterns: # Additional public routes with explicit methods (optional)
+      - pattern: /example/**
+        methods: [GET] # All methods must be listed, there is no default all
+    client-patterns: # Additional client routes (optional)
       - /example/**
 
 # Aliases for `spring.cloud.gateway.server.webflux.globalcors.cors-configurations` to allow configuration via environment variables, as the used glob patterns can't be used there

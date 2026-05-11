@@ -36,3 +36,11 @@ wiremock:
   server:
     port: 0
     https-port: -1
+
+refarch:
+  security:
+    public-patterns:
+      - pattern: /api/backend/public/**
+        methods: [GET]
+    client-patterns:
+      - /api/backend/clients/**
