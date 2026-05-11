@@ -33,7 +33,7 @@ public class SecurityProperties {
      * List of rules for publicly accessible routes (permitAll, like `/public/**`), combining a path
      * pattern with specific HTTP methods.
      * All methods must be explicitly listed, there is no implicit "all".
-     * WARNING: Security is DISABLED for matching requests.
+     * WARNING: Authentication is DISABLED for matching requests.
      */
     @Valid @NotNull private List<@NotNull PermitRule> publicPatterns = List.of();
 
