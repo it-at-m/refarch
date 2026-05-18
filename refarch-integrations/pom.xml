@@ -54,7 +54,7 @@
         <maven.compiler.release>${java.version}</maven.compiler.release>
 
         <!-- Linting & Formatting -->
-        <spotless-maven-plugin.version>3.4.0</spotless-maven-plugin.version>
+        <spotless-maven-plugin.version>3.5.1</spotless-maven-plugin.version>
         <itm-java-codeformat.version>1.0.10</itm-java-codeformat.version>
         <pmd-maven-plugin.version>3.28.0</pmd-maven-plugin.version>
 
@@ -297,6 +297,7 @@
                         <importOrder />
                         <removeUnusedImports />
                         <forbidWildcardImports />
+                        <expandWildcardImports />
                         <formatAnnotations />
                     </java>
                 </configuration>
