@@ -125,6 +125,8 @@ The tools are configured through the respective configuration files
 - Prettier: `.prettierrc.json` (points to a [centralized configuration](https://github.com/it-at-m/itm-prettier-codeformat))
 - ESLint: `eslint.config.js` (configuration part of the templates)
 
+By default, the `.prettierignore` file is used to skip files for both Prettier and ESLint.
+
 #### Java
 
 [Spotless](https://github.com/diffplug/spotless), [PMD](https://pmd.github.io/) and [SpotBugs](https://spotbugs.github.io/) are used for code formatting and linting Java-based code.
