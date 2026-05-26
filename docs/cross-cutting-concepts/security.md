@@ -197,7 +197,7 @@ const routes = [
 
 ### Securing Vue components
 
-If parts of a Vue component should only be visible (or certain logic should only run) when having a specific role, the `useHasAnyRole`composable can be used.
+If parts of a Vue component should only be visible (or certain logic should only run) when having a specific role, the `useHasAnyRole` composable can be used.
 Similar to the meta field for routing, the composable works with a single role or an array of roles.
 
 The composable returns a computed property that can be used inside the template or script of the component:
