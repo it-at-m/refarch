@@ -158,6 +158,10 @@ Note that you must not remove the file `sbom.conf` altogether as this enables se
 Using information from the `/userinfo` endpoint of the SSO provider, it's possible to secure the frontend in two places.
 In both cases, securing works using the retrieved roles. For type-safety, the frontend-relevant roles should be added in `types/Role.ts`.
 
+::: warning Notice
+The following mechanisms currently only work when handling authorization using [Keycloak roles](#keycloak-roles-default), not [UMA permissions](#keycloak-permissions).
+:::
+
 ### Securing routes
 
 Routes can be secured using a concept called [navigation guards](https://router.vuejs.org/guide/advanced/navigation-guards.html).
