@@ -152,3 +152,66 @@ location /actuator/sbom/application {
 :::danger Important
 Note that you must not remove the file `sbom.conf` altogether as this enables serving the generated SBOM file as a regular static resource.
 :::
+
+## Securing the frontend
+
+Using information from the `/userinfo` endpoint of the SSO provider, it's possible to secure the frontend in two places.
+In both cases, securing works using the retrieved roles. For type-safety, the frontend-relevant roles should be added in `types/Role.ts`.
+
+::: warning Notice
+The following mechanisms currently only work when handling authorization using [Keycloak roles](#keycloak-roles-default), not [UMA permissions](#keycloak-permissions).
+:::
+
+### Securing routes
+
+Routes can be secured using a concept called [navigation guards](https://router.vuejs.org/guide/advanced/navigation-guards.html).
+By default, a global route guard is registered that uses special route metadata to check whether routing is allowed or not.
+If routing is not allowed, the user will be:
+
+- redirected to index route when opening the app via a guarded URL
+- stay on the current route when the app is already in use
+
+The following route metadata can currently be used:
+
+- `hasAnyRole`: Single role or array of roles, any of the specific roles will be sufficient to navigate to the route
+
+The route metadata can be added using the `definePage` helper inside the routes Vue component (for auto-registered routes):
+
+```ts
+definePage({
+  meta: {
+    hasAnyRole: [Role.READER, Role.WRITER],
+  },
+});
+```
+
+When using manually registered routes (in `plugins/router.ts`), route metadata can be directly added to the route registration:
+
+```ts
+const routes = [
+  {
+    path: "/example",
+    component: PostsLayout,
+    meta: {
+      hasAnyRole: [Role.READER, Role.WRITER],
+    },
+  },
+];
+```
+
+### Securing Vue components
+
+If parts of a Vue component should only be visible (or certain logic should only run) when having a specific role, the `useHasAnyRole` composable can be used.
+Similar to the meta field for routing, the composable works with a single role or an array of roles.
+
+The composable returns a computed property that can be used inside the template or script of the component:
+
+```ts
+const showOptionalText = useHasAnyRole(Role.WRITER);
+```
+
+```html
+<p v-if="showOptionalText">
+  This is an optional text only visible with WRITER role
+</p>
+```
