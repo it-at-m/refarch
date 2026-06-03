@@ -89,6 +89,7 @@ When running with the `local` profile, text-based logging is used (instead of JS
 ### Prerequisites
 
 - Node.js 24 LTS (`24.11.x` - `24.x.x`)
+- NPM (`11.6.x` - `11.x.x`)
 - Container engine
 
 ### Configure templates
@@ -105,6 +106,7 @@ Congratulations, the Frontend/WebComponent is now ready to use.
 ### Prerequisites
 
 - Node.js 24 LTS (`24.11.x` - `24.x.x`)
+- NPM (`11.6.x` - `11.x.x`)
 
 ### Configure documentation
 
