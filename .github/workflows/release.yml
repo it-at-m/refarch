@@ -39,7 +39,7 @@ jobs:
       ARTIFACT_NAME: ${{ steps.release-maven.outputs.artifact-name }}
     steps:
       - id: release-maven
-        uses: it-at-m/lhm_actions/action-templates/actions/action-maven-release@1a673d9c3be4a4f59cf29f425bc2b00fc42751fd # v1.0.32
+        uses: it-at-m/lhm_actions/action-templates/actions/action-maven-release@877aafa9f0732cbc91819b60d237c351ea88f95c # v1.0.34
         with:
           app-path: ${{ inputs.module }}
           java-version: "21"
@@ -59,7 +59,7 @@ jobs:
     permissions:
       packages: write
     steps:
-      - uses: it-at-m/lhm_actions/action-templates/actions/action-build-image@1a673d9c3be4a4f59cf29f425bc2b00fc42751fd # v1.0.32
+      - uses: it-at-m/lhm_actions/action-templates/actions/action-build-image@877aafa9f0732cbc91819b60d237c351ea88f95c # v1.0.34
         with:
           registry-username: ${{ github.actor }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
@@ -77,7 +77,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: it-at-m/lhm_actions/action-templates/actions/action-create-github-release@1a673d9c3be4a4f59cf29f425bc2b00fc42751fd # v1.0.32
+      - uses: it-at-m/lhm_actions/action-templates/actions/action-create-github-release@877aafa9f0732cbc91819b60d237c351ea88f95c # v1.0.34
         with:
           tag-name: "${{ inputs.module }}_${{ github.event.inputs.release-version }}"
           generate-release-notes: true

@@ -14,4 +14,4 @@ jobs:
       security-events: write # Required to upload SARIF results to the GitHub Security tab
     if: github.event_name != 'schedule' || github.ref == 'refs/heads/main'
     steps:
-      - uses: it-at-m/lhm_actions/action-templates/actions/action-trivy@1a673d9c3be4a4f59cf29f425bc2b00fc42751fd # v1.0.32
+      - uses: it-at-m/lhm_actions/action-templates/actions/action-trivy@877aafa9f0732cbc91819b60d237c351ea88f95c # v1.0.34
