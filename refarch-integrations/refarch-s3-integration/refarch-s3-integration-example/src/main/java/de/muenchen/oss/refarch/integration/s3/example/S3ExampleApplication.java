@@ -23,5 +23,6 @@ public class S3ExampleApplication {
     public void sendTestMail() throws Exception {
         this.exampleService.testS3();
         SpringApplication.exit(context);
+        // fail with "Socket accept failed" is ok
     }
 }

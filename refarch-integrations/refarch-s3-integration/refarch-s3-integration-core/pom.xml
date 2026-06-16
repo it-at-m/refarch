@@ -13,7 +13,7 @@
 
     <properties>
         <apache-commons-collections4.version>4.5.0</apache-commons-collections4.version>
-        <awssdk.version>2.44.14</awssdk.version>
+        <awssdk.version>2.46.11</awssdk.version>
     </properties>
 
     <dependencies>
@@ -42,7 +42,7 @@
                 </exclusion>
                 <exclusion>
                     <groupId>software.amazon.awssdk</groupId>
-                    <artifactId>apache-client</artifactId>
+                    <artifactId>apache5-client</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
