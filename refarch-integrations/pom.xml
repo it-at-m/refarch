@@ -80,6 +80,7 @@
         <p2.mirror>download.eclipse.org</p2.mirror>
 
         <!-- TEMPORARY TRANSITIVE DEPENDENCY OVERRIDES FOR SECURITY FIXES -->
+        <commons-lang3.version>3.18.0</commons-lang3.version> <!-- Fixes CVE-2025-48924 -->
     </properties>
 
     <dependencyManagement>
