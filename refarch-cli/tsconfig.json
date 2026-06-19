@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "module": "NodeNext",
+    "target": "ESNext",
+    "esModuleInterop": true,
+    "declaration": true,
+    "outDir": "./dist",
+    "moduleResolution": "NodeNext"
+  },
+  "exclude": ["node_modules", "./dist/**/*"]
+}
