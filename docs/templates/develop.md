@@ -22,7 +22,7 @@ flowchart LR
     classDef pod fill:#d8c6ff,stroke:#444;
     classDef maven fill:#ea6b1f,stroke:#444;
     classDef npm fill:#ffd4d4,stroke:#444;
-    
+
     subgraph Legend
         NODE["`**Node.js / npm**`" project]
         MAVEN["`**JDK / Maven**`" project]
