@@ -18,10 +18,10 @@ config:
   htmlLabels: false
 ---
 flowchart LR
-    classDef browser fill:#eeeeee,stroke:#444;
-    classDef pod fill:#d8c6ff,stroke:#444;
-    classDef maven fill:#ea6b1f,stroke:#444;
-    classDef npm fill:#ffd4d4,stroke:#444;
+    classDef browser fill:#eeeeee,stroke:#444,color:#111;
+    classDef pod fill:#d8c6ff,stroke:#444,color:#111;
+    classDef maven fill:#ea6b1f,stroke:#444,color:#111;
+    classDef npm fill:#ffd4d4,stroke:#444,color:#111;
 
     subgraph Legend
         NODE["`**Node.js / npm**`" project]
