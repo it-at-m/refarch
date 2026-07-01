@@ -33,7 +33,7 @@ flowchart LR
         class POD pod;
     end
 
-    subgraph Development Setup
+    subgraph Local Development Setup
         direction LR
         B{{"`**Browser**`"}}
         AG["`**API Gateway**`"]
