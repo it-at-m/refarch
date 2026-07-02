@@ -60,6 +60,7 @@
 
         <!-- Testing -->
         <jacoco.version>0.8.15</jacoco.version>
+        <wiremock-spring-boot.version>4.2.1</wiremock-spring-boot.version>
 
         <!-- Release -->
         <maven-release-plugin.version>3.3.1</maven-release-plugin.version>
@@ -108,6 +109,12 @@
             <artifactId>hazelcast-spring-session</artifactId>
             <version>${hazelcast-spring-session.version}</version>
         </dependency>
+        <!-- kept to keep spring.session.timeout as config property -->
+        <!-- could also be set using server.reactive.session.timeout -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-session</artifactId>
+        </dependency>
 
         <!-- Spring Security Starters -->
         <dependency>
@@ -149,13 +156,14 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-contract-stub-runner</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-webtestclient</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webclient-test</artifactId>
+            <groupId>org.wiremock.integrations</groupId>
+            <artifactId>wiremock-spring-boot</artifactId>
+            <version>${wiremock-spring-boot.version}</version>
             <scope>test</scope>
         </dependency>
 
