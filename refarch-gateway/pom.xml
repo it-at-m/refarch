@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.15</version>
+        <version>4.0.7</version>
         <relativePath />
     </parent>
 
@@ -45,7 +45,7 @@
         <maven.compiler.release>${java.version}</maven.compiler.release>
 
         <!-- Core Frameworks -->
-        <spring-cloud-dependencies.version>2025.0.3</spring-cloud-dependencies.version>
+        <spring-cloud-dependencies.version>2025.1.2</spring-cloud-dependencies.version>
 
         <!-- Linting & Formatting -->
         <spotless-maven-plugin.version>3.7.0</spotless-maven-plugin.version>
@@ -54,6 +54,9 @@
         <spotbugs-maven-plugin.version>4.9.8.5</spotbugs-maven-plugin.version>
         <spotbugs-annotations.version>4.9.8</spotbugs-annotations.version> <!-- must match the patch version of spotbugs-maven-plugin -->
         <findsecbugs-plugin.version>1.14.0</findsecbugs-plugin.version>
+
+        <!-- Hazelcast Session -->
+        <hazelcast-spring-session.version>4.0.0</hazelcast-spring-session.version>
 
         <!-- Testing -->
         <jacoco.version>0.8.15</jacoco.version>
@@ -70,6 +73,7 @@
         <p2.mirror>download.eclipse.org</p2.mirror>
 
         <!-- TEMPORARY TRANSITIVE DEPENDENCY OVERRIDES FOR SECURITY FIXES -->
+        <!-- Preferably override properties defined in spring-boot-starter -> spring-boot-dependencies POM -->
     </properties>
 
     <dependencyManagement>
@@ -85,59 +89,52 @@
     </dependencyManagement>
 
     <dependencies>
-        <!-- spring cloud -->
+
+        <!-- Spring Core Starters-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <!-- Spring Cloud Starters -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-gateway-server-webflux</artifactId>
         </dependency>
 
-        <!-- actuator -->
+        <!-- Session -->
+        <dependency>
+            <groupId>com.hazelcast.spring</groupId>
+            <artifactId>hazelcast-spring-session</artifactId>
+            <version>${hazelcast-spring-session.version}</version>
+        </dependency>
+
+        <!-- Spring Security Starters -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security-oauth2-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security-oauth2-resource-server</artifactId>
+        </dependency>
+
+        <!-- Production-Ready Starters -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-
-        <!-- security -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-oauth2-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
-        </dependency>
-
-        <!-- hazelcast -->
-        <dependency>
-            <groupId>org.springframework.session</groupId>
-            <artifactId>spring-session-hazelcast</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- Logging -->
-        <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-tracing</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-tracing-bridge-brave</artifactId>
+            <artifactId>spring-boot-starter-opentelemetry</artifactId>
         </dependency>
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
-        </dependency>
-
-        <!-- Configuration Processor -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
         </dependency>
 
         <!-- Testing -->
@@ -147,8 +144,8 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-test</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security-test</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -156,8 +153,25 @@
             <artifactId>spring-cloud-starter-contract-stub-runner</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webclient-test</artifactId>
+            <scope>test</scope>
+        </dependency>
 
-        <!-- Other -->
+        <!-- Code Generation -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Developer Tools -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
         <dependency>
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-annotations</artifactId>
