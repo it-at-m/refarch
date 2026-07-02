@@ -4,17 +4,18 @@ import de.muenchen.oss.refarch.gateway.OAuthSecurityMockConfiguration;
 import de.muenchen.oss.refarch.gateway.TestConstants;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.actuate.observability.AutoConfigureObservability;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webtestclient.autoconfigure.AutoConfigureWebTestClient;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles(profiles = { TestConstants.SPRING_TEST_PROFILE })
-@AutoConfigureObservability
+@ActiveProfiles(profiles = {TestConstants.SPRING_TEST_PROFILE})
 @Import(OAuthSecurityMockConfiguration.class)
+@AutoConfigureWebTestClient
 class SecurityConfigurationTest {
+
     @Autowired
     private WebTestClient api;
 
