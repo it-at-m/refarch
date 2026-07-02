@@ -12,7 +12,7 @@ import com.hazelcast.spring.session.HazelcastIndexedSessionRepository;
 import java.time.Duration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.session.autoconfigure.SessionProperties;
+import org.springframework.boot.session.autoconfigure.SessionTimeout;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -34,7 +34,7 @@ import org.springframework.util.StringUtils;
 @RequiredArgsConstructor
 public class WebSessionHazelcastConfiguration {
     private final HazelcastProperties hazelcastProperties;
-    private final SessionProperties sessionProperties;
+    private final SessionTimeout sessionTimeout;
 
     @Bean
     public ServerOAuth2AuthorizedClientRepository authorizedClientRepository() {
@@ -59,7 +59,7 @@ public class WebSessionHazelcastConfiguration {
         hazelcastConfig.setClusterName(hazelcastProperties.getClusterName());
         hazelcastConfig.setInstanceName(hazelcastProperties.getInstanceName());
 
-        addSessionTimeoutToHazelcastConfig(hazelcastConfig, sessionProperties.getTimeout());
+        addSessionTimeoutToHazelcastConfig(hazelcastConfig, sessionTimeout.getTimeout());
 
         final NetworkConfig networkConfig = hazelcastConfig.getNetworkConfig();
 
@@ -79,7 +79,7 @@ public class WebSessionHazelcastConfiguration {
         hazelcastConfig.setClusterName(hazelcastProperties.getClusterName());
         hazelcastConfig.setInstanceName(hazelcastProperties.getInstanceName());
 
-        addSessionTimeoutToHazelcastConfig(hazelcastConfig, sessionProperties.getTimeout());
+        addSessionTimeoutToHazelcastConfig(hazelcastConfig, sessionTimeout.getTimeout());
 
         hazelcastConfig.getNetworkConfig().getJoin().getMulticastConfig().setEnabled(false);
         if (!StringUtils.hasText(hazelcastProperties.getServiceName())) {

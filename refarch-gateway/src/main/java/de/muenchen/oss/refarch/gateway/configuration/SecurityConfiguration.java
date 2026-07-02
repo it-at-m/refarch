@@ -90,12 +90,7 @@ public class SecurityConfiguration {
                     csrfSpec.csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse());
                     csrfSpec.requireCsrfProtectionMatcher(csrfProtectionMatcher);
                 })
-                .oauth2Login(oAuth2LoginSpec -> oAuth2LoginSpec.authenticationSuccessHandler(new RedirectServerAuthenticationSuccessHandler() {
-                    @Override
-                    @NonNull public Mono<Void> onAuthenticationSuccess(final @NonNull WebFilterExchange webFilterExchange, final @NonNull Authentication authentication) {
-                        return super.onAuthenticationSuccess(webFilterExchange, authentication);
-                    }
-                }));
+                .oauth2Login(Customizer.withDefaults());
 
         return http.build();
     }
