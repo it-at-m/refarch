@@ -1,11 +1,9 @@
 package de.muenchen.oss.refarch.gateway.configuration;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.session.SessionProperties;
-import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.jspecify.annotations.NonNull;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -29,8 +27,6 @@ public class SecurityConfiguration {
     private static final String PUBLIC_ROUTES_PREFIX = "/public/**";
 
     private final CsrfProtectionMatcher csrfProtectionMatcher;
-    private final SessionProperties sessionProperties;
-    private final ServerProperties serverProperties;
     private final SecurityProperties securityProperties;
 
     @Bean
@@ -96,9 +92,7 @@ public class SecurityConfiguration {
                 })
                 .oauth2Login(oAuth2LoginSpec -> oAuth2LoginSpec.authenticationSuccessHandler(new RedirectServerAuthenticationSuccessHandler() {
                     @Override
-                    public Mono<Void> onAuthenticationSuccess(final WebFilterExchange webFilterExchange, final Authentication authentication) {
-                        webFilterExchange.getExchange().getSession().subscribe(
-                                webSession -> webSession.setMaxIdleTime(getSessionTimeout()));
+                    @NonNull public Mono<Void> onAuthenticationSuccess(final @NonNull WebFilterExchange webFilterExchange, final @NonNull Authentication authentication) {
                         return super.onAuthenticationSuccess(webFilterExchange, authentication);
                     }
                 }));
@@ -115,19 +109,5 @@ public class SecurityConfiguration {
                 authorize.pathMatchers(method, rule.getPattern()).permitAll();
             }
         }
-    }
-
-    /**
-     * Get Spring Session timeout.
-     * Uses {@link SessionProperties} and {@link ServerProperties#getServlet()} as fallback, like Spring
-     * Session itself.
-     * See according
-     * <a href="https://docs.spring.io/spring-boot/reference/web/spring-session.html">Spring
-     * documentation</a>.
-     *
-     * @return Spring session timeout.
-     */
-    protected Duration getSessionTimeout() {
-        return sessionProperties.determineTimeout(() -> serverProperties.getServlet().getSession().getTimeout());
     }
 }

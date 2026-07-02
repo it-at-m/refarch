@@ -11,7 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles(profiles = {TestConstants.SPRING_TEST_PROFILE})
+@ActiveProfiles(profiles = { TestConstants.SPRING_TEST_PROFILE })
 @Import(OAuthSecurityMockConfiguration.class)
 @AutoConfigureWebTestClient
 class SecurityConfigurationTest {

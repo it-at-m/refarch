@@ -36,8 +36,7 @@ public class DistributedTracingFilter implements WebFilter {
      *         complete
      */
     @Override
-    @NonNull
-    public Mono<Void> filter(final ServerWebExchange serverWebExchange,
+    @NonNull public Mono<Void> filter(final ServerWebExchange serverWebExchange,
             final WebFilterChain webFilterChain) {
         final ServerHttpResponse response = serverWebExchange.getResponse();
         response.beforeCommit(() -> {
