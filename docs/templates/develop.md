@@ -9,7 +9,61 @@ Please make sure you worked through the corresponding [Getting Started](./gettin
 
 ## Technologies
 
-Key technologies used in the templates include:
+The following diagram visualizes the local development setup and all involved core technologies.
+Those will be further explained below:
+
+```mermaid
+---
+config:
+  htmlLabels: false
+---
+flowchart LR
+    classDef browser fill:#eeeeee,stroke:#444,color:#111;
+    classDef pod fill:#d8c6ff,stroke:#444,color:#111;
+    classDef maven fill:#ffe0b2,stroke:#444,color:#111;
+    classDef npm fill:#ffd4d4,stroke:#444,color:#111;
+
+    subgraph Legend
+        NODE["`**Node.js / npm**`" project]
+        MAVEN["`**JDK / Maven**`" project]
+        POD["`**Podman**`" container image]
+
+        class NODE npm;
+        class MAVEN maven;
+        class POD pod;
+    end
+
+    subgraph Local Development Setup
+        direction LR
+        B{{"`**Browser**`"}}
+        AG["`**API Gateway**`"]
+        FE["`**Vite Dev Server**<br/> (Vue / Vuetify)`"]
+        BE["`**Backend**<br/> (Java / Spring Boot)`"]
+        DB@{ shape: db, label: Database<br/> (Postgres)}
+        KC["`**SSO**<br/> (Keycloak)`"]
+
+        %% Main application flow
+        B <-- :8083 --> AG
+        AG <-- :8081 --> FE
+        AG <-- :8086 --> BE
+        BE <-- :5432 --> DB
+
+        %% Authentication
+        AG <-- :8100 --> KC
+        BE <-- :8100 --> KC
+
+        class B browser;
+        class AG,KC,DB pod;
+        class BE maven;
+        class FE npm;
+
+        click AG "../gateway"
+        click FE "./develop#vite"
+        click BE "./develop#maven"
+        click DB "https://www.postgresql.org/"
+        click KC "https://www.keycloak.org/"
+    end
+```
 
 ### Container Engine
 
