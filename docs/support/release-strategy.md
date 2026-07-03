@@ -1,6 +1,6 @@
 # Release Strategy
 
-This document describes the release strategies for the RefArch ready to use components and the [templates](../templates).
+This document describes the release strategies for the RefArch ready to use components and the [templates](../templates/index.md).
 
 ## RefArch (Gateway, Tools, Integrations, ...)
 
