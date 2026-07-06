@@ -10,6 +10,8 @@ import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.map.IMap;
 import com.hazelcast.spring.session.HazelcastIndexedSessionRepository;
 import java.time.Duration;
+import java.util.Objects;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.session.autoconfigure.SessionTimeout;
@@ -59,7 +61,7 @@ public class WebSessionHazelcastConfiguration {
         hazelcastConfig.setClusterName(hazelcastProperties.getClusterName());
         hazelcastConfig.setInstanceName(hazelcastProperties.getInstanceName());
 
-        addSessionTimeoutToHazelcastConfig(hazelcastConfig, sessionTimeout.getTimeout());
+        addSessionTimeoutToHazelcastConfig(hazelcastConfig, Objects.requireNonNull(sessionTimeout.getTimeout()));
 
         final NetworkConfig networkConfig = hazelcastConfig.getNetworkConfig();
 
@@ -79,7 +81,7 @@ public class WebSessionHazelcastConfiguration {
         hazelcastConfig.setClusterName(hazelcastProperties.getClusterName());
         hazelcastConfig.setInstanceName(hazelcastProperties.getInstanceName());
 
-        addSessionTimeoutToHazelcastConfig(hazelcastConfig, sessionTimeout.getTimeout());
+        addSessionTimeoutToHazelcastConfig(hazelcastConfig, Objects.requireNonNull(sessionTimeout.getTimeout()));
 
         hazelcastConfig.getNetworkConfig().getJoin().getMulticastConfig().setEnabled(false);
         if (!StringUtils.hasText(hazelcastProperties.getServiceName())) {
