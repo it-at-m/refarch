@@ -61,15 +61,15 @@ public class SecurityConfiguration {
                     // permitAll
                     authorizeExchangeSpec.pathMatchers(HttpMethod.OPTIONS, "/api/**").permitAll();
                     authorizeExchangeSpec.pathMatchers(
-                                    "/api/*/actuator/info",
-                                    "/actuator/health",
-                                    "/actuator/health/liveness",
-                                    "/actuator/health/readiness",
-                                    "/actuator/info",
-                                    "/actuator/metrics",
-                                    "/actuator/sbom",
-                                    "/actuator/sbom/application",
-                                    PUBLIC_ROUTES_PREFIX)
+                            "/api/*/actuator/info",
+                            "/actuator/health",
+                            "/actuator/health/liveness",
+                            "/actuator/health/readiness",
+                            "/actuator/info",
+                            "/actuator/metrics",
+                            "/actuator/sbom",
+                            "/actuator/sbom/application",
+                            PUBLIC_ROUTES_PREFIX)
                             .permitAll();
                     // dynamic permitAll from properties
                     this.applyDynamicPermitAll(authorizeExchangeSpec);
@@ -94,8 +94,8 @@ public class SecurityConfiguration {
                 })
                 .oauth2Login(oAuth2LoginSpec -> oAuth2LoginSpec.authenticationSuccessHandler(new RedirectServerAuthenticationSuccessHandler() {
                     @Override
-                    @NonNull
-                    public Mono<Void> onAuthenticationSuccess(@NonNull final WebFilterExchange webFilterExchange, @NonNull final Authentication authentication) {
+                    @NonNull public Mono<Void> onAuthenticationSuccess(@NonNull final WebFilterExchange webFilterExchange,
+                            @NonNull final Authentication authentication) {
                         webFilterExchange.getExchange().getSession().subscribe(
                                 webSession -> webSession.setMaxIdleTime(sessionTimeout.getTimeout()));
                         return super.onAuthenticationSuccess(webFilterExchange, authentication);
