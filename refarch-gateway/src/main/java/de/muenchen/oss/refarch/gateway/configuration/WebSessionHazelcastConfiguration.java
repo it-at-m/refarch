@@ -61,10 +61,7 @@ public class WebSessionHazelcastConfiguration {
         hazelcastConfig.setClusterName(hazelcastProperties.getClusterName());
         hazelcastConfig.setInstanceName(hazelcastProperties.getInstanceName());
 
-        final Duration timeout = sessionTimeout.getTimeout();
-        if (timeout != null) {
-            addSessionTimeoutToHazelcastConfig(hazelcastConfig, timeout);
-        }
+        addSessionTimeoutToHazelcastConfig(hazelcastConfig, Objects.requireNonNull(sessionTimeout.getTimeout()));
 
         final NetworkConfig networkConfig = hazelcastConfig.getNetworkConfig();
 
