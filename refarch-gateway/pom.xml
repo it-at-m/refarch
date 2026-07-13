@@ -110,7 +110,6 @@
             <version>${hazelcast-spring-session.version}</version>
         </dependency>
         <!-- kept to keep spring.session.timeout as config property and autowire SessionTimeout bean -->
-        <!-- could also be set using server.reactive.session.timeout -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-session</artifactId>
