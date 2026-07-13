@@ -37,8 +37,7 @@ public class CsrfProtectionMatcher implements ServerWebExchangeMatcher {
     }
 
     @Override
-    @NonNull
-    public Mono<MatchResult> matches(final ServerWebExchange exchange) {
+    @NonNull public Mono<MatchResult> matches(final ServerWebExchange exchange) {
         return Mono.just(exchange.getRequest())
                 .flatMap((r) -> Mono.justOrEmpty(new MethodAndPath(r.getMethod(), r.getPath().toString())))
                 .filter((mp) -> ALLOWED_METHODS.contains(mp.method) || isWhitelisted(mp.path))

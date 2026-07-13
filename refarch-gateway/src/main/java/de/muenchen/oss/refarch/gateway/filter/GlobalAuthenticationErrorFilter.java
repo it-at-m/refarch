@@ -1,6 +1,5 @@
 package de.muenchen.oss.refarch.gateway.filter;
 
-import jakarta.validation.constraints.NotNull;
 import java.nio.charset.StandardCharsets;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NonNull;
@@ -42,8 +41,7 @@ public class GlobalAuthenticationErrorFilter implements GlobalFilter, Ordered {
     }
 
     @Override
-    @NonNull
-    public Mono<Void> filter(final ServerWebExchange exchange, final GatewayFilterChain chain) {
+    @NonNull public Mono<Void> filter(final ServerWebExchange exchange, final GatewayFilterChain chain) {
         log.debug("Check for authentication errors");
 
         final ServerHttpResponse response = exchange.getResponse();

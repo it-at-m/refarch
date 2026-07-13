@@ -43,8 +43,7 @@ public class GlobalRequestParameterPollutionFilter implements GlobalFilter, Orde
      *             {@link HttpStatus#BAD_REQUEST}.
      */
     @Override
-    @NonNull
-    public Mono<Void> filter(final ServerWebExchange exchange, @NonNull final GatewayFilterChain chain) {
+    @NonNull public Mono<Void> filter(final ServerWebExchange exchange, @NonNull final GatewayFilterChain chain) {
         log.debug("Check for parameter pollution attack.");
         final ServerHttpRequest request = exchange.getRequest();
         if (!CollectionUtils.isEmpty(request.getQueryParams())) {
