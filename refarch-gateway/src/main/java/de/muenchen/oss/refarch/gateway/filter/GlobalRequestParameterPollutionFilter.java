@@ -4,6 +4,7 @@ import de.muenchen.oss.refarch.gateway.exception.ParameterPollutionException;
 import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -42,7 +43,8 @@ public class GlobalRequestParameterPollutionFilter implements GlobalFilter, Orde
      *             {@link HttpStatus#BAD_REQUEST}.
      */
     @Override
-    public Mono<Void> filter(final ServerWebExchange exchange, final GatewayFilterChain chain) {
+    @NonNull
+    public Mono<Void> filter(final ServerWebExchange exchange, @NonNull final GatewayFilterChain chain) {
         log.debug("Check for parameter pollution attack.");
         final ServerHttpRequest request = exchange.getRequest();
         if (!CollectionUtils.isEmpty(request.getQueryParams())) {

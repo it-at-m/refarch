@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.NonNull;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
@@ -27,6 +28,7 @@ public class CsrfProtectionMatcher implements ServerWebExchangeMatcher {
     private final SecurityProperties securityProperties;
 
     @Override
+    @NonNull
     public Mono<MatchResult> matches(final ServerWebExchange exchange) {
         return Mono.just(exchange.getRequest())
                 .flatMap((r) -> Mono.justOrEmpty(new MethodAndPath(r.getMethod(), r.getPath().toString())))

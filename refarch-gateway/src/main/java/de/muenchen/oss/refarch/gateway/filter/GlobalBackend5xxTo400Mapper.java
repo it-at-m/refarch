@@ -3,6 +3,7 @@ package de.muenchen.oss.refarch.gateway.filter;
 import jakarta.validation.constraints.NotNull;
 import java.nio.charset.StandardCharsets;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -46,6 +47,7 @@ public class GlobalBackend5xxTo400Mapper implements GlobalFilter, Ordered {
     }
 
     @Override
+    @NonNull
     public Mono<Void> filter(final ServerWebExchange exchange, final GatewayFilterChain chain) {
         final ServerHttpResponse response = exchange.getResponse();
         final ServerHttpRequest request = exchange.getRequest();
@@ -54,7 +56,7 @@ public class GlobalBackend5xxTo400Mapper implements GlobalFilter, Ordered {
         final ServerHttpResponseDecorator decoratedResponse = new ServerHttpResponseDecorator(response) {
 
             @Override
-            @NotNull public Mono<Void> writeWith(@NotNull final Publisher<? extends DataBuffer> body) {
+            @NonNull public Mono<Void> writeWith(@NonNull final Publisher<? extends DataBuffer> body) {
                 final HttpStatusCode responseHttpStatus = getDelegate().getStatusCode();
 
                 if (body instanceof Flux<? extends DataBuffer> flux && responseHttpStatus != null && responseHttpStatus.is5xxServerError()) {

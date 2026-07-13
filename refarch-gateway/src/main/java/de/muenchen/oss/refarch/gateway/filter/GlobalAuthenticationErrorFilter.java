@@ -3,6 +3,7 @@ package de.muenchen.oss.refarch.gateway.filter;
 import jakarta.validation.constraints.NotNull;
 import java.nio.charset.StandardCharsets;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.reactivestreams.Publisher;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -41,6 +42,7 @@ public class GlobalAuthenticationErrorFilter implements GlobalFilter, Ordered {
     }
 
     @Override
+    @NonNull
     public Mono<Void> filter(final ServerWebExchange exchange, final GatewayFilterChain chain) {
         log.debug("Check for authentication errors");
 
@@ -57,7 +59,7 @@ public class GlobalAuthenticationErrorFilter implements GlobalFilter, Ordered {
              *         the body given by the parameter.
              */
             @Override
-            @NotNull public Mono<Void> writeWith(@NotNull final Publisher<? extends DataBuffer> body) {
+            @NonNull public Mono<Void> writeWith(@NonNull final Publisher<? extends DataBuffer> body) {
                 final HttpStatusCode responseHttpStatus = getDelegate().getStatusCode();
                 if (body instanceof Flux<? extends DataBuffer> flux && responseHttpStatus != null && responseHttpStatus.equals(HttpStatus.UNAUTHORIZED)) {
                     final DataBufferFactory dataBufferFactory = response.bufferFactory();
