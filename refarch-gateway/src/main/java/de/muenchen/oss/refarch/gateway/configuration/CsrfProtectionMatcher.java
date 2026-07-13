@@ -28,8 +28,8 @@ public class CsrfProtectionMatcher implements ServerWebExchangeMatcher {
 
     private final List<PathPattern> whitelistPatterns;
 
-    CsrfProtectionMatcher(SecurityProperties securityProperties) {
-        PathPatternParser parser = new PathPatternParser();
+    public CsrfProtectionMatcher(final SecurityProperties securityProperties) {
+        final PathPatternParser parser = new PathPatternParser();
 
         whitelistPatterns = securityProperties.getCsrfWhitelisted().stream()
                 .map(parser::parse)
