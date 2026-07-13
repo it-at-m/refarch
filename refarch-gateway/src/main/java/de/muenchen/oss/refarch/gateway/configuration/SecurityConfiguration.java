@@ -2,7 +2,6 @@ package de.muenchen.oss.refarch.gateway.configuration;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;
@@ -94,9 +93,13 @@ public class SecurityConfiguration {
                     @Override
                     @NonNull public Mono<Void> onAuthenticationSuccess(@NonNull final WebFilterExchange webFilterExchange,
                             @NonNull final Authentication authentication) {
-                        webFilterExchange.getExchange().getSession().subscribe(
-                                webSession -> webSession.setMaxIdleTime(Objects.requireNonNull(sessionTimeout.getTimeout())));
-                        return super.onAuthenticationSuccess(webFilterExchange, authentication);
+                        return webFilterExchange.getExchange().getSession()
+                                .flatMap(webSession -> {
+                                    if (sessionTimeout.getTimeout() != null) {
+                                        webSession.setMaxIdleTime(sessionTimeout.getTimeout());
+                                    }
+                                    return super.onAuthenticationSuccess(webFilterExchange, authentication);
+                                });
                     }
                 }));
 
