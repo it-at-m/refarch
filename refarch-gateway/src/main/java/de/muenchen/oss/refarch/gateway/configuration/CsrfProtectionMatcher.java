@@ -2,20 +2,22 @@ package de.muenchen.oss.refarch.gateway.configuration;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.NonNull;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.server.PathContainer;
 import org.springframework.security.web.server.csrf.CsrfWebFilter;
 import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatcher;
-import org.springframework.util.AntPathMatcher;
 import org.springframework.web.server.ServerWebExchange;
+import org.springframework.web.util.pattern.PathPattern;
+import org.springframework.web.util.pattern.PathPatternParser;
 import reactor.core.publisher.Mono;
 
 @Configuration
 @Profile("!no-security")
-@RequiredArgsConstructor
 public class CsrfProtectionMatcher implements ServerWebExchangeMatcher {
 
     /**
@@ -24,10 +26,18 @@ public class CsrfProtectionMatcher implements ServerWebExchangeMatcher {
     private static final Set<HttpMethod> ALLOWED_METHODS = new HashSet<>(
             Arrays.asList(HttpMethod.GET, HttpMethod.HEAD, HttpMethod.TRACE, HttpMethod.OPTIONS));
 
-    private final SecurityProperties securityProperties;
+    private final List<PathPattern> whitelistPatterns;
+
+    public CsrfProtectionMatcher(final SecurityProperties securityProperties) {
+        final PathPatternParser parser = new PathPatternParser();
+
+        whitelistPatterns = securityProperties.getCsrfWhitelisted().stream()
+                .map(parser::parse)
+                .toList();
+    }
 
     @Override
-    public Mono<MatchResult> matches(final ServerWebExchange exchange) {
+    @NonNull public Mono<MatchResult> matches(final ServerWebExchange exchange) {
         return Mono.just(exchange.getRequest())
                 .flatMap((r) -> Mono.justOrEmpty(new MethodAndPath(r.getMethod(), r.getPath().toString())))
                 .filter((mp) -> ALLOWED_METHODS.contains(mp.method) || isWhitelisted(mp.path))
@@ -36,12 +46,8 @@ public class CsrfProtectionMatcher implements ServerWebExchangeMatcher {
     }
 
     private boolean isWhitelisted(final String path) {
-        for (final String whitelisted : securityProperties.getCsrfWhitelisted()) {
-            if (new AntPathMatcher().match(whitelisted, path)) {
-                return true;
-            }
-        }
-        return false;
+        return whitelistPatterns.stream()
+                .anyMatch(pattern -> pattern.matches(PathContainer.parsePath(path)));
     }
 
     private record MethodAndPath(HttpMethod method, String path) {
