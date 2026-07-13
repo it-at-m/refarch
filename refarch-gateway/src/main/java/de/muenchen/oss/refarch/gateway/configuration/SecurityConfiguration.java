@@ -48,8 +48,6 @@ public class SecurityConfiguration {
                 .authorizeExchange(authorizeExchangeSpec -> authorizeExchangeSpec
                         .pathMatchers(HttpMethod.OPTIONS, patterns).permitAll()
                         .anyExchange().authenticated())
-                .cors(corsSpec -> {
-                })
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
         return http.build();
     }
@@ -77,8 +75,6 @@ public class SecurityConfiguration {
                     this.applyDynamicPermitAll(authorizeExchangeSpec);
                     // only authenticated
                     authorizeExchangeSpec.anyExchange().authenticated();
-                })
-                .cors(corsSpec -> {
                 })
                 .csrf(csrfSpec -> {
                     /*
