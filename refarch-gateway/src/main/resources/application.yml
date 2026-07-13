@@ -12,6 +12,8 @@ spring:
         webflux:
           globalcors:
             cors-configurations:
+              '[/api/**]':
+                allowedOriginPatterns:
               '[/public/**]':
                 allowedOriginPatterns: ${ALLOWED_ORIGINS_PUBLIC}
               '[/clients/**]':
