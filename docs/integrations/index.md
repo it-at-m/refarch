@@ -3,6 +3,19 @@
 Integrations are ready to use implementations for accessing often used services in own applications without re-implementing the same logic.
 These enable reduced coding effort and maintenance as well as standardized programming interfaces.
 
+## Compatibility
+
+The following table shows compatibility of the libraries with relevant technologies.
+
+| Integrations Version  |   Java    | Spring Boot  |
+|:---------------------:|:---------:|:------------:|
+| **1**.x.x - **3**.x.x | >= **21** |  **3**.x.x   |
+|       **4**.x.x       | >= **21** | >= **4**.x.x |
+
+::: info Note
+The table only lists tested constellations. Other combinations not mentioned may still work. However, please note that **no support** is available for these configurations.
+:::
+
 ## Integrations
 
 - [s3-integration](./s3.md): For CRUD operations on a S3 storage.
