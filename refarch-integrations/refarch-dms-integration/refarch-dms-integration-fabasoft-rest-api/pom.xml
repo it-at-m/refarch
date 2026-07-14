@@ -68,6 +68,8 @@
                             <configOptions>
                                 <useJakartaEe>true</useJakartaEe>
                                 <useAbstractionForFiles>true</useAbstractionForFiles>
+                                <useSpringBoot4>true</useSpringBoot4>
+                                <useJackson3>true</useJackson3>
                             </configOptions>
                         </configuration>
                     </execution>
