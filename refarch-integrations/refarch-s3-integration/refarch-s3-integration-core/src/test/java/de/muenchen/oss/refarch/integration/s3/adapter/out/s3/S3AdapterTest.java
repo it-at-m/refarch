@@ -72,6 +72,13 @@ class S3AdapterTest {
     public static final String PATH = "path";
     public static final String S3_EXCEPTION_MESSAGE = "boom";
     public static final String ETAG = "etag";
+    public static final String SOURCE_PATH = "source";
+    public static final String TARGET_PATH = "target";
+    public static final String TAG_1_KEY = "tag1";
+    public static final String TAG_1_VALUE = "val1";
+    public static final String TAG_2_KEY = "tag2";
+    public static final String TAG_2_VALUE = "val2";
+
     private final S3Mapper s3Mapper = new S3Mapper();
     @Mock
     private S3Client s3Client;
@@ -330,7 +337,7 @@ class S3AdapterTest {
     @Test
     void setTags_updatesObjectTags() throws S3Exception {
         final FileReference ref = new FileReference(BUCKET, PATH);
-        final Map<String, String> tags = Map.of("document-type", "invoice", "tenant", "muc");
+        final Map<String, String> tags = Map.of(TAG_1_KEY, TAG_1_VALUE, TAG_2_KEY, TAG_2_VALUE);
 
         adapter.setTags(ref, tags);
 
@@ -340,8 +347,8 @@ class S3AdapterTest {
         assertEquals(PATH, captor.getValue().key());
         assertThat(captor.getValue().tagging().tagSet())
                 .containsExactlyInAnyOrder(
-                        Tag.builder().key("document-type").value("invoice").build(),
-                        Tag.builder().key("tenant").value("muc").build());
+                        Tag.builder().key(TAG_1_KEY).value(TAG_1_VALUE).build(),
+                        Tag.builder().key(TAG_2_KEY).value(TAG_2_VALUE).build());
     }
 
     @Test
@@ -354,21 +361,21 @@ class S3AdapterTest {
     }
 
     @Test
-    void getTags_readsObjectTags() throws S3Exception {
+    void readTags_returnsObjectTags() throws S3Exception {
         final FileReference ref = new FileReference(BUCKET, PATH);
         when(s3Client.getObjectTagging(any(GetObjectTaggingRequest.class))).thenReturn(GetObjectTaggingResponse.builder()
                 .tagSet(
-                        Tag.builder().key("document-type").value("invoice").build(),
-                        Tag.builder().key("tenant").value("muc").build())
+                        Tag.builder().key(TAG_1_KEY).value(TAG_1_VALUE).build(),
+                        Tag.builder().key(TAG_2_KEY).value(TAG_2_VALUE).build())
                 .build());
 
         final Map<String, String> tags = adapter.getTags(ref);
 
-        assertThat(tags).containsExactlyInAnyOrderEntriesOf(Map.of("document-type", "invoice", "tenant", "muc"));
+        assertThat(tags).containsExactlyInAnyOrderEntriesOf(Map.of(TAG_1_KEY, TAG_1_VALUE, TAG_2_KEY, TAG_2_VALUE));
     }
 
     @Test
-    void getTags_throwsDomainException_onSdkError() {
+    void readTags_throwsDomainException_onSdkError() {
         final FileReference ref = new FileReference(BUCKET, PATH);
         when(s3Client.getObjectTagging(any(GetObjectTaggingRequest.class)))
                 .thenThrow(software.amazon.awssdk.services.s3.model.S3Exception.builder().message(S3_EXCEPTION_MESSAGE).build());
@@ -378,41 +385,41 @@ class S3AdapterTest {
 
     @Test
     void copyFile_preservesSourceTags() throws S3Exception {
-        final FileReference source = new FileReference(BUCKET, "source");
-        final FileReference target = new FileReference(BUCKET, "target");
+        final FileReference source = new FileReference(BUCKET, SOURCE_PATH);
+        final FileReference target = new FileReference(BUCKET, TARGET_PATH);
 
         adapter.copyFile(source, target);
 
         final ArgumentCaptor<CopyObjectRequest> captor = ArgumentCaptor.forClass(CopyObjectRequest.class);
         verify(s3Client).copyObject(captor.capture());
         assertEquals(BUCKET, captor.getValue().destinationBucket());
-        assertEquals("target", captor.getValue().destinationKey());
+        assertEquals(TARGET_PATH, captor.getValue().destinationKey());
         assertEquals(BUCKET, captor.getValue().sourceBucket());
-        assertEquals("source", captor.getValue().sourceKey());
+        assertEquals(SOURCE_PATH, captor.getValue().sourceKey());
         assertEquals("COPY", captor.getValue().taggingDirectiveAsString());
     }
 
     @Test
     void copyFile_clearsTags_whenPreserveTagsIsFalse() throws S3Exception {
-        final FileReference source = new FileReference(BUCKET, "source");
-        final FileReference target = new FileReference(BUCKET, "target");
+        final FileReference source = new FileReference(BUCKET, SOURCE_PATH);
+        final FileReference target = new FileReference(BUCKET, TARGET_PATH);
 
         adapter.copyFile(source, target, false);
 
         final ArgumentCaptor<CopyObjectRequest> captor = ArgumentCaptor.forClass(CopyObjectRequest.class);
         verify(s3Client).copyObject(captor.capture());
         assertEquals(BUCKET, captor.getValue().destinationBucket());
-        assertEquals("target", captor.getValue().destinationKey());
+        assertEquals(TARGET_PATH, captor.getValue().destinationKey());
         assertEquals(BUCKET, captor.getValue().sourceBucket());
-        assertEquals("source", captor.getValue().sourceKey());
+        assertEquals(SOURCE_PATH, captor.getValue().sourceKey());
         assertEquals("REPLACE", captor.getValue().taggingDirectiveAsString());
         assertThat(captor.getValue().tagging()).isEmpty();
     }
 
     @Test
     void copyFile_throwsDomainException_onSdkError() {
-        final FileReference source = new FileReference(BUCKET, "source");
-        final FileReference target = new FileReference(BUCKET, "target");
+        final FileReference source = new FileReference(BUCKET, SOURCE_PATH);
+        final FileReference target = new FileReference(BUCKET, TARGET_PATH);
         doThrow(software.amazon.awssdk.services.s3.model.S3Exception.builder().message(S3_EXCEPTION_MESSAGE).build()).when(s3Client)
                 .copyObject(any(CopyObjectRequest.class));
 

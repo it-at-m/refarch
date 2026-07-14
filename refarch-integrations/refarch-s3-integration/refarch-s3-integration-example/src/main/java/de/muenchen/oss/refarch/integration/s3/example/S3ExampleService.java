@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 public class S3ExampleService {
     private static final String BUCKET = "test-bucket";
     private static final String FOLDER = "test";
+    private static final String PATH_TEMPLATE = "%s/%s";
     private static final String FILE_NAME = "test.txt";
     private static final String FILE_NAME_UNKNOWN = "test_unknown.txt";
     private static final String FILE_NAME_COPY = "test_copy.txt";
@@ -32,14 +33,14 @@ public class S3ExampleService {
     protected void testS3() throws IOException, S3Exception {
         log.info("Testing S3 integration");
         // upload file
-        final String filePath = "%s/%s".formatted(FOLDER, FILE_NAME);
+        final String filePath = PATH_TEMPLATE.formatted(FOLDER, FILE_NAME);
         final FileReference fileReference = new FileReference(BUCKET, filePath);
         final byte[] content = FILE_CONTENT.getBytes(StandardCharsets.UTF_8);
         try (InputStream fileContent = new ByteArrayInputStream(content)) {
             s3OutPort.saveFile(fileReference, fileContent, content.length);
         }
         // upload file with unknown length
-        final String filePathUnknown = "%s/%s".formatted(FOLDER, FILE_NAME_UNKNOWN);
+        final String filePathUnknown = PATH_TEMPLATE.formatted(FOLDER, FILE_NAME_UNKNOWN);
         final FileReference fileReferenceUnknown = new FileReference(BUCKET, filePathUnknown);
         try (InputStream fileContent = new ByteArrayInputStream(content)) {
             s3OutPort.saveFile(fileReferenceUnknown, fileContent);
@@ -70,14 +71,14 @@ public class S3ExampleService {
             }
         }
         // copy file with preserved tags
-        final String filePathCopy = "%s/%s".formatted(FOLDER, FILE_NAME_COPY);
+        final String filePathCopy = PATH_TEMPLATE.formatted(FOLDER, FILE_NAME_COPY);
         final FileReference copiedFileReference = new FileReference(BUCKET, filePathCopy);
         s3OutPort.copyFile(fileReference, copiedFileReference);
         if (!s3OutPort.getTags(copiedFileReference).equals(tags)) {
             throw new IllegalStateException("Unexpected copied tags for " + filePathCopy);
         }
         // copy file with overridden tags
-        final String filePathCopyTagged = "%s/%s".formatted(FOLDER, FILE_NAME_COPY_TAGGED);
+        final String filePathCopyTagged = PATH_TEMPLATE.formatted(FOLDER, FILE_NAME_COPY_TAGGED);
         final FileReference copiedTaggedFileReference = new FileReference(BUCKET, filePathCopyTagged);
         s3OutPort.copyFile(fileReference, copiedTaggedFileReference, false);
         if (!s3OutPort.getTags(copiedTaggedFileReference).isEmpty()) {
