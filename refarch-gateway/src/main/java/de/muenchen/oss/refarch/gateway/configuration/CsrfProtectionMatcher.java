@@ -20,7 +20,6 @@ import reactor.core.publisher.Mono;
 
 @Configuration
 @Profile("!no-security")
-@Slf4j
 public class CsrfProtectionMatcher implements ServerWebExchangeMatcher {
 
     /**
