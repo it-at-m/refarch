@@ -23,6 +23,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,18 +35,23 @@ import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.CommonPrefix;
 import software.amazon.awssdk.services.s3.model.CompleteMultipartUploadRequest;
+import software.amazon.awssdk.services.s3.model.CopyObjectRequest;
 import software.amazon.awssdk.services.s3.model.CreateMultipartUploadRequest;
 import software.amazon.awssdk.services.s3.model.CreateMultipartUploadResponse;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectResponse;
+import software.amazon.awssdk.services.s3.model.GetObjectTaggingRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectTaggingResponse;
 import software.amazon.awssdk.services.s3.model.HeadObjectRequest;
 import software.amazon.awssdk.services.s3.model.HeadObjectResponse;
 import software.amazon.awssdk.services.s3.model.ListObjectsRequest;
 import software.amazon.awssdk.services.s3.model.ListObjectsResponse;
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.PutObjectTaggingRequest;
 import software.amazon.awssdk.services.s3.model.S3Object;
+import software.amazon.awssdk.services.s3.model.Tag;
 import software.amazon.awssdk.services.s3.model.UploadPartRequest;
 import software.amazon.awssdk.services.s3.model.UploadPartResponse;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
@@ -319,5 +325,97 @@ class S3AdapterTest {
         when(s3Client.listObjects((ListObjectsRequest) any()))
                 .thenThrow(software.amazon.awssdk.services.s3.model.S3Exception.builder().message(S3_EXCEPTION_MESSAGE).build());
         assertThrows(S3Exception.class, () -> adapter.getFilesWithPrefix(BUCKET, "prefix", true, 10, null));
+    }
+
+    @Test
+    void setTags_updatesObjectTags() throws S3Exception {
+        final FileReference ref = new FileReference(BUCKET, PATH);
+        final Map<String, String> tags = Map.of("document-type", "invoice", "tenant", "muc");
+
+        adapter.setTags(ref, tags);
+
+        final ArgumentCaptor<PutObjectTaggingRequest> captor = ArgumentCaptor.forClass(PutObjectTaggingRequest.class);
+        verify(s3Client).putObjectTagging(captor.capture());
+        assertEquals(BUCKET, captor.getValue().bucket());
+        assertEquals(PATH, captor.getValue().key());
+        assertThat(captor.getValue().tagging().tagSet())
+                .containsExactlyInAnyOrder(
+                        Tag.builder().key("document-type").value("invoice").build(),
+                        Tag.builder().key("tenant").value("muc").build());
+    }
+
+    @Test
+    void setTags_throwsDomainException_onSdkError() {
+        final FileReference ref = new FileReference(BUCKET, PATH);
+        doThrow(software.amazon.awssdk.services.s3.model.S3Exception.builder().message(S3_EXCEPTION_MESSAGE).build()).when(s3Client)
+                .putObjectTagging(any(PutObjectTaggingRequest.class));
+
+        assertThrows(S3Exception.class, () -> adapter.setTags(ref, Map.of("key", "value")));
+    }
+
+    @Test
+    void getTags_readsObjectTags() throws S3Exception {
+        final FileReference ref = new FileReference(BUCKET, PATH);
+        when(s3Client.getObjectTagging(any(GetObjectTaggingRequest.class))).thenReturn(GetObjectTaggingResponse.builder()
+                .tagSet(
+                        Tag.builder().key("document-type").value("invoice").build(),
+                        Tag.builder().key("tenant").value("muc").build())
+                .build());
+
+        final Map<String, String> tags = adapter.getTags(ref);
+
+        assertThat(tags).containsExactlyInAnyOrderEntriesOf(Map.of("document-type", "invoice", "tenant", "muc"));
+    }
+
+    @Test
+    void getTags_throwsDomainException_onSdkError() {
+        final FileReference ref = new FileReference(BUCKET, PATH);
+        when(s3Client.getObjectTagging(any(GetObjectTaggingRequest.class)))
+                .thenThrow(software.amazon.awssdk.services.s3.model.S3Exception.builder().message(S3_EXCEPTION_MESSAGE).build());
+
+        assertThrows(S3Exception.class, () -> adapter.getTags(ref));
+    }
+
+    @Test
+    void copyFile_preservesSourceTags() throws S3Exception {
+        final FileReference source = new FileReference(BUCKET, "source");
+        final FileReference target = new FileReference(BUCKET, "target");
+
+        adapter.copyFile(source, target);
+
+        final ArgumentCaptor<CopyObjectRequest> captor = ArgumentCaptor.forClass(CopyObjectRequest.class);
+        verify(s3Client).copyObject(captor.capture());
+        assertEquals(BUCKET, captor.getValue().destinationBucket());
+        assertEquals("target", captor.getValue().destinationKey());
+        assertEquals(BUCKET, captor.getValue().sourceBucket());
+        assertEquals("source", captor.getValue().sourceKey());
+        assertEquals("COPY", captor.getValue().taggingDirectiveAsString());
+    }
+
+    @Test
+    void copyFile_clearsTags_whenPreserveTagsIsFalse() throws S3Exception {
+        final FileReference source = new FileReference(BUCKET, "source");
+        final FileReference target = new FileReference(BUCKET, "target");
+
+        adapter.copyFile(source, target, false);
+
+        final ArgumentCaptor<CopyObjectRequest> captor = ArgumentCaptor.forClass(CopyObjectRequest.class);
+        verify(s3Client).copyObject(captor.capture());
+        assertEquals(BUCKET, captor.getValue().destinationBucket());
+        assertEquals("target", captor.getValue().destinationKey());
+        assertEquals(BUCKET, captor.getValue().sourceBucket());
+        assertEquals("source", captor.getValue().sourceKey());
+        assertEquals("REPLACE", captor.getValue().taggingDirectiveAsString());
+        assertThat(captor.getValue().tagging()).isEmpty();
+    }
+
+    @Test
+    void copyFile_throwsDomainException_onSdkError() {
+        final FileReference source = new FileReference(BUCKET, "source");
+        final FileReference target = new FileReference(BUCKET, "target");
+        doThrow(software.amazon.awssdk.services.s3.model.S3Exception.builder().message(S3_EXCEPTION_MESSAGE).build()).when(s3Client)
+                .copyObject(any(CopyObjectRequest.class));
+
+        assertThrows(S3Exception.class, () -> adapter.copyFile(source, target));
     }
 }

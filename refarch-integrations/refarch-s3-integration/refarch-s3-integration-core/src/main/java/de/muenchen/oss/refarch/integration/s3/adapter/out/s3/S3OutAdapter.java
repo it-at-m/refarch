@@ -13,6 +13,8 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.core.exception.SdkException;
@@ -22,16 +24,22 @@ import software.amazon.awssdk.services.s3.model.AbortMultipartUploadRequest;
 import software.amazon.awssdk.services.s3.model.CompleteMultipartUploadRequest;
 import software.amazon.awssdk.services.s3.model.CompletedMultipartUpload;
 import software.amazon.awssdk.services.s3.model.CompletedPart;
+import software.amazon.awssdk.services.s3.model.CopyObjectRequest;
 import software.amazon.awssdk.services.s3.model.CreateMultipartUploadRequest;
 import software.amazon.awssdk.services.s3.model.CreateMultipartUploadResponse;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectTaggingRequest;
 import software.amazon.awssdk.services.s3.model.HeadObjectRequest;
 import software.amazon.awssdk.services.s3.model.HeadObjectResponse;
 import software.amazon.awssdk.services.s3.model.ListObjectsRequest;
 import software.amazon.awssdk.services.s3.model.ListObjectsResponse;
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.PutObjectTaggingRequest;
+import software.amazon.awssdk.services.s3.model.Tag;
+import software.amazon.awssdk.services.s3.model.Tagging;
+import software.amazon.awssdk.services.s3.model.TaggingDirective;
 import software.amazon.awssdk.services.s3.model.UploadPartRequest;
 import software.amazon.awssdk.services.s3.model.UploadPartResponse;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
@@ -153,6 +161,59 @@ public class S3OutAdapter implements S3OutPort {
     }
 
     @Override
+    public void setTags(final FileReference fileReference, final Map<String, String> tags) throws S3Exception {
+        try {
+            s3Client.putObjectTagging(PutObjectTaggingRequest.builder()
+                    .bucket(fileReference.bucket())
+                    .key(fileReference.path())
+                    .tagging(toTagging(tags))
+                    .build());
+        } catch (final SdkException e) {
+            throw new S3Exception("Error while updating tags for %s".formatted(fileReference), e);
+        }
+    }
+
+    @Override
+    public Map<String, String> getTags(final FileReference fileReference) throws S3Exception {
+        try {
+            return s3Client.getObjectTagging(GetObjectTaggingRequest.builder()
+                    .bucket(fileReference.bucket())
+                    .key(fileReference.path())
+                    .build())
+                    .tagSet()
+                    .stream()
+                    .collect(Collectors.toMap(Tag::key, Tag::value));
+        } catch (final SdkException e) {
+            throw new S3Exception("Error while retrieving tags for %s".formatted(fileReference), e);
+        }
+    }
+
+    @Override
+    public void copyFile(final FileReference source, final FileReference target) throws S3Exception {
+        copyFile(source, target, true);
+    }
+
+    @Override
+    public void copyFile(final FileReference source, final FileReference target, final boolean preserveTags) throws S3Exception {
+        try {
+            final CopyObjectRequest.Builder builder = CopyObjectRequest.builder()
+                    .sourceBucket(source.bucket())
+                    .sourceKey(source.path())
+                    .destinationBucket(target.bucket())
+                    .destinationKey(target.path());
+            if (preserveTags) {
+                builder.taggingDirective(TaggingDirective.COPY);
+            } else {
+                builder.taggingDirective(TaggingDirective.REPLACE)
+                        .tagging(toTagging(Map.of()));
+            }
+            s3Client.copyObject(builder.build());
+        } catch (final SdkException e) {
+            throw new S3Exception("Error while copying %s to %s".formatted(source, target), e);
+        }
+    }
+
+    @Override
     public FileMetadata getFileMetadata(final FileReference fileReference) throws S3Exception {
         try {
             final HeadObjectResponse response = s3Client.headObject(HeadObjectRequest.builder()
@@ -267,5 +328,13 @@ public class S3OutAdapter implements S3OutPort {
     @Override
     public List<FileMetadata> getFilesWithPrefix(final String bucket, final String prefix, final boolean recursive) throws S3Exception {
         return this.getFilesWithPrefix(bucket, prefix, recursive, 1000, null);
+    }
+
+    private Tagging toTagging(final Map<String, String> tags) {
+        return Tagging.builder()
+                .tagSet(tags.entrySet().stream()
+                        .map(entry -> Tag.builder().key(entry.getKey()).value(entry.getValue()).build())
+                        .toList())
+                .build();
     }
 }

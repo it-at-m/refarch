@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,8 @@ public class S3ExampleService {
     private static final String FOLDER = "test";
     private static final String FILE_NAME = "test.txt";
     private static final String FILE_NAME_UNKNOWN = "test_unknown.txt";
+    private static final String FILE_NAME_COPY = "test_copy.txt";
+    private static final String FILE_NAME_COPY_TAGGED = "test_copy_tagged.txt";
     private static final String FILE_CONTENT = "test content";
 
     private final S3OutPort s3OutPort;
@@ -46,6 +49,12 @@ public class S3ExampleService {
         if (files.isEmpty() || !files.getFirst().path().equals(filePath)) {
             throw new IllegalStateException("Uploaded file not found in S3: " + filePath);
         }
+        // tag file
+        final Map<String, String> tags = Map.of("document-type", "example", "tenant", "muc");
+        s3OutPort.setTags(fileReference, tags);
+        if (!s3OutPort.getTags(fileReference).equals(tags)) {
+            throw new IllegalStateException("Unexpected S3 tags for " + filePath);
+        }
         // get file
         try (InputStream fileContentGet = s3OutPort.getFileContent(fileReference)) {
             final String fileContentGetString = new String(fileContentGet.readAllBytes(), StandardCharsets.UTF_8);
@@ -60,9 +69,25 @@ public class S3ExampleService {
                 throw new IllegalStateException("Unexpected S3 content for " + filePath);
             }
         }
+        // copy file with preserved tags
+        final String filePathCopy = "%s/%s".formatted(FOLDER, FILE_NAME_COPY);
+        final FileReference copiedFileReference = new FileReference(BUCKET, filePathCopy);
+        s3OutPort.copyFile(fileReference, copiedFileReference);
+        if (!s3OutPort.getTags(copiedFileReference).equals(tags)) {
+            throw new IllegalStateException("Unexpected copied tags for " + filePathCopy);
+        }
+        // copy file with overridden tags
+        final String filePathCopyTagged = "%s/%s".formatted(FOLDER, FILE_NAME_COPY_TAGGED);
+        final FileReference copiedTaggedFileReference = new FileReference(BUCKET, filePathCopyTagged);
+        s3OutPort.copyFile(fileReference, copiedTaggedFileReference, false);
+        if (!s3OutPort.getTags(copiedTaggedFileReference).isEmpty()) {
+            throw new IllegalStateException("Unexpected tags for tag-cleared copy " + filePathCopyTagged);
+        }
         // delete file
         s3OutPort.deleteFile(fileReference);
         s3OutPort.deleteFile(fileReferenceUnknown);
+        s3OutPort.deleteFile(copiedFileReference);
+        s3OutPort.deleteFile(copiedTaggedFileReference);
         // list file
         final List<FileMetadata> files2 = s3OutPort.getFilesWithPrefix(BUCKET, FOLDER, true);
         if (!files2.isEmpty()) {

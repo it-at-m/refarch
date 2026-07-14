@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 import org.springframework.validation.annotation.Validated;
 
 /**
@@ -66,6 +67,48 @@ public interface S3OutPort {
     void saveFile(@NotNull @Valid FileReference fileReference, @NotNull InputStream content) throws S3Exception;
 
     /**
+     * Replaces the tags stored for the given object.
+     * Passing an empty map clears all tags on the object.
+     *
+     * @param fileReference the bucket and path identifying the object (must not be null)
+     * @param tags the tags to persist for the object
+     * @throws S3Exception if updating tags fails due to client, network, or service issues
+     */
+    void setTags(@NotNull @Valid FileReference fileReference, @NotNull Map<@NotBlank String, @NotBlank String> tags) throws S3Exception;
+
+    /**
+     * Retrieves all tags currently stored for the given object.
+     *
+     * @param fileReference the bucket and path identifying the object (must not be null)
+     * @return the current object tags as key/value pairs
+     * @throws S3Exception if reading tags fails due to client, network, or service issues
+     */
+    Map<String, String> getTags(@NotNull @Valid FileReference fileReference) throws S3Exception;
+
+    /**
+     * Copies an object to a new location using server-side copy semantics.
+     * Existing source tags are preserved on the copied object.
+     *
+     * @param source the source object reference (must not be null)
+     * @param target the target object reference (must not be null)
+     * @throws S3Exception if the copy fails due to client, network, or service issues
+     */
+    void copyFile(@NotNull @Valid FileReference source, @NotNull @Valid FileReference target) throws S3Exception;
+
+    /**
+     * Copies an object to a new location using server-side copy semantics.
+     * When {@code preserveTags} is {@code true}, source tags are copied to the target object.
+     * When {@code preserveTags} is {@code false}, the copied target object is created without tags.
+     *
+     * @param source the source object reference (must not be null)
+     * @param target the target object reference (must not be null)
+     * @param preserveTags whether source tags should be copied to the target object
+     * @throws S3Exception if the copy fails due to client, network, or service issues
+     */
+    void copyFile(@NotNull @Valid FileReference source, @NotNull @Valid FileReference target, boolean preserveTags)
+            throws S3Exception;
+
+    /**
      * Retrieves object metadata for the given file reference without downloading the object body.
      *
      * @param fileReference the bucket and path identifying the object (must not be null)
@@ -76,7 +119,7 @@ public interface S3OutPort {
 
     /**
      * Creates a presigned URL allowing the specified action on the object for a limited lifetime.
-     *
+     * <p>
      * Supported actions typically include {@link PresignedUrl.Action#GET},
      * {@link PresignedUrl.Action#PUT},
      * {@link PresignedUrl.Action#DELETE}, and {@link PresignedUrl.Action#HEAD}.

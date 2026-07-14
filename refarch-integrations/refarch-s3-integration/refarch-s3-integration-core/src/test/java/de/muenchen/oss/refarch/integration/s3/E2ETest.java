@@ -15,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -101,6 +102,10 @@ class E2ETest {
         assertThat(meta.path()).isEqualTo(key);
         assertThat(meta.contentLength()).isEqualTo(data.length);
 
+        final Map<String, String> sourceTags = Map.of("document-type", "invoice", "tenant", "muc");
+        s3OutPort.setTags(ref, sourceTags);
+        assertThat(s3OutPort.getTags(ref)).containsExactlyInAnyOrderEntriesOf(sourceTags);
+
         // Read content
         try (InputStream is = s3OutPort.getFileContent(ref)) {
             assertThat(is.readAllBytes()).isEqualTo(data);
@@ -160,15 +165,35 @@ class E2ETest {
         assertThat(nonRecursiveList).extracting(FileMetadata::path)
                 .containsExactlyInAnyOrder(dirPrefix + "file1.txt", dirPrefix + "file3.txt");
 
+        final FileReference copiedRef = new FileReference(BUCKET, key + "-copy");
+        s3OutPort.copyFile(ref, copiedRef);
+        assertThat(s3OutPort.fileExists(copiedRef)).isTrue();
+        assertThat(s3OutPort.getTags(copiedRef)).containsExactlyInAnyOrderEntriesOf(sourceTags);
+        try (InputStream is = s3OutPort.getFileContent(copiedRef)) {
+            assertThat(is.readAllBytes()).isEqualTo(data);
+        }
+
+        final FileReference copiedWithOverrideRef = new FileReference(BUCKET, key + "-copy-tagged");
+        s3OutPort.copyFile(ref, copiedWithOverrideRef, false);
+        assertThat(s3OutPort.fileExists(copiedWithOverrideRef)).isTrue();
+        assertThat(s3OutPort.getTags(copiedWithOverrideRef)).isEmpty();
+        try (InputStream is = s3OutPort.getFileContent(copiedWithOverrideRef)) {
+            assertThat(is.readAllBytes()).isEqualTo(data);
+        }
+
         // Delete
         s3OutPort.deleteFile(ref);
         s3OutPort.deleteFile(ref2);
+        s3OutPort.deleteFile(copiedRef);
+        s3OutPort.deleteFile(copiedWithOverrideRef);
         s3OutPort.deleteFile(refDir1);
         s3OutPort.deleteFile(refDir2);
         s3OutPort.deleteFile(refDir3);
         s3OutPort.deleteFile(new FileReference(BUCKET, keyUnknown));
         assertThat(s3OutPort.fileExists(ref)).isFalse();
         assertThat(s3OutPort.fileExists(ref2)).isFalse();
+        assertThat(s3OutPort.fileExists(copiedRef)).isFalse();
+        assertThat(s3OutPort.fileExists(copiedWithOverrideRef)).isFalse();
         assertThat(s3OutPort.fileExists(refDir1)).isFalse();
         assertThat(s3OutPort.fileExists(refDir2)).isFalse();
         assertThat(s3OutPort.fileExists(refDir3)).isFalse();
