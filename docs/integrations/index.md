@@ -8,7 +8,7 @@ These enable reduced coding effort and maintenance as well as standardized progr
 The following table shows compatibility of the libraries with relevant technologies.
 
 | Integrations Version  |   Java    | Spring Boot  |
-|:---------------------:|:---------:|:------------:|
+| :-------------------: | :-------: | :----------: |
 | **1**.x.x - **3**.x.x | >= **21** |  **3**.x.x   |
 |       **4**.x.x       | >= **21** | >= **4**.x.x |
 
