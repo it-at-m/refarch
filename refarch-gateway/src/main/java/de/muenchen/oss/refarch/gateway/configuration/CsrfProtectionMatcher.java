@@ -1,9 +1,11 @@
 package de.muenchen.oss.refarch.gateway.configuration;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NonNull;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -18,6 +20,7 @@ import reactor.core.publisher.Mono;
 
 @Configuration
 @Profile("!no-security")
+@Slf4j
 public class CsrfProtectionMatcher implements ServerWebExchangeMatcher {
 
     /**
@@ -28,6 +31,7 @@ public class CsrfProtectionMatcher implements ServerWebExchangeMatcher {
 
     private final List<PathPattern> whitelistPatterns;
 
+    @SuppressFBWarnings("CT_CONSTRUCTOR_THROW")
     public CsrfProtectionMatcher(final SecurityProperties securityProperties) {
         final PathPatternParser parser = new PathPatternParser();
 
