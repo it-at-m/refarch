@@ -1,5 +1,6 @@
 package de.muenchen.oss.refarch.gateway.configuration;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -28,6 +29,7 @@ public class CsrfProtectionMatcher implements ServerWebExchangeMatcher {
 
     private final List<PathPattern> whitelistPatterns;
 
+    @SuppressFBWarnings("CT_CONSTRUCTOR_THROW")
     public CsrfProtectionMatcher(final SecurityProperties securityProperties) {
         final PathPatternParser parser = new PathPatternParser();
 
