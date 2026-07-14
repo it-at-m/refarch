@@ -3,6 +3,7 @@ package de.muenchen.oss.refarch.integration.s3.application.port.out;
 import de.muenchen.oss.refarch.integration.s3.domain.exception.S3Exception;
 import de.muenchen.oss.refarch.integration.s3.domain.model.FileMetadata;
 import de.muenchen.oss.refarch.integration.s3.domain.model.FileReference;
+import de.muenchen.oss.refarch.integration.s3.domain.model.ListResult;
 import de.muenchen.oss.refarch.integration.s3.domain.model.PresignedUrl;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -11,7 +12,6 @@ import jakarta.validation.constraints.Positive;
 import java.io.File;
 import java.io.InputStream;
 import java.time.Duration;
-import java.util.List;
 import java.util.Map;
 import org.springframework.validation.annotation.Validated;
 
@@ -154,15 +154,16 @@ public interface S3OutPort {
     void deleteFile(@NotNull @Valid FileReference fileReference) throws S3Exception;
 
     /**
-     * Lists files in the specified bucket starting with the given prefix with pagination controls.
+     * Lists objects in the specified bucket starting with the given prefix with pagination controls.
+     * The result contains both object metadata and common prefixes for non-recursive listings.
      * Uses default pagination (maxKeys = 1000) and no marker.
      *
      * @see #getFilesWithPrefix(String, String, boolean, int, String)
      */
-    List<FileMetadata> getFilesWithPrefix(@NotBlank String bucket, @NotBlank String prefix, boolean recursive) throws S3Exception;
+    ListResult getFilesWithPrefix(@NotBlank String bucket, @NotBlank String prefix, boolean recursive) throws S3Exception;
 
     /**
-     * Lists files in the specified bucket starting with the given prefix with pagination controls.
+     * Lists objects in the specified bucket starting with the given prefix with pagination controls.
      *
      * @param bucket the bucket name (must not be blank)
      * @param prefix the prefix under which to list objects (must not be blank). Trailing slash needs to
@@ -173,10 +174,9 @@ public interface S3OutPort {
      * @param marker key to start after when listing objects (used to continue from a previous truncated
      *            response);
      *            pass null or empty to start from the beginning
-     * @return a list of metadata entries for the objects found under the prefix (up to {@code maxKeys}
-     *         items)
+     * @return the objects and common prefixes found under the prefix plus truncation metadata
      * @throws S3Exception if listing fails due to client, network, or service issues
      */
-    List<FileMetadata> getFilesWithPrefix(@NotBlank String bucket, @NotBlank String prefix, boolean recursive, @Positive int maxKeys, String marker)
+    ListResult getFilesWithPrefix(@NotBlank String bucket, @NotBlank String prefix, boolean recursive, @Positive int maxKeys, String marker)
             throws S3Exception;
 }

@@ -12,6 +12,7 @@ import static org.mockito.Mockito.when;
 import de.muenchen.oss.refarch.integration.s3.domain.exception.S3Exception;
 import de.muenchen.oss.refarch.integration.s3.domain.model.FileMetadata;
 import de.muenchen.oss.refarch.integration.s3.domain.model.FileReference;
+import de.muenchen.oss.refarch.integration.s3.domain.model.ListResult;
 import de.muenchen.oss.refarch.integration.s3.domain.model.PresignedUrl;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -22,7 +23,6 @@ import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.time.Instant;
-import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -78,6 +78,9 @@ class S3AdapterTest {
     public static final String TAG_1_VALUE = "val1";
     public static final String TAG_2_KEY = "tag2";
     public static final String TAG_2_VALUE = "val2";
+    public static final String DIR_FILE_1 = "dir/file1.txt";
+    public static final String DIR_FILE_3 = "dir/file3.txt";
+    public static final String SUBDIR_PREFIX = "subdir/";
 
     private final S3Mapper s3Mapper = new S3Mapper();
     @Mock
@@ -304,27 +307,34 @@ class S3AdapterTest {
     @Test
     void testGetFilesWithPrefix_mapsResults() throws S3Exception {
         final S3Object obj = S3Object.builder().key("k1").size(1L).eTag("t").lastModified(Instant.now()).build();
-        final ListObjectsResponse response = ListObjectsResponse.builder().contents(obj).build();
+        final ListObjectsResponse response = ListObjectsResponse.builder().contents(obj).isTruncated(false).build();
         when(s3Client.listObjects((ListObjectsRequest) any())).thenReturn(response);
 
-        final List<FileMetadata> list = adapter.getFilesWithPrefix(BUCKET, "prefix", true, 10, null);
-        assertThat(list).hasSize(1);
-        assertThat(list.getFirst().path()).isEqualTo("k1");
+        final ListResult result = adapter.getFilesWithPrefix(BUCKET, "prefix", true, 10, null);
+        assertThat(result.files()).hasSize(1);
+        assertThat(result.files().getFirst().path()).isEqualTo("k1");
+        assertThat(result.commonPrefixes()).isEmpty();
+        assertThat(result.truncated()).isFalse();
+        assertThat(result.nextMarker()).isNull();
     }
 
     @Test
     void testGetFilesWithPrefix_nonRecursive_filtersImmediateChildren() throws S3Exception {
         final Instant now = Instant.now();
-        final S3Object o1 = S3Object.builder().key("dir/file1.txt").size(1L).eTag("e1").lastModified(now).build();
-        final S3Object o2 = S3Object.builder().key("dir/file3.txt").size(3L).eTag("e3").lastModified(now).build();
-        final CommonPrefix p1 = CommonPrefix.builder().prefix("subdir/").build();
-        final ListObjectsResponse response = ListObjectsResponse.builder().contents(o1, o2).commonPrefixes(p1).build();
+        final S3Object o1 = S3Object.builder().key(DIR_FILE_1).size(1L).eTag("e1").lastModified(now).build();
+        final S3Object o2 = S3Object.builder().key(DIR_FILE_3).size(3L).eTag("e3").lastModified(now).build();
+        final CommonPrefix p1 = CommonPrefix.builder().prefix(SUBDIR_PREFIX).build();
+        final ListObjectsResponse response = ListObjectsResponse.builder().contents(o1, o2).commonPrefixes(p1).isTruncated(true).nextMarker(DIR_FILE_3)
+                .build();
         when(s3Client.listObjects((ListObjectsRequest) any())).thenReturn(response);
 
-        final List<FileMetadata> list = adapter.getFilesWithPrefix(BUCKET, "dir", false, 1000, null);
+        final ListResult result = adapter.getFilesWithPrefix(BUCKET, "dir", false, 1000, null);
 
-        assertThat(list).extracting(FileMetadata::path)
-                .containsExactlyInAnyOrder("dir/file1.txt", "dir/file3.txt");
+        assertThat(result.files()).extracting(FileMetadata::path)
+                .containsExactlyInAnyOrder(DIR_FILE_1, DIR_FILE_3);
+        assertThat(result.commonPrefixes()).containsExactly(SUBDIR_PREFIX);
+        assertThat(result.truncated()).isTrue();
+        assertThat(result.nextMarker()).isEqualTo(DIR_FILE_3);
     }
 
     @Test

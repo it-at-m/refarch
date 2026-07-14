@@ -4,6 +4,7 @@ import de.muenchen.oss.refarch.integration.s3.application.port.out.S3OutPort;
 import de.muenchen.oss.refarch.integration.s3.domain.exception.S3Exception;
 import de.muenchen.oss.refarch.integration.s3.domain.model.FileMetadata;
 import de.muenchen.oss.refarch.integration.s3.domain.model.FileReference;
+import de.muenchen.oss.refarch.integration.s3.domain.model.ListResult;
 import de.muenchen.oss.refarch.integration.s3.domain.model.PresignedUrl;
 import java.io.File;
 import java.io.IOException;
@@ -21,6 +22,7 @@ import software.amazon.awssdk.core.exception.SdkException;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.AbortMultipartUploadRequest;
+import software.amazon.awssdk.services.s3.model.CommonPrefix;
 import software.amazon.awssdk.services.s3.model.CompleteMultipartUploadRequest;
 import software.amazon.awssdk.services.s3.model.CompletedMultipartUpload;
 import software.amazon.awssdk.services.s3.model.CompletedPart;
@@ -303,7 +305,7 @@ public class S3OutAdapter implements S3OutPort {
     }
 
     @Override
-    public List<FileMetadata> getFilesWithPrefix(final String bucket, final String prefix, final boolean recursive, final int maxKeys, final String marker)
+    public ListResult getFilesWithPrefix(final String bucket, final String prefix, final boolean recursive, final int maxKeys, final String marker)
             throws S3Exception {
         try {
             final ListObjectsRequest.Builder builder = ListObjectsRequest.builder()
@@ -317,16 +319,22 @@ public class S3OutAdapter implements S3OutPort {
                 builder.marker(marker);
             }
             final ListObjectsResponse response = s3Client.listObjects(builder.build());
-            return response.contents().stream()
-                    .map(s3Mapper::toDomain)
-                    .toList();
+            return new ListResult(
+                    response.contents().stream()
+                            .map(s3Mapper::toDomain)
+                            .toList(),
+                    response.commonPrefixes().stream()
+                            .map(CommonPrefix::prefix)
+                            .toList(),
+                    response.isTruncated(),
+                    response.nextMarker());
         } catch (final SdkException e) {
             throw new S3Exception("Error while listing (bucket: %s, path: %s, maxKeys: %d, marker: %s)".formatted(bucket, prefix, maxKeys, marker), e);
         }
     }
 
     @Override
-    public List<FileMetadata> getFilesWithPrefix(final String bucket, final String prefix, final boolean recursive) throws S3Exception {
+    public ListResult getFilesWithPrefix(final String bucket, final String prefix, final boolean recursive) throws S3Exception {
         return this.getFilesWithPrefix(bucket, prefix, recursive, 1000, null);
     }
 
