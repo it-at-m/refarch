@@ -1,10 +1,8 @@
 package de.muenchen.oss.refarch.gateway;
 
-import jakarta.annotation.PostConstruct;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
-import reactor.core.publisher.Hooks;
 
 /**
  * To do some base configuration for the non blocking client-server framework named Netty via
@@ -30,17 +28,11 @@ import reactor.core.publisher.Hooks;
  */
 @SpringBootApplication
 @ConfigurationPropertiesScan
+@SuppressWarnings("PMD.UseUtilityClass")
 public class ApiGatewayApplication {
 
     public static void main(final String[] args) {
         SpringApplication.run(ApiGatewayApplication.class, args);
     }
 
-    /**
-     * Setup reactive tracing for context propagation between threads.
-     */
-    @PostConstruct
-    public void initReactiveTracing() {
-        Hooks.enableAutomaticContextPropagation();
-    }
 }

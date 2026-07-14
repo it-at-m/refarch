@@ -2,6 +2,7 @@ package de.muenchen.oss.refarch.gateway.filter;
 
 import de.muenchen.oss.refarch.gateway.configuration.SecurityConfiguration;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.NonNull;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository;
 import org.springframework.security.web.server.csrf.CsrfToken;
@@ -24,7 +25,7 @@ import reactor.core.publisher.Mono;
 public class CsrfTokenAppendingHelperFilter implements WebFilter {
 
     @Override
-    public Mono<Void> filter(final ServerWebExchange exchange, final WebFilterChain chain) {
+    @NonNull public Mono<Void> filter(final ServerWebExchange exchange, final WebFilterChain chain) {
         log.debug("Trigger to append CSRF token to response");
         final Mono<CsrfToken> csrfToken = exchange.getAttributeOrDefault(CsrfToken.class.getName(), Mono.empty());
         return csrfToken.doOnSuccess(token -> {

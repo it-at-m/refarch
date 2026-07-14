@@ -1,5 +1,6 @@
 package de.muenchen.oss.refarch.gateway.configuration;
 
+import org.jspecify.annotations.NonNull;
 import org.springframework.security.web.server.csrf.CsrfToken;
 import org.springframework.security.web.server.csrf.ServerCsrfTokenRequestAttributeHandler;
 import org.springframework.security.web.server.csrf.ServerCsrfTokenRequestHandler;
@@ -11,7 +12,7 @@ public class SpaServerCsrfTokenRequestHandler extends ServerCsrfTokenRequestAttr
     private final ServerCsrfTokenRequestHandler delegate = new XorServerCsrfTokenRequestAttributeHandler();
 
     @Override
-    public void handle(final ServerWebExchange exchange, final Mono<CsrfToken> csrfToken) {
+    public void handle(@NonNull final ServerWebExchange exchange, @NonNull final Mono<CsrfToken> csrfToken) {
         /*
          * Always use XorCsrfTokenRequestAttributeHandler to provide BREACH protection of
          * the CsrfToken when it is rendered in the response body.
@@ -20,14 +21,14 @@ public class SpaServerCsrfTokenRequestHandler extends ServerCsrfTokenRequestAttr
     }
 
     @Override
-    public Mono<String> resolveCsrfTokenValue(final ServerWebExchange exchange, final CsrfToken csrfToken) {
+    @NonNull public Mono<String> resolveCsrfTokenValue(final ServerWebExchange exchange, final CsrfToken csrfToken) {
         /*
          * If the request contains a request header, use CsrfTokenRequestAttributeHandler
          * to resolve the CsrfToken. This applies when a single-page application includes
          * the header value automatically, which was obtained via a cookie containing the
          * raw CsrfToken.
          */
-        if (exchange.getRequest().getHeaders().containsKey(csrfToken.getHeaderName())) {
+        if (exchange.getRequest().getHeaders().containsHeader(csrfToken.getHeaderName())) {
             return super.resolveCsrfTokenValue(exchange, csrfToken);
         }
         /*

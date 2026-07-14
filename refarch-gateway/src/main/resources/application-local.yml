@@ -47,6 +47,6 @@ logging:
   level:
     root: INFO
     de.muenchen.refarch: DEBUG
-    org.springframework.web: DEBUG
-    org.springframework.cloud.gateway: TRACE
+    org.springframework.web: INFO
+    org.springframework.cloud.gateway: INFO
     org.springframework.security: DEBUG
