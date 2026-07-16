@@ -1,6 +1,5 @@
 package de.muenchen.oss.refarch.integration.cosys.example.api.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import de.muenchen.oss.refarch.integration.cosys.application.port.out.GenerateDocumentOutPort;
 import de.muenchen.oss.refarch.integration.cosys.domain.exception.DocumentGenerationException;
 import de.muenchen.oss.refarch.integration.cosys.domain.model.GenerateDocument;
@@ -13,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+import tools.jackson.databind.json.JsonMapper;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,7 +35,7 @@ public class ExampleController {
                 .client("9001")
                 .role("TESTER")
                 .guid("519650b7-87c2-41a6-8527-7b095675b13f")
-                .variables(new ObjectMapper().valueToTree(Map.of(
+                .variables(new JsonMapper().valueToTree(Map.of(
                         "FormField_Grusstext", "Hallo das ist mein Gruß",
                         "EmpfaengerVorname", "Max",
                         "AbsenderVorname", "Mustermann")))
