@@ -45,8 +45,8 @@ import software.amazon.awssdk.services.s3.model.GetObjectTaggingRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectTaggingResponse;
 import software.amazon.awssdk.services.s3.model.HeadObjectRequest;
 import software.amazon.awssdk.services.s3.model.HeadObjectResponse;
-import software.amazon.awssdk.services.s3.model.ListObjectsRequest;
-import software.amazon.awssdk.services.s3.model.ListObjectsResponse;
+import software.amazon.awssdk.services.s3.model.ListObjectsV2Request;
+import software.amazon.awssdk.services.s3.model.ListObjectsV2Response;
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectTaggingRequest;
@@ -307,15 +307,15 @@ class S3AdapterTest {
     @Test
     void testGetFilesWithPrefix_mapsResults() throws S3Exception {
         final S3Object obj = S3Object.builder().key("k1").size(1L).eTag("t").lastModified(Instant.now()).build();
-        final ListObjectsResponse response = ListObjectsResponse.builder().contents(obj).isTruncated(false).build();
-        when(s3Client.listObjects((ListObjectsRequest) any())).thenReturn(response);
+        final ListObjectsV2Response response = ListObjectsV2Response.builder().contents(obj).isTruncated(false).build();
+        when(s3Client.listObjectsV2((ListObjectsV2Request) any())).thenReturn(response);
 
         final ListResult result = adapter.getFilesWithPrefix(BUCKET, "prefix", true, 10, null);
         assertThat(result.files()).hasSize(1);
         assertThat(result.files().getFirst().path()).isEqualTo("k1");
         assertThat(result.commonPrefixes()).isEmpty();
         assertThat(result.truncated()).isFalse();
-        assertThat(result.nextMarker()).isNull();
+        assertThat(result.startAfter()).isNull();
     }
 
     @Test
@@ -324,9 +324,9 @@ class S3AdapterTest {
         final S3Object o1 = S3Object.builder().key(DIR_FILE_1).size(1L).eTag("e1").lastModified(now).build();
         final S3Object o2 = S3Object.builder().key(DIR_FILE_3).size(3L).eTag("e3").lastModified(now).build();
         final CommonPrefix p1 = CommonPrefix.builder().prefix(SUBDIR_PREFIX).build();
-        final ListObjectsResponse response = ListObjectsResponse.builder().contents(o1, o2).commonPrefixes(p1).isTruncated(true).nextMarker(DIR_FILE_3)
+        final ListObjectsV2Response response = ListObjectsV2Response.builder().contents(o1, o2).commonPrefixes(p1).isTruncated(true).startAfter(DIR_FILE_3)
                 .build();
-        when(s3Client.listObjects((ListObjectsRequest) any())).thenReturn(response);
+        when(s3Client.listObjectsV2((ListObjectsV2Request) any())).thenReturn(response);
 
         final ListResult result = adapter.getFilesWithPrefix(BUCKET, "dir", false, 1000, null);
 
@@ -334,12 +334,12 @@ class S3AdapterTest {
                 .containsExactlyInAnyOrder(DIR_FILE_1, DIR_FILE_3);
         assertThat(result.commonPrefixes()).containsExactly(SUBDIR_PREFIX);
         assertThat(result.truncated()).isTrue();
-        assertThat(result.nextMarker()).isEqualTo(DIR_FILE_3);
+        assertThat(result.startAfter()).isEqualTo(DIR_FILE_3);
     }
 
     @Test
     void testGetFilesWithPrefix_throwsDomainException_onSdkError() {
-        when(s3Client.listObjects((ListObjectsRequest) any()))
+        when(s3Client.listObjectsV2((ListObjectsV2Request) any()))
                 .thenThrow(software.amazon.awssdk.services.s3.model.S3Exception.builder().message(S3_EXCEPTION_MESSAGE).build());
         assertThrows(S3Exception.class, () -> adapter.getFilesWithPrefix(BUCKET, "prefix", true, 10, null));
     }

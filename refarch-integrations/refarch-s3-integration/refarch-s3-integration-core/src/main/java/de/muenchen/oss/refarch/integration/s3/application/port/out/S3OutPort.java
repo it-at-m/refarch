@@ -171,12 +171,13 @@ public interface S3OutPort {
      * @param recursive if to lookup files recursive or not.
      * @param maxKeys maximum number of keys to return in this page (provider limits may apply, e.g.,
      *            1–1000)
-     * @param marker key to start after when listing objects (used to continue from a previous truncated
+     * @param startAfter key to start after when listing objects (used to continue from a previous
+     *            truncated
      *            response);
      *            pass null or empty to start from the beginning
      * @return the objects and common prefixes found under the prefix plus truncation metadata
      * @throws S3Exception if listing fails due to client, network, or service issues
      */
-    ListResult getFilesWithPrefix(@NotBlank String bucket, @NotBlank String prefix, boolean recursive, @Positive int maxKeys, String marker)
+    ListResult getFilesWithPrefix(@NotBlank String bucket, @NotBlank String prefix, boolean recursive, @Positive int maxKeys, String startAfter)
             throws S3Exception;
 }

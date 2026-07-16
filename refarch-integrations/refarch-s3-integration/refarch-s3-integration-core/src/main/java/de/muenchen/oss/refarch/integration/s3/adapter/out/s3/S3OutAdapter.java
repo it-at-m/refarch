@@ -34,8 +34,8 @@ import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectTaggingRequest;
 import software.amazon.awssdk.services.s3.model.HeadObjectRequest;
 import software.amazon.awssdk.services.s3.model.HeadObjectResponse;
-import software.amazon.awssdk.services.s3.model.ListObjectsRequest;
-import software.amazon.awssdk.services.s3.model.ListObjectsResponse;
+import software.amazon.awssdk.services.s3.model.ListObjectsV2Request;
+import software.amazon.awssdk.services.s3.model.ListObjectsV2Response;
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectTaggingRequest;
@@ -305,20 +305,20 @@ public class S3OutAdapter implements S3OutPort {
     }
 
     @Override
-    public ListResult getFilesWithPrefix(final String bucket, final String prefix, final boolean recursive, final int maxKeys, final String marker)
+    public ListResult getFilesWithPrefix(final String bucket, final String prefix, final boolean recursive, final int maxKeys, final String startAfter)
             throws S3Exception {
         try {
-            final ListObjectsRequest.Builder builder = ListObjectsRequest.builder()
+            final ListObjectsV2Request.Builder builder = ListObjectsV2Request.builder()
                     .bucket(bucket)
                     .prefix(prefix)
                     .maxKeys(maxKeys);
             if (!recursive) {
                 builder.delimiter("/");
             }
-            if (marker != null && !marker.isEmpty()) {
-                builder.marker(marker);
+            if (startAfter != null && !startAfter.isEmpty()) {
+                builder.startAfter(startAfter);
             }
-            final ListObjectsResponse response = s3Client.listObjects(builder.build());
+            final ListObjectsV2Response response = s3Client.listObjectsV2(builder.build());
             return new ListResult(
                     response.contents().stream()
                             .map(s3Mapper::toDomain)
@@ -326,10 +326,10 @@ public class S3OutAdapter implements S3OutPort {
                     response.commonPrefixes().stream()
                             .map(CommonPrefix::prefix)
                             .toList(),
-                    response.isTruncated(),
-                    response.nextMarker());
+                    Boolean.TRUE.equals(response.isTruncated()),
+                    response.startAfter());
         } catch (final SdkException e) {
-            throw new S3Exception("Error while listing (bucket: %s, path: %s, maxKeys: %d, marker: %s)".formatted(bucket, prefix, maxKeys, marker), e);
+            throw new S3Exception("Error while listing (bucket: %s, path: %s, maxKeys: %d, startAfter: %s)".formatted(bucket, prefix, maxKeys, startAfter), e);
         }
     }
 

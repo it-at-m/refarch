@@ -8,5 +8,5 @@ public record ListResult(
         @NotNull List<@Valid FileMetadata> files,
         @NotNull List<String> commonPrefixes,
         boolean truncated,
-        String nextMarker) {
+        String startAfter) {
 }
