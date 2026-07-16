@@ -1,6 +1,5 @@
 package de.muenchen.oss.refarch.integration.cosys.configuration;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import de.muenchen.oss.refarch.integration.cosys.ApiClient;
 import de.muenchen.oss.refarch.integration.cosys.adapter.out.cosys.CosysOutAdapter;
 import de.muenchen.oss.refarch.integration.cosys.api.GenerationApi;
@@ -19,6 +18,7 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
+import tools.jackson.databind.ObjectMapper;
 
 @Configuration
 @RequiredArgsConstructor
