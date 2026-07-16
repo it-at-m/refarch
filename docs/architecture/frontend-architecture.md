@@ -1,6 +1,6 @@
 # Frontend Architecture
 
-RefArch applications usually provide one or more graphical user interfaces for interacting with backend services. The architecture supports both centralized and distributed UI composition.
+RefArch applications usually provide one or more graphical user interfaces for interacting with backend services. The architecture focuses on one centralized frontend and supports web components as an optional integration style.
 
 ## Centralized frontend
 
@@ -10,17 +10,25 @@ Centralized frontend architecture:
 
 ![Centralized frontend architecture](./assets/Anwendung_zentraleGUI_PermissionService.png)
 
-This remains the default pattern because it is easier to build, operate and reason about than a distributed UI. In the current RefArch implementation, the frontend is built and deployed separately from the gateway as described in [ADR001](../cross-cutting-concepts/adr/001-separate_gateway_and_frontend.md), but it still forms one coherent frontend for the application.
+This remains the default pattern because it is easier to build, operate and reason about than more fragmented UI compositions. In the current RefArch implementation, the frontend is built and deployed separately from the gateway as described in [ADR001](../cross-cutting-concepts/adr/001-separate_gateway_and_frontend.md), but it still forms one coherent frontend for the application.
 
-## Distributed frontend
+## Web components
 
-In the distributed model, UI parts are delivered by multiple services and combined into one user experience.
+Web components are an optional addition when parts of the UI should be provided independently from the main frontend.
 
-Distributed frontend architecture:
+In RefArch, this is reflected by the dedicated `webcomponent` template and the surrounding tooling:
 
-![Distributed frontend architecture](./assets/Anwendung_verteilteGUI_PermissionService.png)
+- a separate JavaScript-based template alongside the regular frontend template
+- the same OpenAPI-based client generation workflow as for the frontend
+- static build and deployment in the same way as other JavaScript-based UI modules
 
-This pattern can be useful for micro frontend scenarios, for example when web components from different teams need to be integrated into a shared application shell. It also introduces additional integration effort and should only be chosen when the added modularity is needed.
+This makes web components a good fit for reusable UI modules or integrations into an existing host application, while keeping the main RefArch setup centered around one dedicated frontend service. Additional details can be found in:
+
+- [ADR001 - Separate Gateway and Frontend](../cross-cutting-concepts/adr/001-separate_gateway_and_frontend.md)
+- [Templates: Getting Started](../templates/getting-started.md#frontend-web-components)
+- [Templates: Develop](../templates/develop.md#component-libraries)
+- [Cross-Cutting Concepts: OpenAPI](../cross-cutting-concepts/openapi.md#generating-api-client-from-specification)
+- [Templates: Deploy](../templates/deploy.md#docker-images)
 
 ## Current recommendation
 
@@ -30,4 +38,4 @@ The current default is:
 - one API gateway as the external backend entry point
 - optional web components for modular frontend extensions
 
-This keeps the standard setup simple while leaving room for more distributed frontend architectures when required.
+This keeps the standard setup simple while still allowing independently delivered UI building blocks where they provide clear value.
