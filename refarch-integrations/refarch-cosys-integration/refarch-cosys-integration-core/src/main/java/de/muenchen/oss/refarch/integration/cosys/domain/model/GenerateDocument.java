@@ -1,9 +1,9 @@
 package de.muenchen.oss.refarch.integration.cosys.domain.model;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
+import tools.jackson.databind.JsonNode;
 
 /**
  * Dto for generating documents.

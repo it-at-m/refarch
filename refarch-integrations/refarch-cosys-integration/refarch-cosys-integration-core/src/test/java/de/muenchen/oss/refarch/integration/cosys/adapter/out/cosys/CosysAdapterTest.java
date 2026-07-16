@@ -6,8 +6,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import de.muenchen.oss.refarch.integration.cosys.api.GenerationApi;
 import de.muenchen.oss.refarch.integration.cosys.configuration.CosysConfiguration;
 import de.muenchen.oss.refarch.integration.cosys.domain.model.GenerateDocument;
@@ -22,11 +20,14 @@ import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DefaultDataBufferFactory;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 class CosysAdapterTest {
     private final CosysConfiguration configuration = mock(CosysConfiguration.class);
     private final GenerationApi generationApi = mock(GenerationApi.class);
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new JsonMapper();
     private final CosysOutAdapter cosysAdapter = new CosysOutAdapter(configuration, generationApi, objectMapper);
 
     @Test
@@ -77,8 +78,8 @@ class CosysAdapterTest {
                     "client",
                     "role",
                     "guid",
-                    new ObjectMapper().readTree("{\"name\":\"John\", \"age\":30}"));
-        } catch (JsonProcessingException e) {
+                    new JsonMapper().readTree("{\"name\":\"John\", \"age\":30}"));
+        } catch (JacksonException e) {
             throw new RuntimeException(e);
         }
     }

@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.16</version>
+        <version>4.0.7</version>
         <relativePath />
     </parent>
 
@@ -72,7 +72,7 @@
         <refarch-tools.version>1.3.0</refarch-tools.version>
 
         <!-- Additional required dependencies -->
-        <springdoc-openapi.version>2.8.17</springdoc-openapi.version>
+        <springdoc-openapi.version>3.0.3</springdoc-openapi.version>
 
         <!-- Spotless P2 Mirror configuration (e.g. required when using company internal registry -->
         <p2.username /> <!-- must be empty, override via Maven settings.xml if needed -->
@@ -80,7 +80,6 @@
         <p2.mirror>download.eclipse.org</p2.mirror>
 
         <!-- TEMPORARY TRANSITIVE DEPENDENCY OVERRIDES FOR SECURITY FIXES -->
-        <commons-lang3.version>3.18.0</commons-lang3.version> <!-- Fixes CVE-2025-48924 -->
     </properties>
 
     <dependencyManagement>
@@ -144,8 +143,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.springframework.boot</groupId>
