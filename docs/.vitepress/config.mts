@@ -24,6 +24,7 @@ const vitepressConfig = defineConfig({
         text: "Docs",
         items: [
           { text: "Overview", link: "/overview" },
+          { text: "Architecture", link: "/architecture/" },
           { text: "API Gateway", link: "/gateway" },
           { text: "Templates", link: "/templates" },
           { text: "Integrations", link: "/integrations" },
@@ -60,6 +61,31 @@ const vitepressConfig = defineConfig({
     ],
     sidebar: [
       { text: "Overview", link: "/overview", items: [] },
+      {
+        text: "Architecture",
+        link: "/architecture/",
+        items: [
+          {
+            text: "Application Basics",
+            link: "/architecture/application-basics",
+          },
+          {
+            text: "Microservice Applications",
+            link: "/architecture/microservice-applications",
+          },
+          { text: "Infrastructure", link: "/architecture/infrastructure" },
+          {
+            text: "Frontend Architecture",
+            link: "/architecture/frontend-architecture",
+          },
+          { text: "External Access", link: "/architecture/external-access" },
+          { text: "Security Flows", link: "/architecture/security-flows" },
+          {
+            text: "Integration Patterns",
+            link: "/architecture/integration-patterns",
+          },
+        ],
+      },
       {
         text: "Components",
         items: [{ text: "API Gateway", link: "/gateway" }],
