@@ -12,6 +12,43 @@ jobs:
     permissions:
       contents: read
       security-events: write # Required to upload SARIF results to the GitHub Security tab
-    if: github.event_name != 'schedule' || github.ref == 'refs/heads/main'
+    if: github.event_name == 'schedule'
     steps:
       - uses: it-at-m/lhm_actions/action-templates/actions/action-trivy@4ed8f906bab8111fbd9a7af8e3f4129f9b721757 # v1.2.3
+  # JOB to run change detection
+  changes:
+    runs-on: ubuntu-latest
+    # Required permissions
+    permissions:
+      pull-requests: read
+    if: github.event_name == 'pull_request'
+    outputs:
+      # Expose matched filters as job 'packages' output variable
+      packages: ${{ steps.filter.outputs.changes }}
+    steps:
+      # For pull requests it's not necessary to checkout the code
+      - uses: it-at-m/lhm_actions/action-templates/actions/action-filter@4ed8f906bab8111fbd9a7af8e3f4129f9b721757 # v1.2.3
+        id: filter
+        with:
+          filters: |
+            docs: docs/**
+            refarch-gateway: refarch-gateway/**
+            refarch-integrations: refarch-integrations/**
+            refarch-tools: refarch-tools/**
+      - run: |
+          echo ${{ toJSON(steps.filter.outputs.changes) }}
+
+  # JOB to find out modified packages
+  trivy-partial:
+    needs: changes
+    if: ${{ needs.changes.outputs.packages != '' && needs.changes.outputs.packages != '[]' }}
+    strategy:
+      matrix:
+        # Parse JSON array containing names of all filters matching any of changed files
+        # e.g. ['package1', 'package2'] if both package folders contains changes
+        package: ${{ fromJSON(needs.changes.outputs.packages) }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: it-at-m/lhm_actions/action-templates/actions/action-trivy@4ed8f906bab8111fbd9a7af8e3f4129f9b721757 # v1.2.3
+        with:
+          path: ${{ matrix.package }}
