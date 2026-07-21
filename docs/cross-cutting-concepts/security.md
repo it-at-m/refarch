@@ -35,20 +35,31 @@ A so-called authorities converter specifies how the authorities are extracted fr
 OAuth 2.0 and OpenID Connect don't specify any authorization for applications themselves, so following authorities converters are coupled to our used identity provider Keycloak.
 In general, they should work with other identity providers (e.g. by configuring a mapper) but are not tested.
 
-The backend template provides two implementations which are described in the following.
+The backend template provides two variants which are described in the following.
 
-::: info Suggested implementation
+::: info Suggested
 In contrast to permissions, roles are a more commonly supported concept in OAuth 2.0 and OpenID Connect identity providers.
 Therefore, roles offer higher interoperability and are the suggested option. Roles are used by default in the templates.
 
-Once an application has decided on one or the other, it's perfectly fine to remove the unneeded implementation or switch the default.
+Once an application has decided on one or the other, it's perfectly fine to remove the unneeded configuration/implementation.
 :::
 
 #### Keycloak roles (Default)
 
 Keycloak comes with a built in `roles` scope and corresponding realm mapper, which maps all client roles to the `resource_access.<client id>.roles` claim.
-The provided authorities converter implementation (`KeycloakRolesAuthoritiesConverter.java`) takes this claim and maps it to Spring authorities.
-During this mapping the roles are prefixed with `ROLE_`, which Spring Security expects to interpret a granted authority as role.
+Spring uses the following configuration to take the claim and map it to Spring authorities:
+
+```yaml
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          authority-prefix: "ROLE_"
+          authorities-claim-expressions: "['resource_access']['${refarch.security.client-id}']['roles']"
+```
+
+The roles are prefixed with `ROLE_`, which Spring Security expects to interpret a granted authority as role and allows the use of `hasRole` security expression to implement authorization.
 
 #### Keycloak permissions
 
@@ -57,15 +68,18 @@ This implementation relies on the UMA protocol which is not part of OAuth 2.0 or
 identity providers. Because of that this feature is coupled to using Keycloak or some other supporting identity provider.
 :::
 
-This implementation (`KeycloakPermissionsAuthoritiesConverter.java`) uses permissions for authorization and retrieves them
+This custom implementation (`KeycloakPermissionsAuthoritiesConverter.java`) uses permissions for authorization and retrieves them
 from the OpenID token endpoint via the UMA protocol and grant-type `urn:ietf:params:oauth:grant-type:uma-ticket`.
-The resolved permissions are cached (default 1 minute, can be configured via properties).
+The resolved permissions are cached (default 1 minute, can be configured via `refarch.security.permissions-cache-lifetime` property).
 
 See [according Keycloak documentation](https://www.keycloak.org/docs/latest/authorization_services/index.html#_service_obtaining_permissions) for more information.
 
 ::: info
-Because the templates use roles by default, permission-based authorization must be explicitly enabled via the `keycloak-permissions` Spring profile.
+The templates use role-based authorization by default. Thus, permission-based authorization must be explicitly enabled via the `keycloak-permissions` Spring profile.
+The Spring resource server related properties mentioned above are unused in this case.
 :::
+
+Using the permission-based variant, authorization can be implemented using the `hasAuthority` security expression.
 
 ### User attributes
 
