@@ -80,6 +80,7 @@
         <p2.mirror>download.eclipse.org</p2.mirror>
 
         <!-- TEMPORARY TRANSITIVE DEPENDENCY OVERRIDES FOR SECURITY FIXES -->
+        <jackson-bom.version>3.1.5</jackson-bom.version> <!-- fixes CVE-2026-59889 -->
     </properties>
 
     <dependencyManagement>
