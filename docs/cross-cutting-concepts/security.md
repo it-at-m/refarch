@@ -76,7 +76,7 @@ See [according Keycloak documentation](https://www.keycloak.org/docs/latest/auth
 
 ::: info
 The templates use role-based authorization by default. Thus, permission-based authorization must be explicitly enabled via the `keycloak-permissions` Spring profile.
-The Spring resource server related properties mentioned above are unused in this case.
+The Spring resource server related properties mentioned above are not used for authority resolution in this case.
 :::
 
 Using the permission-based variant, authorization can be implemented using the `hasAuthority` security expression.
