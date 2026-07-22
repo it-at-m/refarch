@@ -33,8 +33,7 @@ gitGraph
 ## RefArch Templates
 
 - **Branching Model**:
-  - `main` (also called `next`): active development branch where new features are merged.
-  - `stable`: branch for stable releases.
+  - `main`: active development branch where new features are merged.
 - **Versioning Scheme**:
   - Versions follow the format: `<year>.<counter>.<patch>`
     - `<year>`: year of the release (e.g., 2026)
@@ -42,11 +41,10 @@ gitGraph
     - `<patch>`: patch number for bug fixes
 - **Release Process**:
   1. New features are merged into the `main` branch.
-  2. Approximately every six months, `main` is merged into `stable`.
-  3. A release is created from the `stable` branch with the new version number.
+  2. Approximately every six months, a release is created from the `main` branch with the new version number.
 
 ::: warning
-The `stable` branch does **not** receive any dependency updates, including security patches.
+The `main` branch can contain features which are not part of any release yet.
 :::
 
 ```mermaid
@@ -57,8 +55,6 @@ config:
 ---
 gitGraph
     commit
-    branch stable
-    commit
     branch feature/awesome-feature
     commit
     checkout main
@@ -66,14 +62,10 @@ gitGraph
     branch feature/another-feature
     commit
     checkout main
-    merge feature/another-feature
-    checkout stable
-    merge main tag: "2026.0.0"
+    merge feature/another-feature tag: "2026.0.0"
     checkout main
     branch feature/another-feature2
     commit
     checkout main
-    merge feature/another-feature2
-    checkout stable
-    merge main tag: "2026.1.0"
+    merge feature/another-feature2 tag: "2026.1.0"
 ```
