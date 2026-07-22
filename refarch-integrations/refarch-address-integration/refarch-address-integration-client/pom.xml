@@ -46,11 +46,6 @@
             <artifactId>jackson-databind-nullable</artifactId>
             <version>${jackson-databind-nullable.version}</version>
         </dependency>
-        <dependency>
-            <groupId>tools.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson-bom.version}</version>
-        </dependency>
 
         <!-- Testing -->
         <dependency>
