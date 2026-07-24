@@ -1,11 +1,11 @@
 package de.muenchen.oss.refarch.gateway.configuration;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.session.SessionProperties;
-import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.jspecify.annotations.NonNull;
+import org.springframework.boot.session.autoconfigure.SessionTimeout;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -29,9 +29,8 @@ public class SecurityConfiguration {
     private static final String PUBLIC_ROUTES_PREFIX = "/public/**";
 
     private final CsrfProtectionMatcher csrfProtectionMatcher;
-    private final SessionProperties sessionProperties;
-    private final ServerProperties serverProperties;
     private final SecurityProperties securityProperties;
+    private final SessionTimeout sessionTimeout;
 
     @Bean
     @Order(0)
@@ -48,8 +47,6 @@ public class SecurityConfiguration {
                 .authorizeExchange(authorizeExchangeSpec -> authorizeExchangeSpec
                         .pathMatchers(HttpMethod.OPTIONS, patterns).permitAll()
                         .anyExchange().authenticated())
-                .cors(corsSpec -> {
-                })
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
         return http.build();
     }
@@ -78,8 +75,6 @@ public class SecurityConfiguration {
                     // only authenticated
                     authorizeExchangeSpec.anyExchange().authenticated();
                 })
-                .cors(corsSpec -> {
-                })
                 .csrf(csrfSpec -> {
                     /*
                      * Custom csrf request handler for spa and BREACH attack protection.
@@ -96,10 +91,15 @@ public class SecurityConfiguration {
                 })
                 .oauth2Login(oAuth2LoginSpec -> oAuth2LoginSpec.authenticationSuccessHandler(new RedirectServerAuthenticationSuccessHandler() {
                     @Override
-                    public Mono<Void> onAuthenticationSuccess(final WebFilterExchange webFilterExchange, final Authentication authentication) {
-                        webFilterExchange.getExchange().getSession().subscribe(
-                                webSession -> webSession.setMaxIdleTime(getSessionTimeout()));
-                        return super.onAuthenticationSuccess(webFilterExchange, authentication);
+                    @NonNull public Mono<Void> onAuthenticationSuccess(@NonNull final WebFilterExchange webFilterExchange,
+                            @NonNull final Authentication authentication) {
+                        return webFilterExchange.getExchange().getSession()
+                                .flatMap(webSession -> {
+                                    if (sessionTimeout.getTimeout() != null) {
+                                        webSession.setMaxIdleTime(sessionTimeout.getTimeout());
+                                    }
+                                    return super.onAuthenticationSuccess(webFilterExchange, authentication);
+                                });
                     }
                 }));
 
@@ -115,19 +115,5 @@ public class SecurityConfiguration {
                 authorize.pathMatchers(method, rule.getPattern()).permitAll();
             }
         }
-    }
-
-    /**
-     * Get Spring Session timeout.
-     * Uses {@link SessionProperties} and {@link ServerProperties#getServlet()} as fallback, like Spring
-     * Session itself.
-     * See according
-     * <a href="https://docs.spring.io/spring-boot/reference/web/spring-session.html">Spring
-     * documentation</a>.
-     *
-     * @return Spring session timeout.
-     */
-    protected Duration getSessionTimeout() {
-        return sessionProperties.determineTimeout(() -> serverProperties.getServlet().getSession().getTimeout());
     }
 }

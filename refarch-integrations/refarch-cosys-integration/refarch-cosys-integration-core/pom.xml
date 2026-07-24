@@ -4,15 +4,11 @@
     <parent>
         <groupId>de.muenchen.oss.refarch</groupId>
         <artifactId>refarch-cosys-integration</artifactId>
-        <version>3.1.0-SNAPSHOT</version>
+        <version>4.1.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>refarch-cosys-integration-core</artifactId>
     <name>refarch-cosys-integration-core</name>
-
-    <properties>
-        <httpmime.version>4.5.14</httpmime.version>
-    </properties>
 
     <dependencies>
         <!-- Spring -->
@@ -33,12 +29,6 @@
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>${gson.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpmime</artifactId>
-            <version>${httpmime.version}</version>
         </dependency>
 
         <dependency>

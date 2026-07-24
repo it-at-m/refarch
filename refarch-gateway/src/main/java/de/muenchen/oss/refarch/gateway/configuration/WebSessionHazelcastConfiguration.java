@@ -8,9 +8,13 @@ import com.hazelcast.config.NetworkConfig;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.map.IMap;
+import com.hazelcast.spring.session.HazelcastIndexedSessionRepository;
 import java.time.Duration;
+import java.util.Objects;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.session.autoconfigure.SessionTimeout;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -21,7 +25,6 @@ import org.springframework.session.ReactiveMapSessionRepository;
 import org.springframework.session.ReactiveSessionRepository;
 import org.springframework.session.Session;
 import org.springframework.session.config.annotation.web.server.EnableSpringWebSession;
-import org.springframework.session.hazelcast.HazelcastIndexedSessionRepository;
 import org.springframework.util.StringUtils;
 
 /**
@@ -33,7 +36,7 @@ import org.springframework.util.StringUtils;
 @RequiredArgsConstructor
 public class WebSessionHazelcastConfiguration {
     private final HazelcastProperties hazelcastProperties;
-    private final SecurityConfiguration securityConfiguration;
+    private final SessionTimeout sessionTimeout;
 
     @Bean
     public ServerOAuth2AuthorizedClientRepository authorizedClientRepository() {
@@ -58,7 +61,7 @@ public class WebSessionHazelcastConfiguration {
         hazelcastConfig.setClusterName(hazelcastProperties.getClusterName());
         hazelcastConfig.setInstanceName(hazelcastProperties.getInstanceName());
 
-        addSessionTimeoutToHazelcastConfig(hazelcastConfig, securityConfiguration.getSessionTimeout());
+        addSessionTimeoutToHazelcastConfig(hazelcastConfig, Objects.requireNonNull(sessionTimeout.getTimeout()));
 
         final NetworkConfig networkConfig = hazelcastConfig.getNetworkConfig();
 
@@ -78,7 +81,7 @@ public class WebSessionHazelcastConfiguration {
         hazelcastConfig.setClusterName(hazelcastProperties.getClusterName());
         hazelcastConfig.setInstanceName(hazelcastProperties.getInstanceName());
 
-        addSessionTimeoutToHazelcastConfig(hazelcastConfig, securityConfiguration.getSessionTimeout());
+        addSessionTimeoutToHazelcastConfig(hazelcastConfig, Objects.requireNonNull(sessionTimeout.getTimeout()));
 
         hazelcastConfig.getNetworkConfig().getJoin().getMulticastConfig().setEnabled(false);
         if (!StringUtils.hasText(hazelcastProperties.getServiceName())) {

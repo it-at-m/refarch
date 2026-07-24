@@ -2,11 +2,12 @@ package de.muenchen.oss.refarch.gateway.filter;
 
 import io.micrometer.tracing.Span;
 import io.micrometer.tracing.Tracer;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.jspecify.annotations.NonNull;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
@@ -17,13 +18,13 @@ import reactor.core.publisher.Mono;
  */
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class DistributedTracingFilter implements WebFilter {
 
     public static final String TRACE_ID = "TraceId";
     public static final String SPAN_ID = "SpanId";
 
-    @Autowired
-    private Tracer tracer;
+    private final Tracer tracer;
 
     /**
      * This method adds the zipkin headers "X-B3-SpanId" and "X-B3-TraceId" to each response in
@@ -35,13 +36,13 @@ public class DistributedTracingFilter implements WebFilter {
      *         complete
      */
     @Override
-    public Mono<Void> filter(final ServerWebExchange serverWebExchange,
+    @NonNull public Mono<Void> filter(final ServerWebExchange serverWebExchange,
             final WebFilterChain webFilterChain) {
         final ServerHttpResponse response = serverWebExchange.getResponse();
         response.beforeCommit(() -> {
             final Span span = tracer.currentSpan();
             if (span != null) {
-                final MultiValueMap<String, String> headers = response.getHeaders();
+                final HttpHeaders headers = response.getHeaders();
                 headers.add(TRACE_ID, span.context().traceId());
                 headers.add(SPAN_ID, span.context().spanId());
             } else {

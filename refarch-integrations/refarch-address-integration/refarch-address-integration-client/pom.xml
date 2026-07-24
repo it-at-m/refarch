@@ -5,14 +5,14 @@
     <parent>
         <groupId>de.muenchen.oss.refarch</groupId>
         <artifactId>refarch-address-integration</artifactId>
-        <version>3.1.0-SNAPSHOT</version>
+        <version>4.1.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>refarch-address-integration-client</artifactId>
     <name>refarch-address-integration-client</name>
 
     <properties>
-        <openapi-generator-maven-plugin.version>7.23.0</openapi-generator-maven-plugin.version>
+        <openapi-generator-maven-plugin.version>7.24.0</openapi-generator-maven-plugin.version>
 
         <jackson-databind-nullable.version>0.2.10</jackson-databind-nullable.version>
     </properties>
@@ -29,6 +29,10 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-restclient</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
         <dependency>
@@ -41,14 +45,6 @@
             <groupId>org.openapitools</groupId>
             <artifactId>jackson-databind-nullable</artifactId>
             <version>${jackson-databind-nullable.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
 
         <!-- Testing -->
@@ -104,7 +100,8 @@
                                 <performBeanValidation>true</performBeanValidation>
                                 <additionalProperty>true</additionalProperty>
                                 <useJakartaEe>true</useJakartaEe>
-
+                                <useSpringBoot4>true</useSpringBoot4>
+                                <useJackson3>true</useJackson3>
                             </configOptions>
                         </configuration>
                     </execution>
