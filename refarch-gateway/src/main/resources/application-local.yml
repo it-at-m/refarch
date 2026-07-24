@@ -40,9 +40,6 @@ spring:
             scope: profile, openid, roles, basic
   session:
     timeout: 60s
-    data:
-      redis:
-        namespace: "refarch"
 
 logging:
   include-application-group: false # disabled because application group is only relevant when deployed
