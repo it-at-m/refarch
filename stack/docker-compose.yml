@@ -41,6 +41,16 @@ services:
       - keycloak
     security_opt: *security_settings
 
+  # === Redis ===
+  redis:
+    image: redis:8.8.0-alpine3.23
+    ports:
+      - "6379:6379"
+    healthcheck:
+      <<: *healthcheck
+      test: [ "CMD-SHELL",  "redis-cli ping" ]
+    security_opt: *security_settings
+
   # === S3 ===
   minio:
     image: quay.io/minio/minio:RELEASE.2024-08-17T01-24-54Z@sha256:6f23072e3e222e64fe6f86b31a7f7aca971e5129e55cbccef649b109b8e651a1
@@ -54,7 +64,7 @@ services:
     volumes:
       - ./minio:/data
     networks:
-      - internal
+      - minio
     healthcheck:
       <<: *healthcheck
       test: [ "CMD-SHELL",  "curl http://localhost:9000/minio/health/live" ]
@@ -71,7 +81,7 @@ services:
         exit 0;
       "
     networks:
-      - internal
+      - minio
     security_opt: *security_settings
 
   # === Mail ===
@@ -86,4 +96,4 @@ services:
 
 networks:
   keycloak:
-  internal:
+  minio:

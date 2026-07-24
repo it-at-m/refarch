@@ -38,6 +38,8 @@ spring:
             client-id: local
             client-secret: client_secret
             scope: profile, openid, roles, basic
+  session:
+    timeout: 60s
 
 logging:
   include-application-group: false # disabled because application group is only relevant when deployed
