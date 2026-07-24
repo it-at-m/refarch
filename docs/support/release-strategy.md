@@ -45,6 +45,7 @@ gitGraph
 
 ::: warning
 The `main` branch can contain features which are not part of any release yet.
+However, these should already be described in this documentation.
 :::
 
 ```mermaid
