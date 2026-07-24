@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
-import org.jspecify.annotations.NonNull;
 import org.springframework.boot.session.autoconfigure.SessionTimeout;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,13 +12,9 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.web.server.SecurityWebFilterChain;
-import org.springframework.security.web.server.WebFilterExchange;
-import org.springframework.security.web.server.authentication.RedirectServerAuthenticationSuccessHandler;
 import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository;
 import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers;
-import reactor.core.publisher.Mono;
 
 @Configuration
 @Profile("!no-security")
@@ -89,19 +84,7 @@ public class SecurityConfiguration {
                     csrfSpec.csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse());
                     csrfSpec.requireCsrfProtectionMatcher(csrfProtectionMatcher);
                 })
-                .oauth2Login(oAuth2LoginSpec -> oAuth2LoginSpec.authenticationSuccessHandler(new RedirectServerAuthenticationSuccessHandler() {
-                    @Override
-                    @NonNull public Mono<Void> onAuthenticationSuccess(@NonNull final WebFilterExchange webFilterExchange,
-                            @NonNull final Authentication authentication) {
-                        return webFilterExchange.getExchange().getSession()
-                                .flatMap(webSession -> {
-                                    if (sessionTimeout.getTimeout() != null) {
-                                        webSession.setMaxIdleTime(sessionTimeout.getTimeout());
-                                    }
-                                    return super.onAuthenticationSuccess(webFilterExchange, authentication);
-                                });
-                    }
-                }));
+                .oauth2Login(Customizer.withDefaults());
 
         return http.build();
     }
