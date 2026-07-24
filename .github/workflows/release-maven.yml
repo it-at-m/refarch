@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      pull-requests: write # can be removed if use-pr is 'false'
+      pull-requests: write # must be removed if use-pr is 'false'
     outputs:
       MVN_ARTIFACT_ID: ${{ steps.release-maven-artifact.outputs.MVN_ARTIFACT_ID }}
       ARTIFACT_NAME: ${{ steps.release-maven-artifact.outputs.artifact-name }}
@@ -38,9 +38,9 @@ jobs:
           releaseVersion: ${{ inputs.release-version }}
           developmentVersion: ${{ inputs.development-version }}
           use-pr: "true"
-          skipDeployment: false
           # the following variables are necessary to publish the packages to maven central
           # docs: https://it-at-m.github.io/lhm_actions/workflows.html#maven-central
+          skipDeployment: false
           SIGN_KEY_PASS: ${{ secrets.gpg_passphrase }}
           CENTRAL_USERNAME: ${{ secrets.sonatype_username }}
           CENTRAL_PASSWORD: ${{ secrets.sonatype_password }}

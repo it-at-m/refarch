@@ -12,7 +12,7 @@
     <name>refarch-address-integration-client</name>
 
     <properties>
-        <openapi-generator-maven-plugin.version>7.23.0</openapi-generator-maven-plugin.version>
+        <openapi-generator-maven-plugin.version>7.24.0</openapi-generator-maven-plugin.version>
 
         <jackson-databind-nullable.version>0.2.10</jackson-databind-nullable.version>
     </properties>
@@ -45,11 +45,6 @@
             <groupId>org.openapitools</groupId>
             <artifactId>jackson-databind-nullable</artifactId>
             <version>${jackson-databind-nullable.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>tools.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson-bom.version}</version>
         </dependency>
 
         <!-- Testing -->
