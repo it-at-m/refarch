@@ -1,0 +1,3 @@
+[submodule "lhm_actions"]
+	path = lhm_actions
+	url = https://github.com/it-at-m/lhm_actions.git
