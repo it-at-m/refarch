@@ -60,7 +60,7 @@
 
         <!-- Testing -->
         <jacoco.version>0.8.15</jacoco.version>
-        <wiremock-spring-boot.version>4.2.1</wiremock-spring-boot.version>
+        <wiremock-spring-boot.version>4.2.2</wiremock-spring-boot.version>
 
         <!-- Release -->
         <maven-release-plugin.version>3.3.1</maven-release-plugin.version>
