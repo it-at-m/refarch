@@ -1,6 +1,6 @@
 # External Access
 
-The historic RefArch architecture distinguishes two common patterns for access from outside the internal network. The exact infrastructure products can vary, but the architectural ideas remain the same.
+The RefArch architecture distinguishes two common patterns for access from outside the internal network. The exact infrastructure products can vary, but the architectural ideas remain the same.
 
 ## Scenario 1: Internal users via the internet
 

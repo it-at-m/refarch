@@ -10,7 +10,7 @@ Centralized frontend architecture:
 
 ![Centralized frontend architecture](./assets/Anwendung_zentraleGUI_PermissionService.png)
 
-This remains the default pattern because it is easier to build, operate and reason about than more fragmented UI compositions. In the current RefArch implementation, the frontend is built and deployed separately from the gateway as described in [ADR001](../cross-cutting-concepts/adr/001-separate_gateway_and_frontend.md), but it still forms one coherent frontend for the application.
+This remains the default pattern because it is easier to build, operate and reason about than more fragmented UI compositions. In the current RefArch implementation, the frontend is built and deployed separately from the gateway as described in [ADR001](adr/001-separate_gateway_and_frontend.md), but it still forms one coherent frontend for the application.
 
 ## Web components
 
@@ -24,7 +24,7 @@ In RefArch, this is reflected by the dedicated `webcomponent` template and the s
 
 This makes web components a good fit for reusable UI modules or integrations into an existing host application, while keeping the main RefArch setup centered around one dedicated frontend service. Additional details can be found in:
 
-- [ADR001 - Separate Gateway and Frontend](../cross-cutting-concepts/adr/001-separate_gateway_and_frontend.md)
+- [ADR001 - Separate Gateway and Frontend](adr/001-separate_gateway_and_frontend.md)
 - [Templates: Getting Started](../templates/getting-started.md#frontend-web-components)
 - [Templates: Develop](../templates/develop.md#component-libraries)
 - [Cross-Cutting Concepts: OpenAPI](../cross-cutting-concepts/openapi.md#generating-api-client-from-specification)

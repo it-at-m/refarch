@@ -19,7 +19,7 @@ This setup allows services to communicate through stable internal addresses whil
 
 ## Deployment and configuration
 
-Deployment descriptors and runtime configuration should be treated as code and versioned alongside the application. This allows repeatable rollouts and consistent promotion across environments.
+Deployment descriptors and runtime configuration should be treated as code and versioned alongside the application. (Infrastructure as Code - IaC) This allows repeatable rollouts and consistent promotion across environments.
 
 ## Session resilience for multiple gateway instances
 
@@ -33,4 +33,4 @@ The concrete RefArch gateway support for this setup is documented in the [API Ga
 
 ## Search as an optional capability
 
-Applications with full-text, fuzzy, geo or analytics-oriented search requirements typically use a dedicated search service instead of pushing those use cases into the transactional database. The historic RefArch documentation used Elasticsearch as an example of such a specialized search component.
+Applications with full-text, fuzzy, geo or analytics-oriented search requirements typically use a dedicated search service instead of pushing those use cases into the transactional database.

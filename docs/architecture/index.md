@@ -6,7 +6,7 @@ It complements the component-specific pages such as [API Gateway](../gateway.md)
 Architectural explanations and architectural decisions are intentionally separated:
 
 - This section explains how the architecture is structured and how the main building blocks interact.
-- The [Architecture Decision Records](../cross-cutting-concepts/adr/index.md) document why specific decisions were made.
+- The [Architecture Decision Records](adr/index.md) document why specific decisions were made.
 
 ## Pages in this section
 

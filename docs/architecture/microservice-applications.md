@@ -32,7 +32,7 @@ The gateway coordinates communication with the outside world. Typical responsibi
 - exposing one consistent entry point for clients
 - routing requests to backend services
 - shielding internal-only APIs from public access
-- handling cross-cutting concerns such as authentication
+- handling cross-cutting concerns such as authentication and other security features, like CSRF and CORS
 
 Implementation details of the current gateway are documented on the [API Gateway](../gateway.md) page.
 

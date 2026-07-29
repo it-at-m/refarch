@@ -24,7 +24,7 @@ const vitepressConfig = defineConfig({
         text: "Docs",
         items: [
           { text: "Overview", link: "/overview" },
-          { text: "Architecture", link: "/architecture/" },
+          { text: "Architecture", link: "/architecture" },
           { text: "API Gateway", link: "/gateway" },
           { text: "Templates", link: "/templates" },
           { text: "Integrations", link: "/integrations" },
@@ -63,7 +63,7 @@ const vitepressConfig = defineConfig({
       { text: "Overview", link: "/overview", items: [] },
       {
         text: "Architecture",
-        link: "/architecture/",
+        link: "/architecture",
         items: [
           {
             text: "Application Basics",
@@ -83,6 +83,10 @@ const vitepressConfig = defineConfig({
           {
             text: "Integration Patterns",
             link: "/architecture/integration-patterns",
+          },
+          {
+            text: "Architecture Decision Records",
+            link: "/architecture/adr",
           },
         ],
       },
@@ -115,10 +119,6 @@ const vitepressConfig = defineConfig({
       {
         text: "Cross-Cutting Concepts",
         items: [
-          {
-            text: "Architecture Decision Records",
-            link: "/cross-cutting-concepts/adr",
-          },
           {
             text: "CI/CD",
             link: "https://github.com/it-at-m/lhm_actions/blob/main/docs/actions.md",

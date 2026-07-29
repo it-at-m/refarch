@@ -5,7 +5,7 @@ It's based on [Spring](https://spring.io/) as backend framework and [Vue.js](htt
 
 This website contains documentation for the general topics about the reference architecture, the refarch templates used to create new projects, as well as content about generic and ready-to-use components.
 
-The detailed architecture documentation is split into dedicated pages in the [Architecture](./architecture/index.md) section. Architecture decisions are documented separately in the [Architecture Decision Records](./cross-cutting-concepts/adr/index.md).
+The detailed architecture documentation is split into dedicated pages in the [Architecture](./architecture/index.md) section. Architecture decisions are documented separately in the [Architecture Decision Records](architecture/adr/index.md).
 
 ## Architecture
 
@@ -30,4 +30,4 @@ flowchart LR
 - [Templates](./templates/index.md)
 - [Integrations](./integrations/index.md)
 - [Security](./cross-cutting-concepts/security.md)
-- [Architecture Decision Records](./cross-cutting-concepts/adr/index.md)
+- [Architecture Decision Records](architecture/adr/index.md)
