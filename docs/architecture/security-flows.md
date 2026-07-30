@@ -27,18 +27,20 @@ After login, frontend requests reach backend services through the gateway.
 The architectural principles are:
 
 - backend calls are routed through the gateway
-- the gateway forwards authenticated requests with a token usable by the backend
-- each backend service validates the token before executing business logic
-- authorization is enforced in the backend, not only in the UI
+- the gateway forwards authenticated requests (Session) with a token usable by the backend
+- each backend service validates the token before executing business logic (signature, audience, expiry)
+- authorization is enforced in the backend, not only in the UI (roles & authorities in token or user-info-endpoint)
 
 ## Logout behavior
 
-Two logout variants are typically relevant:
+The reference architecture does not implement a dedicated application-level logout flow.
 
-- local logout, which ends the session in the application
-- global logout, which additionally ends the identity-provider session
+Effective logout is determined solely by the session lifetime managed by the identity provider:
 
-Local logout is often sufficient for day-to-day usage, while global logout can be provided when the security requirements call for it.
+- While the identity-provider session is valid, returning to the application through the gateway will result in an authenticated state.
+- After the identity-provider session expires or is ended at the identity provider, a new login is required.
+
+Separate local (application-only) or global (identity-provider-wide) logout variants are not supported, to avoid immediate re-login in the local case and unintended logout from other applications in the global case.
 
 ## Authorization checks in services
 

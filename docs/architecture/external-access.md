@@ -8,7 +8,7 @@ This scenario covers applications that are primarily intended for internal users
 
 External access for internal users:
 
-![External access for internal users](./assets/DMZ-Anbindung_NEU_Interne_User.png)
+![External access for internal users](./assets/DMZ-Flow-Internal_User.png)
 
 Typical characteristics of this setup are:
 
@@ -21,9 +21,9 @@ Typical characteristics of this setup are:
 
 This scenario covers applications that must be used by users without internal accounts, such as citizens, companies or partner organizations.
 
-External and internal user access:
+External user access:
 
-![External and internal user access](./assets/DMZ-Anbindung_NEU_Externe_und_Interne_User.png)
+![External and internal user access](./assets/DMZ-Flow-External_User.png)
 
 Typical characteristics of this setup are:
 
