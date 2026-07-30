@@ -35,10 +35,16 @@ The architectural principles are:
 
 The reference architecture does not implement a dedicated application-level logout flow.
 
-Effective logout is determined solely by the session lifetime managed by the identity provider:
+Effective logout depends on two independent session lifetimes:
 
-- While the identity-provider session is valid, returning to the application through the gateway will result in an authenticated state.
-- After the identity-provider session expires or is ended at the identity provider, a new login is required.
+- the gateway web session, which can expire locally after its configured idle timeout
+- the identity-provider session, which is managed by the OpenID Connect provider
+
+The resulting behavior is:
+
+- While the gateway session is valid, the application remains authenticated without a new login flow.
+- If the gateway session expires but the identity-provider session is still valid, the next access through the gateway starts a new login roundtrip and transparently creates a new authenticated gateway session.
+- If the identity-provider session expires or is ended at the identity provider, the next attempt to create or refresh the gateway session requires a new login.
 
 Separate local (application-only) or global (identity-provider-wide) logout variants are not supported, to avoid immediate re-login in the local case and unintended logout from other applications in the global case.
 
