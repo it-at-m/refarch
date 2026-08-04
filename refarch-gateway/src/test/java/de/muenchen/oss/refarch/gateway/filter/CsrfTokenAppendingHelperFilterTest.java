@@ -26,7 +26,18 @@ class CsrfTokenAppendingHelperFilterTest {
     void csrfCookieAppendition() {
         webTestClient.get().uri("/").exchange()
                 .expectHeader()
-                .valueMatches("set-cookie", "XSRF-TOKEN=[a-f\\d]{8}(-[a-f\\d]{4}){3}-[a-f\\d]{12}?;\\sPath=/");
+                .valueMatches("set-cookie",
+                        "XSRF-TOKEN=[a-f\\d]{8}(-[a-f\\d]{4}){3}-[a-f\\d]{12}?;\\sPath=/.*");
+    }
+
+    @Test
+    @WithMockUser
+    void csrfCookieIsNotHttpOnly() {
+        // CookieServerCsrfTokenRepository.withHttpOnlyFalse() must expose the XSRF cookie to JS
+        // clients (for SPA frameworks), so the cookie must not be flagged HttpOnly.
+        webTestClient.get().uri("/").exchange()
+                .expectHeader()
+                .valueMatches("set-cookie", ".*XSRF-TOKEN=.*;\\sPath=/((?!HttpOnly).)*$");
     }
 
 }

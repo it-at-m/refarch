@@ -18,6 +18,7 @@ import com.github.tomakehurst.wiremock.http.HttpHeaders;
 import com.github.tomakehurst.wiremock.matching.EqualToPattern;
 import de.muenchen.oss.refarch.gateway.OAuthSecurityMockConfiguration;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,6 +37,8 @@ import org.wiremock.spring.EnableWireMock;
 @Import(OAuthSecurityMockConfiguration.class)
 @AutoConfigureWebTestClient
 class BackendRouteTest {
+    public static final String SESSION_COOKIE_NAME = "SESSION";
+    public static final String XSRF_COOKIE_NAME = "XSRF-TOKEN";
     public static final String XSRF_HEADER_NAME = "X-XSRF-TOKEN";
     private static final String TEST_KEY = "testkey";
     public static final String TEST_VALUE = "testvalue";
@@ -46,7 +49,7 @@ class BackendRouteTest {
     public static final String URI_PUBLIC_EXTRA_PATTERN = "/api/backend/public/test";
     public static final String URI_CLIENTS = "/clients/api/backend/test";
     public static final String URI_CLIENTS_EXTRA_PATTERN = "/api/backend/clients/test";
-    public static final String URI_DEFAULT = "/api/backend/test";
+    public static final String URI_API = "/api/backend/test";
 
     @Autowired
     private ApplicationContext context;
@@ -75,124 +78,202 @@ class BackendRouteTest {
                         .withBody(TEST_JSON)));
     }
 
-    @Test
-    @WithMockUser
-    void backendGetSuccess() {
-        webTestClient
-                .get().uri(URI_DEFAULT)
-                .header(org.springframework.http.HttpHeaders.COOKIE,
-                        "SESSION=5cfb01a3-b691-4ca9-8735-a05690e6c2ec; XSRF-TOKEN=4d82f9f1-41f6-4a09-994a-df99d30d1be9") // removed by default-filter
-                .header(XSRF_HEADER_NAME, "5cfb01a3-b691-4ca9-8735-a05690e6c2ec") // angular specific -> removed by default-filter
-                .header(org.springframework.http.HttpHeaders.CONTENT_TYPE, "application/hal+json")
-                .exchange()
-                .expectStatus().isEqualTo(HttpStatus.OK)
-                .expectHeader().valueMatches(org.springframework.http.HttpHeaders.CONTENT_TYPE, "application/json")
-                .expectHeader().doesNotExist(org.springframework.http.HttpHeaders.WWW_AUTHENTICATE)
-                .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
+    @Nested
+    class ApiRouteTests {
+        @Test
+        @WithMockUser
+        void apiGetSuccess() {
+            webTestClient
+                    .get().uri(URI_API)
+                    .cookie(SESSION_COOKIE_NAME, "5cfb01a3-b691-4ca9-8735-a05690e6c2ec")
+                    .cookie(XSRF_COOKIE_NAME, "4d82f9f1-41f6-4a09-994a-df99d30d1be9") // angular specific -> removed by default-filter
+                    .header(org.springframework.http.HttpHeaders.CONTENT_TYPE, "application/hal+json")
+                    .exchange()
+                    .expectStatus().isEqualTo(HttpStatus.OK)
+                    .expectHeader().valueMatches(org.springframework.http.HttpHeaders.CONTENT_TYPE, "application/json")
+                    .expectHeader().doesNotExist(org.springframework.http.HttpHeaders.WWW_AUTHENTICATE)
+                    .expectCookie().exists(SESSION_COOKIE_NAME)
+                    .expectCookie().exists(XSRF_COOKIE_NAME)
+                    .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
 
-        verify(getRequestedFor(urlEqualTo("/test"))
-                .withoutHeader(org.springframework.http.HttpHeaders.COOKIE)
-                .withoutHeader(XSRF_HEADER_NAME)
-                .withHeader(org.springframework.http.HttpHeaders.CONTENT_TYPE, new EqualToPattern("application/hal+json")));
+            verify(getRequestedFor(urlEqualTo("/test"))
+                    .withoutHeader(org.springframework.http.HttpHeaders.COOKIE)
+                    .withoutHeader(org.springframework.http.HttpHeaders.SET_COOKIE)
+                    .withoutHeader(XSRF_HEADER_NAME)
+                    .withHeader(org.springframework.http.HttpHeaders.CONTENT_TYPE, new EqualToPattern("application/hal+json")));
     }
 
-    @Test
-    void backendGetForbidden() {
-        webTestClient
-                .get().uri(URI_DEFAULT)
-                .exchange()
-                // because redirect to login
-                .expectStatus().isEqualTo(HttpStatus.FOUND)
-                .expectHeader().valueMatches(org.springframework.http.HttpHeaders.LOCATION, ".*/login.*");
+        @Test
+        void apiGetForbidden() {
+            webTestClient
+                    .get().uri(URI_API)
+                    .exchange()
+                    // because redirect to login
+                    .expectStatus().isEqualTo(HttpStatus.FOUND)
+                    .expectHeader().valueMatches(org.springframework.http.HttpHeaders.LOCATION, ".*/login.*");
+        }
+
+        @Test
+        void apiPostForbidden() {
+            // No CSRF, no auth -> blocked by CSRF (403)
+            webTestClient
+                    .post().uri(URI_API)
+                    .exchange()
+                    .expectStatus().isForbidden();
+        }
+
+        @Test
+        void apiPostFound() {
+            // With CSRF, still no auth -> redirected to login (302)
+            webTestClient
+                    .mutateWith(csrf())
+                    .post().uri(URI_API)
+                    .exchange()
+                    .expectStatus().isFound();
+        }
     }
 
-    @Test
-    void backendPostForbidden() {
-        // No CSRF, no auth -> blocked by CSRF (403)
-        webTestClient
-                .post().uri(URI_DEFAULT)
-                .exchange()
-                .expectStatus().isForbidden();
+    @Nested
+    class PublicRouteTests {
+        @Test
+        void publicGetSuccess() {
+            webTestClient
+                    .get().uri(URI_PUBLIC)
+                    .exchange()
+                    .expectStatus().isOk()
+                    .expectCookie().doesNotExist(SESSION_COOKIE_NAME)
+                    .expectCookie().exists(XSRF_COOKIE_NAME)
+                    .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
+        }
 
-        // With CSRF, still no auth -> redirected to login (302)
-        webTestClient
-                .mutateWith(csrf())
-                .post().uri(URI_DEFAULT)
-                .exchange()
-                .expectStatus().isFound();
+        @Test
+        void publicGetSuccessExtraPattern() {
+            webTestClient
+                    .get().uri(URI_PUBLIC_EXTRA_PATTERN)
+                    .exchange()
+                    .expectStatus().isOk()
+                    .expectCookie().doesNotExist(SESSION_COOKIE_NAME)
+                    .expectCookie().exists(XSRF_COOKIE_NAME)
+                    .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
+        }
+
+        @Test
+        void publicPostSuccess() {
+            webTestClient
+                    .mutateWith(csrf())
+                    .post().uri(URI_PUBLIC)
+                    .exchange()
+                    .expectStatus().isOk()
+                    .expectCookie().doesNotExist(SESSION_COOKIE_NAME)
+                    .expectCookie().exists(XSRF_COOKIE_NAME)
+                    .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
+        }
+
+        @Test
+        void publicPostExtraPatternMissingMethod() {
+            // With CSRF, still no auth -> redirected to login (302)
+            webTestClient
+                    .mutateWith(csrf())
+                    .post().uri(URI_PUBLIC_EXTRA_PATTERN)
+                    .exchange()
+                    .expectStatus().isFound()
+                    .expectCookie().doesNotExist(SESSION_COOKIE_NAME)
+                    .expectCookie().exists(XSRF_COOKIE_NAME);
+        }
     }
 
-    @Test
-    void publicGetSuccess() {
-        webTestClient
-                .get().uri(URI_PUBLIC)
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
-    }
+    @Nested
+    class ClientsRoutesTests {
+        @Test
+        void clientGetSuccess() {
+            webTestClient
+                    .mutateWith(mockJwt())
+                    .get().uri(URI_CLIENTS)
+                    .exchange()
+                    .expectStatus().isOk()
+                    .expectCookie().doesNotExist(SESSION_COOKIE_NAME)
+                    .expectCookie().doesNotExist(XSRF_COOKIE_NAME)
+                    .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
+        }
 
-    @Test
-    void publicPostSuccess() {
-        webTestClient
-                .mutateWith(csrf())
-                .post().uri(URI_PUBLIC)
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
-    }
+        @Test
+        void clientGetForbidden() {
+            webTestClient
+                    .get().uri(URI_CLIENTS)
+                    .exchange()
+                    .expectStatus().isUnauthorized()
+                    .expectCookie().doesNotExist(SESSION_COOKIE_NAME)
+                    .expectCookie().doesNotExist(XSRF_COOKIE_NAME);
+        }
 
-    @Test
-    void publicPostExtraPatternMissingMethod() {
-        // With CSRF, still no auth -> redirected to login (302)
-        webTestClient
-                .mutateWith(csrf())
-                .post().uri(URI_PUBLIC_EXTRA_PATTERN)
-                .exchange()
-                .expectStatus().isFound();
-    }
+        @Test
+        void clientPostSuccess() {
+            // CSRF is disabled for client routes, so authenticated client POST requests succeed
+            // without requiring a CSRF token.
+            webTestClient
+                    .mutateWith(mockJwt())
+                    .post().uri(URI_CLIENTS)
+                    .exchange()
+                    .expectStatus().isOk()
+                    .expectCookie().doesNotExist(SESSION_COOKIE_NAME)
+                    .expectCookie().doesNotExist(XSRF_COOKIE_NAME)
+                    .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
+        }
 
-    @Test
-    void publicGetSuccessExtraPattern() {
-        webTestClient
-                .get().uri(URI_PUBLIC_EXTRA_PATTERN)
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
-    }
+        @Test
+        void clientPostForbidden() {
+            // CSRF is disabled for client routes, so missing CSRF no longer causes 403.
+            // Without authentication, client POST requests must be rejected with 401.
+            webTestClient
+                    .post().uri(URI_CLIENTS)
+                    .exchange()
+                    .expectStatus().isUnauthorized()
+                    .expectCookie().doesNotExist(SESSION_COOKIE_NAME)
+                    .expectCookie().doesNotExist(XSRF_COOKIE_NAME);
+        }
 
-    @Test
-    void clientGetSuccess() {
-        webTestClient
-                .mutateWith(mockJwt())
-                .get().uri(URI_CLIENTS)
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
-    }
+        @Test
+        void clientGetSuccessExtraPattern() {
+            webTestClient
+                    .mutateWith(mockJwt())
+                    .get().uri(URI_CLIENTS_EXTRA_PATTERN)
+                    .exchange()
+                    .expectStatus().isOk()
+                    .expectCookie().doesNotExist(SESSION_COOKIE_NAME)
+                    .expectCookie().doesNotExist(XSRF_COOKIE_NAME)
+                    .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
+        }
 
-    @Test
-    void clientGetForbidden() {
-        webTestClient
-                .get().uri(URI_CLIENTS)
-                .exchange()
-                .expectStatus().isUnauthorized();
-    }
+        @Test
+        void clientGetForbiddenExtraPattern() {
+            webTestClient
+                    .get().uri(URI_CLIENTS_EXTRA_PATTERN)
+                    .exchange()
+                    .expectStatus().isUnauthorized()
+                    .expectCookie().doesNotExist(SESSION_COOKIE_NAME)
+                    .expectCookie().doesNotExist(XSRF_COOKIE_NAME);
+        }
 
-    @Test
-    void clientGetForbiddenExtraPattern() {
-        webTestClient
-                .get().uri(URI_CLIENTS_EXTRA_PATTERN)
-                .exchange()
-                .expectStatus().isUnauthorized();
-    }
+        @Test
+        void clientPostSuccessExtraPattern() {
+            webTestClient
+                    .mutateWith(mockJwt())
+                    .post().uri(URI_CLIENTS_EXTRA_PATTERN)
+                    .exchange()
+                    .expectStatus().isOk()
+                    .expectCookie().doesNotExist(SESSION_COOKIE_NAME)
+                    .expectCookie().doesNotExist(XSRF_COOKIE_NAME)
+                    .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
+        }
 
-    @Test
-    void clientGetSuccessExtraPattern() {
-        webTestClient
-                .mutateWith(mockJwt())
-                .get().uri(URI_CLIENTS_EXTRA_PATTERN)
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
+        @Test
+        void clientPostForbiddenExtraPattern() {
+            webTestClient
+                    .get().uri(URI_CLIENTS_EXTRA_PATTERN)
+                    .exchange()
+                    .expectStatus().isUnauthorized()
+                    .expectCookie().doesNotExist(SESSION_COOKIE_NAME)
+                    .expectCookie().doesNotExist(XSRF_COOKIE_NAME);
+        }
     }
 }
