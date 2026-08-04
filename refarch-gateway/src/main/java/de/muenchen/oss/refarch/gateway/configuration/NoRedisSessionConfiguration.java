@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.boot.data.redis.autoconfigure.health.DataRedisHealthContributorAutoConfiguration;
+import org.springframework.boot.data.redis.autoconfigure.health.DataRedisReactiveHealthContributorAutoConfiguration;
 import org.springframework.boot.session.autoconfigure.SessionTimeout;
 import org.springframework.boot.session.data.redis.autoconfigure.SessionDataRedisAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -19,10 +21,17 @@ import org.springframework.web.server.session.WebSessionManager;
  * Spring profile is not active. In this case an in-memory web session storage is used.
  * The timeout settings are configured to mimic those of the autoconfiguration
  * {@link SessionDataRedisAutoConfiguration}.
+ * Additionally {@link DataRedisHealthContributorAutoConfiguration} and
+ * {@link DataRedisReactiveHealthContributorAutoConfiguration} are disabled for health check when
+ * Redis is not in
+ * use.
  */
 @Configuration
 @Profile("!redis-session")
-@EnableAutoConfiguration(exclude = SessionDataRedisAutoConfiguration.class)
+@EnableAutoConfiguration(
+        exclude = { SessionDataRedisAutoConfiguration.class, DataRedisHealthContributorAutoConfiguration.class,
+                DataRedisReactiveHealthContributorAutoConfiguration.class }
+)
 @Slf4j
 @RequiredArgsConstructor
 public class NoRedisSessionConfiguration {
