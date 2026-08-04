@@ -1,6 +1,7 @@
 package de.muenchen.oss.refarch.gateway.filter;
 
 import static de.muenchen.oss.refarch.gateway.TestConstants.SPRING_TEST_PROFILE;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import de.muenchen.oss.refarch.gateway.OAuthSecurityMockConfiguration;
 import org.junit.jupiter.api.Test;
@@ -25,9 +26,9 @@ class CsrfTokenAppendingHelperFilterTest {
     @WithMockUser
     void csrfCookieAppendition() {
         webTestClient.get().uri("/").exchange()
-                .expectHeader()
-                .valueMatches("set-cookie",
-                        "XSRF-TOKEN=[a-f\\d]{8}(-[a-f\\d]{4}){3}-[a-f\\d]{12}?;\\sPath=/.*");
+                .expectCookie()
+                .value("XSRF-TOKEN",
+                        value -> assertThat(value).matches("[a-f\\d]{8}(-[a-f\\d]{4}){3}-[a-f\\d]{12}?"));
     }
 
     @Test
@@ -36,8 +37,8 @@ class CsrfTokenAppendingHelperFilterTest {
         // CookieServerCsrfTokenRepository.withHttpOnlyFalse() must expose the XSRF cookie to JS
         // clients (for SPA frameworks), so the cookie must not be flagged HttpOnly.
         webTestClient.get().uri("/").exchange()
-                .expectHeader()
-                .valueMatches("set-cookie", ".*XSRF-TOKEN=.*;\\sPath=/((?!HttpOnly).)*$");
+                .expectCookie()
+                .httpOnly("XSRF-TOKEN", false);
     }
 
 }
