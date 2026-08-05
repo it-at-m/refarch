@@ -29,7 +29,7 @@ Session synchronization with Hazelcast:
 
 ![Session synchronization with Hazelcast](./assets/Spring_Session_mit_Hazelcast.png)
 
-The concrete RefArch gateway support for this setup is documented in the [API Gateway](../gateway.md#hazelcast) page.
+The specific RefArch gateway support for this setup is documented in the [API Gateway](../gateway.md#hazelcast) page.
 
 ## Search as an optional capability
 
