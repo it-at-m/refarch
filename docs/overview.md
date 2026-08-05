@@ -25,9 +25,30 @@ flowchart LR
     g --> w
 ```
 
+### API Gateway
+
+The API gateway is a ready-to-use component and the only exposed interface for accessing the application.
+It manages all requests and routes them to the respective development components like frontend and backend.
+Besides that, it also handles cross-cutting concepts like authentication using a SSO.
+
+See [API Gateway](./gateway.md) for further information.
+
+### Templates
+
+- **Frontend**: The frontend provides the application UI and is developed with Vue.js. It calls the backend (via the API gateway) for reading and modifying data.
+  It's developed separate for each application and therefore a default template is provided.
+- **Backend**: The backend provides a REST-API for reading and modifying application data, handles business logic and access to databases.
+  Like the frontend the backend is also provided as a template.
+- **Web Component**: The web components template enables development of modular frontend components which can be integrated into other applications.
+  This concept is also known as micro frontends. By default, most applications won't require this template.
+- **Enterprise Application Integration (EAI)**: Beside the development of web applications, the RefArch also provides a template for enterprise application integration (EAI).
+  This enables integration between existing applications. By default, most applications won't require this template.
+
+## See further details here
+
 - [Architecture details](./architecture/index.md)
+- [Architecture Decision Records](architecture/adr/index.md)
 - [API Gateway](./gateway.md)
 - [Templates](./templates/index.md)
 - [Integrations](./integrations/index.md)
 - [Security](./cross-cutting-concepts/security.md)
-- [Architecture Decision Records](architecture/adr/index.md)
