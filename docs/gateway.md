@@ -29,6 +29,9 @@ The gateway then maps the session cookie to a JWT before routing it.
 
 Beside the default behavior there are special public and client routes described in the following.
 
+CORS is denied by default.
+Only configure CORS if browser-based cross-origin access is explicitly required.
+
 #### Public Routes
 
 Requests matching public routes are routed **WITHOUT** authentication.
@@ -76,10 +79,30 @@ refarch:
     client-patterns: # Additional client routes (optional)
       - /example/**
 
-# Aliases for `spring.cloud.gateway.server.webflux.globalcors.cors-configurations` to allow configuration via environment variables, as the used glob patterns can't be used there
-ALLOWED_ORIGINS_PUBLIC: https://*.example.com,http://localhost:* # List of URIs allowed as origin for public routes (optional)
-ALLOWED_ORIGINS_CLIENTS: https://*.example.com,http://localhost:* # List of URIs allowed as origin for client routes (optional)
+# Aliases for `spring.cloud.gateway.server.webflux.globalcors.cors-configurations` to allow configuration via environment variables, as the used glob patterns can't be used there.
+# Restrictive defaults intentionally deny CORS unless it is configured explicitly.
+ALLOWED_ORIGINS_ALL: "" # Default origins for all routes, especially everything except /public/** and /clients/**
+ALLOWED_HEADERS_ALL: "" # Default allowed CORS request headers for all routes
+ALLOW_CREDENTIALS_ALL: false # Default credential handling for all routes
+ALLOWED_METHODS_ALL: GET # Default allowed CORS methods for all routes
+ALLOWED_ORIGINS_PUBLIC: https://*.example.com,http://localhost:* # Optional override for /public/**
+ALLOWED_HEADERS_PUBLIC: Content-Type # Optional override for /public/**
+ALLOW_CREDENTIALS_PUBLIC: false # Optional override for /public/**
+ALLOWED_METHODS_PUBLIC: GET,POST # Optional override for /public/**
+ALLOWED_ORIGINS_CLIENTS: https://*.example.com,http://localhost:* # Optional override for /clients/**
+ALLOWED_HEADERS_CLIENTS: Authorization,Content-Type,X-XSRF-TOKEN # Optional override for /clients/**
+ALLOW_CREDENTIALS_CLIENTS: true # Optional override for /clients/**
+ALLOWED_METHODS_CLIENTS: GET,POST,PUT,PATCH,DELETE,OPTIONS # Optional override for /clients/**
 ```
+
+The gateway ships three CORS buckets:
+
+- `/**` as restrictive default for all endpoints
+- `/public/**` as optional override for public endpoints
+- `/clients/**` as optional override for client endpoints
+
+Because `/public/**` and `/clients/**` are more specific, they override `/**` for those routes.
+All other endpoints use the restrictive `/**` configuration.
 
 ### Security
 
