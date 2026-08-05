@@ -8,7 +8,7 @@ Architecture Decision Records (ADRs) document the key architectural decisions an
 ## Pages in this section
 
 - [Application Basics](./application-basics.md): Shared structural principles for RefArch applications.
-- [Architecture Decision Records (ADRs)](./adr): Records of essential architectural decisions.
+- [Architecture Decision Records (ADRs)](./adr/index.md): Records of essential architectural decisions.
 - [Microservice Applications](./microservice-applications.md): Service boundaries, responsibilities and communication patterns.
 - [Infrastructure](./infrastructure.md): Container platform, scaling and runtime topology.
 - [Frontend Architecture](./frontend-architecture.md): Centralized and distributed UI patterns.

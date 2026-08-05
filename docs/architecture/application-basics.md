@@ -11,7 +11,7 @@ Every application is built around the same responsibilities:
 - a data access layer for persistent storage
 - optional integration logic for communication with external systems
 
-If an application needs to communicate with surrounding systems, this integration logic should be kept separate from the core business logic. In the RefArch ecosystem this is typically implemented with dedicated [integration components](/integrations) or [EAI artifacts](/overview#templates).
+If an application needs to communicate with surrounding systems, this integration logic should be kept separate from the core business logic. In the RefArch ecosystem this is typically implemented with dedicated [integration components](../integrations/index.md) or [EAI artifacts](/overview#templates).
 
 ## Base application with GUI
 
