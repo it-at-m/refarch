@@ -8,7 +8,7 @@ In the centralized model, one frontend provides the user-facing application shel
 
 Centralized frontend architecture:
 
-![Centralized frontend architecture](./assets/Anwendung_zentraleGUI_PermissionService.png)
+![Centralized frontend architecture](../assets/Anwendung_zentraleGUI_PermissionService.png)
 
 This remains the default pattern because it is easier to build, operate and reason about than more fragmented UI compositions. In the current RefArch implementation, the frontend is built and deployed separately from the gateway as described in [ADR001](adr/001-separate_gateway_and_frontend.md), but it still forms one coherent frontend for the application.
 

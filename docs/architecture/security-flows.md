@@ -8,7 +8,7 @@ Authentication and authorization of user requests are split between the gateway 
 
 Authentication and authorization flow:
 
-![Authentication and authorization flow](./assets/Anwendung_Security_TokenAutorisierung.png)
+![Authentication and authorization flow](../assets/Anwendung_Security_TokenAutorisierung.png)
 
 The gateway handles the user-facing login flow and forwards authenticated requests to backend services. Backend services validate the incoming token and enforce authorization for protected operations.
 

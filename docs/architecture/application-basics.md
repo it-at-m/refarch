@@ -19,6 +19,6 @@ The frontend communicates with the application exclusively through the API. This
 
 Base application with GUI:
 
-![Base application with GUI](./assets/Basisarchitektur_mit_gui.png)
+![Base application with GUI](../assets/Basisarchitektur_mit_gui.png)
 
 This pattern works for both monolithic and distributed applications. It also supports multiple views on the same application, for example when different user groups require separate frontend experiences while sharing the same business capabilities.

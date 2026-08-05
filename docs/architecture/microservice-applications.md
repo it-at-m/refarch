@@ -21,7 +21,7 @@ In a RefArch-based microservice application, external communication is concentra
 
 Microservice application architecture:
 
-![Microservice application architecture](./assets/Anwendung_mit_Gateway_PermissionService.png)
+![Microservice application architecture](../assets/Anwendung_mit_Gateway_PermissionService.png)
 
 The gateway provides the external entry point, while backend services encapsulate business logic and data access.
 

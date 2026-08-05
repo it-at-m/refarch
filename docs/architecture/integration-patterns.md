@@ -8,7 +8,7 @@ Communication between two RefArch-based applications should pass through the rec
 
 RefArch to RefArch integration:
 
-![RefArch to RefArch integration](./assets/Aufruf_von_RefArch-_zu_RefArch-Anwendung.jpg)
+![RefArch to RefArch integration](../assets/Aufruf_von_RefArch-_zu_RefArch-Anwendung.jpg)
 
 This keeps authentication and authorization consistent and avoids coupling the lifecycle of two business applications too tightly.
 
@@ -18,6 +18,6 @@ The same principle also applies when integrating with purchased software or othe
 
 RefArch to external system integration:
 
-![RefArch to external system integration](./assets/RefArch-Anwendung_zu_Kauf-_oder_sonstiger_Anwendung.jpg)
+![RefArch to external system integration](../assets/RefArch-Anwendung_zu_Kauf-_oder_sonstiger_Anwendung.jpg)
 
 The integration logic should remain separate from the application core. In the RefArch ecosystem, this is commonly realized with EAI components based on the provided integration patterns and templates.

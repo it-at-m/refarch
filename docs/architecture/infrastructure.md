@@ -13,7 +13,7 @@ The platform is responsible for:
 
 Container-based runtime topology:
 
-![Container-based runtime topology](./assets/Anwendung_Infrastruktur_Container.png)
+![Container-based runtime topology](../assets/Anwendung_Infrastruktur_Container.png)
 
 This setup allows services to communicate through stable internal addresses while the platform manages the actual container instances behind those addresses.
 
@@ -27,7 +27,7 @@ If gateway instances are scaled horizontally, session information can be synchro
 
 Session synchronization with Hazelcast:
 
-![Session synchronization with Hazelcast](./assets/Spring_Session_mit_Hazelcast.png)
+![Session synchronization with Hazelcast](../assets/Spring_Session_mit_Hazelcast.png)
 
 The specific RefArch gateway support for this setup is documented in the [API Gateway](../gateway.md#hazelcast) page.
 
