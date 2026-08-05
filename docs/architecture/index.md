@@ -3,7 +3,7 @@
 This section describes the architectural building blocks, runtime structure and interaction patterns of the RefArch.
 It complements the component-specific pages such as [API Gateway](../gateway.md), [Security](../cross-cutting-concepts/security.md) and [Integrations](../integrations/index.md).
 
-Architecture Decision Records (ADRs) additionally document the key decisions in more detail:
+Architecture Decision Records (ADRs) additionally document the key decisions in more detail.
 
 - This section explains how the architecture is structured, how the main building blocks interact, and points to ADRs where essential architectural decisions are recorded.
 
