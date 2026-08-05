@@ -19,9 +19,9 @@ This setup allows services to communicate through stable internal addresses whil
 
 ## Deployment and configuration
 
-Deployment descriptors and runtime configuration should be treated as code and versioned alongside the application. (Infrastructure as Code - IaC) This allows repeatable rollouts and consistent promotion across environments.
+Deployment descriptors and runtime configuration should be treated as code and versioned alongside the application (Infrastructure as Code - IaC). This allows repeatable rollouts and consistent promotion across environments.
 
-## Session resilience for multiple gateway instances
+## Session synchronization for multiple gateway instances
 
 If gateway instances are scaled horizontally, session information can be synchronized across instances so that a planned instance replacement does not invalidate active sessions.
 
@@ -29,7 +29,7 @@ Session synchronization with Hazelcast:
 
 ![Session synchronization with Hazelcast](./assets/Spring_Session_mit_Hazelcast.png)
 
-The concrete RefArch gateway support for this setup is documented in the [API Gateway](../gateway.md#hazelcast) page.
+The specific RefArch gateway support for this setup is documented in the [API Gateway](../gateway.md#hazelcast) page.
 
 ## Search as an optional capability
 
