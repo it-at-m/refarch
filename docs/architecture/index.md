@@ -5,7 +5,6 @@ It complements the component-specific pages such as [API Gateway](../gateway.md)
 
 Architecture Decision Records (ADRs) document the key architectural decisions and their rationale. Where relevant, this section links to the corresponding ADRs for additional background and context.
 
-
 ## Pages in this section
 
 - [Application Basics](./application-basics.md): Shared structural principles for RefArch applications.
