@@ -19,7 +19,7 @@ This setup allows services to communicate through stable internal addresses whil
 
 ## Deployment and configuration
 
-Deployment descriptors and runtime configuration should be treated as code and versioned alongside the application. (Infrastructure as Code - IaC) This allows repeatable rollouts and consistent promotion across environments.
+Deployment descriptors and runtime configuration should be treated as code and versioned alongside the application (Infrastructure as Code - IaC). This allows repeatable rollouts and consistent promotion across environments.
 
 ## Session resilience for multiple gateway instances
 
