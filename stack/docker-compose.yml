@@ -7,11 +7,11 @@ services:
     command:
       - start-dev
     environment:
-      - KC_BOOTSTRAP_ADMIN_USERNAME=admin
-      - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
-      - KC_HEALTH_ENABLED=true
-      - KC_HTTP_PORT=8100
-      - KC_HTTP_RELATIVE_PATH=/auth
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_HEALTH_ENABLED: "true"
+      KC_HTTP_PORT: 8100
+      KC_HTTP_RELATIVE_PATH: /auth
     ports:
       - "8100:8100"
     networks:
@@ -26,17 +26,18 @@ services:
       - no-new-privileges:true
 
   init-keycloak:
-    image: klg71/keycloakmigration:0.2.129@sha256:356bb15df86d6476f1469789718f597ac70583f83c2ae9c90408a3e00e3a1796
+    image: klg71/keycloakmigration:0.2.130@sha256:fbec0fbbec2f90e9e912576cfb2ff108fb5703a59383b5e51c8633c130173af8
     depends_on:
       - keycloak
     environment:
       ADMIN_USER: admin
       ADMIN_PASSWORD: admin
       BASEURL: http://keycloak:8100/auth
-      WAIT_FOR_KEYCLOAK: 'true'
+      WAIT_FOR_KEYCLOAK: "true"
+      FAIL_ON_UNDEFINED_VARIABLES: "true"
       KEYCLOAK_CHANGELOG: /migration/keycloak-changelog.yml
     volumes:
-      - './keycloak/migration:/migration'
+      - ./keycloak/migration:/migration
     networks:
       - keycloak
     security_opt: *security_settings
@@ -49,8 +50,8 @@ services:
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: Test1234
     ports:
-      - '9000:9000'
-      - '9001:9001'
+      - "9000:9000" # API
+      - "9001:9001" # UI
     volumes:
       - ./minio:/data
     networks:
@@ -76,12 +77,12 @@ services:
 
   # === Mail ===
   mailpit:
-    image: axllent/mailpit:v1.30.3@sha256:956d688cbd13dca36c72d8e94c34d6d1cdf4a005aa6aa4ff6edaaac56c34d8df
+    image: axllent/mailpit:v1.30.6@sha256:7f33095f80e901f6ad08028f06ca284aa58fe84942be5496008d041d3b9f4d4d
     environment:
-      - MP_DISABLE_VERSION_CHECK=True
+      MP_DISABLE_VERSION_CHECK: "true"
     ports:
-      - '1025:1025' # SMTP Server
-      - '8025:8025' # UI
+      - "1025:1025" # SMTP Server
+      - "8025:8025" # UI
     security_opt: *security_settings
 
 networks:

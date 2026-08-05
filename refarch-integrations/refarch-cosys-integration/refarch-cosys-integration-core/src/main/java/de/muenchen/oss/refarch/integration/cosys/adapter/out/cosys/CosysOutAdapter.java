@@ -1,7 +1,5 @@
 package de.muenchen.oss.refarch.integration.cosys.adapter.out.cosys;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import de.muenchen.oss.refarch.integration.cosys.api.GenerationApi;
 import de.muenchen.oss.refarch.integration.cosys.application.port.out.GenerateDocumentOutPort;
 import de.muenchen.oss.refarch.integration.cosys.configuration.CosysConfiguration;
@@ -15,6 +13,8 @@ import org.springframework.core.io.AbstractResource;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpStatusCode;
 import reactor.core.publisher.Mono;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -61,7 +61,7 @@ public class CosysOutAdapter implements GenerateDocumentOutPort {
             try {
                 final String mergeOptionsString = objectMapper.writeValueAsString(this.configuration.getMergeOptions());
                 mergeOptions = new NamedByteArrayResource(mergeOptionsString.getBytes(StandardCharsets.UTF_8), "merge.json");
-            } catch (final JsonProcessingException e) {
+            } catch (final JacksonException e) {
                 throw new IllegalArgumentException("Cosys merge options are not valid.", e);
             }
         } else {

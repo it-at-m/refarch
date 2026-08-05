@@ -4,14 +4,14 @@
     <parent>
         <groupId>de.muenchen.oss.refarch</groupId>
         <artifactId>refarch-cosys-integration</artifactId>
-        <version>3.1.0-SNAPSHOT</version>
+        <version>4.1.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>refarch-cosys-integration-client</artifactId>
     <name>refarch-cosys-integration-client</name>
 
     <properties>
-        <openapi-generator-maven-plugin.version>7.23.0</openapi-generator-maven-plugin.version>
+        <openapi-generator-maven-plugin.version>7.24.0</openapi-generator-maven-plugin.version>
         <jackson-databind-nullable.version>0.2.10</jackson-databind-nullable.version>
     </properties>
 
@@ -37,8 +37,9 @@
             <version>${jackson-databind-nullable.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
+            <groupId>tools.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson-bom.version}</version>
         </dependency>
     </dependencies>
 
@@ -72,6 +73,8 @@
                                 <hideGenerationTimestamp>true</hideGenerationTimestamp>
                                 <useJakartaEe>true</useJakartaEe>
                                 <useAbstractionForFiles>true</useAbstractionForFiles>
+                                <useSpringBoot4>true</useSpringBoot4>
+                                <useJackson3>true</useJackson3>
                             </configOptions>
 
                             <globalProperties>

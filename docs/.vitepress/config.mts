@@ -45,6 +45,7 @@ const vitepressConfig = defineConfig({
         items: [
           { text: "Known Issues", link: "/support/known-issues" },
           { text: "Migration", link: "/support/migration" },
+          { text: "Release Strategy", link: "/support/release-strategy" },
         ],
       },
       { text: "Contribute", link: "/contribute" },
@@ -139,6 +140,7 @@ const vitepressConfig = defineConfig({
             text: "Migration",
             link: "/support/migration",
           },
+          { text: "Release Strategy", link: "/support/release-strategy" },
         ],
       },
     ],

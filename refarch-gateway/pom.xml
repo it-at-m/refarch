@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.7</version>
+        <version>4.1.0</version>
         <relativePath />
     </parent>
 
@@ -48,11 +48,11 @@
         <spring-cloud-dependencies.version>2025.1.2</spring-cloud-dependencies.version>
 
         <!-- Linting & Formatting -->
-        <spotless-maven-plugin.version>3.8.0</spotless-maven-plugin.version>
+        <spotless-maven-plugin.version>3.9.0</spotless-maven-plugin.version>
         <itm-java-codeformat.version>1.0.10</itm-java-codeformat.version>
         <pmd-maven-plugin.version>3.28.0</pmd-maven-plugin.version>
-        <spotbugs-maven-plugin.version>4.9.8.5</spotbugs-maven-plugin.version>
-        <spotbugs-annotations.version>4.9.8</spotbugs-annotations.version> <!-- must match the patch version of spotbugs-maven-plugin -->
+        <spotbugs-maven-plugin.version>4.10.3.0</spotbugs-maven-plugin.version>
+        <spotbugs-annotations.version>4.10.3</spotbugs-annotations.version> <!-- must match the patch version of spotbugs-maven-plugin -->
         <findsecbugs-plugin.version>1.14.0</findsecbugs-plugin.version>
 
         <!-- Hazelcast Session -->
@@ -60,7 +60,7 @@
 
         <!-- Testing -->
         <jacoco.version>0.8.15</jacoco.version>
-        <wiremock-spring-boot.version>4.2.1</wiremock-spring-boot.version>
+        <wiremock-spring-boot.version>4.2.2</wiremock-spring-boot.version>
 
         <!-- Release -->
         <maven-release-plugin.version>3.3.1</maven-release-plugin.version>

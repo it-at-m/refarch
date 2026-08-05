@@ -7,6 +7,7 @@ import de.muenchen.oss.refarch.integration.s3.adapter.out.s3.S3OutAdapter;
 import de.muenchen.oss.refarch.integration.s3.application.port.out.S3OutPort;
 import de.muenchen.oss.refarch.integration.s3.domain.model.FileMetadata;
 import de.muenchen.oss.refarch.integration.s3.domain.model.FileReference;
+import de.muenchen.oss.refarch.integration.s3.domain.model.ListResult;
 import de.muenchen.oss.refarch.integration.s3.domain.model.PresignedUrl;
 import java.io.InputStream;
 import java.net.URI;
@@ -14,7 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
-import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -101,6 +102,10 @@ class E2ETest {
         assertThat(meta.path()).isEqualTo(key);
         assertThat(meta.contentLength()).isEqualTo(data.length);
 
+        final Map<String, String> sourceTags = Map.of("document-type", "invoice", "tenant", "muc");
+        s3OutPort.setTags(ref, sourceTags);
+        assertThat(s3OutPort.getTags(ref)).containsExactlyInAnyOrderEntriesOf(sourceTags);
+
         // Read content
         try (InputStream is = s3OutPort.getFileContent(ref)) {
             assertThat(is.readAllBytes()).isEqualTo(data);
@@ -147,28 +152,54 @@ class E2ETest {
         s3OutPort.saveFile(refDir3, new java.io.ByteArrayInputStream("f3".getBytes(StandardCharsets.UTF_8)), 2);
 
         // List via folder ops (recursive)
-        final List<FileMetadata> listed = s3OutPort.getFilesWithPrefix(BUCKET, prefix, true);
-        assertThat(listed.stream().map(FileMetadata::path)).anyMatch(k -> k.equals(key) || k.equals(key + "-file"));
+        final ListResult listed = s3OutPort.getFilesWithPrefix(BUCKET, prefix, true);
+        assertThat(listed.files().stream().map(FileMetadata::path)).anyMatch(k -> k.equals(key) || k.equals(key + "-file"));
+        assertThat(listed.commonPrefixes()).isEmpty();
+        assertThat(listed.truncated()).isFalse();
 
         // Recursive listing should include immediate and nested children
-        final List<FileMetadata> recursiveList = s3OutPort.getFilesWithPrefix(BUCKET, dirPrefix, true, 1000, null);
-        assertThat(recursiveList).extracting(FileMetadata::path)
+        final ListResult recursiveList = s3OutPort.getFilesWithPrefix(BUCKET, dirPrefix, true, 1000, null);
+        assertThat(recursiveList.files()).extracting(FileMetadata::path)
                 .containsExactlyInAnyOrder(dirPrefix + "file1.txt", dirPrefix + "subdir/file2.txt", dirPrefix + "file3.txt");
+        assertThat(recursiveList.commonPrefixes()).isEmpty();
+        assertThat(recursiveList.truncated()).isFalse();
 
         // Non-recursive listing should only include immediate children (delimiter "/" behavior)
-        final List<FileMetadata> nonRecursiveList = s3OutPort.getFilesWithPrefix(BUCKET, dirPrefix, false, 1000, null);
-        assertThat(nonRecursiveList).extracting(FileMetadata::path)
+        final ListResult nonRecursiveList = s3OutPort.getFilesWithPrefix(BUCKET, dirPrefix, false, 1000, null);
+        assertThat(nonRecursiveList.files()).extracting(FileMetadata::path)
                 .containsExactlyInAnyOrder(dirPrefix + "file1.txt", dirPrefix + "file3.txt");
+        assertThat(nonRecursiveList.commonPrefixes()).containsExactly(dirPrefix + "subdir/");
+        assertThat(nonRecursiveList.truncated()).isFalse();
+
+        final FileReference copiedRef = new FileReference(BUCKET, key + "-copy");
+        s3OutPort.copyFile(ref, copiedRef);
+        assertThat(s3OutPort.fileExists(copiedRef)).isTrue();
+        assertThat(s3OutPort.getTags(copiedRef)).containsExactlyInAnyOrderEntriesOf(sourceTags);
+        try (InputStream is = s3OutPort.getFileContent(copiedRef)) {
+            assertThat(is.readAllBytes()).isEqualTo(data);
+        }
+
+        final FileReference copiedWithOverrideRef = new FileReference(BUCKET, key + "-copy-tagged");
+        s3OutPort.copyFile(ref, copiedWithOverrideRef, false);
+        assertThat(s3OutPort.fileExists(copiedWithOverrideRef)).isTrue();
+        assertThat(s3OutPort.getTags(copiedWithOverrideRef)).isEmpty();
+        try (InputStream is = s3OutPort.getFileContent(copiedWithOverrideRef)) {
+            assertThat(is.readAllBytes()).isEqualTo(data);
+        }
 
         // Delete
         s3OutPort.deleteFile(ref);
         s3OutPort.deleteFile(ref2);
+        s3OutPort.deleteFile(copiedRef);
+        s3OutPort.deleteFile(copiedWithOverrideRef);
         s3OutPort.deleteFile(refDir1);
         s3OutPort.deleteFile(refDir2);
         s3OutPort.deleteFile(refDir3);
         s3OutPort.deleteFile(new FileReference(BUCKET, keyUnknown));
         assertThat(s3OutPort.fileExists(ref)).isFalse();
         assertThat(s3OutPort.fileExists(ref2)).isFalse();
+        assertThat(s3OutPort.fileExists(copiedRef)).isFalse();
+        assertThat(s3OutPort.fileExists(copiedWithOverrideRef)).isFalse();
         assertThat(s3OutPort.fileExists(refDir1)).isFalse();
         assertThat(s3OutPort.fileExists(refDir2)).isFalse();
         assertThat(s3OutPort.fileExists(refDir3)).isFalse();
