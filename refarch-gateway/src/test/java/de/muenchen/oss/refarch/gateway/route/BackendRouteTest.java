@@ -14,10 +14,12 @@ import static de.muenchen.oss.refarch.gateway.TestConstants.SPRING_TEST_PROFILE;
 import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.mockJwt;
 import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.springSecurity;
 
+import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder;
 import com.github.tomakehurst.wiremock.common.ContentTypes;
 import com.github.tomakehurst.wiremock.http.HttpHeader;
 import com.github.tomakehurst.wiremock.http.HttpHeaders;
 import com.github.tomakehurst.wiremock.matching.EqualToPattern;
+import com.github.tomakehurst.wiremock.matching.UrlPattern;
 import de.muenchen.oss.refarch.gateway.OAuthSecurityMockConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -68,23 +70,9 @@ class BackendRouteTest {
                 .build();
         // setup wiremock for routes
         stubFor(get(urlMatching(".*/test"))
-                .willReturn(aResponse()
-                        .withStatus(HttpStatus.OK.value())
-                        .withHeaders(new HttpHeaders(
-                                new HttpHeader(org.springframework.http.HttpHeaders.CONTENT_TYPE, ContentTypes.APPLICATION_JSON),
-                                new HttpHeader(org.springframework.http.HttpHeaders.WWW_AUTHENTICATE,
-                                        "Bearer realm=\"Access to the staging site\", charset=\"UTF-8\"") // removed by route filter
-                        ))
-                        .withBody(TEST_JSON)));
+                .willReturn(okJsonBackendResponse()));
         stubFor(post(urlMatching(".*/test"))
-                .willReturn(aResponse()
-                        .withStatus(HttpStatus.OK.value())
-                        .withHeaders(new HttpHeaders(
-                                new HttpHeader(org.springframework.http.HttpHeaders.CONTENT_TYPE, ContentTypes.APPLICATION_JSON),
-                                new HttpHeader(org.springframework.http.HttpHeaders.WWW_AUTHENTICATE,
-                                        "Bearer realm=\"Access to the staging site\", charset=\"UTF-8\"") // removed by route filter
-                        ))
-                        .withBody(TEST_JSON)));
+                .willReturn(okJsonBackendResponse()));
     }
 
     @Nested
@@ -93,9 +81,7 @@ class BackendRouteTest {
         @Test
         @WithMockUser
         void apiGetSuccessWithoutXSRF() {
-            webTestClient
-                    .get().uri(URI_API)
-                    .header(org.springframework.http.HttpHeaders.CONTENT_TYPE, ContentTypes.APPLICATION_JSON)
+            withJsonContentType(createGet(URI_API))
                     .exchange()
                     .expectStatus().isEqualTo(HttpStatus.OK)
                     .expectHeader().valueMatches(org.springframework.http.HttpHeaders.CONTENT_TYPE, ContentTypes.APPLICATION_JSON)
@@ -103,20 +89,13 @@ class BackendRouteTest {
                     .expectCookie().exists(XSRF_COOKIE_NAME)
                     .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
 
-            verify(1, getRequestedFor(urlEqualTo(BACKEND_URL))
-                    .withoutHeader(org.springframework.http.HttpHeaders.COOKIE)
-                    .withoutHeader(XSRF_HEADER_NAME)
-                    .withHeader(org.springframework.http.HttpHeaders.CONTENT_TYPE, new EqualToPattern(ContentTypes.APPLICATION_JSON)));
+            verifyBackendJsonGetWithoutCookies(1, urlEqualTo(BACKEND_URL));
         }
 
         @Test
         @WithMockUser
         void apiGetSuccessWithXSRF() {
-            webTestClient
-                    .get().uri(URI_API)
-                    .cookie(XSRF_COOKIE_NAME, XSRF_VALUE)
-                    .header(XSRF_HEADER_NAME, XSRF_VALUE)
-                    .header(org.springframework.http.HttpHeaders.CONTENT_TYPE, ContentTypes.APPLICATION_JSON)
+            withJsonContentType(withXsrf(createGet(URI_API)))
                     .exchange()
                     .expectStatus().isEqualTo(HttpStatus.OK)
                     .expectHeader().valueMatches(org.springframework.http.HttpHeaders.CONTENT_TYPE, ContentTypes.APPLICATION_JSON)
@@ -124,16 +103,12 @@ class BackendRouteTest {
                     .expectCookie().doesNotExist(XSRF_COOKIE_NAME)
                     .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
 
-            verify(1, getRequestedFor(urlEqualTo(BACKEND_URL))
-                    .withoutHeader(org.springframework.http.HttpHeaders.COOKIE)
-                    .withoutHeader(XSRF_HEADER_NAME)
-                    .withHeader(org.springframework.http.HttpHeaders.CONTENT_TYPE, new EqualToPattern(ContentTypes.APPLICATION_JSON)));
+            verifyBackendJsonGetWithoutCookies(1, urlEqualTo(BACKEND_URL));
         }
 
         @Test
         void apiGetFound() {
-            webTestClient
-                    .get().uri(URI_API)
+            createGet(URI_API)
                     .exchange()
                     // because redirect to login
                     .expectStatus().isFound()
@@ -141,17 +116,13 @@ class BackendRouteTest {
                     .expectCookie().doesNotExist(XSRF_COOKIE_NAME)
                     .expectHeader().valueMatches(org.springframework.http.HttpHeaders.LOCATION, ".*/login.*");
 
-            verify(0, getRequestedFor(urlEqualTo(BACKEND_URL)));
+            verifyBackendGetNotCalled(urlEqualTo(BACKEND_URL));
         }
 
         @Test
         @WithMockUser
         void apiPostSuccess() {
-            webTestClient
-                    .post().uri(URI_API)
-                    .cookie(XSRF_COOKIE_NAME, XSRF_VALUE)
-                    .header(XSRF_HEADER_NAME, XSRF_VALUE)
-                    .header(org.springframework.http.HttpHeaders.CONTENT_TYPE, ContentTypes.APPLICATION_JSON)
+            withJsonContentType(withXsrf(createPost(URI_API)))
                     .exchange()
                     .expectStatus().isEqualTo(HttpStatus.OK)
                     .expectHeader().valueMatches(org.springframework.http.HttpHeaders.CONTENT_TYPE, ContentTypes.APPLICATION_JSON)
@@ -159,38 +130,31 @@ class BackendRouteTest {
                     .expectCookie().doesNotExist(XSRF_COOKIE_NAME)
                     .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
 
-            verify(1, postRequestedFor(urlEqualTo(BACKEND_URL))
-                    .withoutHeader(org.springframework.http.HttpHeaders.COOKIE)
-                    .withoutHeader(XSRF_HEADER_NAME)
-                    .withHeader(org.springframework.http.HttpHeaders.CONTENT_TYPE, new EqualToPattern(ContentTypes.APPLICATION_JSON)));
+            verifyBackendJsonPostWithoutCookies(1, urlEqualTo(BACKEND_URL));
         }
 
         @Test
         void apiPostForbidden() {
             // No CSRF, no auth -> blocked by CSRF (403)
-            webTestClient
-                    .post().uri(URI_API)
+            createPost(URI_API)
                     .exchange()
                     .expectStatus().isForbidden()
                     .expectCookie().doesNotExist(SESSION_COOKIE_NAME)
                     .expectCookie().doesNotExist(XSRF_COOKIE_NAME);
 
-            verify(0, postRequestedFor(urlEqualTo(BACKEND_URL)));
+            verifyBackendPostNotCalled(urlEqualTo(BACKEND_URL));
         }
 
         @Test
         void apiPostFound() {
             // With CSRF, but no auth -> redirected to login (302)
-            webTestClient
-                    .post().uri(URI_API)
-                    .cookie(XSRF_COOKIE_NAME, XSRF_VALUE)
-                    .header(XSRF_HEADER_NAME, XSRF_VALUE)
+            withXsrf(createPost(URI_API))
                     .exchange()
                     .expectStatus().isFound()
                     .expectCookie().doesNotExist(SESSION_COOKIE_NAME)
                     .expectCookie().doesNotExist(XSRF_COOKIE_NAME);
 
-            verify(0, postRequestedFor(urlEqualTo(BACKEND_URL)));
+            verifyBackendPostNotCalled(urlEqualTo(BACKEND_URL));
         }
     }
 
@@ -198,78 +162,63 @@ class BackendRouteTest {
     class PublicRouteTests {
         @Test
         void publicGetSuccess() {
-            webTestClient
-                    .get().uri(URI_PUBLIC)
+            createGet(URI_PUBLIC)
                     .exchange()
                     .expectStatus().isOk()
                     .expectCookie().doesNotExist(SESSION_COOKIE_NAME)
                     .expectCookie().exists(XSRF_COOKIE_NAME)
                     .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
 
-            verify(1, getRequestedFor(urlEqualTo(BACKEND_URL))
-                    .withoutHeader(org.springframework.http.HttpHeaders.COOKIE)
-                    .withoutHeader(XSRF_HEADER_NAME));
+            verifyBackendGetWithoutCookies(1, urlEqualTo(BACKEND_URL));
         }
 
         @Test
         void publicPostSuccess() {
-            webTestClient
-                    .post().uri(URI_PUBLIC)
-                    .cookie(XSRF_COOKIE_NAME, XSRF_VALUE)
-                    .header(XSRF_HEADER_NAME, XSRF_VALUE)
+            withXsrf(createPost(URI_PUBLIC))
                     .exchange()
                     .expectStatus().isOk()
                     .expectCookie().doesNotExist(SESSION_COOKIE_NAME)
                     .expectCookie().doesNotExist(XSRF_COOKIE_NAME)
                     .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
 
-            verify(1, postRequestedFor(anyUrl())
-                    .withoutHeader(org.springframework.http.HttpHeaders.COOKIE)
-                    .withoutHeader(XSRF_HEADER_NAME));
+            verifyBackendPostWithoutCookies(1, anyUrl());
         }
 
         @Test
         void publicPostForbidden() {
             // No auth required, but missing CSRF token -> Forbidden
-            webTestClient
-                    .post().uri(URI_PUBLIC)
+            createPost(URI_PUBLIC)
                     .exchange()
                     .expectStatus().isForbidden()
                     .expectCookie().doesNotExist(SESSION_COOKIE_NAME)
                     .expectCookie().doesNotExist(XSRF_COOKIE_NAME);
 
-            verify(0, postRequestedFor(urlEqualTo(BACKEND_URL)));
+            verifyBackendPostNotCalled(urlEqualTo(BACKEND_URL));
         }
 
         @Test
         void publicGetSuccessExtraPattern() {
-            webTestClient
-                    .get().uri(URI_PUBLIC_EXTRA_PATTERN)
+            createGet(URI_PUBLIC_EXTRA_PATTERN)
                     .exchange()
                     .expectStatus().isOk()
                     .expectCookie().doesNotExist(SESSION_COOKIE_NAME)
                     .expectCookie().exists(XSRF_COOKIE_NAME)
                     .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
 
-            verify(1, getRequestedFor(anyUrl())
-                    .withoutHeader(org.springframework.http.HttpHeaders.COOKIE)
-                    .withoutHeader(XSRF_HEADER_NAME));
+            verifyBackendGetWithoutCookies(1, anyUrl());
         }
 
         @Test
         void publicPostFoundExtraPattern() {
             // With CSRF, non-available public pattern -> handles as authenticated endpoint -> redirected to login (302)
-            webTestClient
-                    .post().uri(URI_PUBLIC_EXTRA_PATTERN)
-                    .cookie(XSRF_COOKIE_NAME, XSRF_VALUE)
-                    .header(XSRF_HEADER_NAME, XSRF_VALUE)
+            withXsrf(createPost(URI_PUBLIC_EXTRA_PATTERN))
                     .exchange()
                     .expectStatus().isFound()
                     .expectCookie().doesNotExist(SESSION_COOKIE_NAME)
                     .expectCookie().doesNotExist(XSRF_COOKIE_NAME)
                     .expectHeader().valueMatches(org.springframework.http.HttpHeaders.LOCATION, ".*/login.*");
 
-            verify(0, postRequestedFor(anyUrl()));
+            verifyBackendPostNotCalled(anyUrl());
         }
     }
 
@@ -277,118 +226,173 @@ class BackendRouteTest {
     class ClientsRoutesTests {
         @Test
         void clientGetSuccess() {
-            webTestClient
-                    .mutateWith(mockJwt())
-                    .get().uri(URI_CLIENTS)
+            createClientGet(URI_CLIENTS)
                     .exchange()
                     .expectStatus().isOk()
                     .expectCookie().doesNotExist(SESSION_COOKIE_NAME)
                     .expectCookie().doesNotExist(XSRF_COOKIE_NAME)
                     .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
 
-            verify(1, getRequestedFor(urlEqualTo(BACKEND_URL))
-                    .withoutHeader(org.springframework.http.HttpHeaders.COOKIE)
-                    .withoutHeader(XSRF_HEADER_NAME));
+            verifyBackendGetWithoutCookies(1, urlEqualTo(BACKEND_URL));
         }
 
         @Test
         void clientGetForbidden() {
-            webTestClient
-                    .get().uri(URI_CLIENTS)
+            createGet(URI_CLIENTS)
                     .exchange()
                     .expectStatus().isUnauthorized()
                     .expectCookie().doesNotExist(SESSION_COOKIE_NAME)
                     .expectCookie().doesNotExist(XSRF_COOKIE_NAME);
 
-            verify(0, getRequestedFor(urlEqualTo(BACKEND_URL)));
+            verifyBackendGetNotCalled(urlEqualTo(BACKEND_URL));
         }
 
         @Test
         void clientPostSuccess() {
             // CSRF is disabled for client routes, so authenticated client POST requests succeed
             // without requiring a CSRF token.
-            webTestClient
-                    .mutateWith(mockJwt())
-                    .post().uri(URI_CLIENTS)
+            createClientPost(URI_CLIENTS)
                     .exchange()
                     .expectStatus().isOk()
                     .expectCookie().doesNotExist(SESSION_COOKIE_NAME)
                     .expectCookie().doesNotExist(XSRF_COOKIE_NAME)
                     .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
 
-            verify(1, postRequestedFor(urlEqualTo(BACKEND_URL))
-                    .withoutHeader(org.springframework.http.HttpHeaders.COOKIE)
-                    .withoutHeader(XSRF_HEADER_NAME));
+            verifyBackendPostWithoutCookies(1, urlEqualTo(BACKEND_URL));
         }
 
         @Test
         void clientPostForbidden() {
             // CSRF is disabled for client routes, so missing CSRF no longer causes 403.
             // Without authentication, client POST requests must be rejected with 401.
-            webTestClient
-                    .post().uri(URI_CLIENTS)
+            createPost(URI_CLIENTS)
                     .exchange()
                     .expectStatus().isUnauthorized()
                     .expectCookie().doesNotExist(SESSION_COOKIE_NAME)
                     .expectCookie().doesNotExist(XSRF_COOKIE_NAME);
 
-            verify(0, postRequestedFor(urlEqualTo(BACKEND_URL)));
+            verifyBackendPostNotCalled(urlEqualTo(BACKEND_URL));
         }
 
         @Test
         void clientGetSuccessExtraPattern() {
-            webTestClient
-                    .mutateWith(mockJwt())
-                    .get().uri(URI_CLIENTS_EXTRA_PATTERN)
+            createClientGet(URI_CLIENTS_EXTRA_PATTERN)
                     .exchange()
                     .expectStatus().isOk()
                     .expectCookie().doesNotExist(SESSION_COOKIE_NAME)
                     .expectCookie().doesNotExist(XSRF_COOKIE_NAME)
                     .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
 
-            verify(1, getRequestedFor(anyUrl())
-                    .withoutHeader(org.springframework.http.HttpHeaders.COOKIE)
-                    .withoutHeader(XSRF_HEADER_NAME));
+            verifyBackendGetWithoutCookies(1, anyUrl());
         }
 
         @Test
         void clientGetForbiddenExtraPattern() {
-            webTestClient
-                    .get().uri(URI_CLIENTS_EXTRA_PATTERN)
+            createGet(URI_CLIENTS_EXTRA_PATTERN)
                     .exchange()
                     .expectStatus().isUnauthorized()
                     .expectCookie().doesNotExist(SESSION_COOKIE_NAME)
                     .expectCookie().doesNotExist(XSRF_COOKIE_NAME);
 
-            verify(0, getRequestedFor(anyUrl()));
+            verifyBackendGetNotCalled(anyUrl());
         }
 
         @Test
         void clientPostSuccessExtraPattern() {
-            webTestClient
-                    .mutateWith(mockJwt())
-                    .post().uri(URI_CLIENTS_EXTRA_PATTERN)
+            createClientPost(URI_CLIENTS_EXTRA_PATTERN)
                     .exchange()
                     .expectStatus().isOk()
                     .expectCookie().doesNotExist(SESSION_COOKIE_NAME)
                     .expectCookie().doesNotExist(XSRF_COOKIE_NAME)
                     .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
 
-            verify(1, postRequestedFor(anyUrl())
-                    .withoutHeader(org.springframework.http.HttpHeaders.COOKIE)
-                    .withoutHeader(XSRF_HEADER_NAME));
+            verifyBackendPostWithoutCookies(1, anyUrl());
         }
 
         @Test
         void clientPostForbiddenExtraPattern() {
-            webTestClient
-                    .post().uri(URI_CLIENTS_EXTRA_PATTERN)
+            createPost(URI_CLIENTS_EXTRA_PATTERN)
                     .exchange()
                     .expectStatus().isUnauthorized()
                     .expectCookie().doesNotExist(SESSION_COOKIE_NAME)
                     .expectCookie().doesNotExist(XSRF_COOKIE_NAME);
 
-            verify(0, postRequestedFor(anyUrl()));
+            verifyBackendPostNotCalled(anyUrl());
         }
     }
+
+    private static ResponseDefinitionBuilder okJsonBackendResponse() {
+        // common backend response used for both GET and POST
+        return aResponse()
+                .withStatus(HttpStatus.OK.value())
+                .withHeaders(new HttpHeaders(
+                        new HttpHeader(org.springframework.http.HttpHeaders.CONTENT_TYPE, ContentTypes.APPLICATION_JSON),
+                        new HttpHeader(org.springframework.http.HttpHeaders.WWW_AUTHENTICATE,
+                                "Bearer realm=\"Access to the staging site\", charset=\"UTF-8\"") // removed by route filter
+                ))
+                .withBody(TEST_JSON);
+    }
+
+    private static void verifyBackendJsonGetWithoutCookies(final int expectedCount, final UrlPattern urlPattern) {
+        verify(expectedCount, getRequestedFor(urlPattern)
+                .withoutHeader(org.springframework.http.HttpHeaders.COOKIE)
+                .withoutHeader(XSRF_HEADER_NAME)
+                .withHeader(org.springframework.http.HttpHeaders.CONTENT_TYPE, new EqualToPattern(ContentTypes.APPLICATION_JSON)));
+    }
+
+    private static void verifyBackendJsonPostWithoutCookies(final int expectedCount, final UrlPattern urlPattern) {
+        verify(expectedCount, postRequestedFor(urlPattern)
+                .withoutHeader(org.springframework.http.HttpHeaders.COOKIE)
+                .withoutHeader(XSRF_HEADER_NAME)
+                .withHeader(org.springframework.http.HttpHeaders.CONTENT_TYPE, new EqualToPattern(ContentTypes.APPLICATION_JSON)));
+    }
+
+    private static void verifyBackendGetWithoutCookies(final int expectedCount, final UrlPattern urlPattern) {
+        verify(expectedCount, getRequestedFor(urlPattern)
+                .withoutHeader(org.springframework.http.HttpHeaders.COOKIE)
+                .withoutHeader(XSRF_HEADER_NAME));
+    }
+
+    private static void verifyBackendPostWithoutCookies(final int expectedCount, final UrlPattern urlPattern) {
+        verify(expectedCount, postRequestedFor(urlPattern)
+                .withoutHeader(org.springframework.http.HttpHeaders.COOKIE)
+                .withoutHeader(XSRF_HEADER_NAME));
+    }
+
+    private static void verifyBackendGetNotCalled(final UrlPattern urlPattern) {
+        verify(0, getRequestedFor(urlPattern));
+    }
+
+    private static void verifyBackendPostNotCalled(final UrlPattern urlPattern) {
+        verify(0, postRequestedFor(urlPattern));
+    }
+
+    private WebTestClient.RequestHeadersSpec<?> createGet(final String uri) {
+        return webTestClient.get().uri(uri);
+    }
+
+    private WebTestClient.RequestHeadersSpec<?> createPost(final String uri) {
+        return webTestClient.post().uri(uri);
+    }
+
+    private WebTestClient.RequestHeadersSpec<?> withXsrf(final WebTestClient.RequestHeadersSpec<?> request) {
+        return request
+                .cookie(XSRF_COOKIE_NAME, XSRF_VALUE)
+                .header(XSRF_HEADER_NAME, XSRF_VALUE);
+    }
+
+    private WebTestClient.RequestHeadersSpec<?> withJsonContentType(final WebTestClient.RequestHeadersSpec<?> request) {
+        return request.header(org.springframework.http.HttpHeaders.CONTENT_TYPE, ContentTypes.APPLICATION_JSON);
+    }
+
+    private WebTestClient.RequestHeadersSpec<?> createClientGet(final String uri) {
+        return webTestClient.mutateWith(mockJwt())
+                .get().uri(uri);
+    }
+
+    private WebTestClient.RequestHeadersSpec<?> createClientPost(final String uri) {
+        return webTestClient.mutateWith(mockJwt())
+                .post().uri(uri);
+    }
+
 }
