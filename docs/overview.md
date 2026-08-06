@@ -5,15 +5,12 @@ It's based on [Spring](https://spring.io/) as backend framework and [Vue.js](htt
 
 This website contains documentation for the general topics about the reference architecture, the refarch templates used to create new projects, as well as content about generic and ready-to-use components.
 
-The following sections further describe the architecture and its involved components.
+The detailed architecture documentation is split into dedicated pages in the [Architecture](./architecture/index.md) section. Architecture decisions are documented separately in the [Architecture Decision Records](architecture/adr/index.md).
 
 ## Architecture
 
 The RefArch is a microservice-based architecture where each service can be scaled and developed independently.
-Following up is a description of the different components and a visualization of the connections between them.
-
-Most applications consist of an API gateway, a frontend (served by a webserver) and a backend component.
-Besides that there can be cases where modular frontends through web components, multiple frontends or multiple backends are desired.
+Most applications consist of an API gateway, a frontend and one or more backend services. Depending on the use case, modular frontends, dedicated integration services or additional backend services can be added without changing the basic structure.
 
 ```mermaid
 flowchart LR
@@ -47,4 +44,11 @@ See [API Gateway](./gateway.md) for further information.
 - **Enterprise Application Integration (EAI)**: Beside the development of web applications, the RefArch also provides a template for enterprise application integration (EAI).
   This enables integration between existing applications. By default, most applications won't require this template.
 
-More on how to use the templates can be found in [Templates](./templates/index.md).
+## See further details here
+
+- [Architecture details](./architecture/index.md)
+- [Architecture Decision Records](architecture/adr/index.md)
+- [API Gateway](./gateway.md)
+- [Templates](./templates/index.md)
+- [Integrations](./integrations/index.md)
+- [Security](./cross-cutting-concepts/security.md)
