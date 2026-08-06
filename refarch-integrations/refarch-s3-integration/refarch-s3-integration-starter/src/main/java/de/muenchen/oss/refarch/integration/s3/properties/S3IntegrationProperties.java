@@ -50,7 +50,8 @@ public class S3IntegrationProperties {
     @NotNull private Duration connectionTimeout = Duration.ofSeconds(30);
 
     /**
-     * The amount of time to wait for data to be transferred over an established, open connection before timing out.
+     * The amount of time to wait for data to be transferred over an established, open connection before
+     * timing out.
      */
     @DurationMin(seconds = 1)
     @NotNull private Duration socketTimeout = Duration.ofSeconds(60);
