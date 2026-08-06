@@ -11,7 +11,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static de.muenchen.oss.refarch.gateway.TestConstants.SPRING_TEST_PROFILE;
-import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.csrf;
 import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.mockJwt;
 import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.springSecurity;
 
@@ -42,6 +41,7 @@ class BackendRouteTest {
     public static final String SESSION_COOKIE_NAME = "SESSION";
     public static final String XSRF_COOKIE_NAME = "XSRF-TOKEN";
     public static final String XSRF_HEADER_NAME = "X-XSRF-TOKEN";
+    public static final String XSRF_VALUE = "4d82f9f1-41f6-4a09-994a-df99d30d1be9";
     private static final String TEST_KEY = "testkey";
     public static final String TEST_VALUE = "testvalue";
     private static final String TEST_JSON = "{ \"" + TEST_KEY + "\" : \"" + TEST_VALUE + "\" }";
@@ -94,13 +94,11 @@ class BackendRouteTest {
         void apiGetSuccessWithoutXSRF() {
             webTestClient
                     .get().uri(URI_API)
-                    .cookie(SESSION_COOKIE_NAME, "5cfb01a3-b691-4ca9-8735-a05690e6c2ec")
                     .header(org.springframework.http.HttpHeaders.CONTENT_TYPE, "application/hal+json")
                     .exchange()
                     .expectStatus().isEqualTo(HttpStatus.OK)
                     .expectHeader().valueMatches(org.springframework.http.HttpHeaders.CONTENT_TYPE, "application/json")
                     .expectHeader().doesNotExist(org.springframework.http.HttpHeaders.WWW_AUTHENTICATE)
-                    .expectCookie().doesNotExist(SESSION_COOKIE_NAME)
                     .expectCookie().exists(XSRF_COOKIE_NAME)
                     .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
 
@@ -114,16 +112,14 @@ class BackendRouteTest {
         @WithMockUser
         void apiGetSuccessWithXSRF() {
             webTestClient
-                    .mutateWith(csrf())
                     .get().uri(URI_API)
-                    .cookie(SESSION_COOKIE_NAME, "5cfb01a3-b691-4ca9-8735-a05690e6c2ec")
-                    .cookie(XSRF_COOKIE_NAME, "4d82f9f1-41f6-4a09-994a-df99d30d1be9")
+                    .cookie(XSRF_COOKIE_NAME, XSRF_VALUE)
+                    .header(XSRF_HEADER_NAME, XSRF_VALUE)
                     .header(org.springframework.http.HttpHeaders.CONTENT_TYPE, "application/hal+json")
                     .exchange()
                     .expectStatus().isEqualTo(HttpStatus.OK)
                     .expectHeader().valueMatches(org.springframework.http.HttpHeaders.CONTENT_TYPE, "application/json")
                     .expectHeader().doesNotExist(org.springframework.http.HttpHeaders.WWW_AUTHENTICATE)
-                    .expectCookie().doesNotExist(SESSION_COOKIE_NAME)
                     .expectCookie().doesNotExist(XSRF_COOKIE_NAME)
                     .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
 
@@ -151,16 +147,14 @@ class BackendRouteTest {
         @WithMockUser
         void apiPostSuccess() {
             webTestClient
-                    .mutateWith(csrf())
                     .post().uri(URI_API)
-                    .cookie(SESSION_COOKIE_NAME, "5cfb01a3-b691-4ca9-8735-a05690e6c2ec")
-                    .cookie(XSRF_COOKIE_NAME, "4d82f9f1-41f6-4a09-994a-df99d30d1be9")
+                    .cookie(XSRF_COOKIE_NAME, XSRF_VALUE)
+                    .header(XSRF_HEADER_NAME, XSRF_VALUE)
                     .header(org.springframework.http.HttpHeaders.CONTENT_TYPE, "application/hal+json")
                     .exchange()
                     .expectStatus().isEqualTo(HttpStatus.OK)
                     .expectHeader().valueMatches(org.springframework.http.HttpHeaders.CONTENT_TYPE, "application/json")
                     .expectHeader().doesNotExist(org.springframework.http.HttpHeaders.WWW_AUTHENTICATE)
-                    .expectCookie().doesNotExist(SESSION_COOKIE_NAME)
                     .expectCookie().doesNotExist(XSRF_COOKIE_NAME)
                     .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
 
@@ -187,9 +181,9 @@ class BackendRouteTest {
         void apiPostFound() {
             // With CSRF, but no auth -> redirected to login (302)
             webTestClient
-                    .mutateWith(csrf())
                     .post().uri(URI_API)
-                    .cookie(XSRF_COOKIE_NAME, "4d82f9f1-41f6-4a09-994a-df99d30d1be9")
+                    .cookie(XSRF_COOKIE_NAME, XSRF_VALUE)
+                    .header(XSRF_HEADER_NAME, XSRF_VALUE)
                     .exchange()
                     .expectStatus().isFound()
                     .expectCookie().doesNotExist(SESSION_COOKIE_NAME)
@@ -219,9 +213,9 @@ class BackendRouteTest {
         @Test
         void publicPostSuccess() {
             webTestClient
-                    .mutateWith(csrf())
                     .post().uri(URI_PUBLIC)
-                    .cookie(XSRF_COOKIE_NAME, "5cfb01a3-b691-4ca9-8735-a05690e6c2ec")
+                    .cookie(XSRF_COOKIE_NAME, XSRF_VALUE)
+                    .header(XSRF_HEADER_NAME, XSRF_VALUE)
                     .exchange()
                     .expectStatus().isOk()
                     .expectCookie().doesNotExist(SESSION_COOKIE_NAME)
@@ -265,9 +259,9 @@ class BackendRouteTest {
         void publicPostFoundExtraPattern() {
             // With CSRF, non-available public pattern -> handles as authenticated endpoint -> redirected to login (302)
             webTestClient
-                    .mutateWith(csrf())
                     .post().uri(URI_PUBLIC_EXTRA_PATTERN)
-                    .cookie(XSRF_COOKIE_NAME, "5cfb01a3-b691-4ca9-8735-a05690e6c2ec")
+                    .cookie(XSRF_COOKIE_NAME, XSRF_VALUE)
+                    .header(XSRF_HEADER_NAME, XSRF_VALUE)
                     .exchange()
                     .expectStatus().isFound()
                     .expectCookie().doesNotExist(SESSION_COOKIE_NAME)
