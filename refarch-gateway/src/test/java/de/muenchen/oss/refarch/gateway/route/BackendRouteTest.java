@@ -14,6 +14,7 @@ import static de.muenchen.oss.refarch.gateway.TestConstants.SPRING_TEST_PROFILE;
 import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.mockJwt;
 import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.springSecurity;
 
+import com.github.tomakehurst.wiremock.common.ContentTypes;
 import com.github.tomakehurst.wiremock.http.HttpHeader;
 import com.github.tomakehurst.wiremock.http.HttpHeaders;
 import com.github.tomakehurst.wiremock.matching.EqualToPattern;
@@ -70,7 +71,7 @@ class BackendRouteTest {
                 .willReturn(aResponse()
                         .withStatus(HttpStatus.OK.value())
                         .withHeaders(new HttpHeaders(
-                                new HttpHeader(org.springframework.http.HttpHeaders.CONTENT_TYPE, "application/json"),
+                                new HttpHeader(org.springframework.http.HttpHeaders.CONTENT_TYPE, ContentTypes.APPLICATION_JSON),
                                 new HttpHeader(org.springframework.http.HttpHeaders.WWW_AUTHENTICATE,
                                         "Bearer realm=\"Access to the staging site\", charset=\"UTF-8\"") // removed by route filter
                         ))
@@ -79,7 +80,7 @@ class BackendRouteTest {
                 .willReturn(aResponse()
                         .withStatus(HttpStatus.OK.value())
                         .withHeaders(new HttpHeaders(
-                                new HttpHeader(org.springframework.http.HttpHeaders.CONTENT_TYPE, "application/json"),
+                                new HttpHeader(org.springframework.http.HttpHeaders.CONTENT_TYPE, ContentTypes.APPLICATION_JSON),
                                 new HttpHeader(org.springframework.http.HttpHeaders.WWW_AUTHENTICATE,
                                         "Bearer realm=\"Access to the staging site\", charset=\"UTF-8\"") // removed by route filter
                         ))
@@ -94,10 +95,10 @@ class BackendRouteTest {
         void apiGetSuccessWithoutXSRF() {
             webTestClient
                     .get().uri(URI_API)
-                    .header(org.springframework.http.HttpHeaders.CONTENT_TYPE, "application/hal+json")
+                    .header(org.springframework.http.HttpHeaders.CONTENT_TYPE, ContentTypes.APPLICATION_JSON)
                     .exchange()
                     .expectStatus().isEqualTo(HttpStatus.OK)
-                    .expectHeader().valueMatches(org.springframework.http.HttpHeaders.CONTENT_TYPE, "application/json")
+                    .expectHeader().valueMatches(org.springframework.http.HttpHeaders.CONTENT_TYPE, ContentTypes.APPLICATION_JSON)
                     .expectHeader().doesNotExist(org.springframework.http.HttpHeaders.WWW_AUTHENTICATE)
                     .expectCookie().exists(XSRF_COOKIE_NAME)
                     .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
@@ -105,7 +106,7 @@ class BackendRouteTest {
             verify(1, getRequestedFor(urlEqualTo(BACKEND_URL))
                     .withoutHeader(org.springframework.http.HttpHeaders.COOKIE)
                     .withoutHeader(XSRF_HEADER_NAME)
-                    .withHeader(org.springframework.http.HttpHeaders.CONTENT_TYPE, new EqualToPattern("application/hal+json")));
+                    .withHeader(org.springframework.http.HttpHeaders.CONTENT_TYPE, new EqualToPattern(ContentTypes.APPLICATION_JSON)));
         }
 
         @Test
@@ -115,10 +116,10 @@ class BackendRouteTest {
                     .get().uri(URI_API)
                     .cookie(XSRF_COOKIE_NAME, XSRF_VALUE)
                     .header(XSRF_HEADER_NAME, XSRF_VALUE)
-                    .header(org.springframework.http.HttpHeaders.CONTENT_TYPE, "application/hal+json")
+                    .header(org.springframework.http.HttpHeaders.CONTENT_TYPE, ContentTypes.APPLICATION_JSON)
                     .exchange()
                     .expectStatus().isEqualTo(HttpStatus.OK)
-                    .expectHeader().valueMatches(org.springframework.http.HttpHeaders.CONTENT_TYPE, "application/json")
+                    .expectHeader().valueMatches(org.springframework.http.HttpHeaders.CONTENT_TYPE, ContentTypes.APPLICATION_JSON)
                     .expectHeader().doesNotExist(org.springframework.http.HttpHeaders.WWW_AUTHENTICATE)
                     .expectCookie().doesNotExist(XSRF_COOKIE_NAME)
                     .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
@@ -126,7 +127,7 @@ class BackendRouteTest {
             verify(1, getRequestedFor(urlEqualTo(BACKEND_URL))
                     .withoutHeader(org.springframework.http.HttpHeaders.COOKIE)
                     .withoutHeader(XSRF_HEADER_NAME)
-                    .withHeader(org.springframework.http.HttpHeaders.CONTENT_TYPE, new EqualToPattern("application/hal+json")));
+                    .withHeader(org.springframework.http.HttpHeaders.CONTENT_TYPE, new EqualToPattern(ContentTypes.APPLICATION_JSON)));
         }
 
         @Test
@@ -150,10 +151,10 @@ class BackendRouteTest {
                     .post().uri(URI_API)
                     .cookie(XSRF_COOKIE_NAME, XSRF_VALUE)
                     .header(XSRF_HEADER_NAME, XSRF_VALUE)
-                    .header(org.springframework.http.HttpHeaders.CONTENT_TYPE, "application/hal+json")
+                    .header(org.springframework.http.HttpHeaders.CONTENT_TYPE, ContentTypes.APPLICATION_JSON)
                     .exchange()
                     .expectStatus().isEqualTo(HttpStatus.OK)
-                    .expectHeader().valueMatches(org.springframework.http.HttpHeaders.CONTENT_TYPE, "application/json")
+                    .expectHeader().valueMatches(org.springframework.http.HttpHeaders.CONTENT_TYPE, ContentTypes.APPLICATION_JSON)
                     .expectHeader().doesNotExist(org.springframework.http.HttpHeaders.WWW_AUTHENTICATE)
                     .expectCookie().doesNotExist(XSRF_COOKIE_NAME)
                     .expectBody().jsonPath(TEST_KEY_EXPRESSION).isEqualTo(TEST_VALUE);
@@ -161,7 +162,7 @@ class BackendRouteTest {
             verify(1, postRequestedFor(urlEqualTo(BACKEND_URL))
                     .withoutHeader(org.springframework.http.HttpHeaders.COOKIE)
                     .withoutHeader(XSRF_HEADER_NAME)
-                    .withHeader(org.springframework.http.HttpHeaders.CONTENT_TYPE, new EqualToPattern("application/hal+json")));
+                    .withHeader(org.springframework.http.HttpHeaders.CONTENT_TYPE, new EqualToPattern(ContentTypes.APPLICATION_JSON)));
         }
 
         @Test
