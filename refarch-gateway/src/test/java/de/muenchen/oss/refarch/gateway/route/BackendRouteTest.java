@@ -382,7 +382,7 @@ class BackendRouteTest {
         @Test
         void clientPostForbiddenExtraPattern() {
             webTestClient
-                    .get().uri(URI_CLIENTS_EXTRA_PATTERN)
+                    .post().uri(URI_CLIENTS_EXTRA_PATTERN)
                     .exchange()
                     .expectStatus().isUnauthorized()
                     .expectCookie().doesNotExist(SESSION_COOKIE_NAME)
