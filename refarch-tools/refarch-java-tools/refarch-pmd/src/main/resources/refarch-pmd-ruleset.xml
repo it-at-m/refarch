@@ -36,7 +36,7 @@
     <rule ref="category/java/bestpractices.xml/UnitTestShouldIncludeAssert">
         <properties>
             <!-- From Spring WebTestClient and MockMVC -->
-            <property name="extraAssertMethodNames" value="expectStatus,expectHeader,andExpect" />
+            <property name="extraAssertMethodNames" value="expectStatus,expectHeader,expectBody,expectBodyList,expectCookie,andExpect" />
         </properties>
     </rule>
     <rule ref="category/java/codestyle.xml/MethodNamingConventions">
