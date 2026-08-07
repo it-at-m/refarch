@@ -47,6 +47,7 @@ public class SecurityConfiguration {
                 .authorizeExchange(authorizeExchangeSpec -> authorizeExchangeSpec
                         .pathMatchers(HttpMethod.OPTIONS, patterns).permitAll()
                         .anyExchange().authenticated())
+                .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
         return http.build();
     }
