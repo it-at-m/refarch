@@ -5,6 +5,7 @@ import de.muenchen.oss.refarch.integration.s3.adapter.out.s3.S3OutAdapter;
 import de.muenchen.oss.refarch.integration.s3.application.port.out.S3OutPort;
 import de.muenchen.oss.refarch.integration.s3.properties.S3IntegrationProperties;
 import java.net.URI;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -14,6 +15,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
+import software.amazon.awssdk.http.SdkHttpClient;
+import software.amazon.awssdk.http.apache.ApacheHttpClient;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.S3Configuration;
@@ -40,7 +43,12 @@ public class S3IntegrationAutoConfiguration {
                         s3IntegrationProperties.getAccessKey(),
                         s3IntegrationProperties.getSecretKey()));
 
+        final SdkHttpClient.Builder<ApacheHttpClient.Builder> httpClient = ApacheHttpClient.builder()
+                .connectionTimeout(s3IntegrationProperties.getConnectionTimeout())
+                .socketTimeout(s3IntegrationProperties.getSocketTimeout());
+
         final S3Client client = S3Client.builder()
+                .httpClientBuilder(httpClient)
                 .endpointOverride(URI.create(s3IntegrationProperties.getUrl()))
                 .region(Region.of(s3IntegrationProperties.getRegion()))
                 .credentialsProvider(creds)
