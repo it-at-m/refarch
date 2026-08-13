@@ -26,14 +26,14 @@ jobs:
           base: ${{ github.ref }}
           filters: |
             refarch-gateway: 
-             - refarch-gateway/**
-             - .github/workflows/build.yml
+              - refarch-gateway/**
+              - .github/workflows/build.yml
             refarch-integrations: 
-             - refarch-integrations/**
-             - .github/workflows/build.yml
+              - refarch-integrations/**
+              - .github/workflows/build.yml
             refarch-tools: 
-             - refarch-tools/**
-             - .github/workflows/build.yml
+              - refarch-tools/**
+              - .github/workflows/build.yml
       - run: |
           echo ${{ toJSON(steps.filter.outputs.changes) }}
   build:
