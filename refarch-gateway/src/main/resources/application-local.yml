@@ -1,5 +1,6 @@
 server:
   port: 8083
+
 spring:
   cloud:
     gateway:
@@ -38,8 +39,13 @@ spring:
             client-id: local
             client-secret: client_secret
             scope: profile, openid, roles, basic
-  session:
-    timeout: 60s
+  jmx:
+    enabled: true # additionally must set -Djava.rmi.server.hostname=localhost to use local debugging via JMX+RMI
+
+management:
+  endpoints:
+    access:
+      default: unrestricted
 
 logging:
   include-application-group: false # disabled because application group is only relevant when deployed

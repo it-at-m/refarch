@@ -1,9 +1,19 @@
 name: refarch-development-stack
 
+x-healthcheck: &healthcheck
+  interval: 30s
+  timeout: 60s
+  retries: 3
+  start_period: 60s
+
+x-security-settings: &security_settings
+  security_opt:
+    - no-new-privileges:true
+
 services:
   # === Keycloak ===
   keycloak:
-    image: quay.io/keycloak/keycloak:26.2.5@sha256:4883630ef9db14031cde3e60700c9a9a8eaf1b5c24db1589d6a2d43de38ba2a9
+    image: quay.io/keycloak/keycloak:26.6.4@sha256:0aae0de7fca85525f727d3354df17896092de8bb26ae4c12d89c77e5df8cbce4
     command:
       - start-dev
     environment:
@@ -16,17 +26,17 @@ services:
       - "8100:8100"
     networks:
       - keycloak
-    healthcheck: &healthcheck
-      test: ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/9000;echo -e 'GET /health/ready HTTP/1.1\r\nhost: http://localhost\r\nConnection: close\r\n\r\n' >&3;if [ $? -eq 0 ]; then exit 0;else exit 1;fi;"]
-      interval: 30s
-      timeout: 60s
-      retries: 3
-      start_period: 60s
-    security_opt: &security_settings
-      - no-new-privileges:true
+    healthcheck:
+      <<: *healthcheck
+      test: [
+        "CMD-SHELL",
+        # health check see https://www.keycloak.org/observability/health#_healthcheck
+        "{ printf 'HEAD /auth/health/ready HTTP/1.0\r\n\r\n' >&0; grep 'HTTP/1.0 200'; } 0<>/dev/tcp/localhost/9000"
+      ]
+    <<: *security_settings
 
   init-keycloak:
-    image: klg71/keycloakmigration:0.2.131@sha256:a311cce3b961062000e6e9ef08ecb5712f3ea81859beeee8cd0c836fe8e4f2cf
+    image: klg71/keycloakmigration:0.2.130@sha256:fbec0fbbec2f90e9e912576cfb2ff108fb5703a59383b5e51c8633c130173af8
     depends_on:
       - keycloak
     environment:
@@ -36,11 +46,12 @@ services:
       WAIT_FOR_KEYCLOAK: "true"
       FAIL_ON_UNDEFINED_VARIABLES: "true"
       KEYCLOAK_CHANGELOG: /migration/keycloak-changelog.yml
+      EXIT_ON_ERROR: "true"
     volumes:
       - ./keycloak/migration:/migration
     networks:
       - keycloak
-    security_opt: *security_settings
+    <<: *security_settings
 
   # === Redis ===
   redis:
@@ -50,7 +61,7 @@ services:
     healthcheck:
       <<: *healthcheck
       test: [ "CMD-SHELL",  "redis-cli ping" ]
-    security_opt: *security_settings
+    <<: *security_settings
 
   # === S3 ===
   minio:
@@ -69,7 +80,7 @@ services:
     healthcheck:
       <<: *healthcheck
       test: [ "CMD-SHELL",  "curl http://localhost:9000/minio/health/live" ]
-    security_opt: *security_settings
+    <<: *security_settings
 
   init-minio:
     image: minio/mc:RELEASE.2024-08-17T11-33-50Z@sha256:87382ad79da9f464a444aab607b3db9251c7fe7d1bfda0eb86cbacee2ca2b564
@@ -83,17 +94,21 @@ services:
       "
     networks:
       - minio
-    security_opt: *security_settings
+    <<: *security_settings
 
   # === Mail ===
   mailpit:
-    image: axllent/mailpit:v1.30.6@sha256:7f33095f80e901f6ad08028f06ca284aa58fe84942be5496008d041d3b9f4d4d
+    image: axllent/mailpit:v1.30.7@sha256:d5ecbb067db3705fa953d79e1b7f81ef84038df67aba6c52825d8c02a1ea748a
     environment:
       MP_DISABLE_VERSION_CHECK: "true"
     ports:
       - "1025:1025" # SMTP Server
       - "8025:8025" # UI
-    security_opt: *security_settings
+    healthcheck:
+      <<: *healthcheck
+      # health check see https://mailpit.axllent.org/docs/integration/healthcheck/
+      test: [ "CMD", "wget", "--spider", "-q", "http://localhost:8025/readyz" ]
+    <<: *security_settings
 
 networks:
   keycloak:

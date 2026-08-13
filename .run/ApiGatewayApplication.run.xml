@@ -3,6 +3,7 @@
     <option name="ACTIVE_PROFILES" value="local, redis-session" />
     <module name="refarch-gateway" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="de.muenchen.oss.refarch.gateway.ApiGatewayApplication" />
+    <option name="VM_PARAMETERS" value="-Djava.rmi.server.hostname=localhost" />
     <extension name="net.ashald.envfile">
       <option name="IS_ENABLED" value="false" />
       <option name="IS_SUBST" value="false" />
