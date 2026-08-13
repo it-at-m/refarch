@@ -94,6 +94,10 @@ services:
     ports:
       - "1025:1025" # SMTP Server
       - "8025:8025" # UI
+    healthcheck:
+      <<: *healthcheck
+      # health check see https://mailpit.axllent.org/docs/integration/healthcheck/
+      test: [ "CMD", "wget", "--spider", "-q", "http://localhost:8025/readyz" ]
     <<: *security_settings
 
 networks:
