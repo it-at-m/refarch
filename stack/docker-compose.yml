@@ -1,5 +1,15 @@
 name: refarch-development-stack
 
+x-healthcheck: &healthcheck
+  interval: 30s
+  timeout: 60s
+  retries: 3
+  start_period: 60s
+
+x-security-settings: &security_settings
+  security_opt:
+    - no-new-privileges:true
+
 services:
   # === Keycloak ===
   keycloak:
@@ -16,18 +26,14 @@ services:
       - "8100:8100"
     networks:
       - keycloak
-    healthcheck: &healthcheck
+    healthcheck:
+      <<: *healthcheck
       test: [
         "CMD-SHELL",
         # health check see https://www.keycloak.org/observability/health#_healthcheck
         "{ printf 'HEAD /auth/health/ready HTTP/1.0\r\n\r\n' >&0; grep 'HTTP/1.0 200'; } 0<>/dev/tcp/localhost/9000"
       ]
-      interval: 30s
-      timeout: 60s
-      retries: 3
-      start_period: 60s
-    security_opt: &security_settings
-      - no-new-privileges:true
+    <<: *security_settings
 
   init-keycloak:
     image: klg71/keycloakmigration:0.2.130@sha256:fbec0fbbec2f90e9e912576cfb2ff108fb5703a59383b5e51c8633c130173af8
@@ -45,7 +51,7 @@ services:
       - ./keycloak/migration:/migration
     networks:
       - keycloak
-    security_opt: *security_settings
+    <<: *security_settings
 
   # === S3 ===
   minio:
@@ -64,7 +70,7 @@ services:
     healthcheck:
       <<: *healthcheck
       test: [ "CMD-SHELL",  "curl http://localhost:9000/minio/health/live" ]
-    security_opt: *security_settings
+    <<: *security_settings
 
   init-minio:
     image: minio/mc:RELEASE.2024-08-17T11-33-50Z@sha256:87382ad79da9f464a444aab607b3db9251c7fe7d1bfda0eb86cbacee2ca2b564
@@ -78,7 +84,7 @@ services:
       "
     networks:
       - minio
-    security_opt: *security_settings
+    <<: *security_settings
 
   # === Mail ===
   mailpit:
@@ -88,7 +94,11 @@ services:
     ports:
       - "1025:1025" # SMTP Server
       - "8025:8025" # UI
-    security_opt: *security_settings
+    healthcheck:
+      <<: *healthcheck
+      # health check see https://mailpit.axllent.org/docs/integration/healthcheck/
+      test: [ "CMD", "wget", "--spider", "-q", "http://localhost:8025/readyz" ]
+    <<: *security_settings
 
 networks:
   keycloak:
