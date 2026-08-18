@@ -12,10 +12,11 @@ All templates include a simple `Dockerfile` to build Docker images. The followin
 ::: danger Important
 It is strongly recommended to use a multi-architecture base image whenever possible. In such cases, an architecture-agnostic SHA should be used.
 Depending on the image source, the correct SHA can be found for:
+
 - **RedHat Image Catalog**: Check "Get this image -> Image identifiers -> Manifest List Digest" on the image page
 - **GitHub**: Use SHA at the top directly underneath the tag name, not the SHA listed in "OS/Arch"
 - **DockerHub**: Use "Index Digest", not "Manifest Digest"
-:::
+  :::
 
 ## Helm Chart
 
