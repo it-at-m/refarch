@@ -10,7 +10,7 @@ All templates include a simple `Dockerfile` to build Docker images. The followin
 - JavaScript-based templates (`frontend` and `webcomponent`): RedHat UBI Nginx (e.g. [`ubi10/nginx-126`](https://catalog.redhat.com/en/software/containers/ubi10/nginx-126/677d3735607921b4d7503cf3))
 
 ::: danger Important
-It is strongly recommended to use a multi-architecture base image whenever possible. In such cases, an architecture-agnostic SHA should be used.
+To ensure broad hardware compatibility of built container images it is strongly recommended to use a multi-architecture base image whenever possible. In such cases, an architecture-agnostic SHA should be used.
 Depending on the image source, the correct SHA can be found for:
 
 - **RedHat Image Catalog**: Check "Get this image -> Image identifiers -> Manifest List Digest" on the image page
