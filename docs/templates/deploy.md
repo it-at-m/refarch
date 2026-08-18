@@ -9,6 +9,14 @@ All templates include a simple `Dockerfile` to build Docker images. The followin
 - Java-based templates (`backend` and `eai`): [RedHat UBI OpenJDK Runtime](https://rh-openjdk.github.io/redhat-openjdk-containers/index.html)
 - JavaScript-based templates (`frontend` and `webcomponent`): RedHat UBI Nginx (e.g. [`ubi10/nginx-126`](https://catalog.redhat.com/en/software/containers/ubi10/nginx-126/677d3735607921b4d7503cf3))
 
+::: danger Important
+It is strongly recommended to use a multi-architecture base image whenever possible. In such cases, an architecture-agnostic SHA should be used.
+Depending on the image source, the correct SHA can be found for:
+- **RedHat Image Catalog**: Check "Get this image -> Image identifiers -> Manifest List Digest" on the image page
+- **GitHub**: Use SHA at the top directly underneath the tag name, not the SHA listed in "OS/Arch"
+- **DockerHub**: Use "Index Digest", not "Manifest Digest"
+:::
+
 ## Helm Chart
 
 [Helm](https://helm.sh/) allows easy deployment of multi-container applications to a Kubernetes cluster using charts.
