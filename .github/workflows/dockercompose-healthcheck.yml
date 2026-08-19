@@ -13,3 +13,4 @@ jobs:
       - uses: it-at-m/lhm_actions/action-templates/actions/action-dockercompose-healthcheck@fix/218-healthccheck-action
         with:
           compose-file-path: "./stack/"
+          timeout: "180"
