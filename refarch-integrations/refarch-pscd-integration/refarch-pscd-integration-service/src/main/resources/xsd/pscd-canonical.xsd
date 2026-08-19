@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  refarch-owned canonical schema for an inbound PSCD "Satzarten" batch.
+
+  This is the single source of truth for the module's inbound contract. It is intentionally NOT the
+  vendor (SAP PI) DT_SOAPSatzarten schema: element names are the module's own idiomatic camelCase,
+  mirroring the domain aggregate 1:1, so the generated model produces clean JSON for REST and a
+  near-trivial mapping to the domain. The same generated types back both the SOAP endpoint (via the
+  importing WSDL) and the REST endpoint (as JSON).
+
+  Constraints kept deliberately simple so the generated types round-trip cleanly as JSON:
+  only plain nullable xsd:string elements, no nillable="true", no element refs (either would make
+  XJC emit JAXBElement<T> wrappers).
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="https://refarch.muenchen.de/pscd/inbound/v1"
+           targetNamespace="https://refarch.muenchen.de/pscd/inbound/v1"
+           elementFormDefault="qualified"
+           version="1.0">
+
+    <!-- ==== Batch aggregate ==== -->
+    <xs:complexType name="PscdBatch">
+        <xs:sequence>
+            <xs:element name="filename" type="xs:string"/>
+            <xs:element name="satzart010" type="tns:Satzart010Type"/>
+            <xs:element name="satzart100" type="tns:Satzart100Type" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="satzart105" type="tns:Satzart105Type" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="satzart155" type="tns:Satzart155Type" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="satzart165" type="tns:Satzart165Type" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="satzart200" type="tns:Satzart200Type" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="satzart210" type="tns:Satzart210Type" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="satzart250" type="tns:Satzart250Type" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="satzart260" type="tns:Satzart260Type" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="satzartFehler" type="tns:SatzartFehlerType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- Global element used as the SOAP message part and the REST/JSON root. -->
+    <xs:element name="pscdBatch" type="tns:PscdBatch"/>
+
+    <!-- ==== Record types ==== all fields optional nullable strings; the mapper enforces semantics -->
+    <xs:complexType name="Satzart010Type">
+        <xs:sequence>
+            <xs:element name="satzart" type="xs:string" minOccurs="0"/>
+            <xs:element name="abstimmsumme" type="xs:string" minOccurs="0"/>
+            <xs:element name="vorzeichen" type="xs:string" minOccurs="0"/>
+            <xs:element name="fehler" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Satzart100Type">
+        <xs:sequence>
+            <xs:element name="satzart" type="xs:string" minOccurs="0"/>
+            <xs:element name="psobkey" type="xs:string" minOccurs="0"/>
+            <xs:element name="partner" type="xs:string" minOccurs="0"/>
+            <xs:element name="addrnum" type="xs:string" minOccurs="0"/>
+            <xs:element name="psobtxtb1" type="xs:string" minOccurs="0"/>
+            <xs:element name="psobtxtb2" type="xs:string" minOccurs="0"/>
+            <xs:element name="psobtxtb3" type="xs:string" minOccurs="0"/>
+            <xs:element name="psobtxtb4" type="xs:string" minOccurs="0"/>
+            <xs:element name="psobtxtb5" type="xs:string" minOccurs="0"/>
+            <xs:element name="psobtxtb6" type="xs:string" minOccurs="0"/>
+            <xs:element name="zweitschuldner" type="xs:string" minOccurs="0"/>
+            <xs:element name="eigentuemerwechsel" type="xs:string" minOccurs="0"/>
+            <xs:element name="betriebsende" type="xs:string" minOccurs="0"/>
+            <xs:element name="kdKenn" type="xs:string" minOccurs="0"/>
+            <xs:element name="fachdstSb" type="xs:string" minOccurs="0"/>
+            <xs:element name="fachdstTelnr" type="xs:string" minOccurs="0"/>
+            <xs:element name="fehler" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Satzart105Type">
+        <xs:sequence>
+            <xs:element name="satzart" type="xs:string" minOccurs="0"/>
+            <xs:element name="psobkey" type="xs:string" minOccurs="0"/>
+            <xs:element name="corrPartner" type="xs:string" minOccurs="0"/>
+            <xs:element name="corrRole" type="xs:string" minOccurs="0"/>
+            <xs:element name="fehler" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Satzart155Type">
+        <xs:sequence>
+            <xs:element name="satzart" type="xs:string" minOccurs="0"/>
+            <xs:element name="psobkey" type="xs:string" minOccurs="0"/>
+            <xs:element name="deleteFlag" type="xs:string" minOccurs="0"/>
+            <xs:element name="corrRole" type="xs:string" minOccurs="0"/>
+            <xs:element name="fehler" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Satzart165Type">
+        <xs:sequence>
+            <xs:element name="satzart" type="xs:string" minOccurs="0"/>
+            <xs:element name="psobkey" type="xs:string" minOccurs="0"/>
+            <xs:element name="psobtxtb1" type="xs:string" minOccurs="0"/>
+            <xs:element name="psobtxtb2" type="xs:string" minOccurs="0"/>
+            <xs:element name="psobtxtb3" type="xs:string" minOccurs="0"/>
+            <xs:element name="psobtxtb4" type="xs:string" minOccurs="0"/>
+            <xs:element name="psobtxtb5" type="xs:string" minOccurs="0"/>
+            <xs:element name="psobtxtb6" type="xs:string" minOccurs="0"/>
+            <xs:element name="zweitschuldner" type="xs:string" minOccurs="0"/>
+            <xs:element name="eigentuemerwechsel" type="xs:string" minOccurs="0"/>
+            <xs:element name="betriebsende" type="xs:string" minOccurs="0"/>
+            <xs:element name="kdKenn" type="xs:string" minOccurs="0"/>
+            <xs:element name="fachdstSb" type="xs:string" minOccurs="0"/>
+            <xs:element name="fachdstTelnr" type="xs:string" minOccurs="0"/>
+            <xs:element name="fehler" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Satzart200Type">
+        <xs:sequence>
+            <xs:element name="satzart" type="xs:string" minOccurs="0"/>
+            <xs:element name="psobkey" type="xs:string" minOccurs="0"/>
+            <xs:element name="einnahmeart" type="xs:string" minOccurs="0"/>
+            <xs:element name="betrw" type="xs:string" minOccurs="0"/>
+            <xs:element name="faedn" type="xs:string" minOccurs="0"/>
+            <xs:element name="bldat" type="xs:string" minOccurs="0"/>
+            <xs:element name="persl" type="xs:string" minOccurs="0"/>
+            <xs:element name="optxt" type="xs:string" minOccurs="0"/>
+            <xs:element name="sgtxt" type="xs:string" minOccurs="0"/>
+            <xs:element name="blwae" type="xs:string" minOccurs="0"/>
+            <xs:element name="xblnr" type="xs:string" minOccurs="0"/>
+            <xs:element name="fvBelnr" type="xs:string" minOccurs="0"/>
+            <xs:element name="kostl" type="xs:string" minOccurs="0"/>
+            <xs:element name="fehler" type="xs:string" minOccurs="0"/>
+            <xs:element name="mwskz" type="xs:string" minOccurs="0"/>
+            <xs:element name="aufnr" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Satzart210Type">
+        <xs:sequence>
+            <xs:element name="satzart" type="xs:string" minOccurs="0"/>
+            <xs:element name="psobkey" type="xs:string" minOccurs="0"/>
+            <xs:element name="einnahmeart" type="xs:string" minOccurs="0"/>
+            <xs:element name="betrw" type="xs:string" minOccurs="0"/>
+            <xs:element name="faedn" type="xs:string" minOccurs="0"/>
+            <xs:element name="bldat" type="xs:string" minOccurs="0"/>
+            <xs:element name="persl" type="xs:string" minOccurs="0"/>
+            <xs:element name="xblnr" type="xs:string" minOccurs="0"/>
+            <xs:element name="fvBelnr" type="xs:string" minOccurs="0"/>
+            <xs:element name="blwae" type="xs:string" minOccurs="0"/>
+            <xs:element name="fehler" type="xs:string" minOccurs="0"/>
+            <xs:element name="kostl" type="xs:string" minOccurs="0"/>
+            <xs:element name="mwskz" type="xs:string" minOccurs="0"/>
+            <xs:element name="aufnr" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Satzart250Type">
+        <xs:sequence>
+            <xs:element name="satzart" type="xs:string" minOccurs="0"/>
+            <xs:element name="psobkey" type="xs:string" minOccurs="0"/>
+            <xs:element name="einnahmeart" type="xs:string" minOccurs="0"/>
+            <xs:element name="betrw" type="xs:string" minOccurs="0"/>
+            <xs:element name="faedn" type="xs:string" minOccurs="0"/>
+            <xs:element name="bldat" type="xs:string" minOccurs="0"/>
+            <xs:element name="persl" type="xs:string" minOccurs="0"/>
+            <xs:element name="optxt" type="xs:string" minOccurs="0"/>
+            <xs:element name="sgtxt" type="xs:string" minOccurs="0"/>
+            <xs:element name="blwae" type="xs:string" minOccurs="0"/>
+            <xs:element name="valut" type="xs:string" minOccurs="0"/>
+            <xs:element name="xblnr" type="xs:string" minOccurs="0"/>
+            <xs:element name="fvBelnr" type="xs:string" minOccurs="0"/>
+            <xs:element name="kostl" type="xs:string" minOccurs="0"/>
+            <xs:element name="fehler" type="xs:string" minOccurs="0"/>
+            <xs:element name="mwskz" type="xs:string" minOccurs="0"/>
+            <xs:element name="aufnr" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Satzart260Type">
+        <xs:sequence>
+            <xs:element name="satzart" type="xs:string" minOccurs="0"/>
+            <xs:element name="psobkey" type="xs:string" minOccurs="0"/>
+            <xs:element name="einnahmeart" type="xs:string" minOccurs="0"/>
+            <xs:element name="betrw" type="xs:string" minOccurs="0"/>
+            <xs:element name="faedn" type="xs:string" minOccurs="0"/>
+            <xs:element name="bldat" type="xs:string" minOccurs="0"/>
+            <xs:element name="persl" type="xs:string" minOccurs="0"/>
+            <xs:element name="xblnr" type="xs:string" minOccurs="0"/>
+            <xs:element name="fvBelnr" type="xs:string" minOccurs="0"/>
+            <xs:element name="fehler" type="xs:string" minOccurs="0"/>
+            <xs:element name="kostl" type="xs:string" minOccurs="0"/>
+            <xs:element name="mwskz" type="xs:string" minOccurs="0"/>
+            <xs:element name="aufnr" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="SatzartFehlerType">
+        <xs:sequence>
+            <xs:element name="satzart" type="xs:string" minOccurs="0"/>
+            <xs:element name="fehlertext" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>
