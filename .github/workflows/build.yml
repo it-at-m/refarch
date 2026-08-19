@@ -59,13 +59,14 @@ jobs:
         uses: it-at-m/lhm_actions/action-templates/actions/action-maven-build@7bed7092684c0bcc176811016aed27b532aa5f51 # v1.4.0
         with:
           app-path: ${{ matrix.app-path }}
-      - if: ${{ github.ref == 'refs/heads/main' && (steps.node.outcome == 'success' || steps.maven.outcome == 'success') && hashFiles(format('./{0}/Dockerfile', matrix.app-path)) != '' }}
-        uses: it-at-m/lhm_actions/action-templates/actions/action-build-image@7bed7092684c0bcc176811016aed27b532aa5f51 # v1.4.0
+      - if: ${{ (steps.node.outcome == 'success' || steps.maven.outcome == 'success') && hashFiles(format('./{0}/Dockerfile', matrix.app-path)) != '' }}
+        uses: it-at-m/lhm_actions/action-templates/actions/action-build-image@feat/318-build-images-for-multiple-architectures
         with:
           path: ${{ matrix.app-path }}
+          platforms: "linux/amd64,linux/arm64"
           image-name: ${{ matrix.app-path }}
           artifact-name: ${{ join(steps.*.outputs.artifact-name) }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
           registry-username: ${{ github.actor }}
           image-tags: |
-            type=raw,value=dev
+            type=raw,value=multi-arch-test
