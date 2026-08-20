@@ -40,7 +40,8 @@ public class SecurityProperties {
     @NotNull private List<@Valid @NotNull PermitRule> publicPatterns = List.of();
 
     /**
-     * List of url parameters excluded from the parameterPollutionFilter.
+     * List of URL query parameters excluded from the
+     * {@link de.muenchen.oss.refarch.gateway.filter.GlobalRequestParameterPollutionFilter}.
      */
     @NotNull private Set<@NotBlank String> parameterPollutionWhitelisted = Set.of();
 

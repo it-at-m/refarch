@@ -57,7 +57,7 @@ public class GlobalRequestParameterPollutionFilter implements GlobalFilter, Orde
             for (final Map.Entry<String, List<String>> entry : parameterMap.entrySet()) {
                 final String key = entry.getKey();
                 final List<String> value = entry.getValue();
-                if (!CollectionUtils.isEmpty(value) && value.size() > 1 && !securityProperties.getParameterPollutionWhitelisted().contains(key)) {
+                if (value != null && value.size() > 1 && !securityProperties.getParameterPollutionWhitelisted().contains(key)) {
                     log.warn("Possible parameter pollution attack detected: Parameter \"{}\" detected more than once in the request!", key);
                     throw new ParameterPollutionException();
                 }
