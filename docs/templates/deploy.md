@@ -18,6 +18,8 @@ Depending on the image source, the correct SHA can be found for:
 - **DockerHub**: Use "Index Digest", not "Manifest Digest"
   :::
 
+By default, applications based on the RefArch Templates are built for **AMD64** and **ARM64** hardware architectures.
+
 ## Helm Chart
 
 [Helm](https://helm.sh/) allows easy deployment of multi-container applications to a Kubernetes cluster using charts.
