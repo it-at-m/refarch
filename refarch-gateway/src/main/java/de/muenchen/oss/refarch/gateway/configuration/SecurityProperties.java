@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Set;
+
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.http.HttpMethod;
@@ -36,6 +38,11 @@ public class SecurityProperties {
      * WARNING: Authentication is DISABLED for matching requests.
      */
     @NotNull private List<@Valid @NotNull PermitRule> publicPatterns = List.of();
+
+    /**
+     * List of url parameters excluded from the parameterPollutionFilter.
+     */
+    @NotNull private Set<@NotBlank String> parameterPollutionWhitelisted = Set.of();
 
     /**
      * Rule describing a public endpoint combination consisting of a path pattern and the explicitly
