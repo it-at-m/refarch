@@ -7,12 +7,7 @@ RefArch gateway based on [Spring Cloud Gateway](https://spring.io/projects/sprin
 The gateway is released as container image `ghcr.io/it-at-m/refarch/refarch-gateway` and can be used either directly or
 via the corresponding [Helm-Chart](https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-gateway).
 
-::: info Information
-The image is compatible with the following hardware architectures:
-
-- `amd64`
-- `arm64`
-  :::
+The image is compatible with **AMD64** and **ARM64** hardware architectures.
 
 ## Features
 
