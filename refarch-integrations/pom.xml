@@ -44,6 +44,7 @@
         <module>refarch-dms-integration</module>
         <module>refarch-cosys-integration</module>
         <module>refarch-address-integration</module>
+        <module>refarch-pscd-integration</module>
     </modules>
 
     <properties>
@@ -356,6 +357,8 @@
                                 <artifact>refarch-s3-integration-rest-service</artifact>
                                 <artifact>refarch-cosys-integration-example</artifact>
                                 <artifact>refarch-dms-integration-example</artifact>
+                                <artifact>refarch-pscd-integration-example</artifact>
+                                <artifact>refarch-pscd-integration-service</artifact>
                             </excludeArtifacts>
                         </configuration>
                     </plugin>
