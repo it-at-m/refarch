@@ -12,7 +12,7 @@ public class SessionAccessConfiguration {
 
     @Bean
     @Order(0)
-    WebFilter sessionAccessFilter() {
+    public WebFilter sessionAccessFilter() {
         return (final ServerWebExchange exchange, final WebFilterChain chain) -> exchange.getSession()
                 .doOnNext(session -> session.getAttributes().put("test", "value"))
                 .then(chain.filter(exchange));

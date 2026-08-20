@@ -36,7 +36,7 @@ import org.springframework.web.server.session.WebSessionManager;
 @RequiredArgsConstructor
 public class NoRedisSessionConfiguration {
 
-    final SessionTimeout sessionTimeout;
+    private final SessionTimeout sessionTimeout;
 
     @EventListener(ApplicationReadyEvent.class)
     public void redisInfoLogger() {
@@ -50,7 +50,7 @@ public class NoRedisSessionConfiguration {
      * @return In-memory-based {@link WebSessionManager} configured using {@link SessionTimeout}
      */
     @Bean
-    WebSessionManager webSessionManager() {
+    public WebSessionManager webSessionManager() {
         final InMemoryWebSessionStore sessionStore = new InMemoryWebSessionStore();
 
         if (sessionTimeout.getTimeout() != null) {

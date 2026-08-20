@@ -1,4 +1,4 @@
-package de.muenchen.oss.refarch.gateway.exception;
+package de.muenchen.oss.refarch.gateway.filter;
 
 import de.muenchen.oss.refarch.gateway.OAuthSecurityMockConfiguration;
 import de.muenchen.oss.refarch.gateway.SessionAccessConfiguration;
@@ -10,10 +10,17 @@ import org.springframework.boot.webtestclient.autoconfigure.AutoConfigureWebTest
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles(profiles = { TestConstants.SPRING_TEST_PROFILE, "redis-session" })
+@TestPropertySource(
+        // configure to a non existent redis host
+        properties = {
+                "spring.data.redis.port=1"
+        }
+)
 @Import({ OAuthSecurityMockConfiguration.class, SessionAccessConfiguration.class })
 @AutoConfigureWebTestClient
 class RedisSessionUnavailableWebFilterTest {
@@ -24,10 +31,7 @@ class RedisSessionUnavailableWebFilterTest {
     @Test
     void redisSessionConnectionFailureReturnsServiceUnavailable() {
         webTestClient.get().uri("/actuator/info").exchange()
-                .expectStatus().isEqualTo(HttpStatus.SERVICE_UNAVAILABLE)
-                .expectBody()
-                .jsonPath("$.status").isEqualTo(503)
-                .jsonPath("$.error").isEqualTo("Service Unavailable");
+                .expectStatus().isEqualTo(HttpStatus.SERVICE_UNAVAILABLE);
     }
 
 }

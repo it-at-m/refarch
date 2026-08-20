@@ -1,6 +1,6 @@
 package de.muenchen.oss.refarch.gateway.exception;
 
-import de.muenchen.oss.refarch.gateway.filter.GlobalRequestParameterPollutionFilter;
+import de.muenchen.oss.refarch.gateway.filter.RedisSessionUnavailableWebFilter;
 import java.io.Serial;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -9,17 +9,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- * Used in {@link GlobalRequestParameterPollutionFilter} to signal a possible parameter pollution
+ * Used in {@link RedisSessionUnavailableWebFilter} to signal a possible parameter pollution
  * attack.
  */
 @ResponseStatus(
-        code = HttpStatus.BAD_REQUEST,
-        reason = "parameter pollution"
+        code = HttpStatus.SERVICE_UNAVAILABLE,
+        reason = "Redis service unavailable"
 )
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class ParameterPollutionException extends RuntimeException {
+public class RedisSessionUnavailableException extends RuntimeException {
     @Serial
     private static final long serialVersionUID = 1L;
 }
