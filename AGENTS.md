@@ -32,12 +32,13 @@
 - The project is used with IntelliJ. Do not create or commit Eclipse metadata such as `.factorypath`, `.classpath`, `.project`, or `.settings/`.
 
 ## Local development stack
-- The repo-local stack is `stack/docker-compose.yml`. It only brings up Keycloak, MinIO, and Mailpit.
+- The repo-local stack is `stack/docker-compose.yml`. It only brings up Keycloak, MinIO, Mailpit and Redis.
 - Start it from `stack/` with `docker compose up -d` or equivalent; PR CI health-checks this exact stack.
 - Service ports from the checked-in compose file:
 - Keycloak `8100`
 - MinIO API `9000`, console `9001`
 - Mailpit SMTP `1025`, UI `8025`
+- Redis `6379`
 - `stack/minio/` is mounted runtime data for MinIO; do not clean up or edit `.minio.sys` unless the task is explicitly about stack fixtures.
 
 ## Gateway-specific gotchas

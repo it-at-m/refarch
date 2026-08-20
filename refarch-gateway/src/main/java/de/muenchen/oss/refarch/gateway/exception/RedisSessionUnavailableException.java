@@ -9,8 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- * Used in {@link RedisSessionUnavailableWebFilter} to signal a possible parameter pollution
- * attack.
+ * Used in {@link RedisSessionUnavailableWebFilter} to signal a downtime of the Redis cache
+ * used for session storage.
  */
 @ResponseStatus(
         code = HttpStatus.SERVICE_UNAVAILABLE,
