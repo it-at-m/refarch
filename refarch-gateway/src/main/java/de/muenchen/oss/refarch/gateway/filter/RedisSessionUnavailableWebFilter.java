@@ -4,6 +4,7 @@ import de.muenchen.oss.refarch.gateway.exception.RedisSessionUnavailableExceptio
 import io.lettuce.core.RedisException;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NonNull;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataAccessResourceFailureException;
@@ -21,6 +22,7 @@ import reactor.core.publisher.Mono;
  * Catches Redis session store failures before Spring Security turns them into 500 responses.
  */
 @Component
+@Profile("redis-session")
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @Slf4j
 public class RedisSessionUnavailableWebFilter implements WebFilter {
