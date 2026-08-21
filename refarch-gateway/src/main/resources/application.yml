@@ -30,6 +30,14 @@ spring:
       include-message: always
       whitelabel:
         enabled: false
+  session:
+    data:
+      redis:
+        configure-action: none
+  data:
+    redis:
+      repositories:
+        enabled: false
 
 management:
   endpoints:
