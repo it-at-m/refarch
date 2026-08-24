@@ -9,6 +9,7 @@ import de.muenchen.oss.refarch.integration.s3.domain.model.FileMetadata;
 import de.muenchen.oss.refarch.integration.s3.domain.model.FileReference;
 import de.muenchen.oss.refarch.integration.s3.domain.model.ListResult;
 import de.muenchen.oss.refarch.integration.s3.domain.model.PresignedUrl;
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
@@ -94,7 +95,7 @@ class E2ETest {
 
         // Save from InputStream
         final byte[] data = "hello from test".getBytes(StandardCharsets.UTF_8);
-        s3OutPort.saveFile(ref, new java.io.ByteArrayInputStream(data), data.length);
+        s3OutPort.saveFile(ref, new ByteArrayInputStream(data), data.length);
         assertThat(s3OutPort.fileExists(ref)).isTrue();
 
         // Get metadata
@@ -119,7 +120,7 @@ class E2ETest {
         for (int i = 0; i < unknownData.length; i++) {
             unknownData[i] = (byte) (i % 256);
         }
-        s3OutPort.saveFile(refUnknown, new java.io.ByteArrayInputStream(unknownData));
+        s3OutPort.saveFile(refUnknown, new ByteArrayInputStream(unknownData));
         assertThat(s3OutPort.fileExists(refUnknown)).isTrue();
         final FileMetadata metaUnknown = s3OutPort.getFileMetadata(refUnknown);
         assertThat(metaUnknown.path()).isEqualTo(keyUnknown);
@@ -147,9 +148,9 @@ class E2ETest {
         final FileReference refDir1 = new FileReference(BUCKET, dirPrefix + "file1.txt");
         final FileReference refDir2 = new FileReference(BUCKET, dirPrefix + "subdir/file2.txt");
         final FileReference refDir3 = new FileReference(BUCKET, dirPrefix + "file3.txt");
-        s3OutPort.saveFile(refDir1, new java.io.ByteArrayInputStream("f1".getBytes(StandardCharsets.UTF_8)), 2);
-        s3OutPort.saveFile(refDir2, new java.io.ByteArrayInputStream("f2".getBytes(StandardCharsets.UTF_8)), 2);
-        s3OutPort.saveFile(refDir3, new java.io.ByteArrayInputStream("f3".getBytes(StandardCharsets.UTF_8)), 2);
+        s3OutPort.saveFile(refDir1, new ByteArrayInputStream("f1".getBytes(StandardCharsets.UTF_8)), 2);
+        s3OutPort.saveFile(refDir2, new ByteArrayInputStream("f2".getBytes(StandardCharsets.UTF_8)), 2);
+        s3OutPort.saveFile(refDir3, new ByteArrayInputStream("f3".getBytes(StandardCharsets.UTF_8)), 2);
 
         // List via folder ops (recursive)
         final ListResult listed = s3OutPort.getFilesWithPrefix(BUCKET, prefix, true);
