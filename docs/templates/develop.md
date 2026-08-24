@@ -206,49 +206,6 @@ The tools are configured through the respective configuration files or configura
 - PMD: `pom.xml` and using centralized configuration (more information in [Tools](../cross-cutting-concepts/tools.md#pmd))
 - SpotBugs: `pom.xml` and `spotbugs-exclude-rules.xml` (configuration part of the templates)
 
-::: danger IMPORTANT
-Spotless downloads additional P2 dependencies from `download.eclipse.org`
-to make use of the Eclipse JDT tooling required for formatting the Java code.
-You might not be able to access `download.eclipse.org` from your machine directly.
-This can be the case when you are behind a proxy or want to use a company internal P2 mirror.
-To make the setup work in this case, add the following XML content to the Maven `settings.xml` file
-inside the `<profile>` block and adjust it as needed:
-
-```xml
-<properties>
-    <p2.username>my_user</p2.username>
-    <p2.password>my_token_or_password</p2.password>
-    <p2.mirror>registry.example.com/mycustomp2mirror/</p2.mirror>
-</properties>
-```
-
-Additionally, the following properties have to be added to the `pom.xml` file to provide default values when no custom `settings.xml` is used (e.g. execution in CI environments)
-
-```xml
-<properties>
-    <p2.username/>
-    <p2.password/>
-    <p2.mirror>download.eclipse.org</p2.mirror>
-</properties>
-```
-
-To use the custom properties for the actual P2 mirror configuration, add the following content inside the `<eclipse>` section of the `spotless-maven-plugin` configuration:
-
-```xml
-<p2Mirrors>
-    <p2Mirror>
-        <prefix>https://download.eclipse.org</prefix>
-        <url>https://${p2.username}:${p2.password}@${p2.mirror}</url>
-    </p2Mirror>
-</p2Mirrors>
-```
-
-:::
-
-::: details it@M internal configuration
-If you are working behind our company internal Artifactory please set `p2.mirror` mentioned above to `artifactory.muenchen.de/artifactory/download.eclipse.org/`.
-:::
-
 ### Vue Dev Tools
 
 The [Vue Dev Tools](https://devtools.vuejs.org/) provide useful features when developing with Vue.js. Those include checking and editing component state, debugging the [Pinia](https://pinia.vuejs.org/) store, testing client-side routing, inspecting page elements and way more.
