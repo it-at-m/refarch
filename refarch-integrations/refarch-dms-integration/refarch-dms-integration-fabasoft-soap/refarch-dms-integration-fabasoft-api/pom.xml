@@ -23,10 +23,10 @@
                 <executions>
                     <execution>
                         <id>generate-sources</id>
-                        <phase>generate-sources</phase>
                         <goals>
                             <goal>wsdl2java</goal>
                         </goals>
+                        <phase>generate-sources</phase>
                         <configuration>
                             <sourceRoot>${project.build.directory}/generated/cxf</sourceRoot>
                             <additionalJvmArgs>-Dlogback.configurationFile=${project.basedir}/src/test/resources/logback-codegen.xml</additionalJvmArgs>
@@ -52,10 +52,10 @@
                 <executions>
                     <execution>
                         <id>add-source</id>
-                        <phase>generate-sources</phase>
                         <goals>
                             <goal>add-source</goal>
                         </goals>
+                        <phase>generate-sources</phase>
                         <configuration>
                             <sources>
                                 <source>${basedir}/target/generated/cxf</source>

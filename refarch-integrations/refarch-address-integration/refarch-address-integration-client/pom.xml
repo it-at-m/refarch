@@ -83,9 +83,7 @@
                             <generateSupportingFiles>false</generateSupportingFiles>
 
                             <environmentVariables>
-                                <supportingFiles>
-                                    ApiClient.java,Authentication.java,OAuth.java,ApiKeyAuth.java,HttpBasicAuth.java,HttpBearerAuth.java,RFC3339DateFormat.java
-                                </supportingFiles>
+                                <supportingFiles>ApiClient.java,Authentication.java,OAuth.java,ApiKeyAuth.java,HttpBasicAuth.java,HttpBearerAuth.java,RFC3339DateFormat.java</supportingFiles>
                             </environmentVariables>
 
                             <typeMappings>
