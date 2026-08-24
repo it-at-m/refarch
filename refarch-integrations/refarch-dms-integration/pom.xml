@@ -9,9 +9,9 @@
     </parent>
 
     <artifactId>refarch-dms-integration</artifactId>
+    <packaging>pom</packaging>
     <name>refarch-dms-integration</name>
     <description>RefArch DMS integration</description>
-    <packaging>pom</packaging>
 
     <modules>
         <module>refarch-dms-integration-core</module>

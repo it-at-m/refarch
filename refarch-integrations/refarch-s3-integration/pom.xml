@@ -8,10 +8,9 @@
         <version>4.1.0-SNAPSHOT</version>
     </parent>
 
-
     <artifactId>refarch-s3-integration</artifactId>
-    <name>refarch-s3-integration</name>
     <packaging>pom</packaging>
+    <name>refarch-s3-integration</name>
 
     <modules>
         <module>refarch-s3-integration-core</module>
