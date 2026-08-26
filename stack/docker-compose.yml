@@ -53,6 +53,16 @@ services:
       - keycloak
     <<: *security_settings
 
+  # === Redis ===
+  redis:
+    image: redis:8.8.1-alpine@sha256:8096655e437712b07503796fb64d81359256cfcff0ab29d95a7da72863786efb
+    ports:
+      - "6379:6379"
+    healthcheck:
+      <<: *healthcheck
+      test: [ "CMD-SHELL",  "redis-cli ping" ]
+    <<: *security_settings
+
   # === S3 ===
   minio:
     image: quay.io/minio/minio:RELEASE.2024-08-17T01-24-54Z@sha256:6f23072e3e222e64fe6f86b31a7f7aca971e5129e55cbccef649b109b8e651a1
