@@ -72,6 +72,9 @@ refarch:
   security:
     csrf-whitelisted: # List of routes to disable CSRF protection for (optional)
       - /example/**
+    parameter-pollution-whitelisted: # List of URL query params to be whitelisted / excluded from parameter pollution protection (multiple query params with identical name)
+      - example
+      - sort # Useful for services exposing spring pageable objects
     public-patterns: # Additional public routes with explicit methods (optional)
       - pattern: /example/**
         methods: [GET] # All methods must be listed, there is no default all

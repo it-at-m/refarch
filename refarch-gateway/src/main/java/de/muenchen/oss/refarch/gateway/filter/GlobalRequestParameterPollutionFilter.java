@@ -1,8 +1,11 @@
 package de.muenchen.oss.refarch.gateway.filter;
 
+import de.muenchen.oss.refarch.gateway.configuration.SecurityProperties;
 import de.muenchen.oss.refarch.gateway.exception.ParameterPollutionException;
 import java.util.List;
 import java.util.Map;
+
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.NonNull;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -26,9 +29,12 @@ import reactor.core.publisher.Mono;
  */
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class GlobalRequestParameterPollutionFilter implements GlobalFilter, Ordered {
 
     public static final int ORDER_GLOBAL_FILTER = -3;
+
+    private final SecurityProperties securityProperties;
 
     @Override
     public int getOrder() {
@@ -51,7 +57,7 @@ public class GlobalRequestParameterPollutionFilter implements GlobalFilter, Orde
             for (final Map.Entry<String, List<String>> entry : parameterMap.entrySet()) {
                 final String key = entry.getKey();
                 final List<String> value = entry.getValue();
-                if (!CollectionUtils.isEmpty(value) && value.size() > 1) {
+                if (value != null && value.size() > 1 && !securityProperties.getParameterPollutionWhitelisted().contains(key)) {
                     log.warn("Possible parameter pollution attack detected: Parameter \"{}\" detected more than once in the request!", key);
                     throw new ParameterPollutionException();
                 }
@@ -59,5 +65,4 @@ public class GlobalRequestParameterPollutionFilter implements GlobalFilter, Orde
         }
         return chain.filter(exchange);
     }
-
 }
