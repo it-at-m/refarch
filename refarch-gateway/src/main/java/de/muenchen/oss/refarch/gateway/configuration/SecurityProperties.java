@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Set;
+
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.http.HttpMethod;
@@ -35,7 +37,13 @@ public class SecurityProperties {
      * All methods must be explicitly listed, there is no implicit "all".
      * WARNING: Authentication is DISABLED for matching requests.
      */
-    @Valid @NotNull private List<@NotNull PermitRule> publicPatterns = List.of();
+    @NotNull private List<@Valid @NotNull PermitRule> publicPatterns = List.of();
+
+    /**
+     * List of URL query parameters excluded from the
+     * {@link de.muenchen.oss.refarch.gateway.filter.GlobalRequestParameterPollutionFilter}.
+     */
+    @NotNull private Set<@NotBlank String> parameterPollutionWhitelisted = Set.of();
 
     /**
      * Rule describing a public endpoint combination consisting of a path pattern and the explicitly

@@ -4,14 +4,14 @@
     <parent>
         <groupId>de.muenchen.oss.refarch</groupId>
         <artifactId>refarch-dms-integration-fabasoft-soap</artifactId>
-        <version>3.2.0-SNAPSHOT</version>
+        <version>4.1.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>refarch-dms-integration-fabasoft-api</artifactId>
     <name>refarch-dms-integration-fabasoft-api</name>
 
     <properties>
-        <cxf-codegen-plugin.version>4.2.2</cxf-codegen-plugin.version>
+        <cxf-codegen-plugin.version>4.2.3</cxf-codegen-plugin.version>
     </properties>
 
     <build>
@@ -23,10 +23,10 @@
                 <executions>
                     <execution>
                         <id>generate-sources</id>
-                        <phase>generate-sources</phase>
                         <goals>
                             <goal>wsdl2java</goal>
                         </goals>
+                        <phase>generate-sources</phase>
                         <configuration>
                             <sourceRoot>${project.build.directory}/generated/cxf</sourceRoot>
                             <additionalJvmArgs>-Dlogback.configurationFile=${project.basedir}/src/test/resources/logback-codegen.xml</additionalJvmArgs>
@@ -52,10 +52,10 @@
                 <executions>
                     <execution>
                         <id>add-source</id>
-                        <phase>generate-sources</phase>
                         <goals>
                             <goal>add-source</goal>
                         </goals>
+                        <phase>generate-sources</phase>
                         <configuration>
                             <sources>
                                 <source>${basedir}/target/generated/cxf</source>

@@ -5,16 +5,28 @@
     <parent>
         <groupId>de.muenchen.oss.refarch</groupId>
         <artifactId>refarch-s3-integration</artifactId>
-        <version>3.2.0-SNAPSHOT</version>
+        <version>4.1.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>refarch-s3-integration-core</artifactId>
     <name>refarch-s3-integration-core</name>
 
     <properties>
-        <apache-commons-collections4.version>4.5.0</apache-commons-collections4.version>
+        <apache-commons-collections4.version>4.6.0</apache-commons-collections4.version>
         <awssdk.version>2.46.21</awssdk.version>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>software.amazon.awssdk</groupId>
+                <artifactId>bom</artifactId>
+                <version>${awssdk.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <!-- Spring -->
@@ -34,22 +46,16 @@
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>s3</artifactId>
-            <version>${awssdk.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>software.amazon.awssdk</groupId>
                     <artifactId>netty-nio-client</artifactId>
                 </exclusion>
-                <exclusion>
-                    <groupId>software.amazon.awssdk</groupId>
-                    <artifactId>apache5-client</artifactId>
-                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
-            <artifactId>url-connection-client</artifactId>
-            <version>${awssdk.version}</version>
+            <artifactId>apache-client</artifactId>
         </dependency>
 
         <!-- Testing -->

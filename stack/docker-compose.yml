@@ -1,45 +1,57 @@
 name: refarch-development-stack
 
+x-healthcheck: &healthcheck
+  interval: 30s
+  timeout: 60s
+  retries: 3
+  start_period: 60s
+
+x-security-settings: &security_settings
+  security_opt:
+    - no-new-privileges:true
+
 services:
   # === Keycloak ===
   keycloak:
-    image: quay.io/keycloak/keycloak:26.2.5@sha256:4883630ef9db14031cde3e60700c9a9a8eaf1b5c24db1589d6a2d43de38ba2a9
+    image: quay.io/keycloak/keycloak:26.6.4@sha256:0aae0de7fca85525f727d3354df17896092de8bb26ae4c12d89c77e5df8cbce4
     command:
       - start-dev
     environment:
-      - KC_BOOTSTRAP_ADMIN_USERNAME=admin
-      - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
-      - KC_HEALTH_ENABLED=true
-      - KC_HTTP_PORT=8100
-      - KC_HTTP_RELATIVE_PATH=/auth
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_HEALTH_ENABLED: "true"
+      KC_HTTP_PORT: 8100
+      KC_HTTP_RELATIVE_PATH: /auth
     ports:
       - "8100:8100"
     networks:
       - keycloak
-    healthcheck: &healthcheck
-      test: ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/9000;echo -e 'GET /health/ready HTTP/1.1\r\nhost: http://localhost\r\nConnection: close\r\n\r\n' >&3;if [ $? -eq 0 ]; then exit 0;else exit 1;fi;"]
-      interval: 30s
-      timeout: 60s
-      retries: 3
-      start_period: 60s
-    security_opt: &security_settings
-      - no-new-privileges:true
+    healthcheck:
+      <<: *healthcheck
+      test: [
+        "CMD-SHELL",
+        # health check see https://www.keycloak.org/observability/health#_healthcheck
+        "{ printf 'HEAD /auth/health/ready HTTP/1.0\r\n\r\n' >&0; grep 'HTTP/1.0 200'; } 0<>/dev/tcp/localhost/9000"
+      ]
+    <<: *security_settings
 
   init-keycloak:
-    image: klg71/keycloakmigration:0.2.129@sha256:356bb15df86d6476f1469789718f597ac70583f83c2ae9c90408a3e00e3a1796
+    image: klg71/keycloakmigration:0.2.130@sha256:fbec0fbbec2f90e9e912576cfb2ff108fb5703a59383b5e51c8633c130173af8
     depends_on:
       - keycloak
     environment:
       ADMIN_USER: admin
       ADMIN_PASSWORD: admin
       BASEURL: http://keycloak:8100/auth
-      WAIT_FOR_KEYCLOAK: 'true'
+      WAIT_FOR_KEYCLOAK: "true"
+      FAIL_ON_UNDEFINED_VARIABLES: "true"
       KEYCLOAK_CHANGELOG: /migration/keycloak-changelog.yml
+      EXIT_ON_ERROR: "true"
     volumes:
-      - './keycloak/migration:/migration'
+      - ./keycloak/migration:/migration
     networks:
       - keycloak
-    security_opt: *security_settings
+    <<: *security_settings
 
   # === S3 ===
   minio:
@@ -49,16 +61,16 @@ services:
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: Test1234
     ports:
-      - '9000:9000'
-      - '9001:9001'
+      - "9000:9000" # API
+      - "9001:9001" # UI
     volumes:
       - ./minio:/data
     networks:
-      - internal
+      - minio
     healthcheck:
       <<: *healthcheck
       test: [ "CMD-SHELL",  "curl http://localhost:9000/minio/health/live" ]
-    security_opt: *security_settings
+    <<: *security_settings
 
   init-minio:
     image: minio/mc:RELEASE.2024-08-17T11-33-50Z@sha256:87382ad79da9f464a444aab607b3db9251c7fe7d1bfda0eb86cbacee2ca2b564
@@ -71,19 +83,23 @@ services:
         exit 0;
       "
     networks:
-      - internal
-    security_opt: *security_settings
+      - minio
+    <<: *security_settings
 
   # === Mail ===
   mailpit:
-    image: axllent/mailpit:v1.30.3@sha256:956d688cbd13dca36c72d8e94c34d6d1cdf4a005aa6aa4ff6edaaac56c34d8df
+    image: axllent/mailpit:v1.31.0@sha256:c96991d9bef73594c246d89ca81411d4e916f03e76a7d2d72fa2ab5dd3c9ce24
     environment:
-      - MP_DISABLE_VERSION_CHECK=True
+      MP_DISABLE_VERSION_CHECK: "true"
     ports:
-      - '1025:1025' # SMTP Server
-      - '8025:8025' # UI
-    security_opt: *security_settings
+      - "1025:1025" # SMTP Server
+      - "8025:8025" # UI
+    healthcheck:
+      <<: *healthcheck
+      # health check see https://mailpit.axllent.org/docs/integration/healthcheck/
+      test: [ "CMD", "wget", "--spider", "-q", "http://localhost:8025/readyz" ]
+    <<: *security_settings
 
 networks:
   keycloak:
-  internal:
+  minio:

@@ -7,6 +7,8 @@ RefArch gateway based on [Spring Cloud Gateway](https://spring.io/projects/sprin
 The gateway is released as container image `ghcr.io/it-at-m/refarch/refarch-gateway` and can be used either directly or
 via the corresponding [Helm-Chart](https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-gateway).
 
+The image is compatible with **AMD64** and **ARM64** hardware architectures.
+
 ## Features
 
 Beside the default functionality of Spring Cloud Gateway (i.e. routing) following features are preconfigured/provided:
@@ -70,6 +72,9 @@ refarch:
   security:
     csrf-whitelisted: # List of routes to disable CSRF protection for (optional)
       - /example/**
+    parameter-pollution-whitelisted: # List of URL query params to be whitelisted / excluded from parameter pollution protection (multiple query params with identical name)
+      - example
+      - sort # Useful for services exposing spring pageable objects
     public-patterns: # Additional public routes with explicit methods (optional)
       - pattern: /example/**
         methods: [GET] # All methods must be listed, there is no default all

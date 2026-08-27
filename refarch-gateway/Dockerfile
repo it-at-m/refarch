@@ -1,3 +1,7 @@
-FROM registry.access.redhat.com/ubi10/openjdk-21-runtime:1.24-8@sha256:b83379c98109cf7fb402aa6547be282e4ad540c556915f23240e704900377b21
+# Note: For base images an architecture-agnostic SHA is always preferred, see https://refarch.oss.muenchen.de/templates/deploy.html#docker-images for more info.
 
-COPY target/*.jar /deployments/spring-boot-application.jar
+# For documentation see https://rh-openjdk.github.io/redhat-openjdk-containers/
+FROM registry.access.redhat.com/ubi10/openjdk-21-runtime:1.24-11@sha256:2056c5139666c5e52f01af5b80f0def423a94c3fe824321d74041c11e20c9b72
+
+# Copy runnable jar to deployments
+COPY target/*.jar /deployments/application.jar

@@ -5,16 +5,16 @@
     <parent>
         <groupId>de.muenchen.oss.refarch</groupId>
         <artifactId>refarch-address-integration</artifactId>
-        <version>3.2.0-SNAPSHOT</version>
+        <version>4.1.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>refarch-address-integration-client</artifactId>
     <name>refarch-address-integration-client</name>
 
     <properties>
-        <openapi-generator-maven-plugin.version>7.23.0</openapi-generator-maven-plugin.version>
+        <openapi-generator-maven-plugin.version>7.24.0</openapi-generator-maven-plugin.version>
 
-        <jackson-databind-nullable.version>0.2.10</jackson-databind-nullable.version>
+        <jackson-databind-nullable.version>0.2.11</jackson-databind-nullable.version>
     </properties>
 
     <dependencies>
@@ -45,11 +45,6 @@
             <groupId>org.openapitools</groupId>
             <artifactId>jackson-databind-nullable</artifactId>
             <version>${jackson-databind-nullable.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>tools.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson-bom.version}</version>
         </dependency>
 
         <!-- Testing -->
@@ -88,9 +83,7 @@
                             <generateSupportingFiles>false</generateSupportingFiles>
 
                             <environmentVariables>
-                                <supportingFiles>
-                                    ApiClient.java,Authentication.java,OAuth.java,ApiKeyAuth.java,HttpBasicAuth.java,HttpBearerAuth.java,RFC3339DateFormat.java
-                                </supportingFiles>
+                                <supportingFiles>ApiClient.java,Authentication.java,OAuth.java,ApiKeyAuth.java,HttpBasicAuth.java,HttpBearerAuth.java,RFC3339DateFormat.java</supportingFiles>
                             </environmentVariables>
 
                             <typeMappings>

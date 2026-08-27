@@ -24,6 +24,7 @@ const vitepressConfig = defineConfig({
         text: "Docs",
         items: [
           { text: "Overview", link: "/overview" },
+          { text: "Architecture", link: "/architecture" },
           { text: "API Gateway", link: "/gateway" },
           { text: "Templates", link: "/templates" },
           { text: "Integrations", link: "/integrations" },
@@ -44,6 +45,7 @@ const vitepressConfig = defineConfig({
         items: [
           { text: "Known Issues", link: "/support/known-issues" },
           { text: "Migration", link: "/support/migration" },
+          { text: "Release Strategy", link: "/support/release-strategy" },
         ],
       },
       { text: "Contribute", link: "/contribute" },
@@ -60,6 +62,35 @@ const vitepressConfig = defineConfig({
     ],
     sidebar: [
       { text: "Overview", link: "/overview", items: [] },
+      {
+        text: "Architecture",
+        link: "/architecture",
+        items: [
+          {
+            text: "Application Basics",
+            link: "/architecture/application-basics",
+          },
+          {
+            text: "Microservice Applications",
+            link: "/architecture/microservice-applications",
+          },
+          { text: "Infrastructure", link: "/architecture/infrastructure" },
+          {
+            text: "Frontend Architecture",
+            link: "/architecture/frontend-architecture",
+          },
+          { text: "External Access", link: "/architecture/external-access" },
+          { text: "Security Flows", link: "/architecture/security-flows" },
+          {
+            text: "Integration Patterns",
+            link: "/architecture/integration-patterns",
+          },
+          {
+            text: "Architecture Decision Records",
+            link: "/architecture/adr",
+          },
+        ],
+      },
       {
         text: "Components",
         items: [{ text: "API Gateway", link: "/gateway" }],
@@ -91,10 +122,6 @@ const vitepressConfig = defineConfig({
         text: "Cross-Cutting Concepts",
         items: [
           {
-            text: "Architecture Decision Records",
-            link: "/cross-cutting-concepts/adr",
-          },
-          {
             text: "CI/CD",
             link: "https://github.com/it-at-m/lhm_actions/blob/main/docs/actions.md",
           },
@@ -114,6 +141,7 @@ const vitepressConfig = defineConfig({
             text: "Migration",
             link: "/support/migration",
           },
+          { text: "Release Strategy", link: "/support/release-strategy" },
         ],
       },
     ],

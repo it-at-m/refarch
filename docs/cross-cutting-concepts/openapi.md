@@ -163,9 +163,10 @@ For this purpose the [`@openapitools/openapi-generator-cli`](https://openapi-gen
 ```
 
 ::: info Usage behind a proxy
-When using a proxy, it might be necessary to run the provided script after installing the dependency.
+When using a proxy, it might be necessary to run the provided script (`download-openapi-jar.sh` or `download-openapi-jar.bat`) after installing the dependency.
+The script requires `mvn` (Maven) to be available on the path.
+
 This script downloads the required artifact that includes the generator logic. It automatically extracts the relevant version from the `openapitools.json`, downloads the required `.jar` and places into the projects `node_modules` folder.
-The NPM dependency only provides a wrapper around this `.jar`.
 
 ::: code-group
 

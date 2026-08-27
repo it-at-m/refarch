@@ -1,8 +1,11 @@
 package de.muenchen.oss.refarch.integration.s3.properties;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import java.time.Duration;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.time.DurationMin;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
@@ -39,6 +42,19 @@ public class S3IntegrationProperties {
      * Must not be blank. Avoid logging or exposing this value.
      */
     @NotBlank private String secretKey;
+
+    /**
+     * The amount of time to wait when establishing a connection to S3 before timing out.
+     */
+    @DurationMin(seconds = 1)
+    @NotNull private Duration connectionTimeout = Duration.ofSeconds(30);
+
+    /**
+     * The amount of time to wait for data to be transferred over an established, open connection before
+     * timing out.
+     */
+    @DurationMin(seconds = 1)
+    @NotNull private Duration socketTimeout = Duration.ofSeconds(60);
 
     /**
      * Whether to use path-style access (e.g., http://endpoint/bucket/object) instead of
