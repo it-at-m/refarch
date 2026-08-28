@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: "@project.artifactId@"
+    group: "@project.groupId@"
+    version: "@project.version@"
+
+logging:
+  include-application-group: false # disabled because application group is only relevant when deployed
+  level:
+    root: INFO
+    de.muenchen.oss.refarch: DEBUG
+    org.apache.cxf: INFO
+
+refarch:
+  pscd:
+    client:
+      url: http://localhost:1337/pscd-target

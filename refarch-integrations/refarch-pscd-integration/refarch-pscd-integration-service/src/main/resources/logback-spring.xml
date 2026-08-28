@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Adds the two accounting trails PscdAccountLog writes, each to its own file, and leaves the
+  service log exactly as Spring Boot configures it (the two includes below are Boot's own console
+  setup, so logging.level.* from application.yml keeps working unchanged).
+
+  Both loggers are additivity="false": these files are the record, and their lines would only be noise in the service log.
+
+  PSCD_LOG_DIR overrides where they land; the default is ./logs relative to the working directory,
+  which is what the predecessor application used and what the reconciliation expects.
+-->
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+    <property name="PSCD_LOG_DIR" value="${PSCD_LOG_DIR:-logs}"/>
+
+    <!-- One line per record that arrived unusable: unknown SATZART, or a record cut short. -->
+    <appender name="ACCOUNT_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${PSCD_LOG_DIR}/account-error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${PSCD_LOG_DIR}/account-error.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>90</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- One line per record handed to PSCD, error records included. -->
+    <appender name="COMPLETION" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${PSCD_LOG_DIR}/completion.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${PSCD_LOG_DIR}/completion.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>90</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Names PscdAccountLog logs under; keep the two in step. -->
+    <logger name="pscd.account-error" level="INFO" additivity="false">
+        <appender-ref ref="ACCOUNT_ERROR"/>
+    </logger>
+    <logger name="pscd.completion" level="INFO" additivity="false">
+        <appender-ref ref="COMPLETION"/>
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</configuration>

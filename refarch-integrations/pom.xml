@@ -38,6 +38,7 @@
         <module>refarch-dms-integration</module>
         <module>refarch-cosys-integration</module>
         <module>refarch-address-integration</module>
+        <module>refarch-pscd-integration</module>
     </modules>
     <scm child.scm.connection.inherit.append.path="false" child.scm.developerConnection.inherit.append.path="false" child.scm.url.inherit.append.path="false">
         <connection>scm:git:https://github.com/it-at-m/refarch.git</connection>
@@ -355,6 +356,8 @@
                                 <artifact>refarch-s3-integration-rest-service</artifact>
                                 <artifact>refarch-cosys-integration-example</artifact>
                                 <artifact>refarch-dms-integration-example</artifact>
+                                <artifact>refarch-pscd-integration-example</artifact>
+                                <artifact>refarch-pscd-integration-service</artifact>
                             </excludeArtifacts>
                         </configuration>
                     </plugin>
