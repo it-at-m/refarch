@@ -76,7 +76,7 @@
 
         <!-- TEMPORARY TRANSITIVE DEPENDENCY OVERRIDES FOR SECURITY FIXES -->
         <!-- fixes CVE-2026-59889 -->
-        <jackson-bom.version>3.1.6</jackson-bom.version>
+        <jackson-bom.version>3.2.2</jackson-bom.version>
     </properties>
 
     <dependencyManagement>
