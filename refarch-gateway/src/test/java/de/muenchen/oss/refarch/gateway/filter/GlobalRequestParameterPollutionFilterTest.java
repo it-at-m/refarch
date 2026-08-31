@@ -40,11 +40,6 @@ class GlobalRequestParameterPollutionFilterTest {
     @MockitoBean
     private SecurityProperties securityProperties;
 
-    @AfterEach
-    void resetProperties() {
-        securityProperties.setParameterPollutionWhitelisted(Set.of());
-    }
-
     @Test
     @WithMockUser
     void parameterPollutionAttack() {
