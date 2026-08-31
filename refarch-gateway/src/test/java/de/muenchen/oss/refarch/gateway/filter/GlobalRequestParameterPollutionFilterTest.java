@@ -2,10 +2,14 @@ package de.muenchen.oss.refarch.gateway.filter;
 
 import static de.muenchen.oss.refarch.gateway.TestConstants.SPRING_TEST_PROFILE;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import de.muenchen.oss.refarch.gateway.OAuthSecurityMockConfiguration;
 import de.muenchen.oss.refarch.gateway.configuration.SecurityProperties;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.Objects;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
@@ -13,11 +17,17 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webtestclient.autoconfigure.AutoConfigureWebTestClient;
+import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
+import org.springframework.mock.http.server.reactive.MockServerHttpRequest;
+import org.springframework.mock.web.server.MockServerWebExchange;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.web.server.ServerWebExchange;
+import reactor.core.publisher.Mono;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles(SPRING_TEST_PROFILE)
@@ -28,7 +38,7 @@ class GlobalRequestParameterPollutionFilterTest {
     @Autowired
     private WebTestClient webTestClient;
 
-    @Autowired
+    @MockitoBean
     private SecurityProperties securityProperties;
 
     @AfterEach
@@ -53,7 +63,7 @@ class GlobalRequestParameterPollutionFilterTest {
     @Test
     @WithMockUser
     void parameterPollutionAttack_WithUnmatchedWhitelist_Blocks() {
-        securityProperties.setParameterPollutionWhitelisted(Set.of("otherParameter"));
+        when(securityProperties.getParameterPollutionWhitelisted()).thenReturn(Set.of("otherParameter"));
 
         final StringBuilder jsonResponseBody = new StringBuilder();
         final String url = "/api/backend/testendpoint?parameter1=testdata_1&parameter2=testdata&parameter1=testdata_2";
@@ -68,14 +78,24 @@ class GlobalRequestParameterPollutionFilterTest {
     }
 
     @Test
-    @WithMockUser
     void parameterPollutionAttack_WithMatchedWhitelist_Allows() {
-        securityProperties.setParameterPollutionWhitelisted(Set.of("parameter1"));
-        final String url = "/api/backend/testendpoint?parameter1=testdata_1&parameter2=testdata&parameter1=testdata_2";
+        when(securityProperties.getParameterPollutionWhitelisted()).thenReturn(Set.of("parameter1"));
 
-        webTestClient.get().uri(url).exchange()
-                .expectStatus()
-                .is5xxServerError();
+        MockServerHttpRequest request = MockServerHttpRequest.get("/api/backend/testendpoint")
+                .queryParam("parameter1", "testdata_1")
+                .queryParam("parameter2", "testdata")
+                .queryParam("parameter1", "testdata_2")
+                .build();
+
+        ServerWebExchange exchange = MockServerWebExchange.from(request);
+        GatewayFilterChain filterChain = mock(GatewayFilterChain.class);
+        when(filterChain.filter(exchange)).thenReturn(Mono.empty());
+
+        GlobalRequestParameterPollutionFilter filter = new GlobalRequestParameterPollutionFilter(securityProperties);
+
+        filter.filter(exchange, filterChain).block();
+
+        verify(filterChain).filter(exchange);
     }
 
 }
