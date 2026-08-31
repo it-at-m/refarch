@@ -31,7 +31,7 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 @SuppressWarnings("PMD.UseUtilityClass")
 public class ApiGatewayApplication {
 
-    public static void main(final String[] args) {
+    /* package */ static void main(final String... args) {
         SpringApplication.run(ApiGatewayApplication.class, args);
     }
 
