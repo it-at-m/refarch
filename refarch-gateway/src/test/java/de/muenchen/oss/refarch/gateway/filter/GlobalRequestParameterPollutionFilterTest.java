@@ -9,7 +9,6 @@ import static org.mockito.Mockito.when;
 import de.muenchen.oss.refarch.gateway.OAuthSecurityMockConfiguration;
 import de.muenchen.oss.refarch.gateway.configuration.SecurityProperties;
 import java.nio.charset.StandardCharsets;
-import java.time.Duration;
 import java.util.Objects;
 import java.util.Set;
 import org.junit.jupiter.api.AfterEach;
@@ -81,17 +80,17 @@ class GlobalRequestParameterPollutionFilterTest {
     void parameterPollutionAttack_WithMatchedWhitelist_Allows() {
         when(securityProperties.getParameterPollutionWhitelisted()).thenReturn(Set.of("parameter1"));
 
-        MockServerHttpRequest request = MockServerHttpRequest.get("/api/backend/testendpoint")
+        final MockServerHttpRequest request = MockServerHttpRequest.get("/api/backend/testendpoint")
                 .queryParam("parameter1", "testdata_1")
                 .queryParam("parameter2", "testdata")
                 .queryParam("parameter1", "testdata_2")
                 .build();
 
-        ServerWebExchange exchange = MockServerWebExchange.from(request);
-        GatewayFilterChain filterChain = mock(GatewayFilterChain.class);
+        final ServerWebExchange exchange = MockServerWebExchange.from(request);
+        final GatewayFilterChain filterChain = mock(GatewayFilterChain.class);
         when(filterChain.filter(exchange)).thenReturn(Mono.empty());
 
-        GlobalRequestParameterPollutionFilter filter = new GlobalRequestParameterPollutionFilter(securityProperties);
+        final GlobalRequestParameterPollutionFilter filter = new GlobalRequestParameterPollutionFilter(securityProperties);
 
         filter.filter(exchange, filterChain).block();
 
