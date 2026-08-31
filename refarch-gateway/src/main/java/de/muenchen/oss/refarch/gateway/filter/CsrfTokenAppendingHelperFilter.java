@@ -10,9 +10,11 @@ import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
 /// This class subscribes the [ServerWebExchange] for CSRF token attachment within the classes
-/// [CookieServerCsrfTokenRepository] and [CsrfWebFilter]. The CSRF configuration done only in
-/// [SecurityConfiguration#springSecurityFilterChain] is not sufficient for CSRF token attachment to
-/// a [ServerHttpResponse].
+/// [org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository] and
+/// [org.springframework.security.web.server.csrf.CsrfWebFilter]. The CSRF configuration done only in
+/// [de.muenchen.oss.refarch.gateway.configuration.SecurityConfiguration#springSecurityFilterChain] is
+/// not sufficient for CSRF token attachment to a
+/// [org.springframework.http.server.ServerHttpResponse].
 @Component
 @Slf4j
 public class CsrfTokenAppendingHelperFilter implements WebFilter {

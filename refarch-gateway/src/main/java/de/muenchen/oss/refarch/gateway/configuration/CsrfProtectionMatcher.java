@@ -20,7 +20,8 @@ import reactor.core.publisher.Mono;
 @Profile("!no-security")
 public class CsrfProtectionMatcher implements ServerWebExchangeMatcher {
 
-    /// Copied from [CsrfWebFilter].DefaultRequireCsrfProtectionMatcher
+    /// Copied from
+    /// [org.springframework.security.web.server.csrf.CsrfWebFilter].DefaultRequireCsrfProtectionMatcher
     private static final Set<HttpMethod> ALLOWED_METHODS = new HashSet<>(
             Arrays.asList(HttpMethod.GET, HttpMethod.HEAD, HttpMethod.TRACE, HttpMethod.OPTIONS));
 

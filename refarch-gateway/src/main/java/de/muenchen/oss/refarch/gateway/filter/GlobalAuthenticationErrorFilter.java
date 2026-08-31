@@ -22,8 +22,9 @@ import reactor.core.publisher.Mono;
 /// This [GlobalFilter] replaces the body by a generic authentication error body, when a server
 /// responses with a [HttpStatus#UNAUTHORIZED].
 ///
-/// The header [HttpHeaders#WWW_AUTHENTICATE] containing the access token is removed by the property
-/// `RemoveResponseHeader` in the corresponding route within `application.yml`.
+/// The header [org.springframework.http.HttpHeaders#WWW_AUTHENTICATE] containing the access token is
+/// removed by the property `RemoveResponseHeader` in the corresponding route
+/// within `application.yml`.
 @Component
 @Slf4j
 public class GlobalAuthenticationErrorFilter implements GlobalFilter, Ordered {
