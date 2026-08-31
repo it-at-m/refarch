@@ -41,7 +41,7 @@ public class CsrfProtectionMatcher implements ServerWebExchangeMatcher {
         return Mono.just(exchange.getRequest())
                 .flatMap((r) -> Mono.justOrEmpty(new MethodAndPath(r.getMethod(), r.getPath().toString())))
                 .filter((mp) -> ALLOWED_METHODS.contains(mp.method) || isWhitelisted(mp.path))
-                .flatMap((m) -> MatchResult.notMatch())
+                .flatMap((_) -> MatchResult.notMatch())
                 .switchIfEmpty(MatchResult.match());
     }
 

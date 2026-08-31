@@ -66,7 +66,7 @@ public class GlobalAuthenticationErrorFilter implements GlobalFilter, Ordered {
 
                     return super.writeWith(flux.buffer().map(
                             // replace old body represented by dataBuffer by the new one
-                            dataBuffer -> newDataBuffer));
+                            _ -> newDataBuffer));
                 }
                 return super.writeWith(body);
             }

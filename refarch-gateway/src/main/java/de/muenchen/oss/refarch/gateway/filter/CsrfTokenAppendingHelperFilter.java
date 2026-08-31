@@ -26,7 +26,7 @@ public class CsrfTokenAppendingHelperFilter implements WebFilter {
     @NonNull public Mono<Void> filter(final ServerWebExchange exchange, final WebFilterChain chain) {
         log.debug("Trigger to append CSRF token to response");
         final Mono<CsrfToken> csrfToken = exchange.getAttributeOrDefault(CsrfToken.class.getName(), Mono.empty());
-        return csrfToken.doOnSuccess(token -> {
+        return csrfToken.doOnSuccess(_ -> {
             // do nothing -> CSRF-Token is added as cookie in class CookieServerCsrfTokenRepository#saveToken
         }).then(chain.filter(exchange));
     }
