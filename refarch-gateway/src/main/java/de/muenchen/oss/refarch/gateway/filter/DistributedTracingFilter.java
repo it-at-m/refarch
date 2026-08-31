@@ -29,8 +29,7 @@ public class DistributedTracingFilter implements WebFilter {
     ///
     /// @param serverWebExchange the current server exchange without Zipkin headers
     /// @param webFilterChain provides a way to delegate to the next filter
-    /// @return `Mono<Void>` to indicate when request processing for adding Zipkin headers is
-    ///         complete
+    /// @return `Mono<Void>` to indicate when request processing for adding Zipkin headers is complete
     @Override
     @NonNull public Mono<Void> filter(final ServerWebExchange serverWebExchange,
             final WebFilterChain webFilterChain) {

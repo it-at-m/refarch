@@ -24,8 +24,8 @@ public class SecurityProperties {
     /// Additional patterns that should be treated like client routes (JWT-authenticated, under
     /// `/clients/**` by default).
     ///
-    /// Each pattern is an Ant-style glob that will be matched in the dedicated client security filter
-    /// chain.
+    /// Each pattern is an Ant-style glob that will be matched in the dedicated client security
+    /// filter chain.
     @NotNull private List<@NotBlank String> clientPatterns = List.of();
 
     /// List of rules for publicly accessible routes (permitAll, like `/public/**`), combining a path

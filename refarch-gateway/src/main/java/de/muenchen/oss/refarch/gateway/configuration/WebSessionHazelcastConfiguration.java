@@ -92,8 +92,8 @@ public class WebSessionHazelcastConfiguration {
         return hazelcastConfig;
     }
 
-    /// Adds the session timeout in seconds to the Hazelcast configuration.
-    /// Evicts sessions by setting a value for TTL.
+    /// Adds the session timeout in seconds to the Hazelcast configuration. Evicts sessions by setting a
+    /// value for TTL.
     ///
     /// @param hazelcastConfig to add the timeout.
     /// @param sessionTimeout for security session.

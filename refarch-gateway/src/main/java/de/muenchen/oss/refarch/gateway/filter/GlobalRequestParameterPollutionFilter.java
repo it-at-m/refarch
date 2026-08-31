@@ -11,8 +11,6 @@ import org.jspecify.annotations.NonNull;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
-import org.springframework.http.HttpRequest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -22,9 +20,8 @@ import reactor.core.publisher.Mono;
 
 /// This [GlobalFilter] is used to detect and to fend off a parameter pollution attack.
 ///
-/// Within a [HttpRequest] each request parameter should only exist once. This check is
-/// necessary to avoid e.g. SQL injection split over multiple request
-/// parameters with the same name.
+/// Within a [HttpRequest] each request parameter should only exist once. This check is necessary to
+/// avoid e.g. SQL injection split over multiple request parameters with the same name.
 @Component
 @Slf4j
 @RequiredArgsConstructor
@@ -41,9 +38,8 @@ public class GlobalRequestParameterPollutionFilter implements GlobalFilter, Orde
 
     /// See [GlobalFilter#filter(ServerWebExchange, GatewayFilterChain)]
     ///
-    /// @throws ParameterPollutionException  when a request parameter exists multiple times. The
-    ///             exception represents a HTTP response with status
-    ///             [HttpStatus#BAD_REQUEST].
+    /// @throws ParameterPollutionException when a request parameter exists multiple times. The exception
+    ///             represents a HTTP response with status [HttpStatus#BAD_REQUEST].
     @Override
     @NonNull public Mono<Void> filter(final ServerWebExchange exchange, @NonNull final GatewayFilterChain chain) {
         log.debug("Check for parameter pollution attack.");
