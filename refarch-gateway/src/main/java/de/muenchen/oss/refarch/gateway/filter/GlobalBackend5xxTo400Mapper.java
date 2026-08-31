@@ -23,10 +23,8 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * This {@link GlobalFilter} replaces the body by a generic error body, when a server responses with
- * a {@link HttpStatus#INTERNAL_SERVER_ERROR}.
- */
+/// This [GlobalFilter] replaces the body by a generic error body, when a server responses with
+/// a [HttpStatus#INTERNAL_SERVER_ERROR].
 @Component
 @Slf4j
 public class GlobalBackend5xxTo400Mapper implements GlobalFilter, Ordered {
@@ -34,9 +32,8 @@ public class GlobalBackend5xxTo400Mapper implements GlobalFilter, Ordered {
     public static final int ORDER_GLOBAL_FILTER = -3;
     private static final String GENERIC_ERROR_400 = "{ \"status\":400, \"error\":\"Bad Request\" }";
     private static final String GENERIC_ERROR_500 = "{ \"status\":500, \"error\":\"Internal Server Error\" }";
-    /**
-     * Variable entscheidet, ob alle 5xx Fehler auf 400 gemappt werden sollen.
-     **/
+
+    /// Controls mapping of 5XX errors to 400
     @Value("${config.map5xxto400: true}")
     private boolean map5xxTo400;
 
@@ -62,7 +59,7 @@ public class GlobalBackend5xxTo400Mapper implements GlobalFilter, Ordered {
                             // replace old body represented by dataBuffer by the new one
 
                             dataBuffer -> {
-                                // Log-Ausgabe
+                                // Log
                                 final DefaultDataBuffer joinedBuffers = new DefaultDataBufferFactory().join(dataBuffer);
                                 final byte[] content = new byte[joinedBuffers.readableByteCount()];
                                 joinedBuffers.read(content);
@@ -70,7 +67,7 @@ public class GlobalBackend5xxTo400Mapper implements GlobalFilter, Ordered {
                                 log.error("Error: 5xx vom Backend:  requestId: {}, method: {}, url: {}, \nresponse body :{}, statusCode: {}", request.getId(),
                                         request.getMethod(), request.getURI(), responseBody, responseHttpStatus);
 
-                                // Response manipulieren
+                                // Manipulate response
                                 final DataBuffer newDataBuffer;
                                 if (map5xxTo400) {
                                     getDelegate().setStatusCode(HttpStatus.BAD_REQUEST);

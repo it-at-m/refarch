@@ -21,9 +21,7 @@ import reactor.core.publisher.Mono;
 @Profile("!no-security")
 public class CsrfProtectionMatcher implements ServerWebExchangeMatcher {
 
-    /**
-     * Copied from {@link CsrfWebFilter}.DefaultRequireCsrfProtectionMatcher
-     */
+    /// Copied from [CsrfWebFilter].DefaultRequireCsrfProtectionMatcher
     private static final Set<HttpMethod> ALLOWED_METHODS = new HashSet<>(
             Arrays.asList(HttpMethod.GET, HttpMethod.HEAD, HttpMethod.TRACE, HttpMethod.OPTIONS));
 
