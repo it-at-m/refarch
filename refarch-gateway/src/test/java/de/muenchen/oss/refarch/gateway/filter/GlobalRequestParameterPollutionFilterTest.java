@@ -61,7 +61,8 @@ class GlobalRequestParameterPollutionFilterTest {
         final String url = "/api/backend/testendpoint?parameter1=testdata_1&parameter2=testdata&parameter1=testdata_2";
 
         webTestClient.get().uri(url).exchange()
-                .expectStatus().isEqualTo(HttpStatus.BAD_REQUEST)
+                .expectStatus()
+                .isEqualTo(HttpStatus.BAD_REQUEST)
                 .expectBody()
                 .consumeWith(responseBody -> jsonResponseBody.append(
                         new String(Objects.requireNonNull(responseBody.getResponseBody()), StandardCharsets.UTF_8)));
@@ -81,7 +82,8 @@ class GlobalRequestParameterPollutionFilterTest {
         final String url = "/api/backend/testendpoint?parameter1=testdata_1&parameter2=testdata&parameter1=testdata_2";
 
         webTestClient.get().uri(url).exchange()
-                .expectStatus().isOk();
+                .expectStatus()
+                .isOk();
     }
 
 }
