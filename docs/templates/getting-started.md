@@ -53,7 +53,7 @@ For further information on those topics please check out [Develop](./develop.md)
 
 ### Prerequisites
 
-- Java 21
+- Java 25
 - Maven 3.9
 - Container engine (for Postgres and Keycloak)
 
