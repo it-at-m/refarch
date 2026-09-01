@@ -13,9 +13,7 @@ import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
-/**
- * This class adds the sleuth headers "X-B3-SpanId" and "X-B3-TraceId" to each route response.
- */
+/// This class adds the sleuth headers `X-B3-SpanId` and `X-B3-TraceId` to each route response.
 @Component
 @Slf4j
 @RequiredArgsConstructor
@@ -26,15 +24,12 @@ public class DistributedTracingFilter implements WebFilter {
 
     private final Tracer tracer;
 
-    /**
-     * This method adds the zipkin headers "X-B3-SpanId" and "X-B3-TraceId" to each response in
-     * {@link ServerWebExchange}.
-     *
-     * @param serverWebExchange the current server exchange without zipkin headers
-     * @param webFilterChain provides a way to delegate to the next filter
-     * @return {@code Mono<Void>} to indicate when request processing for adding zipkin headers is
-     *         complete
-     */
+    /// This method adds the Zipkin headers `X-B3-SpanId` and `X-B3-TraceId` to each response in
+    /// [ServerWebExchange].
+    ///
+    /// @param serverWebExchange the current server exchange without Zipkin headers
+    /// @param webFilterChain provides a way to delegate to the next filter
+    /// @return `Mono<Void>` to indicate when request processing for adding Zipkin headers is complete
     @Override
     @NonNull public Mono<Void> filter(final ServerWebExchange serverWebExchange,
             final WebFilterChain webFilterChain) {
