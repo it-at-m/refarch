@@ -11,7 +11,7 @@ This document describes the release strategies for the RefArch ready-to-use comp
 - **Development and Release**:
   - Features are merged directly into the `main` branch.
   - Releases are made from the `main` branch as needed.
-    - Major/breaking changes are collected over a period of about half a year and released collected.
+  - Major or breaking changes are accumulated over a period of approximately six months and then released together.
 
 ```mermaid
 ---
@@ -74,7 +74,7 @@ gitGraph
 
 ## Helm Charts
 
-The `refarch-gateway` helm charts follows the major and minor version of the gateway. The patch version can differ.
+The `refarch-gateway` Helm chart follows the major and minor version of the gateway docker image. The patch version can differ.
 
-An `refarch-gateway` chart dependency upgrade in the `refarch-template` helm chart should be represented with the same version increase
-(e.g. refarch-gateway minor bump -> refarch-template minor bump).
+An `refarch-gateway` chart dependency upgrade in the `refarch-templates` Helm chart is reflected with the same type of version increase
+(e.g. `refarch-gateway` minor bump -> `refarch-templates` minor bump).
