@@ -74,7 +74,7 @@ gitGraph
 
 ## Helm Charts
 
-The [`refarch-gateway` Helm chart](https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-gateway) follows the major and minor version of the gateway docker image. The patch version can differ.
+The [`refarch-gateway` Helm chart](https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-gateway) follows the major and minor version of the [`refarch-gateway` Docker image](https://github.com/it-at-m/refarch/pkgs/container/refarch%2Frefarch-gateway). The patch version can differ.
 
 An upgrade of the `refarch-gateway` chart dependency in the [`refarch-templates` Helm chart](https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-templates) is reflected with the same type of version increase
 (e.g. `refarch-gateway` minor bump -> `refarch-templates` minor bump).
