@@ -27,10 +27,7 @@ public final class WiremockWsdlUtility {
     private WiremockWsdlUtility() {
     }
 
-    /**
-     * Accepts a WebService response object (as defined in the WSDL) and marshals
-     * to a SOAP envelope String.
-     */
+    /// Accepts a WebService response object (as defined in the WSDL) and marshalls to a SOAP envelope String.
     public static <T> String serializeObject(final T object) {
         final ByteArrayOutputStream byteArrayOutputStream;
         final Class clazz = object.getClass();
@@ -59,10 +56,7 @@ public final class WiremockWsdlUtility {
         return byteArrayOutputStream.toString(StandardCharsets.UTF_8);
     }
 
-    /**
-     * Accepts a WebService request object (as defined in the WSDL) and unmarshals
-     * to the supplied type.
-     */
+    /// Accepts a WebService request object (as defined in the WSDL) and unmarshalls to the supplied type.
     public static <T> T deserializeSoapRequest(final String soapRequest, final Class<T> clazz) {
 
         final XMLInputFactory xif = XMLInputFactory.newFactory();

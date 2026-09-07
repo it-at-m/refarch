@@ -291,25 +291,19 @@ class FabasoftAdapterTest {
         assertThat(files.getFirst()).usingRecursiveComparison().isEqualTo(expectedFile);
     }
 
-    /**
-     * Tests a file search.
-     */
+    /// Tests a file search.
     @Test
     void executeSearchFileRequest() {
         assertDoesNotThrow(() -> internalSearchFileCallTest(DMSObjectClass.Sachakte, "searchString", REQUEST_CONTEXT, null, null));
     }
 
-    /**
-     * Tests a file search but includes refinement on a business date/'Fachdatum'.
-     */
+    /// Tests a file search but includes refinement on a business date/'Fachdatum'.
     @Test
     void executeSearchFileRequestBusinessData() throws DmsException {
         assertDoesNotThrow(() -> internalSearchFileCallTest(DMSObjectClass.Sachakte, "searchString", REQUEST_CONTEXT, "reference", "value"));
     }
 
-    /**
-     * Tests a subject search.
-     */
+    /// Tests a subject search.
     @Test
     void executeSearchSubjectAreaRequest() throws DmsException {
         final LHMBAI151700GIObjectType file = new LHMBAI151700GIObjectType();

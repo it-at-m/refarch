@@ -53,11 +53,10 @@ More information about the Javadoc integration can be found in the [official Spr
 Example:
 
 ```java
-/**
- * This text is used as a description for the following request.
- * @param someId describes the path variable used for this request.
- * @return explains the return value of the request.
- */
+/// This text is used as a description for the following request.
+/// 
+/// @param someId describes the path variable used for this request.
+/// @return explains the return value of the request.
 @GetMapping("{someId}")
 @ResponseStatus(HttpStatus.OK)
 public SomeEntity getEndpoint(@PathVariable("someId") final UUID someId) {

@@ -3,9 +3,7 @@ package de.muenchen.oss.refarch.integration.s3.domain.exception;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-/**
- * Represents a technical exception
- */
+/// Represents a technical exception
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @SuppressWarnings("PMD.MissingSerialVersionUID")
 public class S3Exception extends Exception {

@@ -9,62 +9,54 @@ import org.hibernate.validator.constraints.time.DurationMin;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
-/**
- * Configuration properties for integrating with an S3-compatible object storage.
- */
+/// Configuration properties for integrating with an S3-compatible object storage.
 @Getter
 @Setter
 @Validated
 @ConfigurationProperties(prefix = "refarch.s3")
 public class S3IntegrationProperties {
 
-    /**
-     * Endpoint URL of the S3-compatible service (e.g., https://s3.amazonaws.com or
-     * http://localhost:9000).
-     * Must not be blank.
-     */
+    /// Endpoint URL of the S3-compatible service (e.g., https://s3.amazonaws.com or
+    /// http://localhost:9000).
+    ///
+    /// **Note:** Must not be blank.
     @NotBlank private String url;
 
-    /**
-     * Region to use for the S3 client and presigner. For S3-compatible services like MinIO,
-     * this is often "us-east-1" and the default.
-     */
+    /// Region to use for the S3 client and presigner. For S3-compatible services like MinIO, this is often `us-east-1`.
+    ///
+    /// Default value is `us-east-1`.
     @NotBlank private String region = "us-east-1";
 
-    /**
-     * Access key used for authentication with the S3-compatible service.
-     * Must not be blank.
-     */
+    /// Access key used for authentication with the S3-compatible service.
+    ///
+    /// **Note:** Must not be blank.
     @NotBlank private String accessKey;
 
-    /**
-     * Secret key used for authentication with the S3-compatible service.
-     * Must not be blank. Avoid logging or exposing this value.
-     */
+    /// Secret key used for authentication with the S3-compatible service.
+    ///
+    /// **Note:** Must not be blank. Avoid logging or exposing this value.
     @NotBlank private String secretKey;
 
-    /**
-     * The amount of time to wait when establishing a connection to S3 before timing out.
-     */
+    /// The amount of time to wait when establishing a connection to S3 before timing out.
+    ///
+    /// Default value is `Duration.ofSeconds(30)`.
     @DurationMin(seconds = 1)
     @NotNull private Duration connectionTimeout = Duration.ofSeconds(30);
 
-    /**
-     * The amount of time to wait for data to be transferred over an established, open connection before
-     * timing out.
-     */
+    /// The amount of time to wait for data to be transferred over an established, open connection before timing out.
+    ///
+    /// Default value is `Duration.ofSeconds(60)`.
     @DurationMin(seconds = 1)
     @NotNull private Duration socketTimeout = Duration.ofSeconds(60);
 
-    /**
-     * Whether to use path-style access (e.g., http://endpoint/bucket/object) instead of
-     * virtual-hosted-style access (e.g., http://bucket.endpoint/object). Defaults to {@code true}.
-     */
+    /// Whether to use path-style access (e.g., http://endpoint/bucket/object) instead of
+    /// virtual-hosted-style access (e.g., http://bucket.endpoint/object).
+    ///
+    /// Default value is `true`.
     private boolean pathStyleAccessEnabled = true;
 
-    /**
-     * Whether to perform a connectivity check to the configured S3 endpoint during application startup.
-     * Defaults to {@code true}. Must not be {@code null}.
-     */
+    /// Whether to perform a connectivity check to the configured S3 endpoint during application startup.
+    ///
+    /// Default value is `true`.
     private boolean initialConnectionTest = true;
 }

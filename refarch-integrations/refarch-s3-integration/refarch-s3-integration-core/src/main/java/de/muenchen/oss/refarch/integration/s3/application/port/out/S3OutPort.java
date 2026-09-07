@@ -15,169 +15,146 @@ import java.time.Duration;
 import java.util.Map;
 import org.springframework.validation.annotation.Validated;
 
-/**
- * Outbound port defining operations to interact with an S3-compatible object storage.
- * Implementations are responsible for translating these domain-level operations into SDK calls
- * and for converting SDK-specific exceptions into {@link S3Exception}.
- */
+/// Outbound port defining operations to interact with an S3-compatible object storage.
+///
+/// Implementations are responsible for translating these domain-level operations into SDK calls and for converting SDK-specific exceptions into [S3Exception].
 @Validated
 public interface S3OutPort {
 
-    /**
-     * Checks if an object exists at the given file reference.
-     *
-     * @param fileReference the bucket and path identifying the object (must not be null)
-     * @return true if the object exists; false if the object does not exist
-     * @throws S3Exception if a client or network error occurs while checking existence
-     */
+    /// Checks if an object exists at the given file reference.
+    ///
+    /// @param fileReference the bucket and path identifying the object (must not be null)
+    /// @return true if the object exists; false if the object does not exist
+    /// @throws S3Exception if a client or network error occurs while checking existence
     boolean fileExists(@NotNull @Valid FileReference fileReference) throws S3Exception;
 
-    /**
-     * Stores content at the given file reference.
-     * The provided {@code content} stream will be read entirely by the implementation.
-     * The caller is responsible for closing the stream after this method returns.
-     *
-     * @param fileReference the bucket and path where the content will be stored (must not be null)
-     * @param content the input stream containing the data to upload (must not be null)
-     * @param contentLength the total number of bytes in {@code content}; used by some SDKs to optimize
-     *            upload
-     * @throws S3Exception if the upload fails due to client, network, or service issues
-     */
+    /// Stores content at the given file reference.
+    ///
+    /// The provided `content` stream will be read entirely by the implementation.
+    /// The caller is responsible for closing the stream after this method returns.
+    ///
+    /// @param fileReference the bucket and path where the content will be stored (must not be null)
+    /// @param content the input stream containing the data to upload (must not be null)
+    /// @param contentLength the total number of bytes in `content`; used by some SDKs to optimize
+    ///            upload
+    /// @throws S3Exception if the upload fails due to client, network, or service issues
     void saveFile(@NotNull @Valid FileReference fileReference, @NotNull InputStream content, long contentLength) throws S3Exception;
 
-    /**
-     * Convenience overload to upload content from a local file.
-     *
-     * @param fileReference the target file reference (bucket/key) (must not be null)
-     * @param file the local file to upload (must not be null)
-     * @throws S3Exception if the upload fails due to client, network, or service issues
-     */
+    /// Convenience overload to upload content from a local file.
+    ///
+    /// @param fileReference the target file reference (bucket/key) (must not be null)
+    /// @param file the local file to upload (must not be null)
+    /// @throws S3Exception if the upload fails due to client, network, or service issues
     void saveFile(@NotNull @Valid FileReference fileReference, @NotNull File file) throws S3Exception;
 
-    /**
-     * Convenience overload for saving content when the content length is unknown.
-     * Implementations may buffer/stream in order to determine the content length or
-     * use transfer strategies that do not require the length up front. Consider
-     * using the length-aware method when the size is known to avoid additional I/O.
-     *
-     * @param fileReference the target file reference (bucket/key), must not be null
-     * @param content the content to upload, must not be null
-     * @throws S3Exception if the upload fails due to an underlying storage error
-     */
+    /// Convenience overload for saving content when the content length is unknown.
+    ///
+    /// Implementations may buffer/stream in order to determine the content length or
+    /// use transfer strategies that do not require the length up front. Consider
+    /// using the length-aware method when the size is known to avoid additional I/O.
+    ///
+    /// @param fileReference the target file reference (bucket/key), must not be null
+    /// @param content the content to upload, must not be null
+    /// @throws S3Exception if the upload fails due to an underlying storage error
     void saveFile(@NotNull @Valid FileReference fileReference, @NotNull InputStream content) throws S3Exception;
 
-    /**
-     * Replaces the tags stored for the given object.
-     * Passing an empty map clears all tags on the object.
-     *
-     * @param fileReference the bucket and path identifying the object (must not be null)
-     * @param tags the tags to persist for the object
-     * @throws S3Exception if updating tags fails due to client, network, or service issues
-     */
+    /// Replaces the tags stored for the given object.
+    /// Passing an empty map clears all tags on the object.
+    ///
+    /// @param fileReference the bucket and path identifying the object (must not be null)
+    /// @param tags the tags to persist for the object
+    /// @throws S3Exception if updating tags fails due to client, network, or service issues
     void setTags(@NotNull @Valid FileReference fileReference, @NotNull Map<@NotBlank String, @NotBlank String> tags) throws S3Exception;
 
-    /**
-     * Retrieves all tags currently stored for the given object.
-     *
-     * @param fileReference the bucket and path identifying the object (must not be null)
-     * @return the current object tags as key/value pairs
-     * @throws S3Exception if reading tags fails due to client, network, or service issues
-     */
+    /// Retrieves all tags currently stored for the given object.
+    ///
+    /// @param fileReference the bucket and path identifying the object (must not be null)
+    /// @return the current object tags as key/value pairs
+    /// @throws S3Exception if reading tags fails due to client, network, or service issues
     Map<String, String> getTags(@NotNull @Valid FileReference fileReference) throws S3Exception;
 
-    /**
-     * Copies an object to a new location using server-side copy semantics.
-     * Existing source tags are preserved on the copied object.
-     *
-     * @param source the source object reference (must not be null)
-     * @param target the target object reference (must not be null)
-     * @throws S3Exception if the copy fails due to client, network, or service issues
-     */
+    /// Copies an object to a new location using server-side copy semantics.
+    /// Existing source tags are preserved on the copied object.
+    ///
+    /// @param source the source object reference (must not be null)
+    /// @param target the target object reference (must not be null)
+    /// @throws S3Exception if the copy fails due to client, network, or service issues
     void copyFile(@NotNull @Valid FileReference source, @NotNull @Valid FileReference target) throws S3Exception;
 
-    /**
-     * Copies an object to a new location using server-side copy semantics.
-     * When {@code preserveTags} is {@code true}, source tags are copied to the target object.
-     * When {@code preserveTags} is {@code false}, the copied target object is created without tags.
-     *
-     * @param source the source object reference (must not be null)
-     * @param target the target object reference (must not be null)
-     * @param preserveTags whether source tags should be copied to the target object
-     * @throws S3Exception if the copy fails due to client, network, or service issues
-     */
+    /// Copies an object to a new location using server-side copy semantics.
+    ///
+    /// When `preserveTags` is:
+    /// - `true`, source tags are copied to the target object.
+    /// - `false`, the copied target object is created without tags.
+    ///
+    /// @param source the source object reference (must not be null)
+    /// @param target the target object reference (must not be null)
+    /// @param preserveTags whether source tags should be copied to the target object
+    /// @throws S3Exception if the copy fails due to client, network, or service issues
     void copyFile(@NotNull @Valid FileReference source, @NotNull @Valid FileReference target, boolean preserveTags)
             throws S3Exception;
 
-    /**
-     * Retrieves object metadata for the given file reference without downloading the object body.
-     *
-     * @param fileReference the bucket and path identifying the object (must not be null)
-     * @return metadata describing the object (size, etag, last-modified, etc.)
-     * @throws S3Exception if the metadata retrieval fails due to client, network, or service issues
-     */
+    /// Retrieves object metadata for the given file reference without downloading the object body.
+    ///
+    /// @param fileReference the bucket and path identifying the object (must not be null)
+    /// @return metadata describing the object (size, etag, last-modified, etc.)
+    /// @throws S3Exception if the metadata retrieval fails due to client, network, or service issues
     FileMetadata getFileMetadata(@NotNull @Valid FileReference fileReference) throws S3Exception;
 
-    /**
-     * Creates a presigned URL allowing the specified action on the object for a limited lifetime.
-     * <p>
-     * Supported actions typically include {@link PresignedUrl.Action#GET},
-     * {@link PresignedUrl.Action#PUT},
-     * {@link PresignedUrl.Action#DELETE}, and {@link PresignedUrl.Action#HEAD}.
-     * The effective maximum lifetime may be constrained by the underlying provider (e.g., AWS S3 up to
-     * 7 days).
-     *
-     * @param fileReference the bucket and path identifying the object (must not be null)
-     * @param action the operation to authorize via the presigned URL (must not be null)
-     * @param lifetime the duration for which the URL remains valid (must not be null)
-     * @return a {@link PresignedUrl} containing the URL, target path, and action
-     * @throws S3Exception if URL creation fails due to client, network, or service issues
-     */
+    /// Creates a presigned URL allowing the specified action on the object for a limited lifetime.
+    ///
+    /// Supported actions typically include [PresignedUrl.Action#GET],
+    /// [PresignedUrl.Action#PUT],
+    /// [PresignedUrl.Action#DELETE], and [PresignedUrl.Action#HEAD].
+    ///
+    /// The effective maximum lifetime may be constrained by the underlying provider (e.g., AWS S3 up to
+    /// 7 days).
+    ///
+    /// @param fileReference the bucket and path identifying the object (must not be null)
+    /// @param action the operation to authorize via the presigned URL (must not be null)
+    /// @param lifetime the duration for which the URL remains valid (must not be null)
+    /// @return a [PresignedUrl] containing the URL, target path, and action
+    /// @throws S3Exception if URL creation fails due to client, network, or service issues
     PresignedUrl getPresignedUrl(@NotNull @Valid FileReference fileReference, @NotNull PresignedUrl.Action action, @NotNull Duration lifetime)
             throws S3Exception;
 
-    /**
-     * Downloads the object content as an input stream.
-     * The caller is responsible for consuming and closing the returned stream.
-     *
-     * @param fileReference the bucket and path identifying the object (must not be null)
-     * @return an input stream to read the object's content
-     * @throws S3Exception if the download fails due to client, network, or service issues
-     */
+    /// Downloads the object content as an input stream.
+    ///
+    /// **Note:** The caller is responsible for consuming and closing the returned stream.
+    ///
+    /// @param fileReference the bucket and path identifying the object (must not be null)
+    /// @return an input stream to read the object's content
+    /// @throws S3Exception if the download fails due to client, network, or service issues
     InputStream getFileContent(@NotNull @Valid FileReference fileReference) throws S3Exception;
 
-    /**
-     * Deletes the object at the given file reference.
-     *
-     * @param fileReference the bucket and path identifying the object to delete (must not be null)
-     * @throws S3Exception if the delete operation fails due to client, network, or service issues
-     */
+    /// Deletes the object at the given file reference.
+    ///
+    /// @param fileReference the bucket and path identifying the object to delete (must not be null)
+    /// @throws S3Exception if the delete operation fails due to client, network, or service issues
     void deleteFile(@NotNull @Valid FileReference fileReference) throws S3Exception;
 
-    /**
-     * Lists objects in the specified bucket starting with the given prefix with pagination controls.
-     * The result contains both object metadata and common prefixes for non-recursive listings.
-     * Uses default pagination (maxKeys = 1000) and no marker.
-     *
-     * @see #getFilesWithPrefix(String, String, boolean, int, String)
-     */
+    /// Lists objects in the specified bucket starting with the given prefix with pagination controls.
+    ///
+    /// The result contains both object metadata and common prefixes for non-recursive listings.
+    /// Uses default pagination (`maxKeys = 1000`) and no marker.
+    ///
+    /// @see #getFilesWithPrefix(String, String, boolean, int, String)
     ListResult getFilesWithPrefix(@NotBlank String bucket, @NotBlank String prefix, boolean recursive) throws S3Exception;
 
-    /**
-     * Lists objects in the specified bucket starting with the given prefix with pagination controls.
-     *
-     * @param bucket the bucket name (must not be blank)
-     * @param prefix the prefix under which to list objects (must not be blank). Trailing slash needs to
-     *            be added to list a specific "dir", when using recursive=false.
-     * @param recursive if to lookup files recursive or not.
-     * @param maxKeys maximum number of keys to return in this page (provider limits may apply, e.g.,
-     *            1–1000)
-     * @param startAfter key to start after when listing objects (used to continue from a previous
-     *            truncated
-     *            response);
-     *            pass null or empty to start from the beginning
-     * @return the objects and common prefixes found under the prefix plus truncation metadata
-     * @throws S3Exception if listing fails due to client, network, or service issues
-     */
+    /// Lists objects in the specified bucket starting with the given prefix with pagination controls.
+    ///
+    /// @param bucket the bucket name (must not be blank)
+    /// @param prefix the prefix under which to list objects (must not be blank). Trailing slash needs to
+    ///            be added to list a specific "dir", when using recursive=false.
+    /// @param recursive if to lookup files recursive or not.
+    /// @param maxKeys maximum number of keys to return in this page (provider limits may apply, e.g.,
+    ///            1–1000)
+    /// @param startAfter key to start after when listing objects (used to continue from a previous
+    ///            truncated
+    ///            response);
+    ///            pass null or empty to start from the beginning
+    /// @return the objects and common prefixes found under the prefix plus truncation metadata
+    /// @throws S3Exception if listing fails due to client, network, or service issues
     ListResult getFilesWithPrefix(@NotBlank String bucket, @NotBlank String prefix, boolean recursive, @Positive int maxKeys, String startAfter)
             throws S3Exception;
 }

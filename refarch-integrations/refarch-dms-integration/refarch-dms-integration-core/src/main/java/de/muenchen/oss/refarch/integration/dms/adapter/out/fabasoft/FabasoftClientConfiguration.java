@@ -6,9 +6,7 @@ import jakarta.xml.ws.BindingProvider;
 import jakarta.xml.ws.soap.SOAPBinding;
 import lombok.RequiredArgsConstructor;
 
-/**
- * Configuration of the Webservice Client.
- */
+/// Configuration of the Webservice Client.
 @RequiredArgsConstructor
 public class FabasoftClientConfiguration {
 

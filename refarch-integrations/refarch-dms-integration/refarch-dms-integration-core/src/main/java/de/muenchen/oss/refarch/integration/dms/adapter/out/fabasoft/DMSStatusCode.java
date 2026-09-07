@@ -1,8 +1,6 @@
 package de.muenchen.oss.refarch.integration.dms.adapter.out.fabasoft;
 
-/**
- * Status code of the request.
- */
+/// Status code of the request.
 public enum DMSStatusCode {
     UEBERTRAGUNG_ERFORLGREICH(0),
     OBJEKT_GESPERRT(1),

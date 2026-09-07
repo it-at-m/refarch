@@ -71,10 +71,9 @@ public class S3OutAdapter implements S3OutPort {
         return true;
     }
 
-    /**
-     * Base method to store content at the given file reference using a prepared RequestBody.
-     * Other saveFile overloads delegate to this method.
-     */
+    /// Base method to store content at the given file reference using a prepared [RequestBody].
+    ///
+    /// Other `saveFile` overloads delegate to this method.
     private void saveFile(final FileReference fileReference, final RequestBody requestBody) throws S3Exception {
         try {
             s3Client.putObject(PutObjectRequest.builder()

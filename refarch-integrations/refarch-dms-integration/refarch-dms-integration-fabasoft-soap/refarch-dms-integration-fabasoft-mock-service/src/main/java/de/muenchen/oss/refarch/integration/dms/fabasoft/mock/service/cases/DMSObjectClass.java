@@ -1,8 +1,6 @@
 package de.muenchen.oss.refarch.integration.dms.fabasoft.mock.service.cases;
 
-/**
- * All known object classes to provide soap requests with.
- */
+/// All known object classes to provide SOAP requests with.
 @SuppressWarnings({ "PMD.FieldNamingConventions", "PMD.ExcessivePublicCount" })
 public enum DMSObjectClass {
 
