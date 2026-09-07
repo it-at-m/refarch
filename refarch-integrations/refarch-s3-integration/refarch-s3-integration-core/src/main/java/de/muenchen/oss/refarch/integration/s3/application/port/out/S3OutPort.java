@@ -17,7 +17,8 @@ import org.springframework.validation.annotation.Validated;
 
 /// Outbound port defining operations to interact with an S3-compatible object storage.
 ///
-/// Implementations are responsible for translating these domain-level operations into SDK calls and for converting SDK-specific exceptions into [S3Exception].
+/// Implementations are responsible for translating these domain-level operations into SDK calls and
+/// for converting SDK-specific exceptions into [S3Exception].
 @Validated
 public interface S3OutPort {
 
@@ -30,13 +31,12 @@ public interface S3OutPort {
 
     /// Stores content at the given file reference.
     ///
-    /// The provided `content` stream will be read entirely by the implementation.
-    /// The caller is responsible for closing the stream after this method returns.
+    /// The provided `content` stream will be read entirely by the implementation. The caller is
+    /// responsible for closing the stream after this method returns.
     ///
     /// @param fileReference the bucket and path where the content will be stored (must not be null)
     /// @param content the input stream containing the data to upload (must not be null)
-    /// @param contentLength the total number of bytes in `content`; used by some SDKs to optimize
-    ///            upload
+    /// @param contentLength the total number of bytes in `content`; used by some SDKs to optimize upload
     /// @throws S3Exception if the upload fails due to client, network, or service issues
     void saveFile(@NotNull @Valid FileReference fileReference, @NotNull InputStream content, long contentLength) throws S3Exception;
 
@@ -49,17 +49,17 @@ public interface S3OutPort {
 
     /// Convenience overload for saving content when the content length is unknown.
     ///
-    /// Implementations may buffer/stream in order to determine the content length or
-    /// use transfer strategies that do not require the length up front. Consider
-    /// using the length-aware method when the size is known to avoid additional I/O.
+    /// Implementations may buffer/stream in order to determine the content length or use transfer
+    /// strategies that do not require the length up front. Consider using the length-aware method when
+    /// the size is known to avoid additional I/O.
     ///
     /// @param fileReference the target file reference (bucket/key), must not be null
     /// @param content the content to upload, must not be null
     /// @throws S3Exception if the upload fails due to an underlying storage error
     void saveFile(@NotNull @Valid FileReference fileReference, @NotNull InputStream content) throws S3Exception;
 
-    /// Replaces the tags stored for the given object.
-    /// Passing an empty map clears all tags on the object.
+    /// Replaces the tags stored for the given object. Passing an empty map clears all tags on the
+    /// object.
     ///
     /// @param fileReference the bucket and path identifying the object (must not be null)
     /// @param tags the tags to persist for the object
@@ -73,8 +73,8 @@ public interface S3OutPort {
     /// @throws S3Exception if reading tags fails due to client, network, or service issues
     Map<String, String> getTags(@NotNull @Valid FileReference fileReference) throws S3Exception;
 
-    /// Copies an object to a new location using server-side copy semantics.
-    /// Existing source tags are preserved on the copied object.
+    /// Copies an object to a new location using server-side copy semantics. Existing source tags are
+    /// preserved on the copied object.
     ///
     /// @param source the source object reference (must not be null)
     /// @param target the target object reference (must not be null)
@@ -103,9 +103,9 @@ public interface S3OutPort {
 
     /// Creates a presigned URL allowing the specified action on the object for a limited lifetime.
     ///
-    /// Supported actions typically include [PresignedUrl.Action#GET],
-    /// [PresignedUrl.Action#PUT],
-    /// [PresignedUrl.Action#DELETE], and [PresignedUrl.Action#HEAD].
+    /// Supported actions typically include
+    /// [PresignedUrl.Action#GET], [PresignedUrl.Action#PUT], [PresignedUrl.Action#DELETE], and
+    /// [PresignedUrl.Action#HEAD].
     ///
     /// The effective maximum lifetime may be constrained by the underlying provider (e.g., AWS S3 up to
     /// 7 days).
@@ -135,8 +135,8 @@ public interface S3OutPort {
 
     /// Lists objects in the specified bucket starting with the given prefix with pagination controls.
     ///
-    /// The result contains both object metadata and common prefixes for non-recursive listings.
-    /// Uses default pagination (`maxKeys = 1000`) and no marker.
+    /// The result contains both object metadata and common prefixes for non-recursive listings. Uses
+    /// default pagination (`maxKeys = 1000`) and no marker.
     ///
     /// @see #getFilesWithPrefix(String, String, boolean, int, String)
     ListResult getFilesWithPrefix(@NotBlank String bucket, @NotBlank String prefix, boolean recursive) throws S3Exception;
@@ -150,9 +150,7 @@ public interface S3OutPort {
     /// @param maxKeys maximum number of keys to return in this page (provider limits may apply, e.g.,
     ///            1–1000)
     /// @param startAfter key to start after when listing objects (used to continue from a previous
-    ///            truncated
-    ///            response);
-    ///            pass null or empty to start from the beginning
+    ///            truncated response); pass null or empty to start from the beginning
     /// @return the objects and common prefixes found under the prefix plus truncation metadata
     /// @throws S3Exception if listing fails due to client, network, or service issues
     ListResult getFilesWithPrefix(@NotBlank String bucket, @NotBlank String prefix, boolean recursive, @Positive int maxKeys, String startAfter)

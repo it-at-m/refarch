@@ -22,7 +22,8 @@ public class S3IntegrationProperties {
     /// **Note:** Must not be blank.
     @NotBlank private String url;
 
-    /// Region to use for the S3 client and presigner. For S3-compatible services like MinIO, this is often `us-east-1`.
+    /// Region to use for the S3 client and presigner. For S3-compatible services like MinIO, this is
+    /// often `us-east-1`.
     ///
     /// Default value is `us-east-1`.
     @NotBlank private String region = "us-east-1";
@@ -43,7 +44,8 @@ public class S3IntegrationProperties {
     @DurationMin(seconds = 1)
     @NotNull private Duration connectionTimeout = Duration.ofSeconds(30);
 
-    /// The amount of time to wait for data to be transferred over an established, open connection before timing out.
+    /// The amount of time to wait for data to be transferred over an established, open connection
+    /// before timing out.
     ///
     /// Default value is `Duration.ofSeconds(60)`.
     @DurationMin(seconds = 1)
@@ -55,7 +57,8 @@ public class S3IntegrationProperties {
     /// Default value is `true`.
     private boolean pathStyleAccessEnabled = true;
 
-    /// Whether to perform a connectivity check to the configured S3 endpoint during application startup.
+    /// Whether to perform a connectivity check to the configured S3 endpoint during application
+    /// startup.
     ///
     /// Default value is `true`.
     private boolean initialConnectionTest = true;

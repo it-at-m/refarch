@@ -10,7 +10,7 @@ The tools itself are described in [Develop](../templates/develop.md).
 The following table shows compatibility of the tools with the different Java versions.
 
 | Integrations Version  |   Java    |
-|:---------------------:|:---------:|
+| :-------------------: | :-------: |
 | **1**.x.x - **4**.x.x | >= **21** |
 |       **5**.x.x       | >= **25** |
 

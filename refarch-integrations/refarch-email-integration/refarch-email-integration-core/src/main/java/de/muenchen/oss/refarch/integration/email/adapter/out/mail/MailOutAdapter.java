@@ -104,8 +104,8 @@ public class MailOutAdapter implements MailOutPort {
     /// @param templateName The template to render.
     /// @param content The value to insert into template.
     /// @return The rendered template as String.
-    /// @throws TemplateException If [freemarker.template.TemplateException] or [IOException]
-    ///             is thrown during rendering.
+    /// @throws TemplateException If [freemarker.template.TemplateException] or [IOException] is thrown
+    ///             during rendering.
     protected String getBodyFromTemplate(final String templateName, final Map<String, Object> content) {
         try {
             final Template template = freeMarkerConfigurer.getConfiguration().getTemplate(templateName);
