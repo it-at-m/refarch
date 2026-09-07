@@ -18,7 +18,7 @@ public class CreateProcedureCase implements MockCase {
         WiremockWsdlUtility.stubOperation(
                 server,
                 "CreateProcedureGI",
-                CreateProcedureGI.class, (u) -> true,
+                CreateProcedureGI.class, _ -> true,
                 createProcedureGIResponse);
 
     }

@@ -9,12 +9,10 @@ import reactor.core.publisher.Mono;
 
 @Validated
 public interface GenerateDocumentOutPort {
-    /**
-     * Generate a document based on the given input.
-     *
-     * @param generateDocument Parameters for generating the document.
-     * @return The generated document.
-     * @throws DocumentGenerationException If something goes wrong during document generation.
-     */
+    /// Generate a document based on the given input.
+    ///
+    /// @param generateDocument Parameters for generating the document.
+    /// @return The generated document.
+    /// @throws DocumentGenerationException If something goes wrong during document generation.
     Mono<InputStream> generateCosysDocument(@Valid GenerateDocument generateDocument) throws DocumentGenerationException;
 }

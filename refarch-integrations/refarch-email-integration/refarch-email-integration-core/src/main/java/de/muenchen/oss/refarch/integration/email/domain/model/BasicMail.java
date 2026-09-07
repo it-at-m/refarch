@@ -8,32 +8,21 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class BasicMail {
-    /**
-     * Receiver addresses of the mail, comma separated.
-     */
+    /// Receiver addresses of the mail, comma separated.
     @NotBlank(message = "No receivers given") private String receivers;
 
-    /**
-     * CC-Receiver addresses of the mail, comma separated.
-     */
+    /// CC-Receiver addresses of the mail, comma separated.
     private String receiversCc;
 
-    /**
-     * BCC-Receiver addresses of the mail, comma separated.
-     */
+    /// BCC-Receiver addresses of the mail, comma separated.
     private String receiversBcc;
 
-    /**
-     * Subject of the mail.
-     */
+    /// Subject of the mail.
     @NotBlank(message = "No subject given") private String subject;
 
-    /**
-     * Reply to address
-     */
+    /// Reply to address
     private String replyTo;
-    /**
-     * List of attachment paths.
-     */
+
+    /// List of attachment paths.
     private List<Attachment> attachments;
 }

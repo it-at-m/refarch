@@ -469,29 +469,25 @@ public class FabasoftOutAdapter implements
 
     //------------------------------------- HELPER METHODS -------------------------------------------
 
-    /**
-     * Searches for an object.
-     *
-     * @param searchString string to search for
-     * @param dmsObjectClass object class for a soap request
-     * @param requestContext Context to make the request with
-     * @return List of discovered objects
-     */
+    /// Searches for an object.
+    ///
+    /// @param searchString string to search for
+    /// @param dmsObjectClass object class for a soap request
+    /// @param requestContext Context to make the request with
+    /// @return List of discovered objects
     private List<LHMBAI151700GIObjectType> searchObject(final String searchString, final DMSObjectClass dmsObjectClass, final RequestContext requestContext)
             throws DmsException {
         return searchObject(searchString, dmsObjectClass, requestContext, null, null);
     }
 
-    /**
-     * Searches for an object.
-     *
-     * @param searchString string to search for
-     * @param dmsObjectClass object class for a soap request
-     * @param requestContext Context to make the request with
-     * @param reference (optional) 'Fachdatum'/business case to refine a search
-     * @param value (optional) value of 'Fachdatum'/business case
-     * @return List of discovered objects
-     */
+    /// Searches for an object.
+    ///
+    /// @param searchString string to search for
+    /// @param dmsObjectClass object class for a soap request
+    /// @param requestContext Context to make the request with
+    /// @param reference (optional) 'Fachdatum'/business case to refine a search
+    /// @param value (optional) value of 'Fachdatum'/business case
+    /// @return List of discovered objects
     private List<LHMBAI151700GIObjectType> searchObject(final String searchString, final DMSObjectClass dmsObjectClass, final RequestContext requestContext,
             final String reference, final String value)
             throws DmsException {

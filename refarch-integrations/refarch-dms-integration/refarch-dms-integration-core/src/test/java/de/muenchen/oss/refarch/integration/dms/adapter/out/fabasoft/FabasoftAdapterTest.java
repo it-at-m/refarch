@@ -122,7 +122,7 @@ class FabasoftAdapterTest {
 
         WiremockWsdlUtility.stubOperation(
                 "DepositObjectGI",
-                DepositObjectGI.class, (u) -> true,
+                DepositObjectGI.class, _ -> true,
                 response);
 
         assertDoesNotThrow(() -> fabasoftAdapter.depositObject("objectCoo", REQUEST_CONTEXT));
@@ -137,7 +137,7 @@ class FabasoftAdapterTest {
 
         WiremockWsdlUtility.stubOperation(
                 "CreateIncomingGI",
-                CreateIncomingGI.class, (u) -> true,
+                CreateIncomingGI.class, _ -> true,
                 response);
 
         final String documentResponse = fabasoftAdapter
@@ -156,7 +156,7 @@ class FabasoftAdapterTest {
 
         WiremockWsdlUtility.stubOperation(
                 "CreateOutgoingGI",
-                CreateOutgoingGI.class, (u) -> true,
+                CreateOutgoingGI.class, _ -> true,
                 response);
 
         final String documentResponse = fabasoftAdapter
@@ -175,7 +175,7 @@ class FabasoftAdapterTest {
 
         WiremockWsdlUtility.stubOperation(
                 "CreateInternalGI",
-                CreateInternalGI.class, (u) -> true,
+                CreateInternalGI.class, _ -> true,
                 response);
 
         final String documentResponse = fabasoftAdapter
@@ -193,7 +193,7 @@ class FabasoftAdapterTest {
 
         WiremockWsdlUtility.stubOperation(
                 "UpdateIncomingGI",
-                UpdateIncomingGI.class, (u) -> true,
+                UpdateIncomingGI.class, _ -> true,
                 response);
 
         assertDoesNotThrow(() -> fabasoftAdapter.updateDocument(DOCUMENT_COO, DocumentType.EINGEHEND, List.of(content), REQUEST_CONTEXT));
@@ -208,7 +208,7 @@ class FabasoftAdapterTest {
 
         WiremockWsdlUtility.stubOperation(
                 "UpdateOutgoingGI",
-                UpdateOutgoingGI.class, (u) -> true,
+                UpdateOutgoingGI.class, _ -> true,
                 response);
 
         assertDoesNotThrow(() -> fabasoftAdapter.updateDocument(DOCUMENT_COO, DocumentType.AUSGEHEND, List.of(content), REQUEST_CONTEXT));
@@ -223,7 +223,7 @@ class FabasoftAdapterTest {
 
         WiremockWsdlUtility.stubOperation(
                 "UpdateInternalGI",
-                UpdateInternalGI.class, (u) -> true,
+                UpdateInternalGI.class, _ -> true,
                 response);
 
         assertDoesNotThrow(() -> fabasoftAdapter.updateDocument(DOCUMENT_COO, DocumentType.INTERN, List.of(content), REQUEST_CONTEXT));
@@ -236,7 +236,7 @@ class FabasoftAdapterTest {
 
         WiremockWsdlUtility.stubOperation(
                 "CancelObjectGI",
-                CancelObjectGI.class, (u) -> true,
+                CancelObjectGI.class, _ -> true,
                 response);
 
         assertDoesNotThrow(() -> fabasoftAdapter.cancelObject("objectCoo", REQUEST_CONTEXT));
@@ -256,7 +256,7 @@ class FabasoftAdapterTest {
 
         WiremockWsdlUtility.stubOperation(
                 "ReadDocumentGIObjects",
-                CancelObjectGI.class, (u) -> true,
+                CancelObjectGI.class, _ -> true,
                 response);
 
         final List<String> contentCoos = fabasoftAdapter.listContentCoos("coo1", REQUEST_CONTEXT);
@@ -280,7 +280,7 @@ class FabasoftAdapterTest {
 
         WiremockWsdlUtility.stubOperation(
                 "ReadContentObjectGI",
-                CancelObjectGI.class, (u) -> true,
+                CancelObjectGI.class, _ -> true,
                 response);
 
         final List<Content> files = fabasoftAdapter.readContent(List.of("coo1"), REQUEST_CONTEXT);
@@ -291,25 +291,19 @@ class FabasoftAdapterTest {
         assertThat(files.getFirst()).usingRecursiveComparison().isEqualTo(expectedFile);
     }
 
-    /**
-     * Tests a file search.
-     */
+    /// Tests a file search.
     @Test
     void executeSearchFileRequest() {
         assertDoesNotThrow(() -> internalSearchFileCallTest(DMSObjectClass.Sachakte, "searchString", REQUEST_CONTEXT, null, null));
     }
 
-    /**
-     * Tests a file search but includes refinement on a business date/'Fachdatum'.
-     */
+    /// Tests a file search but includes refinement on a business date/'Fachdatum'.
     @Test
     void executeSearchFileRequestBusinessData() throws DmsException {
         assertDoesNotThrow(() -> internalSearchFileCallTest(DMSObjectClass.Sachakte, "searchString", REQUEST_CONTEXT, "reference", "value"));
     }
 
-    /**
-     * Tests a subject search.
-     */
+    /// Tests a subject search.
     @Test
     void executeSearchSubjectAreaRequest() throws DmsException {
         final LHMBAI151700GIObjectType file = new LHMBAI151700GIObjectType();
@@ -379,7 +373,7 @@ class FabasoftAdapterTest {
 
         WiremockWsdlUtility.stubOperation(
                 "ReadMetadataObjectGI",
-                ReadMetadataObjectGI.class, (u) -> true,
+                ReadMetadataObjectGI.class, _ -> true,
                 response);
 
         final Metadata metadata = fabasoftAdapter.readMetadata("coo", REQUEST_CONTEXT);
@@ -400,7 +394,7 @@ class FabasoftAdapterTest {
 
         WiremockWsdlUtility.stubOperation(
                 "ReadContentObjectMetaDataGI",
-                ReadContentObjectMetaDataGI.class, (u) -> true,
+                ReadContentObjectMetaDataGI.class, _ -> true,
                 response);
 
         final Metadata metadata = fabasoftAdapter.readContentMetadata("coo", REQUEST_CONTEXT);

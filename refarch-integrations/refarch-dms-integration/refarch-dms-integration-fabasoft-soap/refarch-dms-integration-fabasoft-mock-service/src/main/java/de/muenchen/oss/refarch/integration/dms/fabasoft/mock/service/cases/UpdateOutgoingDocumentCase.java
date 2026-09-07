@@ -18,7 +18,7 @@ public class UpdateOutgoingDocumentCase implements MockCase {
         WiremockWsdlUtility.stubOperation(
                 server,
                 "UpdateOutgoingGI",
-                UpdateOutgoingGI.class, (u) -> true,
+                UpdateOutgoingGI.class, _ -> true,
                 updateOutgoingGIResponse);
 
     }

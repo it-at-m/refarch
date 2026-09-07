@@ -15,7 +15,7 @@ public class S3ExampleApplication {
     private final ApplicationContext context;
     private final S3ExampleService exampleService;
 
-    public static void main(final String[] args) {
+    /* package */ static void main(final String... args) {
         SpringApplication.run(S3ExampleApplication.class, args);
     }
 

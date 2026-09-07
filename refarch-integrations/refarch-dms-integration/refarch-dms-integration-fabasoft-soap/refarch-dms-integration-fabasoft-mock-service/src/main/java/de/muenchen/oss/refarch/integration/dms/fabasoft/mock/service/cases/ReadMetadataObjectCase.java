@@ -20,7 +20,7 @@ public class ReadMetadataObjectCase implements MockCase {
         WiremockWsdlUtility.stubOperation(
                 server,
                 "ReadMetadataObjectGI",
-                ReadMetadataObjectGI.class, (u) -> true,
+                ReadMetadataObjectGI.class, _ -> true,
                 response);
 
     }

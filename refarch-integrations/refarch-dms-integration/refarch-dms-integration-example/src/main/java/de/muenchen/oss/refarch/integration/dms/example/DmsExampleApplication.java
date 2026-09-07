@@ -17,7 +17,7 @@ public class DmsExampleApplication {
     private final ExampleDmsService exampleDmsService;
     private final ApplicationContext context;
 
-    public static void main(final String[] args) {
+    /* package */ static void main(final String... args) {
         SpringApplication.run(DmsExampleApplication.class, args);
     }
 

@@ -11,6 +11,7 @@ The following table shows compatibility of the libraries with relevant technolog
 | :-------------------: | :-------: | :----------: |
 | **1**.x.x - **3**.x.x | >= **21** |  **3**.x.x   |
 |       **4**.x.x       | >= **21** | >= **4**.x.x |
+|       **5**.x.x       | >= **25** | >= **4**.x.x |
 
 ::: info Note
 The table only lists tested constellations. Other combinations not mentioned may still work. However, please note that **no support** is available for these configurations.

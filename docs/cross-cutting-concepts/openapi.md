@@ -50,7 +50,21 @@ Examples for a request are automatically created with default values.
 
 More information about the Javadoc integration can be found in the [official Springdoc documentation](https://springdoc.org/#javadoc-support).
 
-Example:
+Example for Java 23+:
+
+```java
+/// This text is used as a description for the following request.
+///
+/// @param someId describes the path variable used for this request.
+/// @return explains the return value of the request.
+@GetMapping("{someId}")
+@ResponseStatus(HttpStatus.OK)
+public SomeEntity getEndpoint(@PathVariable("someId") final UUID someId) {
+    return service.doSth(someId);
+}
+```
+
+Example for Java <23:
 
 ```java
 /**

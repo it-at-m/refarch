@@ -9,7 +9,7 @@
 - There is no Maven wrapper in the repo; use the system `mvn`.
 
 ## Toolchains
-- Java 21 across all Maven projects.
+- Java 25 across all Maven projects.
 - `docs` requires Node `>=24.11 <25`; CI uses Node 24.
 
 ## Commands

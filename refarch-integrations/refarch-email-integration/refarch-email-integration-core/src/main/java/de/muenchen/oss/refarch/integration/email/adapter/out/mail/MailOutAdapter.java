@@ -99,15 +99,13 @@ public class MailOutAdapter implements MailOutPort {
         }
     }
 
-    /**
-     * Renders template with given properties.
-     *
-     * @param templateName The template to render.
-     * @param content The value to insert into template.
-     * @return The rendered template as String.
-     * @throws TemplateException If {@link freemarker.template.TemplateException} or {@link IOException}
-     *             is thrown during rendering.
-     */
+    /// Renders template with given properties.
+    ///
+    /// @param templateName The template to render.
+    /// @param content The value to insert into template.
+    /// @return The rendered template as String.
+    /// @throws TemplateException If [freemarker.template.TemplateException] or [IOException] is thrown
+    ///             during rendering.
     protected String getBodyFromTemplate(final String templateName, final Map<String, Object> content) {
         try {
             final Template template = freeMarkerConfigurer.getConfiguration().getTemplate(templateName);
@@ -117,13 +115,11 @@ public class MailOutAdapter implements MailOutPort {
         }
     }
 
-    /**
-     * Construct MimeMessage from given domain Mail class.
-     *
-     * @param mail The mail to use for construction.
-     * @return The constructed MimeMessage.
-     * @throws MessagingException If one of the mail addresses can't be parsed.
-     */
+    /// Construct MimeMessage from given domain Mail class.
+    ///
+    /// @param mail The mail to use for construction.
+    /// @return The constructed MimeMessage.
+    /// @throws MessagingException If one of the mail addresses can't be parsed.
     private MimeMessage constructMimeMessage(final Mail mail) throws MessagingException {
         final MimeMessage mimeMessage = this.mailSender.createMimeMessage();
 
@@ -144,12 +140,10 @@ public class MailOutAdapter implements MailOutPort {
         return mimeMessage;
     }
 
-    /**
-     * Load file from classpath as resource.
-     *
-     * @param path The path to file to load (without 'classpath:').
-     * @return The file as resource.
-     */
+    /// Load file from classpath as resource.
+    ///
+    /// @param path The path to file to load (without 'classpath:').
+    /// @return The file as resource.
     private Resource getRessourceFromClassPath(final String path) {
         return resourceLoader.getResource("classpath:" + path);
     }

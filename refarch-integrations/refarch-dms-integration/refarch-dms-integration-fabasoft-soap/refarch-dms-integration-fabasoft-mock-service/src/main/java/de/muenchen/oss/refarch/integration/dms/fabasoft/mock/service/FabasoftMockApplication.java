@@ -6,9 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @SuppressWarnings("PMD.UseUtilityClass")
 public class FabasoftMockApplication {
-
-    public static void main(final String[] args) {
+    /* package */ static void main(final String... args) {
         SpringApplication.run(FabasoftMockApplication.class, args);
     }
-
 }

@@ -24,7 +24,7 @@ public class ReadContentObjectMetaDataCase implements MockCase {
         WiremockWsdlUtility.stubOperation(
                 server,
                 "ReadContentObjectMetaDataGI",
-                ReadContentObjectMetaDataGI.class, (u) -> true,
+                ReadContentObjectMetaDataGI.class, _ -> true,
                 response);
 
     }
