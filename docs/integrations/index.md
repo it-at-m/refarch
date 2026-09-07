@@ -8,15 +8,16 @@ These enable reduced coding effort and maintenance as well as standardized progr
 The following table shows compatibility of the libraries with relevant technologies.
 
 | Integrations Version  |   Java    | Spring Boot  |
-| :-------------------: | :-------: | :----------: |
+|:---------------------:|:---------:| :----------: |
 | **1**.x.x - **3**.x.x | >= **21** |  **3**.x.x   |
 |       **4**.x.x       | >= **21** | >= **4**.x.x |
+|       **5**.x.x       | >= **25** | >= **4**.x.x |
 
 ::: info Note
 The table only lists tested constellations. Other combinations not mentioned may still work. However, please note that **no support** is available for these configurations.
 :::
 
-## Integrations
+## Available integrations
 
 - [s3-integration](./s3.md): For CRUD operations on a S3 storage.
 - [email-integration](./email.md): For sending text and HTML emails with attachments.

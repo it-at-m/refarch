@@ -5,7 +5,16 @@ For better developer experience, the RefArch provides configuration presets for 
 These different configurations are described in the following.
 The tools itself are described in [Develop](../templates/develop.md).
 
-## PMD
+## Java-based tools
+
+The following table shows compatibility of the tools with the different Java versions.
+
+| Integrations Version  |   Java    |
+|:---------------------:|:---------:|
+| **1**.x.x - **4**.x.x | >= **21** |
+|       **5**.x.x       | >= **25** |
+
+### PMD
 
 The `refarch-pmd` Java module provides a default ruleset for [PMD](https://pmd.github.io/) which is used for code linting.
 The module code can be found in the [`refarch-pmd` directory](https://github.com/it-at-m/refarch/tree/main/refarch-tools/refarch-java-tools/refarch-pmd) and the specific ruleset configuration inside the [`resources` subdirectory](https://github.com/it-at-m/refarch/blob/main/refarch-tools/refarch-java-tools/refarch-pmd/src/main/resources/refarch-pmd-ruleset.xml).
