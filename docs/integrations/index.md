@@ -17,7 +17,7 @@ The following table shows compatibility of the libraries with relevant technolog
 The table only lists tested constellations. Other combinations not mentioned may still work. However, please note that **no support** is available for these configurations.
 :::
 
-## Available integrations
+## Integrations
 
 - [s3-integration](./s3.md): For CRUD operations on a S3 storage.
 - [email-integration](./email.md): For sending text and HTML emails with attachments.

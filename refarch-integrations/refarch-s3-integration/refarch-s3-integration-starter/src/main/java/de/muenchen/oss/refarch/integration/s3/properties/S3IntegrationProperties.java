@@ -40,14 +40,14 @@ public class S3IntegrationProperties {
 
     /// The amount of time to wait when establishing a connection to S3 before timing out.
     ///
-    /// Default value is `Duration.ofSeconds(30)`.
+    /// Default value is `30s`.
     @DurationMin(seconds = 1)
     @NotNull private Duration connectionTimeout = Duration.ofSeconds(30);
 
     /// The amount of time to wait for data to be transferred over an established, open connection
     /// before timing out.
     ///
-    /// Default value is `Duration.ofSeconds(60)`.
+    /// Default value is `60s`.
     @DurationMin(seconds = 1)
     @NotNull private Duration socketTimeout = Duration.ofSeconds(60);
 
