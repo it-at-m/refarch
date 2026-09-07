@@ -18,7 +18,7 @@ public class CancelObjectCase implements MockCase {
         WiremockWsdlUtility.stubOperation(
                 server,
                 "CancelObjectGI",
-                CancelObjectGI.class, (u) -> true,
+                CancelObjectGI.class, _ -> true,
                 cancelObjectGIResponse);
 
     }

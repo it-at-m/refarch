@@ -18,7 +18,7 @@ public class CreateFileCase implements MockCase {
         WiremockWsdlUtility.stubOperation(
                 server,
                 "CreateFileGI",
-                CreateFileGI.class, (u) -> true,
+                CreateFileGI.class, _ -> true,
                 createFileGIResponse);
 
     }

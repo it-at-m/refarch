@@ -18,7 +18,7 @@ public class UpdateInternalDocumentCase implements MockCase {
         WiremockWsdlUtility.stubOperation(
                 server,
                 "UpdateInternalGI",
-                UpdateInternalGI.class, (u) -> true,
+                UpdateInternalGI.class, _ -> true,
                 updateInternalGIResponse);
 
     }

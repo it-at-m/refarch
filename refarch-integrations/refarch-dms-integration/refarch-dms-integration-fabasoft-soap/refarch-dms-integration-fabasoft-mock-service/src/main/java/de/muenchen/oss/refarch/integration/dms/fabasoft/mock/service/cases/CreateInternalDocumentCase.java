@@ -18,7 +18,7 @@ public class CreateInternalDocumentCase implements MockCase {
         WiremockWsdlUtility.stubOperation(
                 server,
                 "CreateInternalGI",
-                CreateInternalGI.class, (u) -> true,
+                CreateInternalGI.class, _ -> true,
                 createInternalGIResponse);
 
     }

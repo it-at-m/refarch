@@ -76,7 +76,7 @@ class E2ETest {
 
         try {
             s3Client.createBucket(CreateBucketRequest.builder().bucket(BUCKET).build());
-        } catch (BucketAlreadyExistsException | BucketAlreadyOwnedByYouException ignored) {
+        } catch (BucketAlreadyExistsException | BucketAlreadyOwnedByYouException _) {
         }
 
         final S3Mapper mapper = new S3Mapper();
