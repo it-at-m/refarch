@@ -30,8 +30,6 @@ import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.S3Configuration;
-import software.amazon.awssdk.services.s3.model.BucketAlreadyExistsException;
-import software.amazon.awssdk.services.s3.model.BucketAlreadyOwnedByYouException;
 import software.amazon.awssdk.services.s3.model.CreateBucketRequest;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 
@@ -74,10 +72,7 @@ class E2ETest {
                 .serviceConfiguration(s3cfg)
                 .build();
 
-        try {
-            s3Client.createBucket(CreateBucketRequest.builder().bucket(BUCKET).build());
-        } catch (BucketAlreadyExistsException | BucketAlreadyOwnedByYouException _) {
-        }
+        s3Client.createBucket(CreateBucketRequest.builder().bucket(BUCKET).build());
 
         final S3Mapper mapper = new S3Mapper();
         this.s3OutPort = new S3OutAdapter(mapper, s3Client, s3Presigner);
