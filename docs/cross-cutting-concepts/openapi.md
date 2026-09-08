@@ -22,7 +22,7 @@ This endpoint renders the OpenAPI specification in a user-friendly format and al
 
 ::: info Information
 It's recommended to access Swagger UI through the API-Gateway (e.g. <http://localhost:8083/api/backend/swagger-ui/index.html>) rather than directly via the backend.
-This ensures that authorization is handled by the Gateway, allowing Swagger UI to be used to test authorized endpoints.
+This ensures the Gateway handles authentication while authorization remains enforced by the backend, allowing Swagger UI to test authorized endpoints.
 :::
 
 ### OpenAPI
