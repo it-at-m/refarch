@@ -20,6 +20,11 @@ It is automatically available when using `springdoc-openapi-starter-webmvc-ui` (
 
 This endpoint renders the OpenAPI specification in a user-friendly format and allows direct interaction with all available endpoints.
 
+::: info Information
+It's recommended to access Swagger UI through the API-Gateway (e.g. <http://localhost:8083/api/backend/swagger-ui/index.html>) rather than directly via the backend.
+This ensures that authorization is handled by the Gateway, allowing Swagger UI to be used to test authorized endpoints.
+:::
+
 ### OpenAPI
 
 The raw OpenAPI specification is served as machine-readable `.json` and `.yaml`.
@@ -35,7 +40,7 @@ These endpoints are normally used for client generation, validation or export of
 Currently, there are two ways to add documentation to an endpoint. Those will be further explained below.
 
 ::: info Information
-We suggest to combine both mechanisms and provide the basic API documentation via Javadoc enriched via advanced metadata where necessary using annotations.
+It's suggested to combine both mechanisms and provide the basic API documentation via Javadoc and enrich advanced metadata using annotations where necessary.
 :::
 
 ### Javadoc (suggested)
