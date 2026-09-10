@@ -72,7 +72,7 @@
         <refarch-tools.version>1.4.0</refarch-tools.version>
 
         <!-- Additional required dependencies -->
-        <springdoc-openapi.version>3.1.0</springdoc-openapi.version>
+        <springdoc-openapi.version>3.1.1</springdoc-openapi.version>
 
         <!-- TEMPORARY TRANSITIVE DEPENDENCY OVERRIDES FOR SECURITY FIXES -->
     </properties>
