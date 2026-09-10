@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  refarch-owned inbound SOAP contract. Thin by design: it only includes the canonical schema
+  (pscd-canonical.xsd, the single source of truth) and declares one one-way operation. The WSDL and
+  the schema share ONE target namespace.
+
+  This file is NOT a code generator. XJC compiles pscd-canonical.xsd directly (see the service pom),
+  and Spring WS serves this WSDL verbatim as a static artefact via SimpleWsdl11Definition. Nothing
+  reads it from disk, which is why the xsd:include below is written as the served sibling URL rather
+  than a filesystem-relative path; see the comment on it.
+
+  No <wsdl:service>: the address is not baked into the contract. Spring WS dispatches on the payload
+  root element (pscdBatch), so the endpoint answers wherever the MessageDispatcherServlet is mapped
+  (spring.webservices.path, pinned to /ws/pscd).
+-->
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  xmlns:tns="https://refarch.muenchen.de/pscd/inbound/v1"
+                  name="PscdInbound"
+                  targetNamespace="https://refarch.muenchen.de/pscd/inbound/v1">
+
+    <wsdl:types>
+        <xsd:schema targetNamespace="https://refarch.muenchen.de/pscd/inbound/v1">
+            <!-- Resolved by consumers against the URL this WSDL is served from, NOT from disk: the
+                 pscdCanonical XsdSchema bean is published as a sibling of pscdInbound.wsdl under the
+                 same servlet mapping. Do not "correct" this to ../xsd/pscd-canonical.xsd: Spring WS
+                 serves the file byte-for-byte and does not rewrite schema locations the way CXF did. -->
+            <xsd:include schemaLocation="pscdCanonical.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="SubmitBatchRequest">
+        <wsdl:part name="pscdBatch" element="tns:pscdBatch"/>
+    </wsdl:message>
+
+    <wsdl:portType name="PscdInboundPort">
+        <!-- One-way: input only, no output → generated as @Oneway void submitBatch(PscdBatch). -->
+        <wsdl:operation name="submitBatch">
+            <wsdl:input message="tns:SubmitBatchRequest"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:binding name="PscdInboundBinding" type="tns:PscdInboundPort">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="submitBatch">
+            <soap:operation soapAction="submitBatch" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+        </wsdl:operation>
+    </wsdl:binding>
+
+</wsdl:definitions>

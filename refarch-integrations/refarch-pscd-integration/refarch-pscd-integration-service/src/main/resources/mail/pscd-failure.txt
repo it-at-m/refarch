@@ -1,0 +1,14 @@
+A PSCD batch could not be processed.
+
+Channel:  %1$s
+Batch:    %2$s
+Location: %3$s
+Failed:   %4$s
+Reason:   %5$s
+
+On the file channel the batch has been moved out of the inbox to the location above and is not
+retried; on SOAP and REST the sending system was told the batch was rejected. The service log holds
+the full stack trace.
+
+--
+PSCD integration
