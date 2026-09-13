@@ -31,44 +31,36 @@ public class AddressServiceIntegrationAutoConfiguration {
 
     public final AddressServiceIntegrationProperties addressServiceIntegrationProperties;
 
-    /**
-     * Provides a correct configured {@link ApiClient}.
-     *
-     * @return a configured {@link ApiClient}.
-     */
+    /// Provides a correctly configured [ApiClient].
+    ///
+    /// @return a configured [ApiClient].
     public ApiClient addressServiceApiClient() {
         final ApiClient client = new ApiClient(WebClient.create(addressServiceIntegrationProperties.getUrl()));
         client.setBasePath(addressServiceIntegrationProperties.getUrl());
         return client;
     }
 
-    /**
-     * Create the bean manually to use the correct configured {@link ApiClient}.
-     *
-     * @return a bean of type {@link AdressenBundesweitApi} named by method name.
-     */
+    /// Create the bean manually to use the correctly configured [ApiClient].
+    ///
+    /// @return a bean of type [AdressenBundesweitApi] named by method name.
     @Bean
     public AdressenBundesweitApi addressServiceAdressenBundesweitApi() {
         final ApiClient apiClient = this.addressServiceApiClient();
         return new AdressenBundesweitApi(apiClient);
     }
 
-    /**
-     * Create the bean manually to use the correct configured {@link ApiClient}.
-     *
-     * @return a bean of type {@link AdressenMnchenApi} named by method name.
-     */
+    /// Create the bean manually to use the correctly configured [ApiClient].
+    ///
+    /// @return a bean of type [AdressenMnchenApi] named by method name.
     @Bean
     public AdressenMnchenApi addressServiceAdressenMnchenApi() {
         final ApiClient apiClient = this.addressServiceApiClient();
         return new AdressenMnchenApi(apiClient);
     }
 
-    /**
-     * Create the bean manually to use the correct configured {@link ApiClient}.
-     *
-     * @return a bean of type {@link StraenMnchenApi} named by method name.
-     */
+    /// Create the bean manually to use the correctly configured [ApiClient].
+    ///
+    /// @return a bean of type [StraenMnchenApi] named by method name.
     @Bean
     public StraenMnchenApi addressServiceStraenMnchenApi() {
         final ApiClient apiClient = this.addressServiceApiClient();

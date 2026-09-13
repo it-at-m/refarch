@@ -13,7 +13,7 @@ public class EmailExampleApplication {
     private final ExampleMailService exampleMailService;
     private final ApplicationContext context;
 
-    public static void main(final String[] args) {
+    /* package */ static void main(final String... args) {
         SpringApplication.run(EmailExampleApplication.class, args);
     }
 

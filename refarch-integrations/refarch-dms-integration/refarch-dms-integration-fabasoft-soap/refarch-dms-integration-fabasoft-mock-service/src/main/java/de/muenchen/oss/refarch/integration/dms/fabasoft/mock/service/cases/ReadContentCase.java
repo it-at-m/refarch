@@ -35,7 +35,7 @@ public class ReadContentCase implements MockCase {
         WiremockWsdlUtility.stubOperation(
                 server,
                 "ReadContentObjectGI",
-                CancelObjectGI.class, (u) -> true,
+                CancelObjectGI.class, _ -> true,
                 response);
 
     }

@@ -6,20 +6,16 @@ import de.muenchen.oss.refarch.integration.address.client.exception.AddressServi
 import de.muenchen.oss.refarch.integration.address.client.gen.model.BundesweiteAdresseResponse;
 import de.muenchen.oss.refarch.integration.address.client.model.request.SearchAddressesGermanyModel;
 
-/**
- * This interface defines the methods used for the communication with the address service.
- */
+/// This interface defines the methods used for the communication with the address service.
 public interface AddressGermanyApi {
 
-    /**
-     * This method searches for addresses in the address service.
-     *
-     * @param searchAddressesGermanyModel
-     * @return
-     * @throws AddressServiceIntegrationClientErrorException
-     * @throws AddressServiceIntegrationServerErrorException
-     * @throws AddressServiceIntegrationException
-     */
+    /// This method searches for addresses in the address service.
+    ///
+    /// @param searchAddressesGermanyModel
+    /// @return
+    /// @throws AddressServiceIntegrationClientErrorException
+    /// @throws AddressServiceIntegrationServerErrorException
+    /// @throws AddressServiceIntegrationException
     BundesweiteAdresseResponse searchAddresses(SearchAddressesGermanyModel searchAddressesGermanyModel)
             throws AddressServiceIntegrationClientErrorException, AddressServiceIntegrationServerErrorException, AddressServiceIntegrationException;
 

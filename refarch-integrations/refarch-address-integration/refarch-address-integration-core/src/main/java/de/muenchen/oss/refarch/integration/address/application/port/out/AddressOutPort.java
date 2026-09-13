@@ -16,51 +16,33 @@ import de.muenchen.oss.refarch.integration.address.client.model.request.SearchAd
 import de.muenchen.oss.refarch.integration.address.client.model.request.SearchAddressesModel;
 import de.muenchen.oss.refarch.integration.address.client.model.response.AddressDistancesModel;
 
-/**
- * Port to integration infrastructure.
- */
+/// Port to integration infrastructure.
 public interface AddressOutPort {
 
-    /**
-     * Search for addresses in Germany.
-     */
+    /// Search for addresses in Germany.
     BundesweiteAdresseResponse searchGermanyAddresses(SearchAddressesGermanyModel searchAddressesGermanyModel)
             throws AddressServiceIntegrationException;
 
-    /**
-     * Check an address in Munich.
-     */
+    /// Check an address in Munich.
     MuenchenAdresse checkMunichAddress(CheckAddressesModel checkAddressesModel) throws AddressServiceIntegrationException;
 
-    /**
-     * List addresses in Munich.
-     */
+    /// List addresses in Munich.
     MuenchenAdresseResponse listMunichAddresses(ListAddressesModel listAddressesModel) throws AddressServiceIntegrationException;
 
-    /**
-     * List changes in Munich.
-     */
+    /// List changes in Munich.
     AenderungResponse listMunichChanges(ListAddressChangesModel listAddressChangesModel) throws AddressServiceIntegrationException;
 
-    /**
-     * Search for addresses in Munich.
-     */
+    /// Search for addresses in Munich.
     MuenchenAdresseResponse searchMunichAddresses(SearchAddressesModel searchAddressesModel) throws AddressServiceIntegrationException;
 
-    /**
-     * Search for addresses in Munich.
-     */
+    /// Search for addresses in Munich.
     AddressDistancesModel searchMunichAddressesGeo(SearchAddressesGeoModel searchAddressesGeoModel)
             throws AddressServiceIntegrationException;
 
-    /**
-     * List streets in Munich.
-     */
+    /// List streets in Munich.
     Strasse findMunichStreetsById(long streetId) throws AddressServiceIntegrationException;
 
-    /**
-     * List streets in Munich.
-     */
+    /// List streets in Munich.
     StrasseResponse listMunichStreets(ListStreetsModel listStreetsModel) throws AddressServiceIntegrationException;
 
 }

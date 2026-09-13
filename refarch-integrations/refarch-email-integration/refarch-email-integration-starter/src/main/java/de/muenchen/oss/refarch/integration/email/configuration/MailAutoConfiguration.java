@@ -22,11 +22,9 @@ public class MailAutoConfiguration {
     private final MailProperties mailProperties;
     private final CustomMailProperties customMailProperties;
 
-    /**
-     * Configures the {@link JavaMailSender}
-     *
-     * @return configured JavaMailSender
-     */
+    /// Configures the [JavaMailSender]
+    ///
+    /// @return configured JavaMailSender
     @Bean
     @ConditionalOnMissingBean
     public JavaMailSender getJavaMailSender() throws MessagingException {

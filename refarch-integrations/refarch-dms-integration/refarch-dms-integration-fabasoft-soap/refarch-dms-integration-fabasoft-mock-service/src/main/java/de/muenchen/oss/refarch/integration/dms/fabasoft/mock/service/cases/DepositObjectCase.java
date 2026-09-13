@@ -18,7 +18,7 @@ public class DepositObjectCase implements MockCase {
         WiremockWsdlUtility.stubOperation(
                 server,
                 "DepositObjectGI",
-                CreateProcedureGI.class, (u) -> true,
+                CreateProcedureGI.class, _ -> true,
                 depositObjectGIResponse);
 
     }

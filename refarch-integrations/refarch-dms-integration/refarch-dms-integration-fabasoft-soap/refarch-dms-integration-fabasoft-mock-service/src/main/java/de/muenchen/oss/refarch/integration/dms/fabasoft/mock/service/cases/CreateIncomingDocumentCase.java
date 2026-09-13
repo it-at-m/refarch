@@ -18,7 +18,7 @@ public class CreateIncomingDocumentCase implements MockCase {
         WiremockWsdlUtility.stubOperation(
                 server,
                 "CreateIncomingGI",
-                CreateIncomingGI.class, (u) -> true,
+                CreateIncomingGI.class, _ -> true,
                 createIncomingGIResponse);
 
     }

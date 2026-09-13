@@ -4,9 +4,7 @@ import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.LHMBAI151700GIWSD;
 import com.fabasoft.schemas.websvc.lhmbai_15_1700_giwsd.LHMBAI151700GIWSDSoap;
 import jakarta.xml.ws.BindingProvider;
 
-/**
- * Configuration of the Webservice Client.
- */
+/// Configuration of the Webservice Client.
 public final class FabasoftClientFactory {
     private FabasoftClientFactory() {
     }

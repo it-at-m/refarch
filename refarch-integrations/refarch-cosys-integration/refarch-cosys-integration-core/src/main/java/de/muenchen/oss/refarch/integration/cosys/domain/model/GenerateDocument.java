@@ -5,14 +5,12 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import tools.jackson.databind.JsonNode;
 
-/**
- * Dto for generating documents.
- *
- * @param client Client that is used in cosys
- * @param role Role that is used in cosys
- * @param guid The GUID of the target template to be filled
- * @param variables All data to be filled into template
- */
+/// DTO for generating documents.
+///
+/// @param client Client that is used in cosys
+/// @param role Role that is used in cosys
+/// @param guid The GUID of the target template to be filled
+/// @param variables All data to be filled into template
 @Builder
 public record GenerateDocument(
         @NotBlank(message = "client is mandatory") String client,
