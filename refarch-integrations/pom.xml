@@ -11,7 +11,7 @@
 
     <groupId>de.muenchen.oss.refarch</groupId>
     <artifactId>refarch-integrations</artifactId>
-    <version>4.1.0-SNAPSHOT</version>
+    <version>4.0.1</version>
     <packaging>pom</packaging>
 
     <name>refarch-integrations</name>
@@ -42,7 +42,7 @@
     <scm child.scm.connection.inherit.append.path="false" child.scm.developerConnection.inherit.append.path="false" child.scm.url.inherit.append.path="false">
         <connection>scm:git:https://github.com/it-at-m/refarch.git</connection>
         <developerConnection>scm:git:https://github.com/it-at-m/refarch.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>refarch-integrations-4.0.1</tag>
         <url>https://github.com/it-at-m/refarch.git</url>
     </scm>
 
