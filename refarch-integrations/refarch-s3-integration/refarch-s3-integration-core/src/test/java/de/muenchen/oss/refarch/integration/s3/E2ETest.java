@@ -152,14 +152,20 @@ class E2ETest {
         s3OutPort.saveFile(refDir2, new ByteArrayInputStream("f2".getBytes(StandardCharsets.UTF_8)), 2);
         s3OutPort.saveFile(refDir3, new ByteArrayInputStream("f3".getBytes(StandardCharsets.UTF_8)), 2);
 
+        // List from root
+        final ListResult listedRoot = s3OutPort.getFilesWithPrefix(BUCKET, null, true);
+        assertThat(listedRoot.files()).size().isEqualTo(6);
+
         // List via folder ops (recursive)
         final ListResult listed = s3OutPort.getFilesWithPrefix(BUCKET, prefix, true);
+        assertThat(listed.files()).size().isEqualTo(6);
         assertThat(listed.files().stream().map(FileMetadata::path)).anyMatch(k -> k.equals(key) || k.equals(key + "-file"));
         assertThat(listed.commonPrefixes()).isEmpty();
         assertThat(listed.truncated()).isFalse();
 
         // Recursive listing should include immediate and nested children
         final ListResult recursiveList = s3OutPort.getFilesWithPrefix(BUCKET, dirPrefix, true, 1000, null);
+        assertThat(recursiveList.files()).size().isEqualTo(3);
         assertThat(recursiveList.files()).extracting(FileMetadata::path)
                 .containsExactlyInAnyOrder(dirPrefix + "file1.txt", dirPrefix + "subdir/file2.txt", dirPrefix + "file3.txt");
         assertThat(recursiveList.commonPrefixes()).isEmpty();
@@ -167,6 +173,7 @@ class E2ETest {
 
         // Non-recursive listing should only include immediate children (delimiter "/" behavior)
         final ListResult nonRecursiveList = s3OutPort.getFilesWithPrefix(BUCKET, dirPrefix, false, 1000, null);
+        assertThat(nonRecursiveList.files()).size().isEqualTo(2);
         assertThat(nonRecursiveList.files()).extracting(FileMetadata::path)
                 .containsExactlyInAnyOrder(dirPrefix + "file1.txt", dirPrefix + "file3.txt");
         assertThat(nonRecursiveList.commonPrefixes()).containsExactly(dirPrefix + "subdir/");

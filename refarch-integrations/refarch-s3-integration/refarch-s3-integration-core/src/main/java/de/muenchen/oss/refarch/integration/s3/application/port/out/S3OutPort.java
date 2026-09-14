@@ -160,13 +160,13 @@ public interface S3OutPort {
      *
      * @see #getFilesWithPrefix(String, String, boolean, int, String)
      */
-    ListResult getFilesWithPrefix(@NotBlank String bucket, @NotBlank String prefix, boolean recursive) throws S3Exception;
+    ListResult getFilesWithPrefix(@NotBlank String bucket, String prefix, boolean recursive) throws S3Exception;
 
     /**
      * Lists objects in the specified bucket starting with the given prefix with pagination controls.
      *
      * @param bucket the bucket name (must not be blank)
-     * @param prefix the prefix under which to list objects (must not be blank). Trailing slash needs to
+     * @param prefix the prefix under which to list objects. Trailing slash needs to
      *            be added to list a specific "dir", when using recursive=false.
      * @param recursive if to lookup files recursive or not.
      * @param maxKeys maximum number of keys to return in this page (provider limits may apply, e.g.,
@@ -178,6 +178,6 @@ public interface S3OutPort {
      * @return the objects and common prefixes found under the prefix plus truncation metadata
      * @throws S3Exception if listing fails due to client, network, or service issues
      */
-    ListResult getFilesWithPrefix(@NotBlank String bucket, @NotBlank String prefix, boolean recursive, @Positive int maxKeys, String startAfter)
+    ListResult getFilesWithPrefix(@NotBlank String bucket, String prefix, boolean recursive, @Positive int maxKeys, String startAfter)
             throws S3Exception;
 }
