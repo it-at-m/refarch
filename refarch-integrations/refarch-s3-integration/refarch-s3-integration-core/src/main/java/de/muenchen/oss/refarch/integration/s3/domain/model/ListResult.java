@@ -7,6 +7,5 @@ import java.util.List;
 public record ListResult(
         @NotNull List<@Valid FileMetadata> files,
         @NotNull List<String> commonPrefixes,
-        boolean truncated,
-        String startAfter) {
+        boolean truncated) {
 }
