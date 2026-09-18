@@ -1,15 +1,19 @@
 package de.muenchen.oss.refarch.integration.s3.adapter.out.s3;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import de.muenchen.oss.refarch.integration.s3.domain.exception.S3Exception;
+import de.muenchen.oss.refarch.integration.s3.domain.exception.S3PaginationException;
 import de.muenchen.oss.refarch.integration.s3.domain.model.FileMetadata;
 import de.muenchen.oss.refarch.integration.s3.domain.model.FileReference;
 import de.muenchen.oss.refarch.integration.s3.domain.model.ListResult;
@@ -23,7 +27,9 @@ import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.time.Instant;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.StreamSupport;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -69,6 +75,8 @@ import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignReques
 class S3AdapterTest {
 
     public static final String BUCKET = "bucket";
+    public static final String PREFIX = "prefix";
+    public static final String CONTINUATION_TOKEN = "token-1";
     public static final String PATH = "path";
     public static final String S3_EXCEPTION_MESSAGE = "boom";
     public static final String ETAG = "etag";
@@ -92,7 +100,8 @@ class S3AdapterTest {
 
     @BeforeEach
     void setUp() {
-        adapter = new S3OutAdapter(s3Mapper, s3Client, s3Presigner);
+        final S3ListHelper listHelper = new S3ListHelper(s3Client, s3Mapper);
+        adapter = new S3OutAdapter(s3Mapper, s3Client, s3Presigner, listHelper);
     }
 
     @Test
@@ -165,7 +174,7 @@ class S3AdapterTest {
         verify(s3Client).putObject(requestCaptor.capture(), bodyCaptor.capture());
         assertEquals(BUCKET, requestCaptor.getValue().bucket());
         assertEquals(PATH, requestCaptor.getValue().key());
-        assertEquals(tmp.length(), bodyCaptor.getValue().optionalContentLength().get());
+        assertEquals(tmp.length(), bodyCaptor.getValue().optionalContentLength().orElseThrow());
     }
 
     @Test
@@ -192,7 +201,7 @@ class S3AdapterTest {
         assertEquals(BUCKET, partCaptor.getValue().bucket());
         assertEquals(PATH, partCaptor.getValue().key());
         assertEquals(bytes.length, partCaptor.getValue().contentLength());
-        assertEquals(bytes.length, bodyCaptor.getValue().optionalContentLength().get());
+        assertEquals(bytes.length, bodyCaptor.getValue().optionalContentLength().orElseThrow());
 
         final ArgumentCaptor<CompleteMultipartUploadRequest> completeCaptor = ArgumentCaptor.forClass(CompleteMultipartUploadRequest.class);
         verify(s3Client).completeMultipartUpload(completeCaptor.capture());
@@ -305,20 +314,21 @@ class S3AdapterTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     void testGetFilesWithPrefix_mapsResults() throws S3Exception {
         final S3Object obj = S3Object.builder().key("k1").size(1L).eTag("t").lastModified(Instant.now()).build();
         final ListObjectsV2Response response = ListObjectsV2Response.builder().contents(obj).isTruncated(false).build();
         when(s3Client.listObjectsV2((ListObjectsV2Request) any())).thenReturn(response);
 
-        final ListResult result = adapter.getFilesWithPrefix(BUCKET, "prefix", true, 10, null);
+        final ListResult result = adapter.getFilesWithPrefix(BUCKET, PREFIX, true, 10, null);
         assertThat(result.files()).hasSize(1);
         assertThat(result.files().getFirst().path()).isEqualTo("k1");
         assertThat(result.commonPrefixes()).isEmpty();
         assertThat(result.truncated()).isFalse();
-        assertThat(result.startAfter()).isNull();
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     void testGetFilesWithPrefix_nonRecursive_filtersImmediateChildren() throws S3Exception {
         final Instant now = Instant.now();
         final S3Object o1 = S3Object.builder().key(DIR_FILE_1).size(1L).eTag("e1").lastModified(now).build();
@@ -334,14 +344,156 @@ class S3AdapterTest {
                 .containsExactlyInAnyOrder(DIR_FILE_1, DIR_FILE_3);
         assertThat(result.commonPrefixes()).containsExactly(SUBDIR_PREFIX);
         assertThat(result.truncated()).isTrue();
-        assertThat(result.startAfter()).isEqualTo(DIR_FILE_3);
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     void testGetFilesWithPrefix_throwsDomainException_onSdkError() {
         when(s3Client.listObjectsV2((ListObjectsV2Request) any()))
                 .thenThrow(software.amazon.awssdk.services.s3.model.S3Exception.builder().message(S3_EXCEPTION_MESSAGE).build());
-        assertThrows(S3Exception.class, () -> adapter.getFilesWithPrefix(BUCKET, "prefix", true, 10, null));
+        assertThrows(S3Exception.class, () -> adapter.getFilesWithPrefix(BUCKET, PREFIX, true, 10, null));
+    }
+
+    @Test
+    void giveSinglePage_whenGettingAllFilesWithPrefix_thenReturnsPageLazily() {
+        final S3Object object = S3Object.builder().key("prefix/file.txt").size(1L).build();
+        when(s3Client.listObjectsV2((ListObjectsV2Request) any()))
+                .thenReturn(ListObjectsV2Response.builder().contents(object).isTruncated(false).build());
+
+        final Iterable<ListResult> pages = adapter.getFiles(BUCKET, PREFIX, true, 10, null);
+        verify(s3Client, never()).listObjectsV2((ListObjectsV2Request) any());
+
+        final List<ListResult> results = StreamSupport.stream(pages.spliterator(), false).toList();
+
+        assertThat(results).hasSize(1);
+        assertThat(results.getFirst().files()).extracting(FileMetadata::path).containsExactly("prefix/file.txt");
+        verify(s3Client).listObjectsV2((ListObjectsV2Request) any());
+    }
+
+    @Test
+    void giveMultiplePages_whenGettingAllFilesWithPrefix_thenUsesContinuationTokenAndKeepsResults() {
+        final Instant now = Instant.now();
+        final S3Object firstObject = S3Object.builder().key("prefix/file-1.txt").size(1L).lastModified(now).build();
+        final S3Object secondObject = S3Object.builder().key("prefix/file-2.txt").size(2L).lastModified(now).build();
+        final CommonPrefix firstPrefix = CommonPrefix.builder().prefix("prefix/first/").build();
+        final CommonPrefix secondPrefix = CommonPrefix.builder().prefix("prefix/second/").build();
+        when(s3Client.listObjectsV2((ListObjectsV2Request) any()))
+                .thenReturn(ListObjectsV2Response.builder()
+                        .contents(firstObject)
+                        .commonPrefixes(firstPrefix)
+                        .isTruncated(true)
+                        .nextContinuationToken(CONTINUATION_TOKEN)
+                        .build())
+                .thenReturn(ListObjectsV2Response.builder()
+                        .contents(secondObject)
+                        .commonPrefixes(secondPrefix)
+                        .isTruncated(false)
+                        .build());
+
+        final List<ListResult> pages = StreamSupport.stream(
+                adapter.getFiles(BUCKET, PREFIX, false, 1, "start-after").spliterator(), false)
+                .toList();
+
+        assertThat(pages).hasSize(2);
+        assertThat(pages.get(0).files()).extracting(FileMetadata::path).containsExactly("prefix/file-1.txt");
+        assertThat(pages.get(0).commonPrefixes()).containsExactly("prefix/first/");
+        assertThat(pages.get(1).files()).extracting(FileMetadata::path).containsExactly("prefix/file-2.txt");
+        assertThat(pages.get(1).commonPrefixes()).containsExactly("prefix/second/");
+
+        final ArgumentCaptor<ListObjectsV2Request> requests = ArgumentCaptor.forClass(ListObjectsV2Request.class);
+        verify(s3Client, times(2)).listObjectsV2(requests.capture());
+        assertThat(requests.getAllValues().getFirst().prefix()).isEqualTo(PREFIX);
+        assertThat(requests.getAllValues().getFirst().delimiter()).isEqualTo("/");
+        assertThat(requests.getAllValues().getFirst().maxKeys()).isEqualTo(1);
+        assertThat(requests.getAllValues().get(0).startAfter()).isEqualTo("start-after");
+        assertThat(requests.getAllValues().get(0).continuationToken()).isNull();
+        assertThat(requests.getAllValues().get(1).continuationToken()).isEqualTo(CONTINUATION_TOKEN);
+    }
+
+    @Test
+    void giveEmptyPage_whenGettingAllFilesWithPrefix_thenReturnsEmptyResult() {
+        when(s3Client.listObjectsV2((ListObjectsV2Request) any()))
+                .thenReturn(ListObjectsV2Response.builder().isTruncated(false).build());
+
+        final List<ListResult> pages = StreamSupport.stream(
+                adapter.getFiles(BUCKET, "missing", true).spliterator(), false)
+                .toList();
+
+        assertThat(pages).hasSize(1);
+        assertThat(pages.getFirst().files()).isEmpty();
+        assertThat(pages.getFirst().commonPrefixes()).isEmpty();
+    }
+
+    @Test
+    void giveSdkFailureOnLaterPage_whenGettingAllFilesWithPrefix_thenThrowsPaginationException() {
+        final RuntimeException sdkException = software.amazon.awssdk.services.s3.model.S3Exception.builder()
+                .message(S3_EXCEPTION_MESSAGE).build();
+        when(s3Client.listObjectsV2((ListObjectsV2Request) any()))
+                .thenReturn(ListObjectsV2Response.builder().isTruncated(true).nextContinuationToken(CONTINUATION_TOKEN).build())
+                .thenThrow(sdkException);
+
+        assertThatThrownBy(() -> StreamSupport.stream(
+                adapter.getFiles(BUCKET, PREFIX, true).spliterator(), false)
+                .toList())
+                .isInstanceOf(S3PaginationException.class)
+                .hasCause(sdkException);
+    }
+
+    @Test
+    void giveFinalPageWithoutContinuationToken_whenGettingAllFilesWithPrefix_thenStopsIteration() {
+        when(s3Client.listObjectsV2((ListObjectsV2Request) any()))
+                .thenReturn(ListObjectsV2Response.builder().isTruncated(true).build());
+
+        final List<ListResult> pages = StreamSupport.stream(
+                adapter.getFiles(BUCKET, PREFIX, true).spliterator(), false)
+                .toList();
+
+        assertThat(pages).hasSize(1);
+        verify(s3Client, times(1)).listObjectsV2((ListObjectsV2Request) any());
+    }
+
+    @Test
+    void giveMultiplePages_whenGettingFilesAsListResult_thenCombinesFilesAndPrefixes() throws S3Exception {
+        when(s3Client.listObjectsV2((ListObjectsV2Request) any()))
+                .thenReturn(ListObjectsV2Response.builder()
+                        .contents(S3Object.builder().key("first").build())
+                        .commonPrefixes(CommonPrefix.builder().prefix("first/").build())
+                        .isTruncated(true)
+                        .nextContinuationToken(CONTINUATION_TOKEN)
+                        .build())
+                .thenReturn(ListObjectsV2Response.builder()
+                        .contents(S3Object.builder().key("second").build())
+                        .commonPrefixes(CommonPrefix.builder().prefix("second/").build())
+                        .isTruncated(false)
+                        .build());
+
+        final ListResult result = adapter.getFilesAsListResult(BUCKET, PREFIX, false);
+
+        assertThat(result.files()).extracting(FileMetadata::path).containsExactly("first", "second");
+        assertThat(result.commonPrefixes()).containsExactly("first/", "second/");
+        assertThat(result.truncated()).isFalse();
+    }
+
+    @Test
+    void giveEmptyPages_whenGettingFilesAsListResult_thenReturnsEmptyResult() throws S3Exception {
+        when(s3Client.listObjectsV2((ListObjectsV2Request) any()))
+                .thenReturn(ListObjectsV2Response.builder().isTruncated(false).build());
+
+        final ListResult result = adapter.getFilesAsListResult(BUCKET, PREFIX, true);
+
+        assertThat(result.files()).isEmpty();
+        assertThat(result.commonPrefixes()).isEmpty();
+        assertThat(result.truncated()).isFalse();
+    }
+
+    @Test
+    void giveSdkFailure_whenGettingFilesAsListResult_thenThrowsPaginationException() {
+        final RuntimeException sdkException = software.amazon.awssdk.services.s3.model.S3Exception.builder()
+                .message(S3_EXCEPTION_MESSAGE).build();
+        when(s3Client.listObjectsV2((ListObjectsV2Request) any())).thenThrow(sdkException);
+
+        assertThatThrownBy(() -> adapter.getFilesAsListResult(BUCKET, PREFIX, true))
+                .isInstanceOf(S3Exception.class);
     }
 
     @Test

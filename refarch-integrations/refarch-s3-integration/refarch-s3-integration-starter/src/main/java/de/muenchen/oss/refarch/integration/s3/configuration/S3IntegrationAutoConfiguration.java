@@ -1,5 +1,6 @@
 package de.muenchen.oss.refarch.integration.s3.configuration;
 
+import de.muenchen.oss.refarch.integration.s3.adapter.out.s3.S3ListHelper;
 import de.muenchen.oss.refarch.integration.s3.adapter.out.s3.S3Mapper;
 import de.muenchen.oss.refarch.integration.s3.adapter.out.s3.S3OutAdapter;
 import de.muenchen.oss.refarch.integration.s3.application.port.out.S3OutPort;
@@ -92,7 +93,14 @@ public class S3IntegrationAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public S3OutPort s3Adapter(final S3Mapper s3Mapper, final S3Client s3Client, final S3Presigner s3Presigner) {
-        return new S3OutAdapter(s3Mapper, s3Client, s3Presigner);
+    public S3ListHelper s3ListHelper(final S3Client s3Client, final S3Mapper s3Mapper) {
+        return new S3ListHelper(s3Client, s3Mapper);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public S3OutPort s3Adapter(final S3Mapper s3Mapper, final S3Client s3Client, final S3Presigner s3Presigner,
+    final S3ListHelper s3ListHelper) {
+        return new S3OutAdapter(s3Mapper, s3Client, s3Presigner, s3ListHelper);
     }
 }
