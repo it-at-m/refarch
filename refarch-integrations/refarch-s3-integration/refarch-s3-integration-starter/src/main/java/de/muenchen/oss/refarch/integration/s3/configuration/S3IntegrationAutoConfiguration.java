@@ -100,7 +100,7 @@ public class S3IntegrationAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public S3OutPort s3Adapter(final S3Mapper s3Mapper, final S3Client s3Client, final S3Presigner s3Presigner,
-    final S3ListHelper s3ListHelper) {
+            final S3ListHelper s3ListHelper) {
         return new S3OutAdapter(s3Mapper, s3Client, s3Presigner, s3ListHelper);
     }
 }
