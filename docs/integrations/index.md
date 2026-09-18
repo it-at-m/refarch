@@ -23,6 +23,7 @@ The table only lists tested constellations. Other combinations not mentioned may
 - [dms-integration](./dms.md): For CRUD operations on a DMS system in specific fabasoft.
 - [cosys-integration](./cosys.md): For creating documents with coSys.
 - [address-integration](./address.md): For reading, searching and validating addresses via the LHM address service.
+- [pscd-integration](./pscd.md): For delivering "Satzarten" batches to SAP PSCD.
 
 ## Naming conventions
 
