@@ -38,6 +38,7 @@ public class S3ListHelper {
         }
     }
 
+    @SuppressWarnings("PMD.CognitiveComplexity")
     protected Iterable<ListResult> getAllPages(
             final String bucket,
             final String prefix,
@@ -77,7 +78,10 @@ public class S3ListHelper {
                     final ListObjectsV2Response response = s3Client.listObjectsV2(request);
                     firstPage = false;
                     continuationToken = response.nextContinuationToken();
-                    finished = !Boolean.TRUE.equals(response.isTruncated()) || continuationToken == null;
+                    finished = !Boolean.TRUE.equals(response.isTruncated());
+                    if (!finished && continuationToken == null) {
+                        throw new S3PaginationException("Truncated response but no continuationToken");
+                    }
                     return s3Mapper.toDomain(response);
                 } catch (final SdkException e) {
                     throw new S3PaginationException(

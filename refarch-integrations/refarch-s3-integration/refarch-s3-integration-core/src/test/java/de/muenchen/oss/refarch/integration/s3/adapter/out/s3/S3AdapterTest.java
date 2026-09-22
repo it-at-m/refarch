@@ -440,9 +440,9 @@ class S3AdapterTest {
     }
 
     @Test
-    void giveFinalPageWithoutContinuationToken_whenGettingAllFilesWithPrefix_thenStopsIteration() {
+    void giveFinal_whenGettingAllFilesWithPrefix_thenStopsIteration() {
         when(s3Client.listObjectsV2((ListObjectsV2Request) any()))
-                .thenReturn(ListObjectsV2Response.builder().isTruncated(true).build());
+                .thenReturn(ListObjectsV2Response.builder().isTruncated(false).build());
 
         final List<ListResult> pages = StreamSupport.stream(
                 adapter.getFiles(BUCKET, PREFIX, true).spliterator(), false)

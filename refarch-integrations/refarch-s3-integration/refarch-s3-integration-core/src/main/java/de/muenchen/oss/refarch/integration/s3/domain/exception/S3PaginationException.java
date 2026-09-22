@@ -8,4 +8,8 @@ public class S3PaginationException extends RuntimeException {
     public S3PaginationException(final String message, final Throwable cause) {
         super(message, cause);
     }
+
+    public S3PaginationException(final String message) {
+        super(message);
+    }
 }
