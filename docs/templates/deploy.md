@@ -93,7 +93,7 @@ Using this variant is not recommended. It is advisable to explore variants 1 or 
 
 # Deployment Overview
 
-![architecture-overview](assets/ci_cd_github_big_picture_public.drawio.png)
+![architecture-overview](../assets/ci_cd_github_big_picture_public.drawio.png)
 \_The diagram shows an overview of the steps for delivering our applications, from code changes to deployment in our environment:
 
 1. _GitHub Project `it-at-m/foo`_: Add code changes, compile and build code, build images
