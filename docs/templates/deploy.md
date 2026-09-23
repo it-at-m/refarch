@@ -120,7 +120,7 @@ In the repository [it-at-m/helm-charts](https://github.com/it-at-m/helm-charts) 
 
 #### How it works together
 
-##### Autorollout: For the dev environment (only not prductive enviornment)
+##### Autorollout: For the dev environment (only not productive enviornment)
 
 An automatic rollout is implemented. We create an image stream that links to the internal image registry (Quay). The deployment includes a special annotation that prompts the internal kubernetes platform (OpenShift) to automatically trigger a new rollout when a new image becomes available. For more details, see [this documentation](https://docs.redhat.com/en/documentation/openshift_container_platform/4.17/html/images/triggering-updates-on-imagestream-changes#triggering-updates-on-imagestream-changes).
 
