@@ -47,14 +47,14 @@ public class S3ExampleService {
             s3OutPort.saveFile(fileReferenceUnknown, fileContent);
         }
         // list file recursive
-        final ListResult filesRecursive = s3OutPort.getFilesWithPrefix(BUCKET, FOLDER, true);
+        final ListResult filesRecursive = s3OutPort.getFilesAsListResult(BUCKET, FOLDER, true);
         if (filesRecursive.files().size() != 2 || !filesRecursive.files().getFirst().path().equals(filePathUnknown)
                 || !filesRecursive.files().get(1).path().equals(filePath)
                 || !filesRecursive.commonPrefixes().isEmpty() || filesRecursive.truncated()) {
             throw new IllegalStateException("Listing files (recursive) not matching wanted");
         }
         // list file not recursive
-        final ListResult filesNotRecursive = s3OutPort.getFilesWithPrefix(BUCKET, FOLDER, false);
+        final ListResult filesNotRecursive = s3OutPort.getFilesAsListResult(BUCKET, FOLDER, false);
         if (filesNotRecursive.files().size() != 1 || !filesNotRecursive.files().getFirst().path().equals(filePath)
                 || !filesNotRecursive.commonPrefixes().equals(List.of(SUBFOLDER)) || filesNotRecursive.truncated()) {
             throw new IllegalStateException("Listing files (not recursive) not matching wanted");
@@ -99,7 +99,7 @@ public class S3ExampleService {
         s3OutPort.deleteFile(copiedFileReference);
         s3OutPort.deleteFile(copiedTaggedFileReference);
         // list file
-        final ListResult files2 = s3OutPort.getFilesWithPrefix(BUCKET, FOLDER, true);
+        final ListResult files2 = s3OutPort.getFilesAsListResult(BUCKET, FOLDER, true);
         if (!files2.files().isEmpty() || !files2.commonPrefixes().isEmpty() || files2.truncated()) {
             throw new IllegalStateException("S3 folder not empty after delete: " + FOLDER);
         }
