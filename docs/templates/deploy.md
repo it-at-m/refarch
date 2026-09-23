@@ -106,7 +106,7 @@ You can find further details in the following chapters.\_
 
 ## Source repository (GitHub Project `it-at-m/foo`)
 
-Execute GitHub Actions to compile and build code, build images. For more information see [workflows.md](./workflows.md).
+Execute GitHub Actions to compile and build code, build images. For more information see [workflows.md](https://it-at-m.github.io/lhm_actions/workflows.html).
 
 ## Helm Chart (GitHub Project `it-at-m/helm-charts`)
 
