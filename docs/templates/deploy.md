@@ -20,7 +20,6 @@ Depending on the image source, the correct SHA can be found for:
 
 By default, applications based on the RefArch Templates are built for **AMD64** and **ARM64** hardware architectures.
 
-
 ## Deployment Overview
 
 ![architecture-overview](../assets/ci_cd_github_big_picture_public.drawio.png)
@@ -33,7 +32,6 @@ By default, applications based on the RefArch Templates are built for **AMD64** 
 5. _OpenShift `Container Application Platform`_: Internal kubernetes plattform to run applications
 
 You can find further details in the following chapters.\_
-
 
 ### Helm Chart
 
@@ -106,7 +104,7 @@ Using this variant is not recommended. It is advisable to explore variants 1 or 
 
 ### Internal Deployment (Image Repository `Quay`, Git Repository GitLab `git.muenchen.de`, Kubernetes platform `OpenShift`)
 
-::: details it@M internal configuration 
+::: details it@M internal configuration
 
 #### What are we using internally
 
