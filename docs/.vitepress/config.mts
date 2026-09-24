@@ -115,6 +115,7 @@ const vitepressConfig = defineConfig({
           { text: "CoSys", link: "/integrations/cosys" },
           { text: "DMS", link: "/integrations/dms" },
           { text: "E-Mail", link: "/integrations/email" },
+          { text: "PSCD", link: "/integrations/pscd" },
         ],
       },
       {

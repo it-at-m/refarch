@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>de.muenchen.oss.refarch</groupId>
+        <artifactId>refarch-pscd-integration</artifactId>
+        <version>3.2.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>refarch-pscd-integration-service</artifactId>
+    <name>refarch-pscd-integration-service</name>
+    <description>Standalone, self-running PSCD service: a refarch-owned canonical inbound contract served over SOAP and REST, plus an optional file poller. All channels feed the core (refarch.pscd.inbound.*)</description>
+
+    <properties>
+        <jaxb2-maven-plugin.version>4.1.0</jaxb2-maven-plugin.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>de.muenchen.oss.refarch</groupId>
+            <artifactId>refarch-pscd-integration-starter</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- Failure notification by mail. -->
+        <dependency>
+            <groupId>de.muenchen.oss.refarch</groupId>
+            <artifactId>refarch-email-integration-starter</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webservices</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webmvc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-webmvc-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webservices-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Contract-first inbound, schema-first codegen: XJC generates the canonical JAXB model
+                 straight from pscd-canonical.xsd, the single source of truth. The WSDL is not a code
+                 generator here (Spring WS serves it as a static artifact), so only the schema is
+                 compiled, and it needs no SEI. The generated model backs BOTH the SOAP endpoint and the
+                 REST endpoint (as JSON), so its class names are load-bearing for PscdInboundCanonicalMapper
+                 and the springdoc schema. Output lands in target/generated-sources/jaxb, which the plugin
+                 registers as a source root and the grandparent's PMD config excludes. -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jaxb2-maven-plugin</artifactId>
+                <version>${jaxb2-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>generate-inbound-contract</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>xjc</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${project.basedir}/src/main/resources/xsd/pscd-canonical.xsd</source>
+                            </sources>
+                            <!-- The schema's namespace would otherwise derive a package we do not want;
+                                 pin it to the one the service module's code imports. -->
+                            <packageName>de.muenchen.oss.refarch.integration.pscd.inbound.model</packageName>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Produce an executable/repackaged jar so the service can run standalone -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.cyclonedx</groupId>
+                <artifactId>cyclonedx-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <configuration>
+                            <projectType>application</projectType>
+                            <outputName>application.cdx</outputName>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

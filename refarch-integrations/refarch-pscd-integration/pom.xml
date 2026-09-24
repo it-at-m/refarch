@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>de.muenchen.oss.refarch</groupId>
+        <artifactId>refarch-integrations</artifactId>
+        <version>3.2.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>refarch-pscd-integration</artifactId>
+    <name>refarch-pscd-integration</name>
+    <description>PSCD integration</description>
+    <packaging>pom</packaging>
+
+    <properties>
+        <!-- Apache CXF: the JAX-WS runtime + wsdl2java codegen for the outbound SOAP client
+             only. The inbound endpoint in refarch-pscd-integration-service uses Spring WS instead, with
+             its version managed by Spring Boot. -->
+        <cxf.version>4.2.0</cxf.version>
+    </properties>
+
+    <modules>
+        <module>refarch-pscd-integration-client</module>
+        <module>refarch-pscd-integration-core</module>
+        <module>refarch-pscd-integration-starter</module>
+        <module>refarch-pscd-integration-example</module>
+        <module>refarch-pscd-integration-service</module>
+    </modules>
+
+</project>
