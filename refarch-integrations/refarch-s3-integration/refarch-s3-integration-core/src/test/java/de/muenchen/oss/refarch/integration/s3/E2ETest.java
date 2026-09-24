@@ -2,6 +2,7 @@ package de.muenchen.oss.refarch.integration.s3;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import de.muenchen.oss.refarch.integration.s3.adapter.out.s3.S3ListHelper;
 import de.muenchen.oss.refarch.integration.s3.adapter.out.s3.S3Mapper;
 import de.muenchen.oss.refarch.integration.s3.adapter.out.s3.S3OutAdapter;
 import de.muenchen.oss.refarch.integration.s3.application.port.out.S3OutPort;
@@ -16,8 +17,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.StreamSupport;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -80,11 +83,79 @@ class E2ETest {
         }
 
         final S3Mapper mapper = new S3Mapper();
-        this.s3OutPort = new S3OutAdapter(mapper, s3Client, s3Presigner);
+        final S3ListHelper s3ListHelper = new S3ListHelper(s3Client, mapper);
+        this.s3OutPort = new S3OutAdapter(mapper, s3Client, s3Presigner, s3ListHelper);
     }
 
     @Test
-    @SuppressWarnings("PMD.NcssCount")
+    @SuppressWarnings("deprecation")
+    void listFilesWithPrefix_handlesPagination() throws Exception {
+        final String rootPrefix = "pagination/" + UUID.randomUUID() + "/";
+        final String prefix = rootPrefix + "objects/";
+        final List<String> keys = List.of(prefix + "a.txt", prefix + "b.txt", prefix + "c.txt", prefix + "d.txt");
+        final List<String> nonRecursiveKeys = List.of(rootPrefix + "folders/root.txt", rootPrefix + "folders/nested/a.txt",
+                rootPrefix + "folders/nested/b.txt");
+
+        try {
+            for (final String key : keys) {
+                s3OutPort.saveFile(new FileReference(BUCKET, key), new ByteArrayInputStream(key.getBytes(StandardCharsets.UTF_8)), key.length());
+            }
+            for (final String key : nonRecursiveKeys) {
+                s3OutPort.saveFile(new FileReference(BUCKET, key), new ByteArrayInputStream(key.getBytes(StandardCharsets.UTF_8)), key.length());
+            }
+
+            final ListResult firstPage = s3OutPort.getFilesWithPrefix(BUCKET, prefix, true, 2, null);
+            assertThat(firstPage.files()).extracting(FileMetadata::path).containsExactly(keys.get(0), keys.get(1));
+            assertThat(firstPage.truncated()).isTrue();
+
+            final ListResult lastPage = s3OutPort.getFilesWithPrefix(BUCKET, prefix, true, 2, keys.get(1));
+            assertThat(lastPage.files()).extracting(FileMetadata::path).containsExactly(keys.get(2), keys.get(3));
+            assertThat(lastPage.truncated()).isFalse();
+
+            final ListResult exactPage = s3OutPort.getFilesWithPrefix(BUCKET, prefix, true, keys.size(), null);
+            assertThat(exactPage.files()).extracting(FileMetadata::path).containsExactlyElementsOf(keys);
+            assertThat(exactPage.truncated()).isFalse();
+
+            final List<ListResult> allPages = StreamSupport.stream(
+                    s3OutPort.getFiles(BUCKET, prefix, true, 2, null).spliterator(), false)
+                    .toList();
+            assertThat(allPages).hasSize(2);
+            assertThat(allPages.stream()
+                    .flatMap(page -> page.files().stream())
+                    .map(FileMetadata::path))
+                    .containsExactlyElementsOf(keys);
+
+            final ListResult afterLastPage = s3OutPort.getFilesWithPrefix(BUCKET, prefix, true, 2, keys.get(3));
+            assertThat(afterLastPage.files()).isEmpty();
+            assertThat(afterLastPage.commonPrefixes()).isEmpty();
+            assertThat(afterLastPage.truncated()).isFalse();
+
+            final String foldersPrefix = rootPrefix + "folders/";
+            final ListResult nonRecursiveFirstPage = s3OutPort.getFilesWithPrefix(BUCKET, foldersPrefix, false, 1, null);
+            assertThat(nonRecursiveFirstPage.files()).isEmpty();
+            assertThat(nonRecursiveFirstPage.commonPrefixes()).containsExactly(rootPrefix + "folders/nested/");
+            assertThat(nonRecursiveFirstPage.truncated()).isTrue();
+
+            final ListResult nonRecursiveLastPage = s3OutPort.getFilesWithPrefix(BUCKET, foldersPrefix, false, 1, rootPrefix + "folders/nested/");
+            assertThat(nonRecursiveLastPage.files()).extracting(FileMetadata::path).containsExactly(nonRecursiveKeys.getFirst());
+            assertThat(nonRecursiveLastPage.commonPrefixes()).isEmpty();
+            assertThat(nonRecursiveLastPage.truncated()).isFalse();
+
+            final ListResult missingPrefix = s3OutPort.getFilesWithPrefix(BUCKET, rootPrefix + "missing/", true, 1, null);
+            assertThat(missingPrefix.files()).isEmpty();
+            assertThat(missingPrefix.commonPrefixes()).isEmpty();
+            assertThat(missingPrefix.truncated()).isFalse();
+        } finally {
+            for (final String key : keys) {
+                s3OutPort.deleteFile(new FileReference(BUCKET, key));
+            }
+            for (final String key : nonRecursiveKeys) {
+                s3OutPort.deleteFile(new FileReference(BUCKET, key));
+            }
+        }
+    }
+
+    @Test
     void test(@TempDir final Path tempDir) throws Exception {
         final String prefix = "e2e/";
         final String key = prefix + UUID.randomUUID();
@@ -112,22 +183,8 @@ class E2ETest {
             assertThat(is.readAllBytes()).isEqualTo(data);
         }
 
-        // Save from InputStream without known length (multipart upload path)
-        final String keyUnknown = prefix + UUID.randomUUID() + "-unknown";
-        final FileReference refUnknown = new FileReference(BUCKET, keyUnknown);
-        final int unknownSize = 6 * 1024 * 1024 + 123; // > 5MB to create multiple parts
-        final byte[] unknownData = new byte[unknownSize];
-        for (int i = 0; i < unknownData.length; i++) {
-            unknownData[i] = (byte) (i % 256);
-        }
-        s3OutPort.saveFile(refUnknown, new ByteArrayInputStream(unknownData));
-        assertThat(s3OutPort.fileExists(refUnknown)).isTrue();
-        final FileMetadata metaUnknown = s3OutPort.getFileMetadata(refUnknown);
-        assertThat(metaUnknown.path()).isEqualTo(keyUnknown);
-        assertThat(metaUnknown.contentLength()).isEqualTo(unknownData.length);
-        try (InputStream is = s3OutPort.getFileContent(refUnknown)) {
-            assertThat(is.readAllBytes()).isEqualTo(unknownData);
-        }
+        final FileReference refUnknown = saveUnknownLengthFile(prefix);
+        final String keyUnknown = refUnknown.path();
 
         // Save via File overload
         final Path p = tempDir.resolve("inports-file.txt");
@@ -143,42 +200,7 @@ class E2ETest {
             assertThat(s).isEqualTo("filecontent");
         }
 
-        // Prepare directory-like structure under e2e/dir for recursive vs non-recursive listing
-        final String dirPrefix = prefix + "dir/";
-        final FileReference refDir1 = new FileReference(BUCKET, dirPrefix + "file1.txt");
-        final FileReference refDir2 = new FileReference(BUCKET, dirPrefix + "subdir/file2.txt");
-        final FileReference refDir3 = new FileReference(BUCKET, dirPrefix + "file3.txt");
-        s3OutPort.saveFile(refDir1, new ByteArrayInputStream("f1".getBytes(StandardCharsets.UTF_8)), 2);
-        s3OutPort.saveFile(refDir2, new ByteArrayInputStream("f2".getBytes(StandardCharsets.UTF_8)), 2);
-        s3OutPort.saveFile(refDir3, new ByteArrayInputStream("f3".getBytes(StandardCharsets.UTF_8)), 2);
-
-        // List from root
-        final ListResult listedRoot = s3OutPort.getFilesWithPrefix(BUCKET, null, true);
-        assertThat(listedRoot.files()).size().isEqualTo(6);
-
-        // List via folder ops (recursive)
-        final ListResult listed = s3OutPort.getFilesWithPrefix(BUCKET, prefix, true);
-        assertThat(listed.files()).size().isEqualTo(6);
-        assertThat(listed.files().stream().map(FileMetadata::path)).anyMatch(k -> k.equals(key) || k.equals(key + "-file"));
-        assertThat(listed.commonPrefixes()).isEmpty();
-        assertThat(listed.truncated()).isFalse();
-
-        // Recursive listing should include immediate and nested children
-        final ListResult recursiveList = s3OutPort.getFilesWithPrefix(BUCKET, dirPrefix, true, 1000, null);
-        assertThat(recursiveList.files()).size().isEqualTo(3);
-        assertThat(recursiveList.files()).extracting(FileMetadata::path)
-                .containsExactlyInAnyOrder(dirPrefix + "file1.txt", dirPrefix + "subdir/file2.txt", dirPrefix + "file3.txt");
-        assertThat(recursiveList.commonPrefixes()).isEmpty();
-        assertThat(recursiveList.truncated()).isFalse();
-
-        // Non-recursive listing should only include immediate children (delimiter "/" behavior)
-        final ListResult nonRecursiveList = s3OutPort.getFilesWithPrefix(BUCKET, dirPrefix, false, 1000, null);
-        assertThat(nonRecursiveList.files()).size().isEqualTo(2);
-        assertThat(nonRecursiveList.files()).extracting(FileMetadata::path)
-                .containsExactlyInAnyOrder(dirPrefix + "file1.txt", dirPrefix + "file3.txt");
-        assertThat(nonRecursiveList.commonPrefixes()).containsExactly(dirPrefix + "subdir/");
-        assertThat(nonRecursiveList.truncated()).isFalse();
-
+        // Copy with tags
         final FileReference copiedRef = new FileReference(BUCKET, key + "-copy");
         s3OutPort.copyFile(ref, copiedRef);
         assertThat(s3OutPort.fileExists(copiedRef)).isTrue();
@@ -187,6 +209,7 @@ class E2ETest {
             assertThat(is.readAllBytes()).isEqualTo(data);
         }
 
+        // Copy without tags
         final FileReference copiedWithOverrideRef = new FileReference(BUCKET, key + "-copy-tagged");
         s3OutPort.copyFile(ref, copiedWithOverrideRef, false);
         assertThat(s3OutPort.fileExists(copiedWithOverrideRef)).isTrue();
@@ -200,17 +223,60 @@ class E2ETest {
         s3OutPort.deleteFile(ref2);
         s3OutPort.deleteFile(copiedRef);
         s3OutPort.deleteFile(copiedWithOverrideRef);
-        s3OutPort.deleteFile(refDir1);
-        s3OutPort.deleteFile(refDir2);
-        s3OutPort.deleteFile(refDir3);
         s3OutPort.deleteFile(new FileReference(BUCKET, keyUnknown));
         assertThat(s3OutPort.fileExists(ref)).isFalse();
         assertThat(s3OutPort.fileExists(ref2)).isFalse();
         assertThat(s3OutPort.fileExists(copiedRef)).isFalse();
         assertThat(s3OutPort.fileExists(copiedWithOverrideRef)).isFalse();
-        assertThat(s3OutPort.fileExists(refDir1)).isFalse();
-        assertThat(s3OutPort.fileExists(refDir2)).isFalse();
-        assertThat(s3OutPort.fileExists(refDir3)).isFalse();
         assertThat(s3OutPort.fileExists(new FileReference(BUCKET, keyUnknown))).isFalse();
+    }
+
+    private FileReference saveUnknownLengthFile(final String prefix) throws Exception {
+        final String key = prefix + UUID.randomUUID() + "-unknown";
+        final FileReference reference = new FileReference(BUCKET, key);
+        final int size = 6 * 1024 * 1024 + 123;
+        final byte[] data = new byte[size];
+        for (int i = 0; i < data.length; i++) {
+            data[i] = (byte) (i % 256);
+        }
+        s3OutPort.saveFile(reference, new ByteArrayInputStream(data));
+        assertThat(s3OutPort.fileExists(reference)).isTrue();
+        assertThat(s3OutPort.getFileMetadata(reference).contentLength()).isEqualTo(data.length);
+        try (InputStream is = s3OutPort.getFileContent(reference)) {
+            assertThat(is.readAllBytes()).isEqualTo(data);
+        }
+        return reference;
+    }
+
+    @Test
+    void listDirectoryFiles_nonRecursive_returnsCommonPrefixes() throws Exception {
+        final String dirPrefix = "e2e-listing/" + UUID.randomUUID() + "/";
+        final FileReference refDir1 = new FileReference(BUCKET, dirPrefix + "file1.txt");
+        final FileReference refDir2 = new FileReference(BUCKET, dirPrefix + "subdir/file2.txt");
+        final FileReference refDir3 = new FileReference(BUCKET, dirPrefix + "file3.txt");
+
+        try {
+            s3OutPort.saveFile(refDir1, new ByteArrayInputStream("f1".getBytes(StandardCharsets.UTF_8)), 2);
+            s3OutPort.saveFile(refDir2, new ByteArrayInputStream("f2".getBytes(StandardCharsets.UTF_8)), 2);
+            s3OutPort.saveFile(refDir3, new ByteArrayInputStream("f3".getBytes(StandardCharsets.UTF_8)), 2);
+
+            final ListResult recursiveList = s3OutPort.getFiles(BUCKET, dirPrefix, true)
+                    .iterator()
+                    .next();
+            assertThat(recursiveList.files()).extracting(FileMetadata::path)
+                    .containsExactlyInAnyOrder(refDir1.path(), refDir2.path(), refDir3.path());
+            assertThat(recursiveList.commonPrefixes()).isEmpty();
+
+            final ListResult nonRecursiveList = s3OutPort.getFiles(BUCKET, dirPrefix, false)
+                    .iterator()
+                    .next();
+            assertThat(nonRecursiveList.files()).extracting(FileMetadata::path)
+                    .containsExactlyInAnyOrder(refDir1.path(), refDir3.path());
+            assertThat(nonRecursiveList.commonPrefixes()).containsExactly(dirPrefix + "subdir/");
+        } finally {
+            s3OutPort.deleteFile(refDir1);
+            s3OutPort.deleteFile(refDir2);
+            s3OutPort.deleteFile(refDir3);
+        }
     }
 }

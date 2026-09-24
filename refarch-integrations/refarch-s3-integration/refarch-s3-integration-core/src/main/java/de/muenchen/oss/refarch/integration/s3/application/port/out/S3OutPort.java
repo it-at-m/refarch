@@ -1,6 +1,7 @@
 package de.muenchen.oss.refarch.integration.s3.application.port.out;
 
 import de.muenchen.oss.refarch.integration.s3.domain.exception.S3Exception;
+import de.muenchen.oss.refarch.integration.s3.domain.exception.S3PaginationException;
 import de.muenchen.oss.refarch.integration.s3.domain.model.FileMetadata;
 import de.muenchen.oss.refarch.integration.s3.domain.model.FileReference;
 import de.muenchen.oss.refarch.integration.s3.domain.model.ListResult;
@@ -159,7 +160,11 @@ public interface S3OutPort {
      * Uses default pagination (maxKeys = 1000) and no marker.
      *
      * @see #getFilesWithPrefix(String, String, boolean, int, String)
+     * @deprecated Because the maxKeys limitation isn't directly visible and can lead to unintended
+     *             application behavior.
+     *             Use {@link #getFiles} instead.
      */
+    @Deprecated
     ListResult getFilesWithPrefix(@NotBlank String bucket, String prefix, boolean recursive) throws S3Exception;
 
     /**
@@ -171,13 +176,52 @@ public interface S3OutPort {
      * @param recursive if to lookup files recursive or not.
      * @param maxKeys maximum number of keys to return in this page (provider limits may apply, e.g.,
      *            1–1000)
-     * @param startAfter key to start after when listing objects (used to continue from a previous
-     *            truncated
-     *            response);
-     *            pass null or empty to start from the beginning
+     * @param startAfter key to start after when listing objects; pass null or empty to start from the
+     *            beginning
      * @return the objects and common prefixes found under the prefix plus truncation metadata
      * @throws S3Exception if listing fails due to client, network, or service issues
+     * @deprecated Because the startAfter is no correct continuation token and can lead to unintended
+     *             application behavior. Use {@link #getFiles} instead.
      */
+    @Deprecated
     ListResult getFilesWithPrefix(@NotBlank String bucket, String prefix, boolean recursive, @Positive int maxKeys, String startAfter)
             throws S3Exception;
+
+    /**
+     * List all objects and common prefixes under the given prefix.
+     *
+     * @param bucket the bucket name (must not be blank)
+     * @param prefix the prefix under which to list objects
+     * @param recursive whether nested objects should be included
+     * @return iterator which requests each page of objects as they are requested
+     * @throws S3PaginationException if a page fetch fails while iterating
+     */
+    Iterable<ListResult> getFiles(@NotBlank String bucket, String prefix, boolean recursive);
+
+    /**
+     * List all objects and common prefixes under the given prefix.
+     *
+     * @param bucket the bucket name (must not be blank)
+     * @param prefix the prefix under which to list objects
+     * @param recursive whether nested objects should be included
+     * @param maxKeys maximum number of keys to request per page
+     * @param startAfter key to start after on the first page; null or empty starts at the beginning
+     * @return iterator which requests each page of objects as they are requested
+     * @throws S3PaginationException if a page fetch fails while iterating
+     */
+    Iterable<ListResult> getFiles(
+            @NotBlank String bucket, String prefix, boolean recursive, @Positive int maxKeys, String startAfter);
+
+    /**
+     * Eagerly lists all objects and common prefixes under the given prefix into one result.
+     * This stores the complete listing in memory; use {@link #getFiles(String, String, boolean)}
+     * for lazy page processing.
+     *
+     * @param bucket the bucket name (must not be blank)
+     * @param prefix the prefix under which to list objects
+     * @param recursive whether nested objects should be included
+     * @return one result containing all pages
+     * @throws S3Exception if fetch of any page fails
+     */
+    ListResult getFilesAsListResult(@NotBlank String bucket, String prefix, boolean recursive) throws S3Exception;
 }
