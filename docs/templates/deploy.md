@@ -23,7 +23,7 @@ By default, applications based on the RefArch Templates are built for **AMD64** 
 ## Deployment Overview
 
 ![architecture-overview](../assets/ci_cd_github_big_picture_public.drawio.png)
-The diagram shows an  step by step overview of how applications are delivered at it@M/LHM, from code changes to deployment in environments:
+The diagram shows an step by step overview of how applications are delivered at it@M/LHM, from code changes to deployment in environments:
 
 1. _GitHub Project `it-at-m/foo`_: Add code changes, compile and build code and images
 2. _GitHub Project `it-at-m/helm-charts`_: Provide helm charts for project deployment
