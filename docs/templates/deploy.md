@@ -20,26 +20,13 @@ Depending on the image source, the correct SHA can be found for:
 
 By default, applications based on the RefArch Templates are built for **AMD64** and **ARM64** hardware architectures.
 
-## Deployment Overview
-
-![architecture-overview](../assets/ci_cd_github_big_picture_public.drawio.png)
-The diagram shows an step by step overview of how applications are delivered at it@M/LHM, from code changes to deployment in environments:
-
-1. _GitHub Project `it-at-m/foo`_: Add code changes, compile and build code and images
-2. _GitHub Project `it-at-m/helm-charts`_: Provide helm charts for project deployment
-3. _Image Registry `Quay`_: Internal image registry as pull through cache for the project images
-4. _GitLab `git.muenchen.de`_: Internal Git repository to run deployment pipelines
-5. _OpenShift `Container Application Platform`_: Internal kubernetes plattform to run applications
-
-You can find further details in the following chapters.
-
-### Helm Chart
+## Helm Chart
 
 [Helm](https://helm.sh/) allows easy deployment of multi-container applications to a Kubernetes cluster using charts.
 
 For RefArch-based applications, there are multiple ways to use Helm charts with increasing customizability and manual effort.
 
-#### Variant 1: Direct use of `refarch-templates` chart (recommended)
+### Variant 1: Direct use of `refarch-templates` chart (recommended)
 
 The reference architecture provides a [Helm chart](https://github.com/it-at-m/helm-charts/tree/main/charts/refarch-templates) to easily deploy RefArch-based multi-container applications by just providing a configuration file (`values.yaml`).
 Each application container is called a "module" in the `refarch-templates` chart.
@@ -70,7 +57,7 @@ helm install <HELM_RELEASE_NAME> it-at-m/refarch-templates --version <HELM_CHART
 An [internal IaC example repository](https://git.muenchen.de/ccse/refarch/refarch-iac) is provided, which implements this variant.
 :::
 
-#### Variant 2: `refarch-templates` chart as dependency for an application-specific chart
+### Variant 2: `refarch-templates` chart as dependency for an application-specific chart
 
 The `refarch-templates` chart can be used as a dependency for application-specific charts through [Helm dependencies](https://helm.sh/docs/helm/helm_dependency/).
 This allows reuse of the mechanisms provided by the `refarch-templates` chart,
@@ -94,13 +81,26 @@ dependencies:
 More information about creating Helm charts can be found in the [official Helm documentation](https://helm.sh/docs/topics/charts/).
 :::
 
-#### Variant 3: Application-specific chart only
+### Variant 3: Application-specific chart only
 
 Creating a custom Helm chart allows for the manual definition of all required Kubernetes resources. This approach provides complete control over the configuration but requires a high level of effort.
 
 :::danger Important
 Using this variant is not recommended. It is advisable to explore variants 1 or 2 first. If any features are found to be lacking, an issue can be opened in the [it@M Helm Charts](https://github.com/it-at-m/helm-charts) repository.
 :::
+
+## Deployment Overview
+
+![architecture-overview](../assets/ci_cd_github_big_picture_public.drawio.png)
+The diagram shows an step by step overview of how applications are delivered at it@M/LHM, from code changes to deployment in environments:
+
+1. _GitHub Project `it-at-m/foo`_: Add code changes, compile and build code and images
+2. _GitHub Project `it-at-m/helm-charts`_: Provide helm charts for project deployment
+3. _Image Registry `Quay`_: Internal image registry as pull through cache for the project images
+4. _GitLab `git.muenchen.de`_: Internal Git repository to run deployment pipelines
+5. _OpenShift `Container Application Platform`_: Internal kubernetes plattform to run applications
+
+You can find further details in the following chapters.
 
 ### Internal Deployment (Image Repository `Quay`, Git Repository GitLab `git.muenchen.de`, Kubernetes platform `OpenShift`)
 
