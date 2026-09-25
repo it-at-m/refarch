@@ -30,7 +30,7 @@ const vitepressConfig = defineConfig({
           { text: "Integrations", link: "/integrations" },
           {
             text: "CI/CD",
-            link: "https://github.com/it-at-m/lhm_actions/blob/main/docs/actions.md",
+            link: "https://it-at-m.github.io/lhm_actions/actions.html",
           },
           {
             text: "Security",
@@ -122,7 +122,7 @@ const vitepressConfig = defineConfig({
         items: [
           {
             text: "CI/CD",
-            link: "https://github.com/it-at-m/lhm_actions/blob/main/docs/actions.md",
+            link: "https://it-at-m.github.io/lhm_actions/actions.html",
           },
           { text: "Security", link: "/cross-cutting-concepts/security" },
           { text: "Tools", link: "/cross-cutting-concepts/tools" },
