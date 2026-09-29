@@ -47,18 +47,17 @@ class E2ETest {
     private static final String BUCKET = "test-bucket";
 
     @Container
-    private static final GenericContainer<?> MINIO = new GenericContainer<>("quay.io/minio/minio:RELEASE.2025-09-07T16-13-09Z")
-            .withEnv("MINIO_ROOT_USER", ACCESS_KEY)
-            .withEnv("MINIO_ROOT_PASSWORD", SECRET_KEY)
-            .withCommand("server", "/data", "--console-address", ":9001")
-            .withExposedPorts(9000, 9001);
+    private static final GenericContainer<?> S3 = new GenericContainer<>("rustfs/rustfs:1.0.0")
+            .withEnv("RUSTFS_ACCESS_KEY", ACCESS_KEY)
+            .withEnv("RUSTFS_SECRET_KEY", SECRET_KEY)
+            .withExposedPorts(9000);
 
     private S3OutPort s3OutPort;
 
     @BeforeAll
     @SuppressWarnings("PMD.CloseResource")
     void setUp() {
-        final String endpoint = "http://" + MINIO.getHost() + ":" + MINIO.getMappedPort(9000);
+        final String endpoint = "http://" + S3.getHost() + ":" + S3.getMappedPort(9000);
         final Region region = Region.US_EAST_1;
 
         final S3Configuration s3cfg = S3Configuration.builder().pathStyleAccessEnabled(true).build();
