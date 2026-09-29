@@ -29,10 +29,6 @@ dist/
 nbdist/
 .nb-gradle/
 
-# Stack
-/stack/s3/*
-!/stack/s3/.gitkeep
-
 # Additional
 $(pwd)
 

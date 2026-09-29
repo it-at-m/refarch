@@ -59,7 +59,7 @@ services:
       - "9000:9000"
       - "9001:9001"
     volumes:
-      - ./s3:/data
+      - rustfs-data:/data
     healthcheck:
       <<: *healthcheck
       test: ["CMD", "curl", "-fsS", "http://localhost:9000/health/ready"]
@@ -68,12 +68,13 @@ services:
   init-rustfs:
     image: rustfs/rc:v0.1.36
     depends_on:
-      - rustfs
+      rustfs:
+        condition: service_healthy
     entrypoint: >
       /bin/sh -c "
+        set -e;
         rc alias set local http://rustfs:9000 admin admin;
         rc mb local/test-bucket;
-        exit 0;
       "
     <<: *security_settings
 
@@ -90,3 +91,6 @@ services:
       # health check see https://mailpit.axllent.org/docs/integration/healthcheck/
       test: [ "CMD", "wget", "--spider", "-q", "http://localhost:8025/readyz" ]
     <<: *security_settings
+
+volumes:
+  rustfs-data:

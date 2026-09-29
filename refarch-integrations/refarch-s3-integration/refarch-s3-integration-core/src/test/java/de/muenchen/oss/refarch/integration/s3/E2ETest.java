@@ -26,6 +26,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.io.TempDir;
 import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
@@ -50,7 +51,8 @@ class E2ETest {
     private static final GenericContainer<?> S3 = new GenericContainer<>("rustfs/rustfs:1.0.0")
             .withEnv("RUSTFS_ACCESS_KEY", ACCESS_KEY)
             .withEnv("RUSTFS_SECRET_KEY", SECRET_KEY)
-            .withExposedPorts(9000);
+            .withExposedPorts(9000)
+            .waitingFor(Wait.forHttp("/health/ready").forPort(9000).forStatusCode(200));
 
     private S3OutPort s3OutPort;
 
