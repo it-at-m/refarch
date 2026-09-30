@@ -56,8 +56,8 @@ services:
       RUSTFS_ACCESS_KEY: admin
       RUSTFS_SECRET_KEY: admin
     ports:
-      - "9000:9000"
-      - "9001:9001"
+      - "9000:9000" # API
+      - "9001:9001" # UI
     volumes:
       - rustfs-data:/data
     healthcheck:
