@@ -24,8 +24,6 @@ services:
       KC_HTTP_RELATIVE_PATH: /auth
     ports:
       - "8100:8100"
-    networks:
-      - keycloak
     healthcheck:
       <<: *healthcheck
       test: [
@@ -49,41 +47,35 @@ services:
       EXIT_ON_ERROR: "true"
     volumes:
       - ./keycloak/migration:/migration
-    networks:
-      - keycloak
     <<: *security_settings
 
   # === S3 ===
-  minio:
-    image: quay.io/minio/minio:RELEASE.2025-09-07T16-13-09Z@sha256:14cea493d9a34af32f524e538b8346cf79f3321eff8e708c1e2960462bd8936e
-    command: server /data --console-address ":9001"
+  rustfs:
+    image: rustfs/rustfs:1.0.0
     environment:
-      MINIO_ROOT_USER: minio
-      MINIO_ROOT_PASSWORD: Test1234
+      RUSTFS_ACCESS_KEY: admin
+      RUSTFS_SECRET_KEY: admin
     ports:
       - "9000:9000" # API
       - "9001:9001" # UI
     volumes:
-      - ./minio:/data
-    networks:
-      - minio
+      - rustfs-data:/data
     healthcheck:
       <<: *healthcheck
-      test: [ "CMD-SHELL",  "curl http://localhost:9000/minio/health/live" ]
+      test: ["CMD", "curl", "-fsS", "http://localhost:9000/health/ready"]
     <<: *security_settings
 
-  init-minio:
-    image: quay.io/minio/mc:RELEASE.2025-08-13T08-35-41Z@sha256:a7fe349ef4bd8521fb8497f55c6042871b2ae640607cf99d9bede5e9bdf11727
+  init-rustfs:
+    image: rustfs/rc:v0.1.36
     depends_on:
-      - minio
+      rustfs:
+        condition: service_healthy
     entrypoint: >
       /bin/sh -c "
-        mc config host add minio http://minio:9000 minio Test1234;
-        mc mb minio/test-bucket;
-        exit 0;
+        set -e;
+        rc alias set local http://rustfs:9000 admin admin;
+        rc mb local/test-bucket;
       "
-    networks:
-      - minio
     <<: *security_settings
 
   # === Mail ===
@@ -100,6 +92,5 @@ services:
       test: [ "CMD", "wget", "--spider", "-q", "http://localhost:8025/readyz" ]
     <<: *security_settings
 
-networks:
-  keycloak:
-  minio:
+volumes:
+  rustfs-data:
