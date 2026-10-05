@@ -89,7 +89,7 @@ Creating a custom Helm chart allows for the manual definition of all required Ku
 Using this variant is not recommended. It is advisable to explore variants 1 or 2 first. If any features are found to be lacking, an issue can be opened in the [it@M Helm Charts](https://github.com/it-at-m/helm-charts) repository.
 :::
 
-## Deployment Overview
+## Internal Deployment
 
 ![architecture-overview](../assets/ci_cd_github_big_picture_public.drawio.png)
 The diagram shows an step by step overview of how applications are delivered at it@M/LHM, from code changes to deployment in environments:
@@ -100,25 +100,20 @@ The diagram shows an step by step overview of how applications are delivered at 
 4. _GitLab `git.muenchen.de`_: Internal Git repository to run deployment pipelines
 5. _OpenShift `Container Application Platform`_: Internal kubernetes plattform to run applications
 
-You can find further details in the following chapters.
+Further details are described in the following chapters.
 
-### Internal Deployment (Image Repository `Quay`, Git Repository GitLab `git.muenchen.de`, Kubernetes platform `OpenShift`)
-
-::: details it@M internal configuration
-
-#### What are we using internally
+### Components
 
 - Image Registry [Red Hat Quay](https://docs.redhat.com/de/documentation/red_hat_quay) as pull through cache for docker images
 - [GitLab](https://docs.gitlab.com/) to execute internal infrastructure pipelines (IaC) and configuration of the applications
 - [OpenShift](https://docs.redhat.com/en/documentation/openshift_container_platform) as Kubernetes platform to host the applications
 
-#### How it works together
+### How it works together
 
-##### Autorollout: For the dev environment (only not productive enviornment)
+#### Auto-rollout: For the dev environment (only not productive environment)
 
 An automatic rollout is implemented, through an image stream that links to the internal image registry (Quay). The deployment includes a special annotation that prompts the internal Kubernetes platform (OpenShift) to automatically trigger a new rollout when a new image becomes available. For more details, see [this documentation](https://docs.redhat.com/en/documentation/openshift_container_platform/4.17/html/images/triggering-updates-on-imagestream-changes#triggering-updates-on-imagestream-changes).
 
-##### manual rollout for the deployment in productive and close to productive environments
+#### Manual rollout for the deployment in productive and close to productive environments
 
 For other environments (stage, prod), a manual rollout is implemented. The image version must be specified for each service in the Helm configuration file `values.yml`.
-:::
