@@ -2,17 +2,14 @@ package de.muenchen.oss.refarch.integration.s3;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import de.muenchen.oss.refarch.integration.s3.adapter.out.s3.S3ListHelper;
-import de.muenchen.oss.refarch.integration.s3.adapter.out.s3.S3Mapper;
-import de.muenchen.oss.refarch.integration.s3.adapter.out.s3.S3OutAdapter;
 import de.muenchen.oss.refarch.integration.s3.application.port.out.S3OutPort;
+import de.muenchen.oss.refarch.integration.s3.configuration.S3IntegrationAutoConfiguration;
 import de.muenchen.oss.refarch.integration.s3.domain.model.FileMetadata;
 import de.muenchen.oss.refarch.integration.s3.domain.model.FileReference;
 import de.muenchen.oss.refarch.integration.s3.domain.model.ListResult;
 import de.muenchen.oss.refarch.integration.s3.domain.model.PresignedUrl;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -25,22 +22,22 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.io.TempDir;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
-import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
-import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.S3Configuration;
 import software.amazon.awssdk.services.s3.model.BucketAlreadyExistsException;
 import software.amazon.awssdk.services.s3.model.BucketAlreadyOwnedByYouException;
 import software.amazon.awssdk.services.s3.model.CreateBucketRequest;
-import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 
 @Testcontainers
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@SpringBootTest(classes = S3IntegrationAutoConfiguration.class)
 class E2ETest {
 
     private static final String ACCESS_KEY = "minio";
@@ -54,38 +51,33 @@ class E2ETest {
             .withExposedPorts(9000)
             .waitingFor(Wait.forHttp("/health/ready").forPort(9000).forStatusCode(200));
 
+    @Autowired
     private S3OutPort s3OutPort;
 
+    @Autowired
+    private S3Client s3Client;
+
+    @DynamicPropertySource
+    /* default */ static void registerS3Properties(final DynamicPropertyRegistry registry) {
+        registry.add("refarch.s3.url", E2ETest::s3Endpoint);
+        registry.add("refarch.s3.access-key", () -> ACCESS_KEY);
+        registry.add("refarch.s3.secret-key", () -> SECRET_KEY);
+        registry.add("refarch.s3.path-style-access-enabled", () -> true);
+    }
+
+    private static String s3Endpoint() {
+        if (!S3.isRunning()) {
+            S3.start();
+        }
+        return "http://" + S3.getHost() + ":" + S3.getMappedPort(9000);
+    }
+
     @BeforeAll
-    @SuppressWarnings("PMD.CloseResource")
     void setUp() {
-        final String endpoint = "http://" + S3.getHost() + ":" + S3.getMappedPort(9000);
-        final Region region = Region.US_EAST_1;
-
-        final S3Configuration s3cfg = S3Configuration.builder().pathStyleAccessEnabled(true).build();
-        final StaticCredentialsProvider creds = StaticCredentialsProvider.create(AwsBasicCredentials.create(ACCESS_KEY, SECRET_KEY));
-
-        final S3Client s3Client = S3Client.builder()
-                .endpointOverride(URI.create(endpoint))
-                .region(region)
-                .credentialsProvider(creds)
-                .serviceConfiguration(s3cfg)
-                .build();
-        final S3Presigner s3Presigner = S3Presigner.builder()
-                .endpointOverride(URI.create(endpoint))
-                .region(region)
-                .credentialsProvider(creds)
-                .serviceConfiguration(s3cfg)
-                .build();
-
         try {
             s3Client.createBucket(CreateBucketRequest.builder().bucket(BUCKET).build());
         } catch (BucketAlreadyExistsException | BucketAlreadyOwnedByYouException ignored) {
         }
-
-        final S3Mapper mapper = new S3Mapper();
-        final S3ListHelper s3ListHelper = new S3ListHelper(s3Client, mapper);
-        this.s3OutPort = new S3OutAdapter(mapper, s3Client, s3Presigner, s3ListHelper);
     }
 
     @Test
@@ -196,6 +188,7 @@ class E2ETest {
 
         // Presigned URL (GET) and download
         final PresignedUrl pre = s3OutPort.getPresignedUrl(ref2, PresignedUrl.Action.GET, Duration.ofMinutes(2));
+        assertThat(pre.url().getPath()).startsWith("/" + BUCKET + "/");
         try (InputStream is = pre.url().openStream()) {
             final String s = new String(is.readAllBytes(), StandardCharsets.UTF_8);
             assertThat(s).isEqualTo("filecontent");
