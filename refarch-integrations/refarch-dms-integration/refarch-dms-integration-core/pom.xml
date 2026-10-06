@@ -10,6 +10,19 @@
     <artifactId>refarch-dms-integration-core</artifactId>
     <name>refarch-dms-integration-core</name>
 
+    <distributionManagement>
+        <relocation>
+            <groupId>de.muenchen.oss.eakte</groupId>
+            <artifactId>eakte-api-v1-spring-client</artifactId>
+            <version>1.2.7</version>
+            <message>
+                This client is discontinued, due to the official one.
+                Also see eakte-api-v1-spring-starter.
+                BREAKING: The new client uses the REST API instead of SOAP.
+            </message>
+        </relocation>
+    </distributionManagement>
+
     <dependencies>
         <!-- Spring -->
         <dependency>
