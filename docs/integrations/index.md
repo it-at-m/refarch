@@ -20,9 +20,14 @@ The table only lists tested constellations. Other combinations not mentioned may
 
 - [s3-integration](./s3.md): For CRUD operations on a S3 storage.
 - [email-integration](./email.md): For sending text and HTML emails with attachments.
-- [dms-integration](./dms.md): For CRUD operations on a DMS system in specific fabasoft.
+- ~~[dms-integration](./dms.md): For CRUD operations on a DMS system in specific fabasoft.~~ (DEPRECATED)
 - [cosys-integration](./cosys.md): For creating documents with coSys.
 - [address-integration](./address.md): For reading, searching and validating addresses via the LHM address service.
+
+### External integrations/libraries
+
+- [DMS REST client](https://it-at-m.github.io/eakte-schnittstelle/v1/#eakte-schnittstellen-aufruf-mit-spring-boot-client)
+  - `de.muenchen.oss.eakte:eakte-api-v1-spring-starter` or `de.muenchen.oss.eakte:eakte-api-v1-spring-client`
 
 ## Naming conventions
 

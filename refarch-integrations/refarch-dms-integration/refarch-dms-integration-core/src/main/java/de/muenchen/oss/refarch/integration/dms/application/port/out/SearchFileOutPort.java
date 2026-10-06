@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.validation.annotation.Validated;
 
 @Validated
+@Deprecated
 public interface SearchFileOutPort {
 
     List<String> searchFile(@NotBlank String searchString, @NotNull @Valid RequestContext requestContext, String reference, String value) throws DmsException;

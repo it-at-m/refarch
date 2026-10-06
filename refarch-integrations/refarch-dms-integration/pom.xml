@@ -17,7 +17,7 @@
         <relocation>
             <groupId>de.muenchen.oss.eakte</groupId>
             <artifactId>eakte-api-v1-spring-client</artifactId>
-            <version>1.2.7</version>
+            <version>1.2.8</version>
             <message>
                 This client is discontinued, due to the official one.
                 Also see eakte-api-v1-spring-starter.
