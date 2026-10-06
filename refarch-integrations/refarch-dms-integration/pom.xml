@@ -13,19 +13,6 @@
     <name>refarch-dms-integration</name>
     <description>RefArch DMS integration</description>
 
-    <distributionManagement>
-        <relocation>
-            <groupId>de.muenchen.oss.eakte</groupId>
-            <artifactId>eakte-api-v1-spring-client</artifactId>
-            <version>1.2.8</version>
-            <message>
-                This client is discontinued, due to the official one.
-                Also see eakte-api-v1-spring-starter.
-                BREAKING: The new client uses the REST API instead of SOAP.
-            </message>
-        </relocation>
-    </distributionManagement>
-
     <modules>
         <module>refarch-dms-integration-core</module>
         <module>refarch-dms-integration-fabasoft-soap</module>
@@ -33,4 +20,15 @@
         <module>refarch-dms-integration-starter</module>
         <module>refarch-dms-integration-example</module>
     </modules>
+
+    <distributionManagement>
+        <relocation>
+            <groupId>de.muenchen.oss.eakte</groupId>
+            <artifactId>eakte-api-v1-spring-client</artifactId>
+            <version>1.2.8</version>
+            <message>This client is discontinued, due to the official one.
+                Also see eakte-api-v1-spring-starter.
+                BREAKING: The new client uses the REST API instead of SOAP.</message>
+        </relocation>
+    </distributionManagement>
 </project>
