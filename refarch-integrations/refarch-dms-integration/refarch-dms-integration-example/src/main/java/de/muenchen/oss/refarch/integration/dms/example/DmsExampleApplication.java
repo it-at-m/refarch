@@ -13,6 +13,7 @@ import org.springframework.context.event.EventListener;
 @SpringBootApplication
 @RequiredArgsConstructor
 @EnableConfigurationProperties(DmsExampleProperties.class)
+@Deprecated
 public class DmsExampleApplication {
     private final ExampleDmsService exampleDmsService;
     private final ApplicationContext context;

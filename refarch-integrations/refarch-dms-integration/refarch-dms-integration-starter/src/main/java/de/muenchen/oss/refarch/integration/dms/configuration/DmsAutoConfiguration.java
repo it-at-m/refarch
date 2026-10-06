@@ -26,6 +26,7 @@ import org.springframework.context.annotation.Import;
 @RequiredArgsConstructor
 @Import(FabasoftClientConfiguration.class)
 @EnableConfigurationProperties({ FabasoftProperties.class })
+@Deprecated
 public class DmsAutoConfiguration {
 
     @Bean
