@@ -123,7 +123,7 @@ const vitepressConfig = defineConfig({
         items: [
           {
             text: "CI/CD",
-            link: "https://it-at-m.github.io/lhm_actions/actions.html",
+            link: "https://it-at-m.github.io/lhm_actions",
           },
           { text: "Security", link: "/cross-cutting-concepts/security" },
           { text: "Tools", link: "/cross-cutting-concepts/tools" },
