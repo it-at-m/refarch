@@ -58,6 +58,7 @@ import org.junit.jupiter.api.Test;
 
 @WireMockTest()
 @SuppressWarnings("PMD.CouplingBetweenObjects")
+@Deprecated
 class FabasoftAdapterTest {
 
     public static final String USER = "user";

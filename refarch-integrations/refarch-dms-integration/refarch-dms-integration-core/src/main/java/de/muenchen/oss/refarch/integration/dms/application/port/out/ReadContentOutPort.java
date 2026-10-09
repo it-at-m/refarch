@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.validation.annotation.Validated;
 
 @Validated
+@Deprecated
 public interface ReadContentOutPort {
 
     List<Content> readContent(List<String> coos, @NotNull @Valid RequestContext requestContext) throws DmsException;

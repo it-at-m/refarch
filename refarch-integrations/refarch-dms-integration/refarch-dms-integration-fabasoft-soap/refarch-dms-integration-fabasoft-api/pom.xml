@@ -10,6 +10,17 @@
     <artifactId>refarch-dms-integration-fabasoft-api</artifactId>
     <name>refarch-dms-integration-fabasoft-api</name>
 
+    <distributionManagement>
+        <relocation>
+            <groupId>de.muenchen.oss.eakte</groupId>
+            <artifactId>eakte-api-v1-spring-starter</artifactId>
+            <version>1.2.8</version>
+            <message>This client is discontinued, due to the official one.
+                Also see eakte-api-v1-spring-client for manual configuration.
+                BREAKING: The new client uses the REST API instead of SOAP.</message>
+        </relocation>
+    </distributionManagement>
+
     <properties>
         <cxf-codegen-plugin.version>4.2.3</cxf-codegen-plugin.version>
     </properties>
