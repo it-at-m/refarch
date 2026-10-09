@@ -57,19 +57,20 @@
                         </goals>
                         <configuration>
                             <inputSpec>${project.basedir}/src/main/api/api-docs.json</inputSpec>
-                            <library>webclient</library>
+
                             <generatorName>java</generatorName>
+                            <library>webclient</library>
 
                             <apiPackage>de.muenchen.oss.refarch.integration.dms.api</apiPackage>
                             <modelPackage>de.muenchen.oss.refarch.integration.dms.model</modelPackage>
                             <invokerPackage>de.muenchen.oss.refarch.integration.dms</invokerPackage>
 
-                            <serverVariableOverrides />
                             <configOptions>
                                 <useJakartaEe>true</useJakartaEe>
-                                <useAbstractionForFiles>true</useAbstractionForFiles>
                                 <useSpringBoot4>true</useSpringBoot4>
                                 <useJackson3>true</useJackson3>
+                                <performBeanValidation>true</performBeanValidation>
+                                <useAbstractionForFiles>true</useAbstractionForFiles>
                             </configOptions>
                         </configuration>
                     </execution>
