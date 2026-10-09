@@ -31,7 +31,7 @@ const vitepressConfig = defineConfig({
           { text: "Integrations", link: "/integrations" },
           {
             text: "CI/CD",
-            link: "https://it-at-m.github.io/lhm_actions/actions.html",
+            link: "https://it-at-m.github.io/lhm_actions",
           },
           {
             text: "Security",
