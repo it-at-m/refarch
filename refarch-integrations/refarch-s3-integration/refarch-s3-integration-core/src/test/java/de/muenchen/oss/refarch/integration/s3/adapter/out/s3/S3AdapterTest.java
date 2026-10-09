@@ -27,6 +27,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
@@ -261,10 +262,10 @@ class S3AdapterTest {
         when(mockHead.url()).thenReturn(uri.toURL());
         when(s3Presigner.presignHeadObject((HeadObjectPresignRequest) any())).thenReturn(mockHead);
 
-        final PresignedUrl getUrl = adapter.getPresignedUrl(ref, PresignedUrl.Action.GET, java.time.Duration.ofMinutes(1));
-        final PresignedUrl putUrl = adapter.getPresignedUrl(ref, PresignedUrl.Action.PUT, java.time.Duration.ofMinutes(1));
-        final PresignedUrl delUrl = adapter.getPresignedUrl(ref, PresignedUrl.Action.DELETE, java.time.Duration.ofMinutes(1));
-        final PresignedUrl headUrl = adapter.getPresignedUrl(ref, PresignedUrl.Action.HEAD, java.time.Duration.ofMinutes(1));
+        final PresignedUrl getUrl = adapter.getPresignedUrl(ref, PresignedUrl.Action.GET, Duration.ofMinutes(1));
+        final PresignedUrl putUrl = adapter.getPresignedUrl(ref, PresignedUrl.Action.PUT, Duration.ofMinutes(1));
+        final PresignedUrl delUrl = adapter.getPresignedUrl(ref, PresignedUrl.Action.DELETE, Duration.ofMinutes(1));
+        final PresignedUrl headUrl = adapter.getPresignedUrl(ref, PresignedUrl.Action.HEAD, Duration.ofMinutes(1));
 
         assertThat(getUrl.url()).isEqualTo(uri.toURL());
         assertThat(putUrl.url()).isEqualTo(uri.toURL());
@@ -277,7 +278,7 @@ class S3AdapterTest {
         final FileReference ref = new FileReference(BUCKET, PATH);
         when(s3Presigner.presignGetObject((GetObjectPresignRequest) any()))
                 .thenThrow(software.amazon.awssdk.services.s3.model.S3Exception.builder().message(S3_EXCEPTION_MESSAGE).build());
-        assertThrows(S3Exception.class, () -> adapter.getPresignedUrl(ref, PresignedUrl.Action.GET, java.time.Duration.ofMinutes(1)));
+        assertThrows(S3Exception.class, () -> adapter.getPresignedUrl(ref, PresignedUrl.Action.GET, Duration.ofMinutes(1)));
     }
 
     @Test
