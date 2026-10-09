@@ -3,6 +3,7 @@ import { withMermaid } from "vitepress-plugin-mermaid"; // https://vitepress.dev
 
 // https://vitepress.dev/reference/site-config
 const vitepressConfig = defineConfig({
+  base: "/", // needs to be changed if delivered via sub path (e.g. "/docs/" for example.com/docs)
   title: "RefArch",
   description: "Documentation for the RefArch",
   head: [
@@ -30,7 +31,7 @@ const vitepressConfig = defineConfig({
           { text: "Integrations", link: "/integrations" },
           {
             text: "CI/CD",
-            link: "https://github.com/it-at-m/lhm_actions/blob/main/docs/actions.md",
+            link: "https://it-at-m.github.io/lhm_actions",
           },
           {
             text: "Security",
@@ -122,7 +123,7 @@ const vitepressConfig = defineConfig({
         items: [
           {
             text: "CI/CD",
-            link: "https://github.com/it-at-m/lhm_actions/blob/main/docs/actions.md",
+            link: "https://it-at-m.github.io/lhm_actions",
           },
           { text: "Security", link: "/cross-cutting-concepts/security" },
           { text: "Tools", link: "/cross-cutting-concepts/tools" },
@@ -144,18 +145,29 @@ const vitepressConfig = defineConfig({
         ],
       },
     ],
-    outline: {
-      level: "deep",
-    },
     editLink: {
       pattern: "https://github.com/it-at-m/refarch/blob/main/docs/:path",
       text: "View this page on GitHub",
     },
+    footer: {
+      message: `<a href="https://opensource.muenchen.de/impress.html">Impress and Contact</a>`,
+    },
+    outline: {
+      level: "deep",
+    },
     search: {
       provider: "local",
     },
-    footer: {
-      message: `<a href="https://opensource.muenchen.de/impress.html">Impress and Contact</a>`,
+  },
+  markdown: {
+    image: {
+      lazyLoading: true,
+    },
+  },
+  // see https://github.com/emersonbottero/vitepress-plugin-mermaid/issues/98 and https://github.com/vitejs/devtools/pull/567
+  vite: {
+    optimizeDeps: {
+      include: ["fastdom", "fastdom/extensions/fastdom-promised.js"],
     },
   },
 });

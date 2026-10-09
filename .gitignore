@@ -29,10 +29,6 @@ dist/
 nbdist/
 .nb-gradle/
 
-# Stack
-/stack/minio/*
-!/stack/minio/.gitkeep
-
 # Additional
 $(pwd)
 

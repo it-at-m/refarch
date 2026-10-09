@@ -9,17 +9,10 @@ import org.springframework.validation.annotation.Validated;
 @ConfigurationProperties("refarch.hazelcast")
 @Validated
 public class HazelcastProperties {
-    /**
-     * Name of the hazelcast cluster.
-     */
+    /// Name of the hazelcast cluster.
     @NotBlank private String clusterName = "session_replication_group";
-    /**
-     * Name of the hazelcast instance.
-     */
+    /// Name of the hazelcast instance.
     @NotBlank private String instanceName = "hazl_instance";
-    /**
-     * Kubernetes service name.
-     * Required for running hazelcast inside kubernetes.
-     */
+    /// Kubernetes service name (Required for running Hazelcast in Kubernetes).
     private String serviceName;
 }

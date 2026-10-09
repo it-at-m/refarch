@@ -107,9 +107,7 @@ public class SecurityConfiguration {
         return http.build();
     }
 
-    /**
-     * Apply dynamic permitAll rules based on properties.
-     */
+    /// Apply dynamic permitAll rules based on properties.
     private void applyDynamicPermitAll(final ServerHttpSecurity.AuthorizeExchangeSpec authorize) {
         for (final SecurityProperties.PermitRule rule : securityProperties.getPublicPatterns()) {
             for (final HttpMethod method : rule.getMethods()) {

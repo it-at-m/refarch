@@ -1,5 +1,6 @@
 package de.muenchen.oss.refarch.integration.s3.configuration;
 
+import de.muenchen.oss.refarch.integration.s3.adapter.out.s3.S3ListHelper;
 import de.muenchen.oss.refarch.integration.s3.adapter.out.s3.S3Mapper;
 import de.muenchen.oss.refarch.integration.s3.adapter.out.s3.S3OutAdapter;
 import de.muenchen.oss.refarch.integration.s3.application.port.out.S3OutPort;
@@ -33,26 +34,39 @@ public class S3IntegrationAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public S3Client s3Client() {
-        final S3Configuration cfg = S3Configuration.builder()
+    protected S3Configuration s3Configuration() {
+        return S3Configuration.builder()
                 .pathStyleAccessEnabled(s3IntegrationProperties.isPathStyleAccessEnabled())
                 .build();
+    }
 
-        final StaticCredentialsProvider creds = StaticCredentialsProvider.create(
+    @Bean
+    @ConditionalOnMissingBean
+    protected SdkHttpClient.Builder<?> s3HttpClientBuilder() {
+        return ApacheHttpClient.builder()
+                .connectionTimeout(s3IntegrationProperties.getConnectionTimeout())
+                .socketTimeout(s3IntegrationProperties.getSocketTimeout());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    protected StaticCredentialsProvider s3Cred() {
+        return StaticCredentialsProvider.create(
                 AwsBasicCredentials.create(
                         s3IntegrationProperties.getAccessKey(),
                         s3IntegrationProperties.getSecretKey()));
+    }
 
-        final SdkHttpClient.Builder<ApacheHttpClient.Builder> httpClient = ApacheHttpClient.builder()
-                .connectionTimeout(s3IntegrationProperties.getConnectionTimeout())
-                .socketTimeout(s3IntegrationProperties.getSocketTimeout());
-
+    @Bean
+    @ConditionalOnMissingBean
+    public S3Client s3Client(final S3Configuration s3Configuration, final SdkHttpClient.Builder<?> s3HttpClientBuilder,
+            final StaticCredentialsProvider s3Cred) {
         final S3Client client = S3Client.builder()
-                .httpClientBuilder(httpClient)
+                .httpClientBuilder(s3HttpClientBuilder)
                 .endpointOverride(URI.create(s3IntegrationProperties.getUrl()))
                 .region(Region.of(s3IntegrationProperties.getRegion()))
-                .credentialsProvider(creds)
-                .serviceConfiguration(cfg)
+                .credentialsProvider(s3Cred)
+                .serviceConfiguration(s3Configuration)
                 .build();
 
         if (s3IntegrationProperties.isInitialConnectionTest()) {
@@ -71,16 +85,12 @@ public class S3IntegrationAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public S3Presigner s3Presigner() {
-        final StaticCredentialsProvider creds = StaticCredentialsProvider.create(
-                AwsBasicCredentials.create(
-                        s3IntegrationProperties.getAccessKey(),
-                        s3IntegrationProperties.getSecretKey()));
-
+    public S3Presigner s3Presigner(final S3Configuration s3Configuration, final StaticCredentialsProvider s3Cred) {
         return S3Presigner.builder()
                 .endpointOverride(URI.create(s3IntegrationProperties.getUrl()))
                 .region(Region.of(s3IntegrationProperties.getRegion()))
-                .credentialsProvider(creds)
+                .credentialsProvider(s3Cred)
+                .serviceConfiguration(s3Configuration)
                 .build();
     }
 
@@ -92,7 +102,14 @@ public class S3IntegrationAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public S3OutPort s3Adapter(final S3Mapper s3Mapper, final S3Client s3Client, final S3Presigner s3Presigner) {
-        return new S3OutAdapter(s3Mapper, s3Client, s3Presigner);
+    public S3ListHelper s3ListHelper(final S3Client s3Client, final S3Mapper s3Mapper) {
+        return new S3ListHelper(s3Client, s3Mapper);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public S3OutPort s3Adapter(final S3Mapper s3Mapper, final S3Client s3Client, final S3Presigner s3Presigner,
+            final S3ListHelper s3ListHelper) {
+        return new S3OutAdapter(s3Mapper, s3Client, s3Presigner, s3ListHelper);
     }
 }

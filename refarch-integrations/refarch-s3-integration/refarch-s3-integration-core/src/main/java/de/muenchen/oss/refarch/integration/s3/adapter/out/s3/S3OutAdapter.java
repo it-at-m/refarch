@@ -2,6 +2,7 @@ package de.muenchen.oss.refarch.integration.s3.adapter.out.s3;
 
 import de.muenchen.oss.refarch.integration.s3.application.port.out.S3OutPort;
 import de.muenchen.oss.refarch.integration.s3.domain.exception.S3Exception;
+import de.muenchen.oss.refarch.integration.s3.domain.exception.S3PaginationException;
 import de.muenchen.oss.refarch.integration.s3.domain.model.FileMetadata;
 import de.muenchen.oss.refarch.integration.s3.domain.model.FileReference;
 import de.muenchen.oss.refarch.integration.s3.domain.model.ListResult;
@@ -22,7 +23,6 @@ import software.amazon.awssdk.core.exception.SdkException;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.AbortMultipartUploadRequest;
-import software.amazon.awssdk.services.s3.model.CommonPrefix;
 import software.amazon.awssdk.services.s3.model.CompleteMultipartUploadRequest;
 import software.amazon.awssdk.services.s3.model.CompletedMultipartUpload;
 import software.amazon.awssdk.services.s3.model.CompletedPart;
@@ -34,8 +34,6 @@ import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectTaggingRequest;
 import software.amazon.awssdk.services.s3.model.HeadObjectRequest;
 import software.amazon.awssdk.services.s3.model.HeadObjectResponse;
-import software.amazon.awssdk.services.s3.model.ListObjectsV2Request;
-import software.amazon.awssdk.services.s3.model.ListObjectsV2Response;
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectTaggingRequest;
@@ -57,6 +55,7 @@ public class S3OutAdapter implements S3OutPort {
     private final S3Mapper s3Mapper;
     private final S3Client s3Client;
     private final S3Presigner s3Presigner;
+    private final S3ListHelper s3ListHelper;
 
     @Override
     public boolean fileExists(final FileReference fileReference) throws S3Exception {
@@ -305,37 +304,36 @@ public class S3OutAdapter implements S3OutPort {
     }
 
     @Override
-    public ListResult getFilesWithPrefix(final String bucket, final String prefix, final boolean recursive, final int maxKeys, final String startAfter)
-            throws S3Exception {
-        try {
-            final ListObjectsV2Request.Builder builder = ListObjectsV2Request.builder()
-                    .bucket(bucket)
-                    .prefix(prefix)
-                    .maxKeys(maxKeys);
-            if (!recursive) {
-                builder.delimiter("/");
-            }
-            if (startAfter != null && !startAfter.isEmpty()) {
-                builder.startAfter(startAfter);
-            }
-            final ListObjectsV2Response response = s3Client.listObjectsV2(builder.build());
-            return new ListResult(
-                    response.contents().stream()
-                            .map(s3Mapper::toDomain)
-                            .toList(),
-                    response.commonPrefixes().stream()
-                            .map(CommonPrefix::prefix)
-                            .toList(),
-                    Boolean.TRUE.equals(response.isTruncated()),
-                    response.startAfter());
-        } catch (final SdkException e) {
-            throw new S3Exception("Error while listing (bucket: %s, path: %s, maxKeys: %d, startAfter: %s)".formatted(bucket, prefix, maxKeys, startAfter), e);
-        }
+    @Deprecated
+    public ListResult getFilesWithPrefix(final String bucket, final String prefix, final boolean recursive) throws S3Exception {
+        return this.getFilesWithPrefix(bucket, prefix, recursive, 1000, null);
     }
 
     @Override
-    public ListResult getFilesWithPrefix(final String bucket, final String prefix, final boolean recursive) throws S3Exception {
-        return this.getFilesWithPrefix(bucket, prefix, recursive, 1000, null);
+    @Deprecated
+    public ListResult getFilesWithPrefix(final String bucket, final String prefix, final boolean recursive, final int maxKeys, final String startAfter)
+            throws S3Exception {
+        return s3ListHelper.getPage(bucket, prefix, recursive, maxKeys, startAfter);
+    }
+
+    @Override
+    public Iterable<ListResult> getFiles(final String bucket, final String prefix, final boolean recursive) {
+        return this.getFiles(bucket, prefix, recursive, 1000, null);
+    }
+
+    @Override
+    public Iterable<ListResult> getFiles(
+            final String bucket, final String prefix, final boolean recursive, final int maxKeys, final String startAfter) {
+        return s3ListHelper.getAllPages(bucket, prefix, recursive, maxKeys, startAfter);
+    }
+
+    @Override
+    public ListResult getFilesAsListResult(final String bucket, final String prefix, final boolean recursive) throws S3Exception {
+        try {
+            return s3ListHelper.getAllPagesAsListResult(bucket, prefix, recursive, 1000, null);
+        } catch (final S3PaginationException e) {
+            throw new S3Exception("Error while fetching pages for single ListResult", e);
+        }
     }
 
     private Tagging toTagging(final Map<String, String> tags) {

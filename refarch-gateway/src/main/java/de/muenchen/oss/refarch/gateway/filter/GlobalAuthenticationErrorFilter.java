@@ -9,7 +9,6 @@ import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferFactory;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
@@ -20,14 +19,12 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * This {@link GlobalFilter} replaces the body by a generic authentication error body, when a server
- * responses with a {@link HttpStatus#UNAUTHORIZED}.
- * <p>
- * The header {@link HttpHeaders#WWW_AUTHENTICATE} containing the access token is removed by the
- * property 'RemoveResponseHeader' in the corresponding route
- * within 'application.yml'.
- */
+/// This [GlobalFilter] replaces the body by a generic authentication error body, when a server
+/// responses with a [HttpStatus#UNAUTHORIZED].
+///
+/// The header [org.springframework.http.HttpHeaders#WWW_AUTHENTICATE] containing the access token is
+/// removed by the property `RemoveResponseHeader` in the corresponding route
+/// within `application.yml`.
 @Component
 @Slf4j
 public class GlobalAuthenticationErrorFilter implements GlobalFilter, Ordered {
@@ -47,15 +44,12 @@ public class GlobalAuthenticationErrorFilter implements GlobalFilter, Ordered {
         final ServerHttpResponse response = exchange.getResponse();
         final ServerHttpResponseDecorator decoratedResponse = new ServerHttpResponseDecorator(response) {
 
-            /**
-             * This overridden method adds the response body given in the parameter of
-             * the surrounding method when the http status given in the parameter of
-             * the surrounding method is met otherwise the already appended body will be used.
-             *
-             * @param body The body received by the upstream response.
-             * @return Either the body received by the upstream response or
-             *         the body given by the parameter.
-             */
+            /// This overridden method adds the response body given in the parameter of the surrounding method
+            /// when the HTTP status given in the parameter of the surrounding method is met otherwise the
+            /// already appended body will be used.
+            ///
+            /// @param body The body received by the upstream response.
+            /// @return Either the body received by the upstream response or the body given by the parameter.
             @Override
             @NonNull public Mono<Void> writeWith(@NonNull final Publisher<? extends DataBuffer> body) {
                 final HttpStatusCode responseHttpStatus = getDelegate().getStatusCode();
@@ -70,7 +64,7 @@ public class GlobalAuthenticationErrorFilter implements GlobalFilter, Ordered {
 
                     return super.writeWith(flux.buffer().map(
                             // replace old body represented by dataBuffer by the new one
-                            dataBuffer -> newDataBuffer));
+                            _ -> newDataBuffer));
                 }
                 return super.writeWith(body);
             }

@@ -11,7 +11,7 @@
 
     <groupId>de.muenchen.oss.refarch</groupId>
     <artifactId>refarch-integrations</artifactId>
-    <version>4.1.0-SNAPSHOT</version>
+    <version>4.2.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>refarch-integrations</name>
@@ -54,7 +54,7 @@
         <maven.compiler.release>${java.version}</maven.compiler.release>
 
         <!-- Linting & Formatting -->
-        <spotless-maven-plugin.version>3.10.1</spotless-maven-plugin.version>
+        <spotless-maven-plugin.version>3.10.4</spotless-maven-plugin.version>
         <itm-java-codeformat.version>1.0.10</itm-java-codeformat.version>
         <pmd-maven-plugin.version>3.28.0</pmd-maven-plugin.version>
 
@@ -72,7 +72,7 @@
         <refarch-tools.version>1.4.0</refarch-tools.version>
 
         <!-- Additional required dependencies -->
-        <springdoc-openapi.version>3.1.0</springdoc-openapi.version>
+        <springdoc-openapi.version>3.1.1</springdoc-openapi.version>
 
         <!-- TEMPORARY TRANSITIVE DEPENDENCY OVERRIDES FOR SECURITY FIXES -->
     </properties>
