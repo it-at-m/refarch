@@ -18,7 +18,7 @@ hero:
       link: /integrations
     - theme: alt
       text: ⤴ CI/CD
-      link: https://it-at-m.github.io/lhm_actions/actions.html
+      link: https://it-at-m.github.io/lhm_actions
     - theme: alt
       text: Security
       link: /cross-cutting-concepts/security
