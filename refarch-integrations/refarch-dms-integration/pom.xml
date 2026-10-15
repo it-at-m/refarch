@@ -11,7 +11,11 @@
     <artifactId>refarch-dms-integration</artifactId>
     <packaging>pom</packaging>
     <name>refarch-dms-integration</name>
-    <description>RefArch DMS integration</description>
+    <description>DEPRECATED: This integration is discontinued, due to the official client
+        "de.muenchen.oss.eakte:eakte-api-v1-spring-starter" and "-core".
+        See https://it-at-m.github.io/eakte-schnittstelle/v1/#eakte-schnittstellen-aufruf-mit-spring-boot-client
+        for further information.
+        BREAKING: The new client uses the REST API instead of SOAP.</description>
 
     <modules>
         <module>refarch-dms-integration-core</module>

@@ -9,17 +9,11 @@
 
     <artifactId>refarch-dms-integration-fabasoft-rest-api</artifactId>
     <name>refarch-dms-integration-fabasoft-rest-api</name>
-
-    <distributionManagement>
-        <relocation>
-            <groupId>de.muenchen.oss.eakte</groupId>
-            <artifactId>eakte-api-v1-spring-starter</artifactId>
-            <version>1.2.8</version>
-            <message>This client is discontinued, due to the official one.
-                Also see eakte-api-v1-spring-client for manual configuration.
-                BREAKING: The new client uses restclient instead of the reactive webclient.</message>
-        </relocation>
-    </distributionManagement>
+    <description>DEPRECATED: This integration is discontinued, due to the official client
+        "de.muenchen.oss.eakte:eakte-api-v1-spring-starter" and "-core".
+        See https://it-at-m.github.io/eakte-schnittstelle/v1/#eakte-schnittstellen-aufruf-mit-spring-boot-client
+        for further information.
+        BREAKING: The new client isn't reactive.</description>
 
     <properties>
         <openapi-generator-maven-plugin.version>7.24.0</openapi-generator-maven-plugin.version>
