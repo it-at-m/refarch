@@ -11,8 +11,8 @@ If not feel free to open a new one.
 
 ### "Origin not allowed" but configured
 
-By providing default CORS configuration for `/public/**` and `/clients/**` routes (to support configuration via environment variables),
-this default one can take precedence over custom configuration.
+By providing default CORS configuration for `/**`, `/public/**` and `/clients/**` routes (to support configuration via environment variables),
+the more specific defaults can take precedence over custom configuration.
 This leads to deployment specific configuration (setting e.g. `/**`) not being applied for `/public/**` and `/clients/**` routes.
 
 To fix that, set CORS for the keys `/public/**` and/or `/clients/**` or use the according environment variables.
