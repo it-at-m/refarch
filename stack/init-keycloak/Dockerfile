@@ -1,4 +1,4 @@
-FROM ghcr.io/opentofu/opentofu:1.9.1-minimal AS tofu
+FROM ghcr.io/opentofu/opentofu:1.13.1-minimal@sha256:dfbc3f0a8bed0adfa2cf49ff418f158afe24080eea6d6e748db8799fc4553db6 AS tofu
 
 FROM alpine:3.24.2
 
