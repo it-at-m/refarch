@@ -1,5 +1,0 @@
-id: init_realm
-author: Default
-changes:
-  - addRealm:
-      name: local_realm
