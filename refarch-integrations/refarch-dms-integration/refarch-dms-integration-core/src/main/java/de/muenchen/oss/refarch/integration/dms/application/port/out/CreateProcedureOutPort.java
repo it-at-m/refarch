@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.validation.annotation.Validated;
 
 @Validated
+@Deprecated
 public interface CreateProcedureOutPort {
 
     Procedure createProcedure(@Valid Procedure procedure, @NotNull @Valid RequestContext requestContext) throws DmsException;
