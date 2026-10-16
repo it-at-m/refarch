@@ -29,6 +29,13 @@ dist/
 nbdist/
 .nb-gradle/
 
+# ============== Terraform/OpenTofu ================
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+
 # Additional
 $(pwd)
 
