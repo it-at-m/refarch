@@ -108,7 +108,7 @@ in `/etc/containers/containers.conf` and use the [User-Mode-Networking](https://
 
 ::: danger IMPORTANT
 If for some reason you cannot add health checks to a container (this might be the case when a barebone base image is used and the container does not have tools like `curl` or `wget`)
-you need to set `skip-no-healthcheck: true` as described in the [CI/CD documentation](https://github.com/it-at-m/lhm_actions/blob/main/docs/actions.md#action-dockercompose-healthcheck) in order for the CI/CD to pass.
+you need to set `skip-no-healthcheck: true` as described in the [CI/CD documentation](https://it-at-m.github.io/lhm_actions/actions.html#action-dockercompose-healthcheck) in order for the CI/CD to pass.
 :::
 
 ### Vite
@@ -369,7 +369,7 @@ Currently, the templates only configure this feature for the [linting of GitHub 
 The `.github/workflows` folder contains various GitHub workflow files. Those reference centralized actions to simplify different parts of the CI/CD process.
 It also helps to keep Lifecycle Management as simple as possible as no direct dependency on third-party actions exists.
 
-More information about the centralized actions can be found in the [lhm_actions documentation](https://github.com/it-at-m/lhm_actions/blob/main/docs/actions.md).
+More information about the centralized actions can be found in the [lhm_actions documentation](https://it-at-m.github.io/lhm_actions/actions.html).
 
 ::: danger IMPORTANT
 Note that the CI/CD setup of the templates is in a Work-In-Progress state, so its subject to change in the near future.
