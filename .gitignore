@@ -31,7 +31,6 @@ nbdist/
 
 # ============== Terraform/OpenTofu ================
 **/.terraform/*
-.terraform.lock.hcl
 *.tfstate
 *.tfstate.*
 *.tfvars
