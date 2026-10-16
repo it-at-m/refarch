@@ -69,6 +69,7 @@ import org.apache.commons.lang3.StringUtils;
 @Slf4j
 @RequiredArgsConstructor
 @SuppressWarnings({ "PMD.CouplingBetweenObjects" })
+@Deprecated
 public class FabasoftOutAdapter implements
         CreateFileOutPort,
         CreateProcedureOutPort,

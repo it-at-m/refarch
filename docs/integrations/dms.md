@@ -2,6 +2,11 @@
 
 Integration for CRUD operations on a dms system in specific fabasoft.
 
+::: danger DEPRECATED
+The DMS integration is deprecated in favor of the [official REST client](https://it-at-m.github.io/eakte-schnittstelle/v1/#eakte-schnittstellen-aufruf-mit-spring-boot-client).
+Switch to `de.muenchen.oss.eakte:eakte-api-v1-spring-starter` or `de.muenchen.oss.eakte:eakte-api-v1-spring-client`.
+:::
+
 ## Modules
 
 The modules follow the [default naming convention](./index.md#naming-conventions).

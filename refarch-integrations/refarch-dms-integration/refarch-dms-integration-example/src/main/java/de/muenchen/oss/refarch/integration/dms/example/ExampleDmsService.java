@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Deprecated
 public class ExampleDmsService {
     private final DmsExampleProperties dmsExampleProperties;
     private final CreateDocumentOutPort createDocumentOutPort;
