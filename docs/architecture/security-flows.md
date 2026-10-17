@@ -17,7 +17,7 @@ The gateway handles the user-facing login flow and forwards authenticated reques
 The typical login flow is:
 
 1. A user opens the application through the gateway.
-2. If no authenticated session exists, the gateway redirects the user to the configured OpenID Connect provider.
+2. If frontend navigation reaches the gateway without a valid authenticated session, the gateway redirects the user to the configured OpenID Connect provider for OAuth login.
 3. After successful authentication, the gateway stores the resulting session information and delivers the frontend.
 
 ## Backend access
@@ -31,6 +31,8 @@ The architectural principles are:
 - each backend service validates the token before executing business logic (signature, audience, expiry)
 - authorization is enforced in the backend, not only in the UI (roles & authorities in token or user-info-endpoint)
 
+Protected `/api/**` requests without an authenticated gateway session return HTTP 401 without a redirect, allowing the frontend to trigger login. Missing or invalid CSRF tokens on unsafe HTTP methods still result in HTTP 403.
+
 ## Logout behavior
 
 The reference architecture does not implement a dedicated application-level logout flow.
@@ -43,7 +45,8 @@ Effective logout depends on two independent session lifetimes:
 The resulting behavior is:
 
 - While the gateway session is valid, the application remains authenticated without a new login flow.
-- If the gateway session expires but the identity-provider session is still valid, the next access through the gateway starts a new login roundtrip and transparently creates a new authenticated gateway session.
+- If the gateway session expires, the next frontend navigation starts a new login roundtrip. If the identity-provider session is still valid, this transparently creates a new authenticated gateway session.
+- Protected `/api/**` requests after the gateway session expires return HTTP 401 without a redirect, allowing the frontend to trigger login. CSRF validation on unsafe HTTP methods still returns HTTP 403 for missing or invalid tokens.
 - If the identity-provider session expires or is ended at the identity provider, the next attempt to create or refresh the gateway session requires a new login.
 
 Separate local (application-only) or global (identity-provider-wide) logout variants are not supported, to avoid immediate re-login in the local case and unintended logout from other applications in the global case.
