@@ -16,7 +16,7 @@
         BREAKING: The new client isn't reactive.</description>
 
     <properties>
-        <openapi-generator-maven-plugin.version>7.25.0</openapi-generator-maven-plugin.version>
+        <openapi-generator-maven-plugin.version>7.26.0</openapi-generator-maven-plugin.version>
 
         <jackson-databind-nullable.version>0.2.12</jackson-databind-nullable.version>
     </properties>
