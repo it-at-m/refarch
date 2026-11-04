@@ -12,13 +12,21 @@ spring:
         webflux:
           globalcors:
             cors-configurations:
+              '[/**]':
+                allowedOriginPatterns: ${ALLOWED_ORIGINS_ALL:}
+                allowedHeaders: ${ALLOWED_HEADERS_ALL:}
+                allowCredentials: ${ALLOW_CREDENTIALS_ALL:false}
+                allowedMethods: ${ALLOWED_METHODS_ALL:GET}
               '[/public/**]':
-                allowedOriginPatterns: ${ALLOWED_ORIGINS_PUBLIC}
+                allowedOriginPatterns: ${ALLOWED_ORIGINS_PUBLIC:${ALLOWED_ORIGINS_ALL:}}
+                allowedHeaders: ${ALLOWED_HEADERS_PUBLIC:${ALLOWED_HEADERS_ALL:}}
+                allowCredentials: ${ALLOW_CREDENTIALS_PUBLIC:${ALLOW_CREDENTIALS_ALL:false}}
+                allowedMethods: ${ALLOWED_METHODS_PUBLIC:${ALLOWED_METHODS_ALL:GET}}
               '[/clients/**]':
-                allowedOriginPatterns: ${ALLOWED_ORIGINS_CLIENTS}
-                allowedHeaders: "*"
-                allowCredentials: true
-                allowedMethods: "*"
+                allowedOriginPatterns: ${ALLOWED_ORIGINS_CLIENTS:${ALLOWED_ORIGINS_ALL:}}
+                allowedHeaders: ${ALLOWED_HEADERS_CLIENTS:${ALLOWED_HEADERS_ALL:}}
+                allowCredentials: ${ALLOW_CREDENTIALS_CLIENTS:${ALLOW_CREDENTIALS_ALL:false}}
+                allowedMethods: ${ALLOWED_METHODS_CLIENTS:${ALLOWED_METHODS_ALL:GET}}
           default-filters:
             - RemoveRequestHeader=cookie
             - RemoveRequestHeader=x-xsrf-token
