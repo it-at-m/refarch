@@ -1,7 +1,7 @@
 "Type: Feature":
   - head-branch: [ '^feat', '-feature-' ]
 "Type: Bug":
-  - head-branch: [ '^bug', '-bug-' ]
+  - head-branch: [ '^bug', '-bug-', '^fix' ]
 "Type: Maintenance":
   - head-branch: [ '^maint', '^refact', '^chore', '-maintenance-' ]
 "Type: Documentation":
