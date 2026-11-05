@@ -22,7 +22,7 @@ All path references you find in the following documentation for the templates ar
 The frontend provides the application UI and is developed with Vue.js. It calls the backend (via the API gateway) for reading and modifying data.
 It's developed separate for each application and therefore a default template is provided.
 
-Language: [TypeScript](<[TypeScript](https://www.typescriptlang.org/)>)  
+Language: [TypeScript](https://www.typescriptlang.org/)  
 Technologies: Vue.js, Vuetify
 
 ### Backend
