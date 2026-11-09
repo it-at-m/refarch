@@ -1,5 +1,2 @@
-# braces is used as part of @intlify/unplugin-vue-i18n dev dependency
-CVE-2026-93687
-
-# http-cache-semantics is only uses as part of cyclonedx-npm dev dependency
-CVE-2026-93748
+# katex: No attacker-controlled mathematical LaTeX expressions possible
+CVE-2026-103923
