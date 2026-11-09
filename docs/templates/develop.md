@@ -325,11 +325,10 @@ For the provided CodeQL workflow to run properly, the ‘Advanced Setup’ for C
 
 For dependency security scanning we use [Trivy](https://trivy.dev/). Trivy inspects your `pom.xml` and/or `package-lock.json` files for known vulnerabilities.
 
-If Trivy reports a vulnerability:
+If Trivy reports a vulnerability review the referenced [CVE (Common Vulnerabilities and Exposures)](https://nvd.nist.gov/) or [GH advisories](https://github.com/advisories) and assess whether the issue is exploitable in your project:
 
-- Review the referenced [CVE (Common Vulnerabilities and Exposures)](https://nvd.nist.gov/) or [GH advisories](https://github.com/advisories) and assess whether the issue is exploitable in your project.
-- Remediate where possible by upgrading, patching or replacing the affected dependency. If the vulnerability occurs in a transitive dependency, you might have to explicitly add a newer version.
-- If the finding is a false positive, add it to the `.trivyignore` file. [Trivy Vulnerability Explorer](https://dbsystel.github.io/trivy-vulnerability-explorer/) allows creating the `.trivyignore` file interactively by uploading a Trivy report in JSON format. A Trivy report can be retrieved as a pipeline artifact.
+- **False Positive**: Add it to the `.trivyignore` file. [Trivy Vulnerability Explorer](https://dbsystel.github.io/trivy-vulnerability-explorer/) allows creating the `.trivyignore` file interactively by uploading a Trivy report in JSON format. A Trivy report can be retrieved as a pipeline artifact.
+- **True Positive**: Remediate by upgrading or replacing the affected dependency. If the vulnerability occurs in a transitive dependency, you might have to explicitly add a newer version using overrides.
 
 By default, the Trivy workflow will fail when vulnerabilities are found. To make this failure block merges, enable the appropriate GitHub ruleset/branch protection so the workflow must pass before a pull request can be merged.
 
