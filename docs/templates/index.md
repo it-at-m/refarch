@@ -19,7 +19,7 @@ All path references you find in the following documentation for the templates ar
 
 ### Frontend
 
-The frontend provides the application UI and is developed with Vue.js. It calls the backend (via the API gateway) for reading and modifying data.
+The frontend provides the application UI and calls the backend (via the API gateway) for reading and modifying data.
 It's developed separate for each application and therefore a default template is provided.
 
 Language: [TypeScript](https://www.typescriptlang.org/)  
@@ -43,8 +43,8 @@ Technologies: [Vue.js](https://vuejs.org/), [muc-patternlab-vue](https://github.
 
 ### Enterprise Application Integration (EAI)
 
-Beside the development of web applications, the RefArch also provides a template for enterprise application integration (EAI).
-This enables integration between existing applications. By default, most applications won't require this template.
+Enterprise Application Integration (EAI) connects existing applications, not limited to web applications.
+By default, most applications won't require this template.
 
 Language: Java  
 Technologies: [Apache Camel](https://camel.apache.org/), [Spring Boot](https://spring.io/projects/spring-boot)

@@ -35,8 +35,8 @@ See [API Gateway](./gateway.md) for further information.
 
 ### Templates
 
-The RefArch provides the templates `backend`, `frontend`, `web-components`, `eai`.
-For further information see [Templates](./templates/index.md).
+The RefArch currently provides the templates `backend`, `frontend`, `webcomponent`, `eai`.
+For more information see [Templates](./templates/index.md).
 
 ## See further details here
 
