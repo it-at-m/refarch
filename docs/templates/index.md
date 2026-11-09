@@ -19,7 +19,7 @@ All path references you find in the following documentation for the templates ar
 
 ### Frontend
 
-The frontend provides the application UI and calls the backend (via the API gateway) for reading and modifying data.
+The frontend provides the application UI and calls the backend (via the [API gateway](../gateway.md)) for reading and modifying data.
 
 Language: [TypeScript](https://www.typescriptlang.org/)  
 Technologies: [Vue.js](https://vuejs.org/), [Vuetify](https://vuetifyjs.com)
@@ -34,7 +34,6 @@ Technologies: [Spring Boot](https://spring.io/projects/spring-boot)
 ### Web Component
 
 Web components enable development of modular frontend components (also known as micro frontends) which can be integrated into other web applications.
-
 By default, most applications won't require this template.
 
 Language: [TypeScript](https://www.typescriptlang.org/)  
