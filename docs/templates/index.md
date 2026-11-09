@@ -20,23 +20,22 @@ All path references you find in the following documentation for the templates ar
 ### Frontend
 
 The frontend provides the application UI and calls the backend (via the API gateway) for reading and modifying data.
-It's developed separate for each application and therefore a default template is provided.
 
 Language: [TypeScript](https://www.typescriptlang.org/)  
-Technologies: Vue.js, Vuetify
+Technologies: [Vue.js](https://vuejs.org/), [Vuetify](https://vuetifyjs.com)
 
 ### Backend
 
 The backend provides a REST-API for reading and modifying application data, handles business logic and access to databases.
-Like the frontend the backend is also provided as a template.
 
 Language: Java  
 Technologies: [Spring Boot](https://spring.io/projects/spring-boot)
 
 ### Web Component
 
-The web components template enables development of modular frontend components which can be integrated into other applications.
-This concept is also known as micro frontends. By default, most applications won't require this template.
+Web components enable development of modular frontend components (also known as micro frontends) which can be integrated into other web applications.
+
+By default, most applications won't require this template.
 
 Language: [TypeScript](https://www.typescriptlang.org/)  
 Technologies: [Vue.js](https://vuejs.org/), [muc-patternlab-vue](https://github.com/it-at-m/muc-patternlab-vue)
