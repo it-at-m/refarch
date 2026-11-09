@@ -14,3 +14,40 @@ You can find the code for the templates in the [refarch-templates repository](ht
 ::: info Information
 All path references you find in the following documentation for the templates are always in relation to the [refarch-templates repository](https://github.com/it-at-m/refarch-templates) (if not stated differently).
 :::
+
+## Available Templates
+
+### Frontend
+
+The frontend provides the application UI and calls the backend (via the [API gateway](../gateway.md)) for reading and modifying data.
+
+Language: [TypeScript](https://www.typescriptlang.org/)  
+Technologies: [Vue.js](https://vuejs.org/), [Vuetify](https://vuetifyjs.com)
+
+### Backend
+
+The backend provides a REST-API for reading and modifying application data, handles business logic and access to databases.
+
+Language: Java  
+Technologies: [Spring Boot](https://spring.io/projects/spring-boot)
+
+### Web Component
+
+Web components enable development of modular frontend components (also known as micro frontends) which can be integrated into other web applications.
+By default, most applications won't require this template.
+
+Language: [TypeScript](https://www.typescriptlang.org/)  
+Technologies: [Vue.js](https://vuejs.org/), [muc-patternlab-vue](https://github.com/it-at-m/muc-patternlab-vue)
+
+### Enterprise Application Integration (EAI)
+
+Enterprise Application Integration (EAI) connects existing applications, not limited to web applications.
+By default, most applications won't require this template.
+
+Language: Java  
+Technologies: [Apache Camel](https://camel.apache.org/), [Spring Boot](https://spring.io/projects/spring-boot)
+
+:::info Plain Spring EAI
+As an alternative to the `eai` template (which uses Apache Camel and Spring Boot) the `backend` template can be used
+for starting a plain Spring Boot EAI.
+:::
