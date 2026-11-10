@@ -1,0 +1,107 @@
+server:
+  # HTTP port both inbound edges are served on: the REST endpoint and, under
+  # spring.webservices.path below, the SOAP endpoint. One container, so one port for both.
+  # Override per environment (`--server.port=9090`, `SERVER_PORT=9090`, or this file).
+  port: 8080
+
+spring:
+  application:
+    name: "@project.artifactId@"
+    group: "@project.groupId@"
+    version: "@project.version@"
+  mail:
+    # SMTP server the failure notifications go through. Only reached when a notification channel below
+    # is enabled: nothing is sent, and nothing is connected to, while they are all off.
+    host: localhost
+    port: 25
+  webservices:
+    # Mapping of the Spring WS MessageDispatcherServlet, and so the SOAP POST address. The canonical
+    # WSDL and schema are served beneath it (pscdInbound.wsdl, pscdCanonical.xsd).
+    # NOTE: this is no longer the predecessor's CXF address (/services/webservicePscd). Every sending
+    # system has to be repointed at /ws/pscd, since the servlet dispatches on the payload root and a
+    # POST to the old path now simply 404s.
+    path: /ws/pscd
+
+refarch:
+  mail:
+    # Sender of the failure mails. Must be set per environment; the placeholder only keeps startup from
+    # failing on the property's own validation.
+    from-address: pscd-integration@localhost
+    # The email integration would otherwise open an SMTP connection during startup and fail the whole
+    # service when the server is unreachable, and a failure notification is not worth that.
+    test-connection: false
+  pscd:
+    # Who is told when a batch could not be processed. Off per channel, because it needs a reachable
+    # SMTP server and a recipient: nothing is sent while `to` is blank, whatever the toggles say.
+    notification:
+      to: ""
+      # Two mails, two subjects: a batch that was not delivered at all, and one that was delivered but
+      # carried records PSCD could not be given as they arrived (unknown SATZART, mandatory field
+      # filled with REQUIRED: the entries that also go to logs/account-error.log).
+      subject: PSCD batch processing failed
+      record-error-subject: PSCD batch delivered with record errors
+      # String.format pattern, arguments in order: channel, batch, location, timestamp, reason.
+      # Point at file:/etc/pscd/failure-mail.txt to maintain the text next to the deployment instead.
+      template: classpath:mail/pscd-failure.txt
+      file:
+        enabled: false
+      rest:
+        enabled: false
+      soap:
+        enabled: false
+    client:
+      # PSCD (SAP) SOAP endpoint this service delivers batches to.
+      url: http://localhost:1337/pscd-target
+      # HTTP Basic against that endpoint, sent preemptively. Left unset here on purpose: no credentials
+      # are sent while the username is empty, and a password belongs in the environment rather than in
+      # a committed file: set REFARCH_PSCD_CLIENT_USERNAME / REFARCH_PSCD_CLIENT_PASSWORD. Basic only
+      # base64-encodes them, so point `url` at https before turning them on.
+      # username: pscd-service
+      # password: from-a-secret
+    # Inbound channels, independent of each other: any combination may run at once. SOAP and REST
+    # both speak the refarch-owned canonical contract; file polls a directory of flat-file batches.
+    inbound:
+      # HTTP Basic in front of both HTTP channels, one account for SOAP and REST, always required.
+      # Submitting a batch needs the credential; the contract stays readable without one (GET of the
+      # WSDL, the schema and the OpenAPI document).
+      #
+      # Both values are MANDATORY and deliberately absent here: there is no default account, and the
+      # service refuses to start until this environment supplies one. Set them from the environment or
+      # a secret (REFARCH_PSCD_INBOUND_SECURITY_USERNAME / ..._PASSWORD) rather than in this file, and
+      # terminate TLS in front of the service, because Basic only base64-encodes them.
+      # security:
+      #   username: pscd-sender
+      #   password: from-a-secret
+      soap:
+        enabled: true
+      rest:
+        enabled: true
+      file:
+        enabled: false
+        directory: ./pscd-inbox
+        # Records are fixed-width, so column offsets are character offsets: this must match what the
+        # sending side writes, or every column after the first umlaut shifts.
+        charset: ISO-8859-1
+        # How long a file's size and modification time must hold still before it is taken up, so a
+        # batch still being written is not read half-finished (which the parser would repair rather
+        # than reject, and so deliver). Rounds up to a multiple of poll-interval.
+        # Set to 0 when the sending side writes to a temporary name and renames the finished file into
+        # place: that is atomic, so waiting only adds latency.
+        stable-for: 2s
+        # Where a batch lives while it is being processed. It is moved here BEFORE anything is read or
+        # delivered, which is what makes "delivered at most once" hold: once out of the polled
+        # directory it cannot come round again. Anything left here is a batch whose delivery status is
+        # unknown; it is reported at startup and never picked up again.
+        working-directory: .working
+
+logging:
+  include-application-group: false
+  level:
+    root: INFO
+    de.muenchen.oss.refarch: DEBUG
+    org.springframework.ws: INFO
+    # Spring WS message tracing for the inbound SOAP channel: off by default, uncomment to diagnose a
+    # payload. DEBUG logs the payload root element only; TRACE logs the full payload, which contains
+    # personal and financial record data, so keep that to development.
+    # org.springframework.ws.server.MessageTracing.received: DEBUG
+    # org.springframework.ws.server.MessageTracing.sent: DEBUG

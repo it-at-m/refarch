@@ -1,0 +1,1102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="SI_SOAPSatzarten_AS_OB"
+    targetNamespace="http://lhm.de/pi/pscd/rahmenschnittstelle"
+    xmlns:p1="http://lhm.de/pi/pscd/rahmenschnittstelle"
+    xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"
+    xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+    <wsdl:documentation />
+    <wsp:UsingPolicy wsdl:required="true" />
+    <ifw:properties xmlns:ifw="urn:com-sap:ifr:v2:wsdl">
+        <ifw:category>ifmmessif</ifw:category>
+        <ifw:VersionID>4ef4f0cb56d711e99806000007abeab2</ifw:VersionID>
+        <ifw:lifeCycleInfo>
+            <objectState />
+            <objectstatus value="A" />
+            <personresponsible value="z074145" />
+            <changed on="1554381835354" by="z074145" />
+        </ifw:lifeCycleInfo>
+        <ifw:runtimeVersion
+            uri="urn:sap-com:soap:application:esr:client:710" />
+        <ifw:communicationProfile
+            uri="prf_dt_if_com_stateless" />
+        <ifw:securityProfile
+            uri="prf_dt_if_sec_high" />
+        <ifw:interfacePattern p2p="false">L
+        </ifw:interfacePattern>
+        <ifw:isSensitiveData>false</ifw:isSensitiveData>
+        <ifw:classifications>
+            <ifw:classification
+                uddikey="uddi:uddi.sap.com:categorization:object-type"
+                name="ObjectType"
+                namespace="http://uddi.sap.com/classification"
+                valueCode="ifmmessif" />
+            <ifw:classification
+                uddikey="uddi:uddi.sap.com:categorization:object-id"
+                name="ObjectID"
+                namespace="http://uddi.sap.com/classification"
+                valueCode="f0af8d91599935d9888179874dbdd3f0" />
+        </ifw:classifications>
+        <ifw:additionalAttributes />
+        <ifw:methods>
+            <ifw:method name="SI_SOAPSatzarten_AS_OB">
+                <ifw:isSynchron>false</ifw:isSynchron>
+                <ifw:isIdempotent>false</ifw:isIdempotent>
+                <ifw:isInbound>false</ifw:isInbound>
+                <ifw:interfaceCategory>outbound</ifw:interfaceCategory>
+                <ifw:communicationProfile
+                    uri="prf_dt_op_com_async" />
+                <ifw:lifeCycleInfo>
+                    <objectState />
+                </ifw:lifeCycleInfo>
+                <ifw:contextobjects />
+            </ifw:method>
+        </ifw:methods>
+        <ifw:messages>
+            <ifw:message name="MT_SOAPSatzarten">
+                <ifw:messType>ifmmessage</ifw:messType>
+                <ifw:keyElements>
+                    <ifw:elem id="NAME">MT_SOAPSatzarten</ifw:elem>
+                    <ifw:elem id="NAMESPACE">http://lhm.de/pi/pscd/rahmenschnittstelle
+                    </ifw:elem>
+                </ifw:keyElements>
+                <ifw:technicalNamespace>http://lhm.de/pi/pscd/rahmenschnittstelle
+                </ifw:technicalNamespace>
+                <ifw:VersionID>2298423556d711e98c0e000007abeab2
+                </ifw:VersionID>
+                <ifw:xmlNamespace>http://lhm.de/pi/pscd/rahmenschnittstelle
+                </ifw:xmlNamespace>
+                <ifw:dataType
+                    uri="name=DT_SOAPSatzarten~namespace=http://lhm.de/pi/pscd/rahmenschnittstelle~swcvId=95657e70a06311e3bbcadcc60aa08044"
+                    name="DT_SOAPSatzarten"
+                    namespace="http://lhm.de/pi/pscd/rahmenschnittstelle"
+                    swcvId="95657e70a06311e3bbcadcc60aa08044" />
+            </ifw:message>
+        </ifw:messages>
+        <ifw:matchingInterfaces />
+        <ifw:genericProperties>
+            <ifw:swcvinfo>
+                <ifw:guid>95657e70a06311e3bbcadcc60aa08044</ifw:guid>
+                <ifw:name>PSCD_VV , 1.0 of lhm</ifw:name>
+            </ifw:swcvinfo>
+            <ifw:languages>
+                <ifw:language internalCode="DE"
+                    original="true" />
+                <ifw:language internalCode="EN" />
+            </ifw:languages>
+            <ifw:documentation type="I">
+                <name>_ID_f0af8d91599935d9888179874dbdd3f0_ifmmessif
+                </name>
+                <namespace>http://lhm.de/pi/pscd/rahmenschnittstelle
+                </namespace>
+            </ifw:documentation>
+        </ifw:genericProperties>
+    </ifw:properties>
+    <wsp:Policy wsu:Id="OP_SI_SOAPSatzarten_AS_OB" />
+    <wsdl:types>
+        <xsd:schema
+            targetNamespace="http://lhm.de/pi/pscd/rahmenschnittstelle"
+            xmlns="http://lhm.de/pi/pscd/rahmenschnittstelle"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:element name="MT_SOAPSatzarten"
+                type="DT_SOAPSatzarten" />
+            <xsd:complexType name="DT_Satzart210">
+                <xsd:sequence>
+                    <xsd:element name="SATZART">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:length value="3" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="PSOBKEY">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="20" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="EINNAHMEART">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="5" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="BETRW">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="16" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="FAEDN">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="8" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="BLDAT">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="8" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="PERSL" minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="4" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="XBLNR">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="16" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="FV_BELNR">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="16" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="BLWAE" minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="5" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="FEHLER" minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="256" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="KOSTL" minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="10" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="MWSKZ" minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="2" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="AUFNR" minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="12" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="DT_Satzart105">
+                <xsd:sequence>
+                    <xsd:element name="SATZART">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:length value="3" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="PSOBKEY">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="20" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="CORR_PARTNER">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="10" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="CORR_ROLE">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="4" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="FEHLER" minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="256" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="DT_Satzart200">
+                <xsd:sequence>
+                    <xsd:element name="SATZART">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:length value="3" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="PSOBKEY">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="20" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="EINNAHMEART">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="5" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="BETRW">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="16" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="FAEDN">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="8" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="BLDAT">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="8" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="PERSL" minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="4" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="OPTXT" minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="50" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="SGTXT" minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="50" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="BLWAE" minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="5" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="XBLNR">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="16" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="FV_BELNR">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="16" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="KOSTL" minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="10" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="FEHLER" minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="256" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="MWSKZ" minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="2" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="AUFNR" minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="12" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="DT_Satzart250">
+                <xsd:sequence>
+                    <xsd:element name="SATZART">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:length value="3" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="PSOBKEY">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="20" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="EINNAHMEART">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="5" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="BETRW">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="16" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="FAEDN">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="8" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="BLDAT">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="8" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="PERSL" minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="4" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="OPTXT" minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="50" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="SGTXT" minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="50" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="BLWAE" minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="5" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="VALUT" minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="8" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="XBLNR">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="16" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="FV_BELNR">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="16" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="KOSTL" minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="10" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="FEHLER" minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="256" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="MWSKZ" minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="2" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="AUFNR" minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="12" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="DT_SatzartFehler">
+                <xsd:sequence>
+                    <xsd:element name="SATZART">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="3" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="FEHLERTEXT">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="256" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="DT_Satzart260">
+                <xsd:sequence>
+                    <xsd:element name="SATZART">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:length value="3" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="PSOBKEY">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="20" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="EINNAHMEART">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="5" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="BETRW">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="16" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="FAEDN">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="8" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="BLDAT">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="8" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="PERSL" minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="4" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="XBLNR">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="16" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="FV_BELNR">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="16" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="FEHLER" minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="256" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="KOSTL" minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="10" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="MWSKZ" minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="2" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="AUFNR" minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="12" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="DT_SOAPSatzarten">
+                <xsd:sequence>
+                    <xsd:element name="Filename"
+                        type="xsd:string" />
+                    <xsd:element name="Satzart010"
+                        type="DT_Satzart010" />
+                    <xsd:element name="Satzart100"
+                        type="DT_Satzart100" minOccurs="0"
+                        maxOccurs="unbounded" />
+                    <xsd:element name="Satzart105"
+                        type="DT_Satzart105" minOccurs="0"
+                        maxOccurs="unbounded" />
+                    <xsd:element name="Satzart155"
+                        type="DT_Satzart155" minOccurs="0"
+                        maxOccurs="unbounded" />
+                    <xsd:element name="Satzart165"
+                        type="DT_Satzart165" minOccurs="0"
+                        maxOccurs="unbounded" />
+                    <xsd:element name="Satzart200"
+                        type="DT_Satzart200" minOccurs="0"
+                        maxOccurs="unbounded" />
+                    <xsd:element name="Satzart210"
+                        type="DT_Satzart210" minOccurs="0"
+                        maxOccurs="unbounded" />
+                    <xsd:element name="Satzart250"
+                        type="DT_Satzart250" minOccurs="0"
+                        maxOccurs="unbounded" />
+                    <xsd:element name="Satzart260"
+                        type="DT_Satzart260" minOccurs="0"
+                        maxOccurs="unbounded" />
+                    <xsd:element name="SatzartFehler"
+                        type="DT_SatzartFehler" minOccurs="0"
+                        maxOccurs="unbounded" />
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="DT_Satzart165">
+                <xsd:sequence>
+                    <xsd:element name="SATZART">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:length value="3" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="PSOBKEY">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="20" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="PSOBTXTB1"
+                        minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="54" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="PSOBTXTB2"
+                        minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="54" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="PSOBTXTB3"
+                        minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="54" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="PSOBTXTB4"
+                        minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="54" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="PSOBTXTB5"
+                        minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="54" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="PSOBTXTB6"
+                        minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="54" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="ZWEITSCHULDNER"
+                        minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="1" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="EIGENTUEMERWECHSEL"
+                        minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="1" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="BETRIEBSENDE"
+                        minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="8" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="KD_KENN"
+                        minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="27" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="FACHDST_SB"
+                        minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="30" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="FACHDST_TELNR"
+                        minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="10" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="FEHLER" minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="256" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="DT_Satzart155">
+                <xsd:sequence>
+                    <xsd:element name="SATZART">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:length value="3" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="PSOBKEY">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="20" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="DELETE_FLAG"
+                        minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="1" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="CORR_ROLE"
+                        minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="4" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="FEHLER" minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="256" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="DT_Satzart010">
+                <xsd:sequence>
+                    <xsd:element name="SATZART">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="3" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="ABSTIMMSUMME">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="20" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="VORZEICHEN">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="1" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="FEHLER" minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="256" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="DT_Satzart100">
+                <xsd:sequence>
+                    <xsd:element name="SATZART">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:length value="3" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="PSOBKEY">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="20" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="PARTNER">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="10" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="ADDRNUM"
+                        minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="10" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="PSOBTXTB1"
+                        minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="54" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="PSOBTXTB2"
+                        minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="54" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="PSOBTXTB3"
+                        minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="54" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="PSOBTXTB4"
+                        minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="54" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="PSOBTXTB5"
+                        minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="54" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="PSOBTXTB6"
+                        minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="54" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="ZWEITSCHULDNER"
+                        minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="1" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="EIGENTUEMERWECHSEL"
+                        minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="1" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="BETRIEBSENDE"
+                        minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="8" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="KD_KENN"
+                        minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="27" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="FACHDST_SB"
+                        minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="30" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="FACHDST_TELNR"
+                        minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="10" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                    <xsd:element name="FEHLER" minOccurs="0">
+                        <xsd:simpleType>
+                            <xsd:restriction
+                                base="xsd:string">
+                                <xsd:maxLength value="256" />
+                            </xsd:restriction>
+                        </xsd:simpleType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="MT_SOAPSatzarten">
+        <wsdl:documentation />
+        <wsdl:part name="MT_SOAPSatzarten"
+            element="p1:MT_SOAPSatzarten" />
+    </wsdl:message>
+    <wsdl:portType name="SI_SOAPSatzarten_AS_OB">
+        <wsdl:documentation />
+        <wsdl:operation name="SI_SOAPSatzarten_AS_OB">
+            <wsdl:documentation />
+            <wsp:Policy>
+                <wsp:PolicyReference
+                    URI="#OP_SI_SOAPSatzarten_AS_OB" />
+            </wsp:Policy>
+            <wsdl:input message="p1:MT_SOAPSatzarten" />
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="SI_SOAPSatzarten_AS_OBBinding"
+        type="p1:SI_SOAPSatzarten_AS_OB">
+        <soap:binding style="document"
+            transport="http://schemas.xmlsoap.org/soap/http"
+            xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" />
+        <wsdl:operation name="SI_SOAPSatzarten_AS_OB">
+            <soap:operation
+                soapAction="http://sap.com/xi/WebService/soap1.1"
+                xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" />
+            <wsdl:input>
+                <soap:body use="literal"
+                    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" />
+            </wsdl:input>
+        </wsdl:operation>
+    </wsdl:binding>
+</wsdl:definitions>
