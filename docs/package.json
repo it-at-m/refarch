@@ -3,6 +3,12 @@
   "overrides": {
     "vitepress": {
       "vite": "6.4.5"
+    },
+    "markdownlint-cli": {
+      "katex": "0.18.2"
+    },
+    "mermaid": {
+      "katex": "0.18.2"
     }
   },
   "name": "refarch-docs",
