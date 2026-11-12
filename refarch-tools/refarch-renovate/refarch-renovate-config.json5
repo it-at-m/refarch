@@ -15,12 +15,6 @@
   },
   "packageRules": [
     {
-      "description": "Disable regular updates for npm dependency overrides",
-      "matchManagers": ["npm"],
-      "matchDepTypes": ["overrides"],
-      "enabled": false
-    },
-    {
       "description": "Disable automerge for patch-level updates when pre-release version",
       "matchUpdateTypes": ["patch"],
       "matchCurrentVersion": "/^0\\./", // check if version starts with 0.1
