@@ -10,7 +10,7 @@
 
 ## Toolchains
 - Java 21 across all Maven projects.
-- `docs` requires Node `>=24.11 <25`; CI uses Node 24.
+- `docs` requires Node `>=26.13 <27`; CI uses Node 26.
 
 ## Commands
 - Gateway full verification: `mvn -f refarch-gateway/pom.xml verify`
