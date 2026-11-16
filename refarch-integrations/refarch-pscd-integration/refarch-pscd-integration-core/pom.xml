@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>de.muenchen.oss.refarch</groupId>
+        <artifactId>refarch-pscd-integration</artifactId>
+        <version>3.2.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>refarch-pscd-integration-core</artifactId>
+    <name>refarch-pscd-integration-core</name>
+    <description>Domain and ports/adapters for the PSCD integration</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>de.muenchen.oss.refarch</groupId>
+            <artifactId>refarch-pscd-integration-client</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+
+</project>
