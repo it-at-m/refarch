@@ -65,7 +65,7 @@ Submitting requires HTTP Basic on both HTTP channels. There is no default accoun
 
 A batch passes through three subdirectories of the polled one, none of them polled: the working directory while it is being processed, then the done or error directory. It is stamped with the time it was taken up (`batch.txt` becomes `batch_20260804_161500123.txt`) and keeps that name into its archive, so a reused filename cannot overwrite an earlier run's copy.
 
-**Taken up before it is delivered.** The move into the working directory happens first, before the file is even read. That is to *delivered at most once*: from that moment the poll cannot see the file again, so a later failure to file it as done cannot bring it back for a second delivery. The cost is that a batch whose processing is interrupted (a failed final move, a crash, a kill) stays in the working directory and is **not** retried. Those are reported at startup:
+**Taken up before it is delivered.** The move into the working directory happens first, before the file is even read. This provides *at-most-once delivery*: from that moment the poll cannot see the file again, so a later failure to file it as done cannot bring it back for a second delivery. The cost is that a batch whose processing is interrupted (a failed final move, a crash, a kill) stays in the working directory and is **not** retried. Those are reported at startup:
 
 ```
 PSCD working directory '/srv/pscd-inbox/.working' holds 1 batch(es) from an earlier run whose
@@ -82,7 +82,7 @@ This channel deliberately behaves differently from REST and SOAP, carried over f
 
 ### Logs
 
-Two files to reconciles against, separate from the service log and written to `PSCD_LOG_DIR` (default `./logs`):
+Two files to reconcile against, separate from the service log and written to `PSCD_LOG_DIR` (default `./logs`):
 
 - `account-error.log`: one line per record that could not be processed as it arrived
 - `completion.log`: one line per file handed to PSCD
