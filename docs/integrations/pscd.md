@@ -67,7 +67,7 @@ A batch passes through three subdirectories of the polled one, none of them poll
 
 **Taken up before it is delivered.** The move into the working directory happens first, before the file is even read. This provides *at-most-once delivery*: from that moment the poll cannot see the file again, so a later failure to file it as done cannot bring it back for a second delivery. The cost is that a batch whose processing is interrupted (a failed final move, a crash, a kill) stays in the working directory and is **not** retried. Those are reported at startup:
 
-```
+```text
 PSCD working directory '/srv/pscd-inbox/.working' holds 1 batch(es) from an earlier run whose
 delivery status is unknown; they are not picked up again and need settling by hand: batch_20260804_161500123.txt
 ```
