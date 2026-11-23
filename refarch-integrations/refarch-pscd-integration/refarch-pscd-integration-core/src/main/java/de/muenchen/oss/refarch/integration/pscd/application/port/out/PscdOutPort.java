@@ -3,7 +3,7 @@ package de.muenchen.oss.refarch.integration.pscd.application.port.out;
 import de.muenchen.oss.refarch.integration.pscd.domain.model.PscdSatzarten;
 
 /**
- * Outbound port the transformation route terminates in (via {@code bean:pscdOutPort}).
+ * Outbound port the submission flow terminates in.
  *
  * <p>
  * Expressed purely in domain terms ({@link PscdSatzarten}). The implementing adapter is responsible
