@@ -3,8 +3,10 @@ package de.muenchen.oss.refarch.integration.pscd.configuration;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import java.time.Duration;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.time.DurationMin;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.validation.annotation.Validated;
@@ -53,6 +55,14 @@ public class PscdProperties {
          * </p>
          */
         private String password;
+
+        /** How long to wait for the connection to {@link #url}. */
+        @NotNull @DurationMin(millis = 1)
+        private Duration connectionTimeout = Duration.ofSeconds(30);
+
+        /** How long to wait for the endpoint's acknowledgement once a message is sent. */
+        @NotNull @DurationMin(millis = 1)
+        private Duration receiveTimeout = Duration.ofSeconds(60);
 
     }
 }

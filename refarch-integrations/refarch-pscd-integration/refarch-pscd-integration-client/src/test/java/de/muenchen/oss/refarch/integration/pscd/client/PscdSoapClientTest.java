@@ -8,6 +8,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.assertThatNullPointerException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.github.tomakehurst.wiremock.client.BasicCredentials;
@@ -15,6 +17,8 @@ import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import de.lhm.pi.pscd.rahmenschnittstelle.DTSOAPSatzarten;
 import de.lhm.pi.pscd.rahmenschnittstelle.DTSatzart010;
+import java.net.http.HttpTimeoutException;
+import java.time.Duration;
 import org.junit.jupiter.api.Test;
 
 @WireMockTest
@@ -46,8 +50,8 @@ class PscdSoapClientTest {
     void sendsConfiguredCredentialsAsHttpBasic(final WireMockRuntimeInfo wireMock) {
         stubFor(post(urlEqualTo(PATH)).willReturn(aResponse().withStatus(202)));
 
-        final PscdSoapClient client = new PscdSoapClient(endpoint(wireMock),
-                "pscd-service", "s3cret");
+        final PscdSoapClient client = new PscdSoapClient(endpoint(wireMock), "pscd-service", "s3cret",
+                Duration.ofSeconds(30), Duration.ofSeconds(60));
 
         client.send(message(FILENAME));
 
@@ -72,7 +76,8 @@ class PscdSoapClientTest {
     void sendsNoAuthorizationHeaderForABlankUsername(final WireMockRuntimeInfo wireMock) {
         stubFor(post(urlEqualTo(PATH)).willReturn(aResponse().withStatus(202)));
 
-        new PscdSoapClient(endpoint(wireMock), "  ", "s3cret")
+        new PscdSoapClient(endpoint(wireMock), "  ", "s3cret",
+                Duration.ofSeconds(30), Duration.ofSeconds(60))
                 .send(message(FILENAME));
 
         verify(postRequestedFor(urlEqualTo(PATH)).withoutHeader("Authorization"));
@@ -85,6 +90,37 @@ class PscdSoapClientTest {
         final PscdSoapClient client = new PscdSoapClient(endpoint(wireMock));
 
         assertThatThrownBy(() -> client.send(message(FILENAME))).isInstanceOf(RuntimeException.class);
+    }
+
+    @Test
+    void givesUpWhenTheAcknowledgementTakesLongerThanTheReceiveTimeout(final WireMockRuntimeInfo wireMock) {
+        stubFor(post(urlEqualTo(PATH)).willReturn(aResponse().withStatus(202).withFixedDelay(5_000)));
+
+        final PscdSoapClient client = new PscdSoapClient(endpoint(wireMock), null, null,
+                Duration.ofSeconds(5), Duration.ofMillis(200));
+
+        assertThatThrownBy(() -> client.send(message(FILENAME))).hasCauseInstanceOf(HttpTimeoutException.class);
+    }
+
+    @Test
+    void rejectsAZeroConnectionTimeout(final WireMockRuntimeInfo wireMock) {
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> new PscdSoapClient(endpoint(wireMock), null, null, Duration.ZERO, Duration.ofSeconds(1)))
+                .withMessageContaining("connectionTimeout");
+    }
+
+    @Test
+    void rejectsAReceiveTimeoutBelowOneMillisecond(final WireMockRuntimeInfo wireMock) {
+        assertThatIllegalArgumentException()
+                .isThrownBy(() -> new PscdSoapClient(endpoint(wireMock), null, null, Duration.ofSeconds(1), Duration.ofNanos(999_999)))
+                .withMessageContaining("receiveTimeout");
+    }
+
+    @Test
+    void rejectsAMissingTimeout(final WireMockRuntimeInfo wireMock) {
+        assertThatNullPointerException()
+                .isThrownBy(() -> new PscdSoapClient(endpoint(wireMock), null, null, Duration.ofSeconds(1), null))
+                .withMessageContaining("receiveTimeout");
     }
 
     /** The stub endpoint's address, on whichever port WireMock took. */

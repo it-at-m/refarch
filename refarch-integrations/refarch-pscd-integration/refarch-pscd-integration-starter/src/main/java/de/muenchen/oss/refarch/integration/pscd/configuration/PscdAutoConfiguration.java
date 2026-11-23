@@ -34,7 +34,8 @@ public class PscdAutoConfiguration {
     @ConditionalOnMissingBean
     public PscdSoapClient pscdSoapClient() {
         final PscdProperties.Client client = this.pscdProperties.getClient();
-        return new PscdSoapClient(client.getUrl(), client.getUsername(), client.getPassword());
+        return new PscdSoapClient(client.getUrl(), client.getUsername(), client.getPassword(),
+                client.getConnectionTimeout(), client.getReceiveTimeout());
     }
 
     @Bean

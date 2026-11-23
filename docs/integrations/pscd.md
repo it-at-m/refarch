@@ -100,6 +100,8 @@ Off by default. When enabled per channel, a mail goes out through the [email int
 | `refarch.pscd.client.url`       | PSCD SOAP endpoint the batches are delivered to. Mandatory                      |
 | `refarch.pscd.client.username`  | Username for HTTP Basic against that endpoint. Optional; unset sends no credentials |
 | `refarch.pscd.client.password`  | Password for the above, sent preemptively. Supply from a secret, not a committed file |
+| `refarch.pscd.client.connection-timeout` | How long to wait for the connection to the endpoint. At least `1ms`. Default `30s` |
+| `refarch.pscd.client.receive-timeout`    | How long to wait for the endpoint's acknowledgement of a sent batch. At least `1ms`. Default `60s` |
 
 ### refarch-pscd-integration-service
 
