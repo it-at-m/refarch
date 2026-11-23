@@ -1,5 +1,6 @@
 package de.muenchen.oss.refarch.integration.pscd.application.service;
 
+import de.muenchen.oss.refarch.integration.pscd.application.PscdLogSanitizer;
 import de.muenchen.oss.refarch.integration.pscd.application.port.in.SubmitPscdBatchInPort;
 import de.muenchen.oss.refarch.integration.pscd.application.port.out.PscdOutPort;
 import de.muenchen.oss.refarch.integration.pscd.domain.model.PscdSatzarten;
@@ -22,7 +23,7 @@ public class SubmitPscdBatchService implements SubmitPscdBatchInPort {
 
     @Override
     public void submit(final PscdSatzarten batch) {
-        log.info("Delivering PSCD batch '{}'", batch.getFilename());
+        log.info("Delivering PSCD batch '{}'", PscdLogSanitizer.safeFilename(batch.getFilename()));
         this.pscdOutPort.send(batch);
     }
 }

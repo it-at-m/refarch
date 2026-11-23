@@ -1,5 +1,6 @@
 package de.muenchen.oss.refarch.integration.pscd.service.adapter.in.file;
 
+import de.muenchen.oss.refarch.integration.pscd.application.PscdLogSanitizer;
 import de.muenchen.oss.refarch.integration.pscd.domain.exception.PscdValidationException;
 import de.muenchen.oss.refarch.integration.pscd.domain.model.PscdSatzarten;
 import de.muenchen.oss.refarch.integration.pscd.domain.model.Satzart010;
@@ -14,7 +15,6 @@ import de.muenchen.oss.refarch.integration.pscd.domain.model.Satzart260;
 import de.muenchen.oss.refarch.integration.pscd.domain.model.SatzartFehler;
 import de.muenchen.oss.refarch.integration.pscd.domain.validation.PscdSatzartenValidator;
 import de.muenchen.oss.refarch.integration.pscd.service.account.PscdAccountLog;
-import de.muenchen.oss.refarch.integration.pscd.service.adapter.in.PscdBatchLog;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -205,7 +205,7 @@ public final class PscdSatzartenParser {
         }
         final RecordCollector collector = new RecordCollector();
         final List<String> problems = new ArrayList<>();
-        final String logName = PscdBatchLog.safeFilename(filename);
+        final String logName = PscdLogSanitizer.safeFilename(filename);
         if (lines != null) {
             int lineNumber = 0;
             for (final String line : lines) {
@@ -371,11 +371,11 @@ public final class PscdSatzartenParser {
     }
 
     /**
-     * Make file-derived text safe to put in a message that ends up in a log line. Reuses the inbound
-     * adapters' sanitizer: the concern is the same one, untrusted content forging log lines.
+     * Make file-derived text safe to put in a message that ends up in a log line. Reuses
+     * {@link PscdLogSanitizer}: the concern is the same one, untrusted content forging log lines.
      */
     private static String safe(final String value) {
-        return PscdBatchLog.safeFilename(value);
+        return PscdLogSanitizer.safeFilename(value);
     }
 
     /**

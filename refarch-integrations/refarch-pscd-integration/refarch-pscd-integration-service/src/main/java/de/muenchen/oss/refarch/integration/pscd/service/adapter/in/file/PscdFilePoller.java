@@ -1,5 +1,6 @@
 package de.muenchen.oss.refarch.integration.pscd.service.adapter.in.file;
 
+import de.muenchen.oss.refarch.integration.pscd.application.PscdLogSanitizer;
 import de.muenchen.oss.refarch.integration.pscd.application.port.in.SubmitPscdBatchInPort;
 import de.muenchen.oss.refarch.integration.pscd.domain.model.PscdSatzarten;
 import de.muenchen.oss.refarch.integration.pscd.service.account.PscdAccountLog;
@@ -178,7 +179,7 @@ public class PscdFilePoller {
         }
         final List<String> held = new ArrayList<>();
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(working, Files::isRegularFile)) {
-            stream.forEach(file -> held.add(PscdBatchLog.safeFilename(file.getFileName().toString())));
+            stream.forEach(file -> held.add(PscdLogSanitizer.safeFilename(file.getFileName().toString())));
         } catch (final IOException e) {
             log.warn("Could not list the PSCD working directory '{}'", working.toAbsolutePath(), e);
             return;
@@ -263,7 +264,7 @@ public class PscdFilePoller {
             // Vanished or unreadable between the listing and now; nothing has been touched, so the next
             // cycle can simply look again.
             log.debug("Could not read the attributes of PSCD batch '{}'; leaving it for the next poll",
-                    PscdBatchLog.safeFilename(file.getFileName().toString()), e);
+                    PscdLogSanitizer.safeFilename(file.getFileName().toString()), e);
             return false;
         }
         final long now = System.nanoTime();
@@ -271,7 +272,7 @@ public class PscdFilePoller {
         if (observation == null) {
             this.observations.put(file, new Observation(attributes.size(), attributes.lastModifiedTime().toMillis(), now));
             log.debug("PSCD batch '{}' seen for the first time; waiting for it to stop changing",
-                    PscdBatchLog.safeFilename(file.getFileName().toString()));
+                    PscdLogSanitizer.safeFilename(file.getFileName().toString()));
             return false;
         }
         if (observation.changedTo(attributes.size(), attributes.lastModifiedTime().toMillis(), now)
@@ -287,7 +288,7 @@ public class PscdFilePoller {
      * {@code WARN} when it has gone on long enough to be a stalled transfer rather than a busy one.
      */
     private void reportNotYetStable(final Path file, final Observation observation, final long now) {
-        final String filename = PscdBatchLog.safeFilename(file.getFileName().toString());
+        final String filename = PscdLogSanitizer.safeFilename(file.getFileName().toString());
         if (observation.stallReported || now - observation.firstSeenNanos < this.stallReportAfterNanos) {
             log.debug("PSCD batch '{}' is still changing; not taking it up yet", filename);
             return;
@@ -312,15 +313,15 @@ public class PscdFilePoller {
             Files.move(file, takenUp, StandardCopyOption.REPLACE_EXISTING);
             this.observations.remove(file);
             this.reportedTakeUpFailures.remove(file);
-            log.debug("Took up PSCD batch '{}' as '{}'", PscdBatchLog.safeFilename(filename),
-                    PscdBatchLog.safeFilename(this.workingDirectory + '/' + takenUp.getFileName()));
+            log.debug("Took up PSCD batch '{}' as '{}'", PscdLogSanitizer.safeFilename(filename),
+                    PscdLogSanitizer.safeFilename(this.workingDirectory + '/' + takenUp.getFileName()));
             return takenUp;
         } catch (final IOException e) {
             if (this.reportedTakeUpFailures.add(file)) {
                 // Once per file rather than once per poll: at a one-second interval a broken inbox would
                 // otherwise bury every other line in the log.
                 log.error("Could not take up PSCD batch '{}' into {}; nothing has been delivered and the file is "
-                        + "untouched. Each poll will try again.", PscdBatchLog.safeFilename(filename), this.workingDirectory, e);
+                        + "untouched. Each poll will try again.", PscdLogSanitizer.safeFilename(filename), this.workingDirectory, e);
             }
             return null;
         }
@@ -353,7 +354,7 @@ public class PscdFilePoller {
             }
         } catch (final Exception e) {
             log.error("Failed to process PSCD batch file '{}'; filing it under {}",
-                    PscdBatchLog.safeFilename(filename), this.errorDirectory, e);
+                    PscdLogSanitizer.safeFilename(filename), this.errorDirectory, e);
             final String archivedAs = archive(takenUp, this.errorDirectory, filename);
             // After the move, so the mail can name where the batch actually ended up.
             this.failureNotifier.notifyFailure(CHANNEL, filename, archivedAs, e);
@@ -382,17 +383,17 @@ public class PscdFilePoller {
             // batches of the same name taken up within one would otherwise fail here rather than move.
             Files.move(takenUp, destination, StandardCopyOption.REPLACE_EXISTING);
             final String archived = subdir + '/' + destination.getFileName();
-            log.debug("Filed PSCD batch '{}' under '{}'", PscdBatchLog.safeFilename(filename), PscdBatchLog.safeFilename(archived));
+            log.debug("Filed PSCD batch '{}' under '{}'", PscdLogSanitizer.safeFilename(filename), PscdLogSanitizer.safeFilename(archived));
             return archived;
         } catch (final IOException e) {
-            final String safeFilename = PscdBatchLog.safeFilename(filename);
+            final String safeFilename = PscdLogSanitizer.safeFilename(filename);
             if (subdir.equals(this.doneDirectory)) {
                 log.error("Delivered PSCD batch '{}' but could not file it under {}; it is held in '{}' and will NOT be "
                         + "delivered again; file it by hand once you have checked it reached PSCD.",
-                        safeFilename, subdir, PscdBatchLog.safeFilename(heldAs), e);
+                        safeFilename, subdir, PscdLogSanitizer.safeFilename(heldAs), e);
             } else {
                 log.error("Could not file the failed PSCD batch '{}' under {}; it is held in '{}' and is not retried.",
-                        safeFilename, subdir, PscdBatchLog.safeFilename(heldAs), e);
+                        safeFilename, subdir, PscdLogSanitizer.safeFilename(heldAs), e);
             }
             return heldAs;
         }

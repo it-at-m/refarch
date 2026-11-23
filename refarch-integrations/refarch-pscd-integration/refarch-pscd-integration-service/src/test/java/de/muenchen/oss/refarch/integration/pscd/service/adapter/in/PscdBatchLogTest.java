@@ -13,25 +13,6 @@ import org.junit.jupiter.api.Test;
 class PscdBatchLogTest {
 
     @Test
-    void replacesAMissingFilenameWithAPlaceholder() {
-        assertThat(PscdBatchLog.safeFilename(null)).isEqualTo(PscdBatchLog.NO_FILENAME);
-        assertThat(PscdBatchLog.safeFilename("   ")).isEqualTo(PscdBatchLog.NO_FILENAME);
-    }
-
-    @Test
-    void replacesControlCharactersSoAFilenameCannotForgeALogLine() {
-        assertThat(PscdBatchLog.safeFilename("batch.dat\r\nINFO  forged line")).isEqualTo("batch.dat??INFO  forged line");
-        assertThat(PscdBatchLog.safeFilename("batch.dat")).isEqualTo("batch.dat");
-    }
-
-    @Test
-    void truncatesAnOversizedFilename() {
-        final String sanitized = PscdBatchLog.safeFilename("x".repeat(300));
-
-        assertThat(sanitized).hasSize(258).endsWith("...");
-    }
-
-    @Test
     void describesRecordCountsAndTheControlValues() {
         final PscdSatzarten batch = PscdSatzarten.builder()
                 .satzart010(Satzart010.builder().abstimmsumme("12345").vorzeichen("+").build())

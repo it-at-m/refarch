@@ -1,6 +1,7 @@
 package de.muenchen.oss.refarch.integration.pscd.adapter.out.pscd;
 
 import de.lhm.pi.pscd.rahmenschnittstelle.DTSOAPSatzarten;
+import de.muenchen.oss.refarch.integration.pscd.application.PscdLogSanitizer;
 import de.muenchen.oss.refarch.integration.pscd.application.port.out.PscdOutPort;
 import de.muenchen.oss.refarch.integration.pscd.client.PscdSoapClient;
 import de.muenchen.oss.refarch.integration.pscd.domain.exception.PscdProcessingException;
@@ -27,7 +28,7 @@ public class PscdOutAdapter implements PscdOutPort {
         try {
             final DTSOAPSatzarten request = PscdSatzartenMapper.toDto(satzarten);
             this.pscdSoapClient.send(request);
-            log.debug("Sent PSCD batch '{}' to the SOAP endpoint", satzarten.getFilename());
+            log.debug("Sent PSCD batch '{}' to the SOAP endpoint", PscdLogSanitizer.safeFilename(satzarten.getFilename()));
         } catch (final RuntimeException e) {
             throw new PscdProcessingException("Failed to call the PSCD SOAP endpoint", e);
         }

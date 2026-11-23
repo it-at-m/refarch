@@ -2,7 +2,7 @@ package de.muenchen.oss.refarch.integration.pscd.service.adapter.out.notificatio
 
 import de.muenchen.oss.refarch.integration.email.application.port.out.MailOutPort;
 import de.muenchen.oss.refarch.integration.email.domain.model.TextMail;
-import de.muenchen.oss.refarch.integration.pscd.service.adapter.in.PscdBatchLog;
+import de.muenchen.oss.refarch.integration.pscd.application.PscdLogSanitizer;
 import de.muenchen.oss.refarch.integration.pscd.service.adapter.in.PscdInboundChannel;
 import de.muenchen.oss.refarch.integration.pscd.service.configuration.PscdNotificationProperties;
 import java.io.IOException;
@@ -105,7 +105,7 @@ public class PscdFailureNotifier {
             // Configuring a channel to notify but no recipient is a misconfiguration, not a reason to
             // fail: warn where it will be noticed and carry on.
             log.warn("PSCD notification is enabled for the {} channel but refarch.pscd.notification.to is not set; "
-                    + "no mail sent for batch '{}'", channel.label(), PscdBatchLog.safeFilename(filename));
+                    + "no mail sent for batch '{}'", channel.label(), PscdLogSanitizer.safeFilename(filename));
             return;
         }
         try {
@@ -114,7 +114,7 @@ public class PscdFailureNotifier {
             log.debug("Sent PSCD notification for the {} channel to '{}'", channel.label(), recipients);
         } catch (final RuntimeException e) {
             log.error("Could not send the PSCD notification for batch '{}' to '{}'",
-                    PscdBatchLog.safeFilename(filename), recipients, e);
+                    PscdLogSanitizer.safeFilename(filename), recipients, e);
         }
     }
 
@@ -146,7 +146,7 @@ public class PscdFailureNotifier {
     private String body(final PscdInboundChannel channel, final String filename, final String location, final String reason) {
         final Object[] values = {
                 channel.label(),
-                PscdBatchLog.safeFilename(filename),
+                PscdLogSanitizer.safeFilename(filename),
                 location == null || location.isBlank() ? NO_LOCATION : location,
                 LocalDateTime.now().format(FAILED_AT),
                 reason

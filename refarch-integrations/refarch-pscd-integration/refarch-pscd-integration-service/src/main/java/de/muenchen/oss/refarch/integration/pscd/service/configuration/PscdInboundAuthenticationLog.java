@@ -1,6 +1,6 @@
 package de.muenchen.oss.refarch.integration.pscd.service.configuration;
 
-import de.muenchen.oss.refarch.integration.pscd.service.adapter.in.PscdBatchLog;
+import de.muenchen.oss.refarch.integration.pscd.application.PscdLogSanitizer;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -83,10 +83,10 @@ public class PscdInboundAuthenticationLog {
     }
 
     /**
-     * Make header-supplied text safe to put in a log line. Reuses the inbound adapters' sanitizer: the
+     * Make header-supplied text safe to put in a log line. Reuses {@link PscdLogSanitizer}: the
      * concern is the same one, untrusted content forging additional lines.
      */
     private static String safe(final String value) {
-        return PscdBatchLog.safeFilename(value);
+        return PscdLogSanitizer.safeFilename(value);
     }
 }

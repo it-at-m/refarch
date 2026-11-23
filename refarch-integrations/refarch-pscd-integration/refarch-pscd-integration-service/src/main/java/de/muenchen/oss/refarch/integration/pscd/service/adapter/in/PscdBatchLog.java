@@ -1,11 +1,11 @@
 package de.muenchen.oss.refarch.integration.pscd.service.adapter.in;
 
+import de.muenchen.oss.refarch.integration.pscd.application.PscdLogSanitizer;
 import de.muenchen.oss.refarch.integration.pscd.domain.exception.PscdValidationException;
 import de.muenchen.oss.refarch.integration.pscd.domain.model.PscdSatzarten;
 import de.muenchen.oss.refarch.integration.pscd.domain.model.Satzart010;
 import java.util.List;
 import java.util.StringJoiner;
-import java.util.regex.Pattern;
 import org.slf4j.Logger;
 
 /**
@@ -24,35 +24,7 @@ import org.slf4j.Logger;
  */
 public final class PscdBatchLog {
 
-    public static final String NO_FILENAME = "<none>";
-
-    private static final int MAX_FILENAME_LENGTH = 255;
-
-    private static final String TRUNCATION_MARKER = "...";
-
-    /** Control characters, most notably CR and LF, which would forge additional log lines. */
-    private static final Pattern CONTROL_CHARACTERS = Pattern.compile("\\p{Cntrl}");
-
     private PscdBatchLog() {
-    }
-
-    /**
-     * Make a caller-supplied batch filename safe to log: the REST and SOAP payloads carry it verbatim,
-     * so it is untrusted input. Control characters (CR/LF above all, which would otherwise forge
-     * additional log lines) are replaced and the value is truncated.
-     *
-     * @param filename the raw filename (may be {@code null})
-     * @return a single-line, length-bounded replacement, never {@code null}
-     */
-    public static String safeFilename(final String filename) {
-        if (filename == null || filename.isBlank()) {
-            return NO_FILENAME;
-        }
-        final String sanitized = CONTROL_CHARACTERS.matcher(filename).replaceAll("?");
-        if (sanitized.length() <= MAX_FILENAME_LENGTH) {
-            return sanitized;
-        }
-        return sanitized.substring(0, MAX_FILENAME_LENGTH) + TRUNCATION_MARKER;
     }
 
     /**
@@ -98,7 +70,7 @@ public final class PscdBatchLog {
      * @param batch the decoded batch (may be {@code null})
      */
     public static void logAccepted(final Logger log, final String channel, final PscdSatzarten batch) {
-        final String filename = safeFilename(batch == null ? null : batch.getFilename());
+        final String filename = PscdLogSanitizer.safeFilename(batch == null ? null : batch.getFilename());
         log.info("Received PSCD batch '{}' via {}: {}", filename, channel, describe(batch));
         if (batch == null) {
             return;
@@ -125,7 +97,7 @@ public final class PscdBatchLog {
      * @param e the rejection, whose message states what was structurally wrong
      */
     public static void logRejected(final Logger log, final String channel, final String filename, final PscdValidationException e) {
-        log.warn("Rejected invalid PSCD batch '{}' received via {}: {}", safeFilename(filename), channel, e.getMessage());
+        log.warn("Rejected invalid PSCD batch '{}' received via {}: {}", PscdLogSanitizer.safeFilename(filename), channel, e.getMessage());
     }
 
     /** Add {@code code=size} to the breakdown when the record type occurs, and report its size. */

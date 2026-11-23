@@ -1,7 +1,7 @@
 package de.muenchen.oss.refarch.integration.pscd.service.account;
 
+import de.muenchen.oss.refarch.integration.pscd.application.PscdLogSanitizer;
 import de.muenchen.oss.refarch.integration.pscd.domain.model.PscdSatzarten;
-import de.muenchen.oss.refarch.integration.pscd.service.adapter.in.PscdBatchLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +43,7 @@ public final class PscdAccountLog {
      * @param problem what was wrong, already carrying the line number
      */
     public static void accountError(final String filename, final String problem) {
-        ACCOUNT_ERROR.error("batch='{}' {}", PscdBatchLog.safeFilename(filename), problem);
+        ACCOUNT_ERROR.error("batch='{}' {}", PscdLogSanitizer.safeFilename(filename), problem);
     }
 
     /**
@@ -62,7 +62,7 @@ public final class PscdAccountLog {
      */
     public static void completed(final PscdSatzarten batch, final int entriesInFile) {
         COMPLETION.info("{} of {} entries from the file '{}' sent to PSCD",
-                entriesSent(batch), entriesInFile, PscdBatchLog.safeFilename(batch.getFilename()));
+                entriesSent(batch), entriesInFile, PscdLogSanitizer.safeFilename(batch.getFilename()));
     }
 
     /**
