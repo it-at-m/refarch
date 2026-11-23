@@ -106,7 +106,7 @@ Off by default. When enabled per channel, a mail goes out through the [email int
 | Property                                       | Description                                                                              |
 | ---------------------------------------------- | ---------------------------------------------------------------------------------------- |
 | `refarch.pscd.inbound.security.username`       | Account the sending systems authenticate with. **Mandatory**, no default                 |
-| `refarch.pscd.inbound.security.password`       | Password for the above. **Mandatory**. Plain text unless it carries a `{bcrypt}` prefix   |
+| `refarch.pscd.inbound.security.password` | Password for the above. **Mandatory**. Plain text, or an encoded value with a supported `{id}` prefix |
 | `refarch.pscd.inbound.rest.enabled`            | Expose `POST /api/pscd/batches`. Default `true`                                          |
 | `refarch.pscd.inbound.soap.enabled`            | Expose the SOAP endpoint. Default `true`                                                 |
 | `refarch.pscd.inbound.file.enabled`            | Poll a directory for flat-file batches. Default `false`                                  |
