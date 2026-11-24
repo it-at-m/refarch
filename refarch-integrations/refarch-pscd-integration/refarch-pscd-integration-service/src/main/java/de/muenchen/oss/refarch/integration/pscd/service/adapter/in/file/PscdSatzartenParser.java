@@ -65,12 +65,12 @@ import lombok.extern.slf4j.Slf4j;
  *
  * <p>
  * <strong>A damaged line does not fail the batch either</strong>, for the same reason. A line too
- * short for its record is sliced as far as it reaches, the columns beyond it are treated as empty
- * (mandatory ones becoming {@value #REQUIRED_PLACEHOLDER}), and its FEHLER opens with
- * {@code TRUNCATED}. A line whose SATZART cannot be read, or names no known record type, has no
- * layout to be sliced with at all: it becomes a {@link SatzartFehler} naming the line number and
- * the problem, which is the vendor contract's own way of reporting a record that could not be
- * processed. Either way the batch goes to PSCD.
+ * short for its record keeps every column it covers completely; a column the line does not reach in
+ * full is treated as empty (mandatory ones becoming {@value #REQUIRED_PLACEHOLDER}), because half a
+ * field is not a value. The record's FEHLER opens with {@code TRUNCATED}. A line whose SATZART
+ * cannot be read, or names no known record type, has no layout to be sliced with at all: it becomes
+ * a {@link SatzartFehler} naming the line number and the problem, which is the vendor contract's
+ * own way of reporting a record that could not be processed. Either way the batch goes to PSCD.
  * </p>
  *
  * <p>
@@ -253,7 +253,8 @@ public final class PscdSatzartenParser {
      * record type has no layout to be sliced with, so it cannot become a typed record. It becomes a
      * standalone error record instead ({@link SatzartFehler}, the vendor contract's own vehicle for
      * this), and travels to PSCD saying what was wrong with it. A line that <em>is</em> mappable but
-     * too short is sliced as far as it goes; see {@link #truncation}.
+     * too short still becomes a record, and every column it does not hold in full is treated as
+     * empty; see {@link #truncation}.
      * </p>
      */
     private static void parseLine(final String line, final LineContext context, final RecordCollector collector) {
