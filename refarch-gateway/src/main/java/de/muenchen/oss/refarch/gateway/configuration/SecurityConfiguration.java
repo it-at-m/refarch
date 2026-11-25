@@ -11,11 +11,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.WebFilterExchange;
+import org.springframework.security.web.server.authentication.HttpStatusServerEntryPoint;
 import org.springframework.security.web.server.authentication.RedirectServerAuthenticationSuccessHandler;
 import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository;
 import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers;
@@ -25,6 +27,7 @@ import reactor.core.publisher.Mono;
 @Profile("!no-security")
 @RequiredArgsConstructor
 public class SecurityConfiguration {
+    private static final String API_ROUTES_PREFIX = "/api/**";
     private static final String CLIENT_ROUTES_PREFIX = "/clients/**";
     private static final String PUBLIC_ROUTES_PREFIX = "/public/**";
 
@@ -54,12 +57,26 @@ public class SecurityConfiguration {
 
     @Bean
     @Order(1)
+    public SecurityWebFilterChain apiAccessFilterChain(final ServerHttpSecurity http) {
+        return configureSessionSecurity(http)
+                .securityMatcher(ServerWebExchangeMatchers.pathMatchers(API_ROUTES_PREFIX))
+                .exceptionHandling(exceptionHandlingSpec -> exceptionHandlingSpec
+                        .authenticationEntryPoint(new HttpStatusServerEntryPoint(HttpStatus.UNAUTHORIZED)))
+                .build();
+    }
+
+    @Bean
+    @Order(2)
     public SecurityWebFilterChain springSecurityFilterChain(final ServerHttpSecurity http) {
-        http
+        return configureSessionSecurity(http).build();
+    }
+
+    private ServerHttpSecurity configureSessionSecurity(final ServerHttpSecurity http) {
+        return http
                 .logout(ServerHttpSecurity.LogoutSpec::disable)
                 .authorizeExchange(authorizeExchangeSpec -> {
                     // permitAll
-                    authorizeExchangeSpec.pathMatchers(HttpMethod.OPTIONS, "/api/**").permitAll();
+                    authorizeExchangeSpec.pathMatchers(HttpMethod.OPTIONS, API_ROUTES_PREFIX).permitAll();
                     authorizeExchangeSpec.pathMatchers(
                             "/api/*/actuator/info",
                             "/actuator/health",
@@ -103,8 +120,6 @@ public class SecurityConfiguration {
                                 });
                     }
                 }));
-
-        return http.build();
     }
 
     /// Apply dynamic permitAll rules based on properties.

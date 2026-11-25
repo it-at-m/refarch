@@ -107,14 +107,13 @@ class BackendRouteTest {
         }
 
         @Test
-        void apiGetFound() {
+        void apiGetUnauthorized() {
             createGet(URI_API)
                     .exchange()
-                    // because redirect to login
-                    .expectStatus().isFound()
+                    .expectStatus().isUnauthorized()
                     .expectCookie().doesNotExist(SESSION_COOKIE_NAME)
                     .expectCookie().doesNotExist(XSRF_COOKIE_NAME)
-                    .expectHeader().valueMatches(org.springframework.http.HttpHeaders.LOCATION, ".*/login.*");
+                    .expectHeader().doesNotExist(org.springframework.http.HttpHeaders.LOCATION);
 
             verifyBackendGetNotCalled(urlEqualTo(BACKEND_URL));
         }
@@ -146,13 +145,14 @@ class BackendRouteTest {
         }
 
         @Test
-        void apiPostFound() {
-            // With CSRF, but no auth -> redirected to login (302)
+        void apiPostUnauthorized() {
+            // With valid CSRF, but no authentication -> Unauthorized (401).
             withXsrf(createPost(URI_API))
                     .exchange()
-                    .expectStatus().isFound()
+                    .expectStatus().isUnauthorized()
                     .expectCookie().doesNotExist(SESSION_COOKIE_NAME)
-                    .expectCookie().doesNotExist(XSRF_COOKIE_NAME);
+                    .expectCookie().doesNotExist(XSRF_COOKIE_NAME)
+                    .expectHeader().doesNotExist(org.springframework.http.HttpHeaders.LOCATION);
 
             verifyBackendPostNotCalled(urlEqualTo(BACKEND_URL));
         }
@@ -209,14 +209,14 @@ class BackendRouteTest {
         }
 
         @Test
-        void publicPostFoundExtraPattern() {
-            // With CSRF, non-available public pattern -> handles as authenticated endpoint -> redirected to login (302)
+        void publicPostUnauthorizedExtraPattern() {
+            // With valid CSRF, this POST is not permitted by the extra public pattern -> Unauthorized (401).
             withXsrf(createPost(URI_PUBLIC_EXTRA_PATTERN))
                     .exchange()
-                    .expectStatus().isFound()
+                    .expectStatus().isUnauthorized()
                     .expectCookie().doesNotExist(SESSION_COOKIE_NAME)
                     .expectCookie().doesNotExist(XSRF_COOKIE_NAME)
-                    .expectHeader().valueMatches(org.springframework.http.HttpHeaders.LOCATION, ".*/login.*");
+                    .expectHeader().doesNotExist(org.springframework.http.HttpHeaders.LOCATION);
 
             verifyBackendPostNotCalled(anyUrl());
         }
