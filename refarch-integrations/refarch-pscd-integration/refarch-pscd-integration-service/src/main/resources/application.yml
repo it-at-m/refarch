@@ -98,7 +98,7 @@ logging:
   include-application-group: false
   level:
     root: INFO
-    de.muenchen.oss.refarch: DEBUG
+    de.muenchen.oss.refarch: INFO
     org.springframework.ws: INFO
     # Spring WS message tracing for the inbound SOAP channel: off by default, uncomment to diagnose a
     # payload. DEBUG logs the payload root element only; TRACE logs the full payload, which contains
