@@ -24,8 +24,6 @@ services:
       KC_HTTP_RELATIVE_PATH: /auth
     ports:
       - "8100:8100"
-    networks:
-      - keycloak
     healthcheck:
       <<: *healthcheck
       test: [
@@ -36,59 +34,59 @@ services:
     <<: *security_settings
 
   init-keycloak:
-    image: klg71/keycloakmigration:0.2.130@sha256:fbec0fbbec2f90e9e912576cfb2ff108fb5703a59383b5e51c8633c130173af8
+    build:
+      context: init-keycloak
+      dockerfile: Dockerfile
+      args:
+        - HTTPS_PROXY=${HTTPS_PROXY}
     depends_on:
-      - keycloak
+      keycloak:
+        condition: service_healthy
+    working_dir: /workspace
+    entrypoint: [ "/bin/entrypoint.sh" ]
     environment:
-      ADMIN_USER: admin
-      ADMIN_PASSWORD: admin
-      BASEURL: http://keycloak:8100/auth
-      WAIT_FOR_KEYCLOAK: "true"
-      FAIL_ON_UNDEFINED_VARIABLES: "true"
-      KEYCLOAK_CHANGELOG: /migration/keycloak-changelog.yml
-      EXIT_ON_ERROR: "true"
+      HTTPS_PROXY: ${HTTPS_PROXY}
+      NO_PROXY: "localhost,keycloak"
+      KEYCLOAK_URL: "http://keycloak:8100/auth"
+      ADMIN_USER: "admin"
+      ADMIN_PASSWORD: "admin"
+      KEYCLOAK_REALMS: "local_realm"
     volumes:
-      - ./keycloak/migration:/migration
-    networks:
-      - keycloak
+      - "./init-keycloak:/workspace:rw"
     <<: *security_settings
 
   # === S3 ===
-  minio:
-    image: quay.io/minio/minio:RELEASE.2024-08-17T01-24-54Z@sha256:6f23072e3e222e64fe6f86b31a7f7aca971e5129e55cbccef649b109b8e651a1
-    command: server /data --console-address ":9001"
+  rustfs:
+    image: rustfs/rustfs:1.0.4@sha256:ed9210d6411d77ffceb70d94b964a3cb7d225983368bc25bebe01e995293dcc2
     environment:
-      MINIO_ROOT_USER: minio
-      MINIO_ROOT_PASSWORD: Test1234
+      RUSTFS_ACCESS_KEY: admin
+      RUSTFS_SECRET_KEY: admin
     ports:
       - "9000:9000" # API
       - "9001:9001" # UI
     volumes:
-      - ./minio:/data
-    networks:
-      - minio
+      - rustfs-data:/data
     healthcheck:
       <<: *healthcheck
-      test: [ "CMD-SHELL",  "curl http://localhost:9000/minio/health/live" ]
+      test: ["CMD", "curl", "-fsS", "http://localhost:9000/health/ready"]
     <<: *security_settings
 
-  init-minio:
-    image: minio/mc:RELEASE.2024-08-17T11-33-50Z@sha256:87382ad79da9f464a444aab607b3db9251c7fe7d1bfda0eb86cbacee2ca2b564
+  init-rustfs:
+    image: rustfs/rc:v0.1.36@sha256:ab024bfebee49a750ce886b4c70963ccd9ddaa03f491704a90710641d7a26699
     depends_on:
-      - minio
+      rustfs:
+        condition: service_healthy
     entrypoint: >
       /bin/sh -c "
-        mc config host add minio http://minio:9000 minio Test1234;
-        mc mb minio/test-bucket;
-        exit 0;
+        set -e;
+        rc alias set local http://rustfs:9000 admin admin;
+        rc mb local/test-bucket;
       "
-    networks:
-      - minio
     <<: *security_settings
 
   # === Mail ===
   mailpit:
-    image: axllent/mailpit:v1.31.0@sha256:c96991d9bef73594c246d89ca81411d4e916f03e76a7d2d72fa2ab5dd3c9ce24
+    image: axllent/mailpit:v1.33.1@sha256:aef2aacc11f075ec0fb6874275ee4a421e688e11a96ebb296134d1735c7761ce
     environment:
       MP_DISABLE_VERSION_CHECK: "true"
     ports:
@@ -100,6 +98,5 @@ services:
       test: [ "CMD", "wget", "--spider", "-q", "http://localhost:8025/readyz" ]
     <<: *security_settings
 
-networks:
-  keycloak:
-  minio:
+volumes:
+  rustfs-data:

@@ -108,7 +108,7 @@ in `/etc/containers/containers.conf` and use the [User-Mode-Networking](https://
 
 ::: danger IMPORTANT
 If for some reason you cannot add health checks to a container (this might be the case when a barebone base image is used and the container does not have tools like `curl` or `wget`)
-you need to set `skip-no-healthcheck: true` as described in the [CI/CD documentation](https://github.com/it-at-m/lhm_actions/blob/main/docs/actions.md#action-dockercompose-healthcheck) in order for the CI/CD to pass.
+you need to set `skip-no-healthcheck: true` as described in the [CI/CD documentation](https://it-at-m.github.io/lhm_actions/actions.html#action-dockercompose-healthcheck) in order for the CI/CD to pass.
 :::
 
 ### Vite
@@ -325,11 +325,10 @@ For the provided CodeQL workflow to run properly, the ‘Advanced Setup’ for C
 
 For dependency security scanning we use [Trivy](https://trivy.dev/). Trivy inspects your `pom.xml` and/or `package-lock.json` files for known vulnerabilities.
 
-If Trivy reports a vulnerability:
+If Trivy reports a vulnerability review the referenced [CVE (Common Vulnerabilities and Exposures)](https://nvd.nist.gov/) or [GH advisories](https://github.com/advisories) and assess whether the issue is exploitable in your project:
 
-- Review the referenced [CVE (Common Vulnerabilities and Exposures)](https://nvd.nist.gov/) or [GH advisories](https://github.com/advisories) and assess whether the issue is exploitable in your project.
-- Remediate where possible by upgrading, patching or replacing the affected dependency. If the vulnerability occurs in a transitive dependency, you might have to explicitly add a newer version.
-- If the finding is a false positive, add it to the `.trivyignore` file. [Trivy Vulnerability Explorer](https://dbsystel.github.io/trivy-vulnerability-explorer/) allows creating the `.trivyignore` file interactively by uploading a Trivy report in JSON format. A Trivy report can be retrieved as a pipeline artifact.
+- **False Positive**: Add it to the `.trivyignore` file. [Trivy Vulnerability Explorer](https://dbsystel.github.io/trivy-vulnerability-explorer/) allows creating the `.trivyignore` file interactively by uploading a Trivy report in JSON format. A Trivy report can be retrieved as a pipeline artifact.
+- **True Positive**: Remediate by upgrading or replacing the affected dependency. If the vulnerability occurs in a transitive dependency, you might have to explicitly add a newer version using overrides.
 
 By default, the Trivy workflow will fail when vulnerabilities are found. To make this failure block merges, enable the appropriate GitHub ruleset/branch protection so the workflow must pass before a pull request can be merged.
 
@@ -369,7 +368,7 @@ Currently, the templates only configure this feature for the [linting of GitHub 
 The `.github/workflows` folder contains various GitHub workflow files. Those reference centralized actions to simplify different parts of the CI/CD process.
 It also helps to keep Lifecycle Management as simple as possible as no direct dependency on third-party actions exists.
 
-More information about the centralized actions can be found in the [lhm_actions documentation](https://github.com/it-at-m/lhm_actions/blob/main/docs/actions.md).
+More information about the centralized actions can be found in the [lhm_actions documentation](https://it-at-m.github.io/lhm_actions/actions.html).
 
 ::: danger IMPORTANT
 Note that the CI/CD setup of the templates is in a Work-In-Progress state, so its subject to change in the near future.

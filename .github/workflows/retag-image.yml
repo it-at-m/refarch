@@ -25,7 +25,7 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: it-at-m/lhm_actions/action-templates/actions/action-checkout@2bb2618a4686a01cc54518c07d9052b80b9a1078 # v1.5.2
+      - uses: it-at-m/lhm_actions/action-templates/actions/action-checkout@9bde6576151908ace5f517ca623fea3b98600cb7 # v1.6.5
       - uses: ./.github/actions/retag-image
         with:
           registry-username: ${{ github.actor }}

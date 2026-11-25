@@ -10,6 +10,7 @@ import java.util.List;
 import org.springframework.validation.annotation.Validated;
 
 @Validated
+@Deprecated
 public interface UpdateDocumentOutPort {
 
     void updateDocument(String documentCOO, DocumentType type, List<Content> contents, @NotNull @Valid RequestContext requestContext) throws DmsException;

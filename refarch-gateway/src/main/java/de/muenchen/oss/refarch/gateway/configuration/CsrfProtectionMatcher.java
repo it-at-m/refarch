@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.server.PathContainer;
-import org.springframework.security.web.server.csrf.CsrfWebFilter;
 import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatcher;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.util.pattern.PathPattern;
@@ -21,9 +20,8 @@ import reactor.core.publisher.Mono;
 @Profile("!no-security")
 public class CsrfProtectionMatcher implements ServerWebExchangeMatcher {
 
-    /**
-     * Copied from {@link CsrfWebFilter}.DefaultRequireCsrfProtectionMatcher
-     */
+    /// Copied from
+    /// [org.springframework.security.web.server.csrf.CsrfWebFilter].DefaultRequireCsrfProtectionMatcher
     private static final Set<HttpMethod> ALLOWED_METHODS = new HashSet<>(
             Arrays.asList(HttpMethod.GET, HttpMethod.HEAD, HttpMethod.TRACE, HttpMethod.OPTIONS));
 
@@ -43,7 +41,7 @@ public class CsrfProtectionMatcher implements ServerWebExchangeMatcher {
         return Mono.just(exchange.getRequest())
                 .flatMap((r) -> Mono.justOrEmpty(new MethodAndPath(r.getMethod(), r.getPath().toString())))
                 .filter((mp) -> ALLOWED_METHODS.contains(mp.method) || isWhitelisted(mp.path))
-                .flatMap((m) -> MatchResult.notMatch())
+                .flatMap((_) -> MatchResult.notMatch())
                 .switchIfEmpty(MatchResult.match());
     }
 

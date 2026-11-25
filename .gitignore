@@ -29,9 +29,12 @@ dist/
 nbdist/
 .nb-gradle/
 
-# Stack
-/stack/minio/*
-!/stack/minio/.gitkeep
+# ============== Terraform/OpenTofu ================
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
 
 # Additional
 $(pwd)

@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.validation.annotation.Validated;
 
 @Validated
+@Deprecated
 public interface SearchSubjectAreaOutPort {
 
     List<String> searchSubjectArea(String searchString, @NotNull @Valid RequestContext requestContext) throws DmsException;
