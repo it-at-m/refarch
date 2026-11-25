@@ -1,6 +1,33 @@
 # Migration
 
-Following are migration guides for breaking changes introduced in the RefArch which require some more work.
+Following are migration guides for specific breaking changes introduced in the RefArch which require some more work.
+Also, general tips and tricks for lifecycle of RefArch-based applications are given.
+
+## Tips & Tricks
+
+### Spring Boot version bumps
+
+When upgrading Spring Boot in a backend or EAI project, it's recommended to use the [`spring-boot-properties-migrator`](https://docs.spring.io/spring-boot/appendix/deprecated-application-properties/index.html).
+This dependency checks `application.yml` files and reports deprecated properties that should be replaced.
+
+To use it, temporarily (remove after upgrade) add the following:
+
+```xml
+<!-- pom.xml -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-properties-migrator</artifactId>
+    <scope>runtime</scope>
+</dependency>
+```
+
+```yml
+# application.yml
+spring:
+  properties:
+    migrator:
+      fail: on_warning
+```
 
 ## Split gateway and frontend
 
