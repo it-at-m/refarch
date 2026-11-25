@@ -72,7 +72,7 @@ services:
     <<: *security_settings
 
   init-rustfs:
-    image: rustfs/rc:v0.1.36@sha256:ab024bfebee49a750ce886b4c70963ccd9ddaa03f491704a90710641d7a26699
+    image: rustfs/rc:v0.1.38@sha256:3c080aff53f0d3b06554fd08711d05c80be40bd7e56001874d7df5e18d5ec88a
     depends_on:
       rustfs:
         condition: service_healthy
