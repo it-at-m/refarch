@@ -42,10 +42,10 @@
                 <executions>
                     <execution>
                         <id>generate-sources</id>
-                        <phase>generate-sources</phase>
                         <goals>
                             <goal>wsdl2java</goal>
                         </goals>
+                        <phase>generate-sources</phase>
                         <configuration>
                             <wsdlOptions>
                                 <wsdlOption>

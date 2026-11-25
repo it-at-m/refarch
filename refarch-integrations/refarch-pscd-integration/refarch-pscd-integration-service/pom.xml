@@ -80,10 +80,10 @@
                 <executions>
                     <execution>
                         <id>generate-inbound-contract</id>
-                        <phase>generate-sources</phase>
                         <goals>
                             <goal>xjc</goal>
                         </goals>
+                        <phase>generate-sources</phase>
                         <configuration>
                             <sources>
                                 <source>${project.basedir}/src/main/resources/xsd/pscd-canonical.xsd</source>
