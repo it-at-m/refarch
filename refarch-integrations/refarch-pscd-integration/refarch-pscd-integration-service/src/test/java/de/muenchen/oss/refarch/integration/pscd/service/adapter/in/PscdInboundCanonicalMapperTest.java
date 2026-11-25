@@ -3,6 +3,7 @@ package de.muenchen.oss.refarch.integration.pscd.service.adapter.in;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import de.muenchen.oss.refarch.integration.pscd.domain.exception.PscdProcessingException;
 import de.muenchen.oss.refarch.integration.pscd.domain.exception.PscdValidationException;
 import de.muenchen.oss.refarch.integration.pscd.domain.model.PscdSatzarten;
 import de.muenchen.oss.refarch.integration.pscd.inbound.model.PscdBatch;
@@ -55,7 +56,7 @@ class PscdInboundCanonicalMapperTest {
     void validationExceptionIsAProcessingException() {
         // subtype relationship keeps existing PscdProcessingException handlers working
         assertThat(new PscdValidationException("x"))
-                .isInstanceOf(de.muenchen.oss.refarch.integration.pscd.domain.exception.PscdProcessingException.class);
+                .isInstanceOf(PscdProcessingException.class);
     }
 
     /**
