@@ -8,7 +8,10 @@ Also, general tips and tricks for lifecycle of RefArch-based applications are gi
 ### Spring Boot version bumps
 
 When upgrading Spring Boot in a backend or EAI project, it's recommended to use the [`spring-boot-properties-migrator`](https://docs.spring.io/spring-boot/appendix/deprecated-application-properties/index.html).
-This dependency checks `application.yml` files and reports deprecated properties that should be replaced.
+
+This dependency checks the active Spring properties and reports deprecations that should be replaced.
+Properties in a profile-specific file (e.g. `application-local.yml`) are checked only when that profile is active.
+Start the application with each profile that has its own configuration file.
 
 To use it, temporarily (remove after upgrade) add the following:
 
@@ -22,7 +25,7 @@ To use it, temporarily (remove after upgrade) add the following:
 ```
 
 ```yml
-# application.yml
+# application.yml (Requires Spring Boot 4.2 or later. Earlier versions ignore this property.)
 spring:
   properties:
     migrator:
