@@ -39,3 +39,4 @@ nbdist/
 # Additional
 $(pwd)
 
+logs/
