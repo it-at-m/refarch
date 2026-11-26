@@ -1,7 +1,6 @@
 # Migration
 
-Following are migration guides for specific breaking changes introduced in the RefArch which require some more work.
-Also, general tips and tricks for lifecycle of RefArch-based applications are given.
+This page provides general lifecycle tips and best practices for RefArch-based applications, along with migration guides for breaking changes that require additional work.
 
 ## Tips & Tricks
 
