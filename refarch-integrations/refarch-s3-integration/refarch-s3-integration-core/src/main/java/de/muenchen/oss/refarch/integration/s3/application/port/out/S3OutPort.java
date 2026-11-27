@@ -75,7 +75,7 @@ public interface S3OutPort {
      * @param tags the tags to persist for the object
      * @throws S3Exception if updating tags fails due to client, network, or service issues
      */
-    void setTags(@NotNull @Valid FileReference fileReference, @NotNull Map<@NotBlank String, @NotBlank String> tags) throws S3Exception;
+    void setTags(@NotNull @Valid FileReference fileReference, @NotNull Map<@NotBlank String, @NotNull String> tags) throws S3Exception;
 
     /**
      * Retrieves all tags currently stored for the given object.
